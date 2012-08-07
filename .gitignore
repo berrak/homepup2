@@ -1,0 +1,3 @@
+# ignore cert directory
+ssl/
+
