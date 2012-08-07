@@ -1,0 +1,36 @@
+##################################################################
+##   This file is managed by Puppet - thus do not edit direct.  ##
+##       'carbon' is the Puppet server (for the moment).        ##
+##################################################################
+[main]
+logdir=/var/log/puppet
+vardir=/var/lib/puppet
+rundir=/var/run/puppet
+factpath=$vardir/lib/facter
+ssldir=/etc/puppet/ssl
+templatedir=$confdir/templates
+modulepath=$confdir/modules
+
+# which port master listen on
+masterport = 8140
+
+# the port the puppet agent listen on (from this server)
+puppetport = 8139
+
+
+[master]
+# the name agents should use when connectiong to the puppet server also
+# used as default for 'ca_server' and where to send facts to.
+server = <%= puppetserver %>
+
+# the name to use when handling certificates, used in 'ca_name'
+certname = <%= nodename %>
+
+[agent]
+# the server the agent should connect to, and used as
+# default for 'ca_server' and where to send facts to.
+server = <%= puppetserver %>
+
+# the name to use when handling certificates, used in 'ca_name'
+certname = <%= nodename %>
+
