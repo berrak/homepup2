@@ -6,6 +6,8 @@ class puppet_master::config {
     include puppet_master::params
 
     $puppetserver = $::puppet_master::params::mypuppetserver_fqdn
+    $puppetserverhostname = $::puppet_master::params::mypuppetserver_hostname
+    
     $nodename = $::fqdn
     
     file { "/etc/puppet/puppet.conf" :
