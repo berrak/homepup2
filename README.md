@@ -33,10 +33,10 @@ To install puppet agent on the nodes
 ### Directory structure and puppet modules
 
 I decided to focus much on modularization. I do not use
-the toplevel templates or definitions directories. The 'site.pp'
-and the nodes file are in the manifests subdirectory.
+the top level templates or definitions directories. The 'site.pp'
+and the nodes file are in the manifests sub directory.
 
-My structure is organized below /etc/puppet like so:
+My structure is simply organized below /etc/puppet like so:
 
     /etc/puppet/manifests
                         site.pp
@@ -44,7 +44,7 @@ My structure is organized below /etc/puppet like so:
                         
     /etc/puppet/modules                    
                         .
-                        <modulesname/>
+                        <module-name/>
                                     files/
                                     manifests/
                                     templates/

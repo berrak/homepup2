@@ -1,7 +1,10 @@
 ##
-## The 'manage puppet-master' itself class
+## The 'manage puppet-master' itself
+##
 ##
 class puppet_master::install {
+
+    ## Installation
 
     # Debian defaults to install puppet-common which
     # depends on facter - but just to show both.
@@ -10,7 +13,7 @@ class puppet_master::install {
         ensure => present,
     }
     
-    # if this host is the puppet server ('carbon'), also install puppet
+    # if this host is the puppet server, given in $name , also install puppet
     # agent, and set service - but don't run puppet::config since
     # puppet.conf is named identical for P't master and P't agent
     
@@ -27,5 +30,6 @@ class puppet_master::install {
         }
     
     }
+    
     
 }
