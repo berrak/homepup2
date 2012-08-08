@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Syntax check of manifests or ruby templates.
+# Validates all manifests (*.pp) or templates
+# (*.erb) in current directory.
+#
+#
+matchedfiles="false"
+for file in *.pp ; do
+
+    if [ "$file" = "*.pp" ] ; then
+        break
+    fi
+    
+    matchedfiles="true"
+    echo "Syntax validating manifest: $file"
+    /usr/bin/puppet parser --verbose validate $file
+    
+done
+
+for file in *.erb ; do
+
+    if [ "$file" = "*.erb" ] ; then
+        break
+    fi
+    
+    matchedfiles="true"
+    echo -n "Syntax validating template : $file "
+    /usr/bin/erb -x -T '-' $file | ruby -c
+
+done
+
+if [ "$matchedfiles" = "true" ] ; then
+    echo "All validation done!"
+else
+    echo "No manifests (*.pp) or templates (*.erb) found."
+fi
+    
+exit 0
+

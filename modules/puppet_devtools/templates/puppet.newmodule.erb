@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Wrapper to create directory structure for a puppet module
+#
+if [ $# -eq 1 ] ; then
+    echo "Creating new module ($1) below (<%= moduledirectory %>)"
+    cd "<%= moduledirectory %>"
+    mkdir -p "<%= moduledirectory %>/$1/manifests"
+    mkdir -p "<%= moduledirectory %>/$1/templates"
+    mkdir -p "<%= moduledirectory %>/$1/files"
+    touch "<%= moduledirectory %>/$1/manifests/init.pp"
+else
+    echo "$0 Info: Please supply name of the new module."
+    exit 0
+fi
+
