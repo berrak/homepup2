@@ -3,7 +3,9 @@
 ##
 class puppet_master::config {
 
-    $puppetserver = 'carbon.home.tld'
+    include puppet_master::params
+
+    $puppetserver = $::puppet_master::params::mypuppetserver_fqdn
     $nodename = $::fqdn
     
     file { "/etc/puppet/puppet.conf" :
