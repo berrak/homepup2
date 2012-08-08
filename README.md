@@ -47,7 +47,7 @@ My structure is organized below /etc/puppet like so:
                         <modulesname/>
                                     files/
                                     manifests/
-                                    temlates/
+                                    templates/
                         .
                         .
 
