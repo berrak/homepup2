@@ -28,6 +28,7 @@ node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
     include puppet_tripwire
+	include puppet_cups
 	
 	# This is our lan ntp server, providing time services to all clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
