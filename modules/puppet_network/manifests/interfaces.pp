@@ -48,6 +48,8 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         ## eth1
         
+        $secondaryinterfacetext = '# The secondary network interface'
+        
         $allow_hotplug1 = "allow-hotplug $iface_one"
         $iface1 = "iface $iface_one inet static"
         
@@ -58,8 +60,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         $eth1_network = "network $::network_eth1"
         
         $bcstnet1 = "broadcast $bcstnet_one"
-        $gateway1 = "gateway $gateway_one"
-        
+        $gateway1 = "gateway $gateway_one" 
         
     }
     elsif ( $iface_zero != '' ) and ( $iface_one == '' ) {
@@ -82,6 +83,8 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         ## Set unused eth1 template variables to empty strings
         
+        $secondaryinterfacetext = ''
+        
         $allow_hotplug1 = ''
         $iface1 = ''
         $eth1_ip = ''
@@ -89,7 +92,6 @@ class puppet_network::interfaces ( $iface_zero = '',
         $eth1_network = ''
         $bcstnet1 = ''
         $gateway1 = ''
-        
     
     }
     elsif ( $iface_zero == '') and ( $iface_one != '' ) {
@@ -112,6 +114,8 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         
         ## Set unused eth0 template variables to empty strings
+        
+        $secondaryinterfacetext = ''
         
         $allow_hotplug0 = ''
         $iface0 = ''
@@ -138,13 +142,12 @@ class puppet_network::interfaces ( $iface_zero = '',
         fail("Unrecognized option loading firewall!")
     }
     
-    ## Todo: add restart of networking when this file changes 
-    
     file { "/etc/network/interfaces" :
          ensure => present,
         content => template("puppet_network/interfaces.erb"),
           owner => 'root',
           group => 'root',
+         notify => Service["networking"],
     }
 
 

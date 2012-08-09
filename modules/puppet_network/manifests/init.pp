@@ -4,6 +4,6 @@
 ##
 class puppet_network {
 
-    include puppet_network::interfaces
+    include puppet_network::interfaces, puppet_network::service
     
 }
