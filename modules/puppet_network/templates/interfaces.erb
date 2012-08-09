@@ -7,6 +7,7 @@ iface lo inet loopback
 <%= loadfirewall %>
 
 # The primary network interface
+<%= auto0_stanza %>
 <%= allow_hotplug0 %>
 <%= iface0 %>
 	<%= eth0_ip %>
@@ -16,6 +17,7 @@ iface lo inet loopback
 	<%= gateway0 %>
 
 <%= secondaryinterfacetext %>
+<%= auto1_stanza %>
 <%= allow_hotplug1 %>
 <%= iface1 %>
 	<%= eth1_ip %>

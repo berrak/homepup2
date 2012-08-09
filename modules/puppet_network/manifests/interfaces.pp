@@ -7,10 +7,10 @@
 ## Sample Usage:
 ##
 ##  class { puppet_network::interfaces :
-##      iface0 => 'eth0', gateway0 => '192.168.0.1',
-##      bcstnet0 => '192.168.0.255',
-##      iface1 => 'eth1', gateway1 => '192.168.1.1',
-##      bcstnet1 => '192.168.1.255',
+##      iface_zero => 'eth0', gateway_zero => '192.168.0.1',
+##      bcstnet_zero => '192.168.0.255',
+##      iface_one => 'eth1', gateway_one => '192.168.1.1',
+##      bcstnet_one => '192.168.1.255',
 ##      addfirewall => 'true' }
 ##
 ##
@@ -36,6 +36,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         ## eth0
         
+        $auto0_stanza = "auto $iface_zero"
         $allow_hotplug0 = "allow-hotplug $iface_zero"
         $iface0 = "iface $iface_zero inet static"
         
@@ -52,6 +53,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         $secondaryinterfacetext = '# The secondary network interface'
         
+        $auto1_stanza = "auto $iface_one"
         $allow_hotplug1 = "allow-hotplug $iface_one"
         $iface1 = "iface $iface_one inet static"
         
@@ -71,6 +73,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         ## eth0
         
+        $auto0_stanza = "auto $iface_zero"
         $allow_hotplug0 = "allow-hotplug $iface_zero"
         $iface0 = "iface $iface_zero inet static"
         
@@ -87,6 +90,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         $secondaryinterfacetext = ''
         
+        $auto1_stanza = ''
         $allow_hotplug1 = ''
         $iface1 = ''
         $eth1_ip = ''
@@ -102,6 +106,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         ## eth1
         
+        $auto1_stanza = "auto $iface_one"
         $allow_hotplug1 = "allow-hotplug $iface_one"
         $iface1 = "iface $iface_one inet static"
         
@@ -119,6 +124,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
         $secondaryinterfacetext = ''
         
+        $auto0_stanza = ''
         $allow_hotplug0 = ''
         $iface0 = ''
         $eth0_ip = ''
