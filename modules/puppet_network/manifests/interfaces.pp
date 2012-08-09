@@ -29,6 +29,7 @@ class puppet_network::interfaces ( $iface_zero = '',
     
                         
     if ( $iface_zero != '' ) and ( $iface_one != '' ) {
+    
         notify {"Setting up interfaces for eth0 ($::ipaddress_eth0) and eth1 ($::ipaddress_eth1) with static addresses.":}
         
         ## eth0
@@ -62,6 +63,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         
     }
     elsif ( $iface_zero != '' ) and ( $iface_one == '' ) {
+    
         notify{"Setting up eth0 with static address ($::ipaddress_eth0).":}
         
         ## eth0
@@ -78,9 +80,20 @@ class puppet_network::interfaces ( $iface_zero = '',
         $bcstnet0 = "broadcast $bcstnet_zero"
         $gateway0 = "gateway $gateway_zero"
         
+        ## Set unused eth1 template variables to empty strings
+        
+        $allow_hotplug1 = ''
+        $iface1 = ''
+        $eth1_ip = ''
+        $eth1_netmask = ''
+        $eth1_network = ''
+        $bcstnet1 = ''
+        $gateway1 = ''
+        
     
     }
     elsif ( $iface_zero == '') and ( $iface_one != '' ) {
+    
         notify{"Setting up eth1 with static ($::ipaddress_eth1) address.":}
         
         ## eth1
@@ -97,10 +110,20 @@ class puppet_network::interfaces ( $iface_zero = '',
         $bcstnet1 = "broadcast $bcstnet_one"
         $gateway1 = "gateway $gateway_one"
         
-    
+        
+        ## Set unused eth0 template variables to empty strings
+        
+        $allow_hotplug0 = ''
+        $iface0 = ''
+        $eth0_ip = ''
+        $eth0_netmask = ''
+        $eth0_network = ''
+        $bcstnet0 = ''
+        $gateway0 = ''        
+ 
     }
     else {
-        notify{"none set":}
+    
         fail("No network interfaces set!")
     
     }
