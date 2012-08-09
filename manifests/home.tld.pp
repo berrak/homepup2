@@ -18,7 +18,7 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'developerapps' : }
 	
 	class { puppet_network::interfaces :
-		iface0 => 'eth0', gateway0 => '192.168.0.1', bcstnet0 => '192.168.0.255',
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
 	
     # This is the local node client daemon to query for time status
@@ -36,8 +36,8 @@ node 'gondor.home.tld' inherits basenode {
 		
 	# this our gateway
     class { puppet_network::interfaces :
-		iface0 => 'eth0', gateway0 => '192.168.0.1', bcstnet0 => '192.168.0.255',
-		iface1 => 'eth1', gateway1 => '192.168.1.1', bcstnet1 => '192.168.1.255',
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		iface_one => 'eth1', gateway_one => '192.168.1.1', bcstnet_one => '192.168.1.255',
 		addfirewall => 'true' }
 	
 	# This is our lan ntp server, providing time services to all clients
