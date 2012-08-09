@@ -17,7 +17,7 @@ define puppet_tripwire::install(
     # this is the original tripwire pressed file (replace this if required)
     
     $real_source = $source ? {
-        'UNSET' => "puppet:///module/puppet_tripwire/tripwire.preseed",
+        'UNSET' => "puppet:///modules/puppet_tripwire/tripwire.preseed",
         default => $source,
     }
     
