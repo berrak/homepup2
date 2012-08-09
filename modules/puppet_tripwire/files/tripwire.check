@@ -1,0 +1,155 @@
+#!/bin/bash
+# /root/bin/tripwire.check
+
+## Console usage: tripwire.check -I [options]
+## Cron job: tripwire.check [options]
+## In console usage no email report is sent
+
+## We have our tripwire binary and the key files on CDROM or USB
+
+MOUNT="/bin/mount"
+UMOUNT="/bin/umount"
+
+MNTPOINT="/media/tripwire"
+
+CDDEV="/dev/sr0"
+USBDEV="/dev/sdb1"
+
+TWDBPATH="/var/lib/tripwire"
+HOSTNAME=`uname -n`
+
+# this is the default reportlevel in tw.cfg
+
+emaillevel=1
+
+# Set the initial options to an empty string
+fname=""
+slevel=""
+rule=""
+printusage=""
+interactively=""
+
+while getopts f:s:r:t:hI opt
+do
+    case "$opt" in
+            f) fname=$OPTARG ;;
+            s) slevel=$OPTARG ;;
+            r) rule=$OPTARG ;;
+            t) emaillevel=$OPTARG ;;
+            h) printusage="true" ;;
+            I) interactively="true" ;;
+            *) echo "Unknown option: $opt" ;;
+    esac
+done
+
+if [ "$printusage" = "true" ] ; then
+
+    echo "Usage: $0: [options]"
+    echo
+    echo "Description: Run the tripwire check interactively or from cron."
+    echo
+    echo "Options:"
+    echo "  -I                         :  Run integrity check interactively."  
+    echo "  -f <dir>                   :  Directory to check. (Note1)"
+    echo "  -s <severity level>        :  Check all rules with level equal or greater. (Note2)"
+    echo "  -r <rulename>              :  One rule name, must be one word. (Note2)"
+    echo "  -t <email-verbosity-level> :  Detail of email reports (0-4), overrides config file."
+    echo "  -h                         :  Print usage and exit."
+    echo
+    echo "Note1: If option -f is used, severity (-s) and rule (-r) are ignored."
+    echo "Note2: Option -s and -r are mutually exclusive."
+    exit 0
+
+fi
+
+if [ -n "$slevel" ] && [ -n "$rule" ] ; then
+    echo "$0: Warning: Can't use both option -r and -s at the same time."
+    exit 1
+fi
+
+## Check that Tripwire database exist
+
+if [ ! -e $TWDBPATH/${HOSTNAME}.twd ] ; then
+	echo "**** Error: Tripwire database for ${HOSTNAME} not found.   ****"
+	exit 1
+fi
+
+# Ensure that non of the devices is mounted
+# since CDROM/USB are mounted on the same MNTPOINT
+
+$UMOUNT $CDDEV
+$UMOUNT $USBDEV
+
+## If grep does not return 0, mount the CDROM
+
+cat /etc/mtab | grep sr0
+if [ $? -ne 0 ] ; then
+	$MOUNT $CDDEV $MNTPOINT
+fi
+
+# If the CDROM mount failed ($?) try an USB mount
+
+if [ $? -ne 0 ] ; then  
+
+    cat /etc/mtab | grep sdb1
+    if [ $? -ne 0 ] ; then
+    	$MOUNT $USBDEV $MNTPOINT
+    fi
+    
+fi
+
+# If both mount attempts failed, abort
+if [ $? -ne 0 ] ; then  
+    echo "$0: Error: Can't mount tripwire media! No CD disk or USB stick found."
+    exit 1
+fi
+
+## Set new file mask
+
+umask 027
+
+## Caveat with getopts, can only get one word, without any white-
+## space, for fname and rule. Does not help to quote the string.
+## Thus name the rule as one 'Continous_Word' (or 'ContinousWord').
+
+# test if we run interactively - then no email report
+if [ "$interactively" = "true" ] ; then
+    
+    echo "Running tripwire interactively - no email report will be sent!"
+    if [ -n "$fname" ] ; then
+        # do not use severity or rule options
+        echo "$0: Info: Option -f ($fname) set."
+        $MNTPOINT/tripwire --check --interactive $fname
+    elif [ -n "$slevel" ] ; then
+        # severity level option
+        echo "$0: Info: Option -s ($slevel) set."
+        $MNTPOINT/tripwire --check --interactive --severity $slevel
+    elif [ -n "$rule" ] ; then
+        echo "$0: Info: Option -r ($rule) set."
+        $MNTPOINT/tripwire --check --interactive --rule-name $rule
+    else
+        echo "$0: Info: No additional options set -s ($slevel), -r ($rule), -f ($fname)."
+        $MNTPOINT/tripwire --check --interactive
+        
+    fi
+
+# non-interactively case, send email report, default level=1, possible modified with -t. 
+else
+
+    if [ -n "$fname" ] ; then
+        # do not use severity or rule options - no email with fname option.
+        $MNTPOINT/tripwire --check $fname
+    elif [ -n "$slevel" ] ; then
+        # severity level option
+        $MNTPOINT/tripwire --check --email-report --email-report-level $emaillevel --severity $slevel
+    elif [ -n "$rule" ] ; then
+        $MNTPOINT/tripwire --check --email-report --email-report-level $emaillevel --rule-name $rule
+    else
+        $MNTPOINT/tripwire --check --email-report --email-report-level $emaillevel
+    fi
+
+fi
+
+
+## EOF
+

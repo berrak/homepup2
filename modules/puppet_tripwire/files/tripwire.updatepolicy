@@ -1,0 +1,25 @@
+#!/bin/bash
+# 2012-06-13
+# /root/bin/tripwire.updatepolicy
+
+## Console usage: tripwire.updatepolicy
+## Encrypt the policy
+
+TWADMIN="/usr/sbin/twadmin"
+POLFILE="/etc/tripwire/twpol.txt"
+
+## Set more restrictive file mask
+
+umask 027
+
+echo "Encrypting the clear text policy file..."
+$TWADMIN --create-polfile $POLFILE
+echo "done"
+
+echo "Do not forget to delete the clear text policy file!"
+echo "Do not forget to initilize the database after this change!"
+
+ls -l /etc/tripwire
+
+## EOF
+

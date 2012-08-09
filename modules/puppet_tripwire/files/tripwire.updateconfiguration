@@ -1,0 +1,47 @@
+#!/bin/bash
+# 2012-06-13
+# /root/bin/tripwire.updateconfiguration
+
+## Console usage: tripwire.updateconfiguration
+## Encrypt the configuration file from updated clear text file
+
+TWADMIN="/usr/sbin/twadmin"
+CFGFILE="/etc/tripwire/twcfg.txt"
+SITEKEY="/media/cdrom0/site.key"
+
+MOUNT="/sbin/mount"
+CDDEV="/dev/sr0"
+MNTPOINT="/media/cdrom0"
+
+
+## Test, does the clear text configuration file exist
+
+if  [ ! -f $CFGFILE ]; then
+	echo "Can not find the clear text configuration file ($CFGFILE)!"
+	exit 1
+fi
+
+## If media is not mounted, mount it first
+
+cat /etc/mtab | grep sr0
+if [ $? -ne 0 ] ; then
+	$MOUNT $CDDEV $MNTPOINT
+fi
+
+
+## Set more restrictive file mask
+
+umask 027
+
+## Finally encrypt the new configuration file with the site key on the CDROM
+
+echo "Encrypting configuration file from clear text configuration file..."
+$TWADMIN --create-cfgfile  --site-keyfile  $SITEKEY  $CFGFILE
+echo "done"
+
+echo "Do not forget to delete the clear text configuration file!"
+
+ls -l /etc/tripwire
+
+## EOF
+

@@ -19,12 +19,15 @@ node 'carbon.home.tld' inherits basenode {
 	
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	
+    include puppet_tripwire
 
 }
 
 node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
+    include puppet_tripwire
 	
 	# This is our lan ntp server, providing time services to all clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }

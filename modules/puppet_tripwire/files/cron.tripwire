@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+#tripwire=/usr/sbin/tripwire
+
+#[ -x $tripwire ] || exit 0
+
+#umask 027
+
+#$tripwire --check --quiet --email-report
+
+## Customized, but not final: 2012-06-30
+
+/root/bin/tripwire.check

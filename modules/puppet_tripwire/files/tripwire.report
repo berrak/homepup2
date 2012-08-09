@@ -1,0 +1,129 @@
+#!/bin/bash
+# /root/bin/tripwire.report
+#
+# Console usage: tripwire.report [options] [report]
+#
+# Print specified tripwire report otherwise print the last known
+# report at various verbosity levels. see 'man twprint' for info.
+
+## We have our tripwire binary and the key files on CDROM or USB
+
+MOUNT="/bin/mount"
+UMOUNT="/bin/umount"
+
+CDDEV="/dev/sr0"
+USBDEV="/dev/sdb1"
+MNTPOINT="/media/tripwire"
+TWPRINTCMD="twprint"
+
+# Set the initial options to an empty string
+vlevel=""
+fname=""
+printusage=""
+useusb=""
+
+while getopts f:n:hu opt
+do
+    case "$opt" in
+    
+            f) fname=$OPTARG ;;
+            n) vlevel=$OPTARG ;;
+            h) printusage="true" ;;
+            u) useusb="true" ;;
+            
+            *) echo "Unknown option: $opt" ;;
+    esac
+done
+
+if [ "$printusage" = "true" ] ; then
+
+    echo "Usage: $0: [options]"
+    echo "Prints latests tripwire report or"
+    echo "options:"
+    echo "  -f <reportfile>      :  Prints reportfile"
+    echo "  -n <verbosity level> :  Levels from 0 to 4"
+    echo "  -h                   :  Print usage"
+    echo "  -u                   :  Use USB for tripwire files"    
+    echo
+    exit 0
+
+fi
+
+# Ensure that non of the devices is mounted
+# since CDROM/USB are mounted on the same MNTPOINT
+
+$UMOUNT $CDDEV
+$UMOUNT $USBDEV
+
+# If -u option is set to true, try to mount the USB drive/stick
+if [ "$useusb" = "true" ] ; then
+ 
+    ## If grep does not find /dev/sdb1, i.e. returns 0, mount the USB
+    cat /etc/mtab | grep sdb1
+    if [ $? -ne 0 ] ; then
+        $MOUNT $USBDEV $MNTPOINT 
+    fi
+
+    # If mount fails for some reason, abort.
+    if [ $? -ne 0 ] ; then  
+        echo "$0: Error: Can't mount tripwire USB! Is there no stick there?"
+        exit 1
+    fi
+
+# otherwise read key files from CDROM (i.e. no -u option is given)
+else
+
+    ## If grep does not find /dev/sr0, i.e. returns 0, mount the CDROM
+    cat /etc/mtab | grep sr0
+    if [ $? -ne 0 ] ; then
+        $MOUNT $CDDEV $MNTPOINT 
+    fi
+
+    # If mount fails for some reason, abort.
+    if [ $? -ne 0 ] ; then  
+        echo "$0: Error: Can't mount tripwire CDROM! Is there no disk loaded?"
+        exit 1
+    fi
+
+fi
+
+# If no file name is given run the last tripwire report
+if [ -z "$fname" ] ; then
+    
+    # If not given any verbosity level (hence test string zero), use N=1
+    if [ -z "$vlevel" ] ; then 
+        vlevel="1"
+    fi
+    
+    ## Print a brief summary of the latest report
+    echo "Running in default mode i.e. print last known tripwire report at level ($vlevel):"
+    
+    # Find the last report in tripwire report directory
+    LATESTRPT=`ls /var/lib/tripwire/report -t1 | head -n1`
+    
+    $MNTPOINT/$TWPRINTCMD --print-report --quiet --report-level $vlevel --twrfile /var/lib/tripwire/report/$LATESTRPT
+    
+# else we only need to get the wanted verbosity level
+else
+    
+    # read in interactively, only if not set on the command line
+    if [ -z "$vlevel" ] ; then 
+        read -p "Enter the verbosity level as one of 0, 1, 2, 3 or 4 > " vlevel
+    fi
+    
+    if [ ! -r "$fname" ] ; then
+        echo "$0: Error: Can't open file ($fname)."
+        exit 1
+    fi 
+  
+    echo
+    echo "Running report on file ($fname) with verbosity level ($vlevel):"
+    
+    $MNTPOINT/$TWPRINTCMD --print-report --quiet --report-level $vlevel --twrfile $fname      
+    
+fi
+
+echo
+echo "Done - Run 'tripwire.check -I' to update the database!"
+
+exit 0
