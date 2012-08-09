@@ -14,12 +14,12 @@
 ##      addfirewall => 'true' }
 ##
 ##
-class puppet_network::interfaces ( $iface0 = 'UNSET',
-                                   $gateway0 = 'UNSET',
-                                   $bcstnet0 = 'UNSET',
-                                   $iface1 = 'UNSET',
-                                   $gateway1 = 'UNSET',
-                                   $bcstnet1 = 'UNSET',
+class puppet_network::interfaces ( $iface0 = '',
+                                   $gateway0 = '',
+                                   $bcstnet0 = '',
+                                   $iface1 = '',
+                                   $gateway1 = '',
+                                   $bcstnet1 = '',
                                    $addfirewall = 'true',
 ) {
     
@@ -27,27 +27,8 @@ class puppet_network::interfaces ( $iface0 = 'UNSET',
         fail("Firewall parameter ($addfirewall) must be 'true' or 'false'")
     }
     
-    
-## Default to empty strings (for eth0 and eth1)
-
-    $allow_hotplug0 = ''
-    $iface0 = ''
-    $eth0_ip = ''
-    $eth0_netmask = ''
-    $eth0_network = ''
-    $bcstnet0 = ''
-    $gateway0 = ''
-    
-    $allow_hotplug1 = ''
-    $iface1 = ''
-    $eth1_ip = ''
-    $eth1_netmask = ''
-    $eth1_network = ''
-    $bcstnet1 = ''
-    $gateway1 = ''
-    
                         
-    if ( $iface0 != 'UNSET' ) and ( $iface1 != 'UNSET' ) {
+    if ( $iface0 != '' ) and ( $iface1 != '' ) {
         notify {"eth0 and eth1 set":}
         
         ## eth0
@@ -80,7 +61,7 @@ class puppet_network::interfaces ( $iface0 = 'UNSET',
         
         
     }
-    elsif ( $iface0 != 'UNSET' ) and ( $iface1 == 'UNSET' ) {
+    elsif ( $iface0 != '' ) and ( $iface1 == '' ) {
         notify{"eth0 set":}
         
         ## eth0
@@ -99,7 +80,7 @@ class puppet_network::interfaces ( $iface0 = 'UNSET',
         
     
     }
-    elsif ( $iface0 == 'UNSET') and ( $iface1 != 'UNSET' ) {
+    elsif ( $iface0 == '') and ( $iface1 != '' ) {
         notify{"eth1 set":}
         
         ## eth1
