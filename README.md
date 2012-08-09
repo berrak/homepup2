@@ -2,11 +2,12 @@
 
 ### A puppetized home repo
 
-I decided to share my puppet-usage to manage some systems. 
-I hope it will evolve over time and get stable one day.
-My hope is that it helps someone to get a kick-start into the puppet world
-and Linux administration. Current I only use Debian so I don't care much for
-other *nixes or so.
+I decided to share my puppet-usage to manage some systems.  I hope it will
+evolve over time and get stable one day. My hope is that it helps someone to
+get a kick-start into the puppet world and in particular to Debian Linux
+administration.
+I mainly use/test wheezy so I don't care much for other *nixes or so, but
+the 12.04 version of Ubuntu should be pretty close.
 
 Maybe I spend more time on admin tasks than on elegant puppet constructs but
 I will try to adhere to Puppet Best Practices.
@@ -33,15 +34,22 @@ To install puppet agent on the nodes
 ### Directory structure and puppet modules
 
 I decided to focus much on modularization. I do not use
-the top level templates or definitions directories. The 'site.pp'
+the top level templates directory but created a files sub
+directory for Debian preseed files. The 'site.pp'
 and the nodes file are in the manifests sub directory.
 
-My structure is simply organized below /etc/puppet like so:
+The layout structure is simply organized below /etc/puppet like so:
 
     /etc/puppet/manifests
                         site.pp
                         home.tld.pp
-                        
+    
+    /etc/puppet/files                    
+                        .
+                        <preseed-name/>
+                        .
+                        .
+                                 
     /etc/puppet/modules                    
                         .
                         <module-name/>
