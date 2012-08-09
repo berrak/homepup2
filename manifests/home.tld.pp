@@ -4,7 +4,7 @@ node basenode {
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
-		dns_ip_1st => '195.167.199.18', dns_ip_2nd => '195.167.199.19' }
+		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
 
     admin_bndl::install { 'cliadminapps' : }
 
