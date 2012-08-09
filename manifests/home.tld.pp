@@ -25,6 +25,7 @@ node 'carbon.home.tld' inherits basenode {
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
     include puppet_tripwire
+    include puppet_cups
 
 }
 
@@ -32,7 +33,6 @@ node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
     include puppet_tripwire
-	include puppet_cups
 		
 	# this our gateway
     class { puppet_network::interfaces :
