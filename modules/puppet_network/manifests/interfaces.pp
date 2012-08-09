@@ -147,7 +147,7 @@ class puppet_network::interfaces ( $iface_zero = '',
         content => template("puppet_network/interfaces.erb"),
           owner => 'root',
           group => 'root',
-         notify => Service["networking"],
+         notify => Exec["network_restart"],
     }
 
 
