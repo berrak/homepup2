@@ -1,0 +1,26 @@
+# Managed by puppet - do not edit direct
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+<%= loadfirewall %>
+
+# The primary network interface
+<%= allow_hotplug0 %>
+<%= iface0 %>
+	<%= eth0_ip %>
+	<%= eth0_netmask %>
+	<%= eth0_network %>
+	<%= bcstnet0 %>
+	<%= gateway0 %>
+
+# The secondary network interface (if any)
+<%= allow_hotplug1 %>
+<%= iface1 %>
+	<%= eth1_ip %>
+	<%= eth1_netmask %>
+	<%= eth1_network %>
+	<%= bcstnet1 %>
+	<%= gateway1 %>
+	
