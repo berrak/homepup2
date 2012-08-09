@@ -14,12 +14,12 @@
 ##      addfirewall => 'true' }
 ##
 ##
-class puppet_network::interfaces ( $iface0 = '',
-                                   $gateway0 = '',
-                                   $bcstnet0 = '',
-                                   $iface1 = '',
-                                   $gateway1 = '',
-                                   $bcstnet1 = '',
+class puppet_network::interfaces ( $iface_zero = '',
+                                   $gateway_zero = '',
+                                   $bcstnet_zero = '',
+                                   $iface_one = '',
+                                   $gateway_one = '',
+                                   $bcstnet_one = '',
                                    $addfirewall = 'true',
 ) {
     
@@ -28,13 +28,13 @@ class puppet_network::interfaces ( $iface0 = '',
     }
     
                         
-    if ( $iface0 != '' ) and ( $iface1 != '' ) {
-        notify {"eth0 and eth1 set":}
+    if ( $iface_zero != '' ) and ( $iface_one != '' ) {
+        notify {"Setting up interfaces for eth0 ($::ipaddress_eth0) and eth1 ($::ipaddress_eth1) with static addresses.":}
         
         ## eth0
         
-        $allow_hotplug0 = "allow-hotplug $iface0"
-        $iface0 = "iface $iface0 inet static"
+        $allow_hotplug0 = "allow-hotplug $iface_zero"
+        $iface0 = "iface $iface_zero inet static"
         
         # facter variables
         
@@ -42,13 +42,13 @@ class puppet_network::interfaces ( $iface0 = '',
         $eth0_netmask = "netmask $::netmask_eth0"
         $eth0_network = "network $::network_eth0"
         
-        $bcstnet0 = "broadcast $bcstnet0"
-        $gateway0 = "gateway $gateway0"
+        $bcstnet0 = "broadcast $bcstnet_zero"
+        $gateway0 = "gateway $gateway_zero"
         
         ## eth1
         
-        $allow_hotplug1 = "allow-hotplug $iface1"
-        $iface1 = "iface $iface1 inet static"
+        $allow_hotplug1 = "allow-hotplug $iface_one"
+        $iface1 = "iface $iface_one inet static"
         
         # facter variables
         
@@ -56,18 +56,18 @@ class puppet_network::interfaces ( $iface0 = '',
         $eth1_netmask = "netmask $::netmask_eth1"
         $eth1_network = "network $::network_eth1"
         
-        $bcstnet1 = "broadcast $bcstnet1"
-        $gateway1 = "gateway $gateway1"
+        $bcstnet1 = "broadcast $bcstnet_one"
+        $gateway1 = "gateway $gateway_one"
         
         
     }
-    elsif ( $iface0 != '' ) and ( $iface1 == '' ) {
-        notify{"eth0 set":}
+    elsif ( $iface_zero != '' ) and ( $iface_one == '' ) {
+        notify{"Setting up eth0 with static address ($::ipaddress_eth0).":}
         
         ## eth0
         
-        $allow_hotplug0 = "allow-hotplug $iface0"
-        $iface0 = "iface $iface0 inet static"
+        $allow_hotplug0 = "allow-hotplug $iface_zero"
+        $iface0 = "iface $iface_zero inet static"
         
         # facter variables
         
@@ -75,18 +75,18 @@ class puppet_network::interfaces ( $iface0 = '',
         $eth0_netmask = "netmask $::netmask_eth0"
         $eth0_network = "network $::network_eth0"
         
-        $bcstnet0 = "broadcast $bcstnet0"
-        $gateway0 = "gateway $gateway0"
+        $bcstnet0 = "broadcast $bcstnet_zero"
+        $gateway0 = "gateway $gateway_zero"
         
     
     }
-    elsif ( $iface0 == '') and ( $iface1 != '' ) {
-        notify{"eth1 set":}
+    elsif ( $iface_zero == '') and ( $iface_one != '' ) {
+        notify{"Setting up eth1 with static ($::ipaddress_eth1) address.":}
         
         ## eth1
         
-        $allow_hotplug1 = "allow-hotplug $iface1"
-        $iface1 = "iface $iface1 inet static"
+        $allow_hotplug1 = "allow-hotplug $iface_one"
+        $iface1 = "iface $iface_one inet static"
         
         # facter variables
         
@@ -94,8 +94,8 @@ class puppet_network::interfaces ( $iface0 = '',
         $eth1_netmask = "netmask $::netmask_eth1"
         $eth1_network = "network $::network_eth1"
         
-        $bcstnet1 = "broadcast $bcstnet1"
-        $gateway1 = "gateway $gateway1"
+        $bcstnet1 = "broadcast $bcstnet_one"
+        $gateway1 = "gateway $gateway_one"
         
     
     }
