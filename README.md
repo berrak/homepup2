@@ -1,4 +1,4 @@
-## mypup
+## Puppet (homepup2)
 
 ### A puppetized home repo
 
@@ -18,7 +18,7 @@ Debian wheezy/sid (Linux kernel 3.2.0)
 
 Puppet 2.7.18-1
 
-Ruby1.9.3
+Ruby 1.9.3
 
 ### Installation of puppet on Debian (all is pulled in as dependencies)
 
@@ -45,18 +45,14 @@ The layout structure is simply organized below /etc/puppet like so:
                         home.tld.pp
     
     /etc/puppet/files                    
-                        .
                         <preseed-name/>
-                        .
                         .
                                  
     /etc/puppet/modules                    
-                        .
                         <module-name/>
                                     files/
                                     manifests/
                                     templates/
-                        .
                         .
 
 The configuration files are in the main /etc/puppet directory.
