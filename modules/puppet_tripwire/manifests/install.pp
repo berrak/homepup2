@@ -14,7 +14,7 @@ define puppet_tripwire::install(
         fail("The package wanted state must be 'present' or 'installed' only.")
     }
 
-    # this is the original tripwire pressed file (replace this if required)
+    # this is the original tripwire preseed file (replace this if required)
     
     $real_source = $source ? {
         'UNSET' => "puppet:///modules/puppet_tripwire/tripwire.preseed",

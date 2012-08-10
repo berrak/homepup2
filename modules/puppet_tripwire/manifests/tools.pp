@@ -46,12 +46,11 @@ class puppet_tripwire::tools {
 	}
 
 
-	# Create a mount directory only for tripwire.
+	# Create a mount directory only for tripwire (use system default mode setting).
 	file { "/media/tripwire":
 	    ensure => "directory",
 	     owner => 'root',
 	     group => 'root',
-		  mode => '0550',
     }
 
 }
