@@ -28,7 +28,7 @@ class admin_hosts::config {
         $mypuppetserverip: {
         
             file { '/etc/hosts' :
-                content =>  template( 'hosts/puppetserver.hosts.erb' ),
+                content =>  template( 'admin_hosts/puppetserver.hosts.erb' ),
                   owner => 'root',
                   group => 'root',
                    mode => '0644',
@@ -39,7 +39,7 @@ class admin_hosts::config {
         $mygatewayip: {
         
             file { '/etc/hosts' :
-                content =>  template( 'hosts/gateway.hosts.erb' ),
+                content =>  template( 'admin_hosts/gateway.hosts.erb' ),
                   owner => 'root',
                   group => 'root',
                    mode => '0644',
@@ -50,7 +50,7 @@ class admin_hosts::config {
         default: {
         
             file { '/etc/hosts' :
-                content =>  template( 'hosts/hosts.erb' ),
+                content =>  template( 'admin_hosts/hosts.erb' ),
                   owner => 'root',
                   group => 'root',
                    mode => '0644',
