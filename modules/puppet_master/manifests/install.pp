@@ -24,11 +24,19 @@ class puppet_master::install {
             ensure => present,
         }
 
+            
+        # create a sub directory 'files' for Debian preseed files
+        file { "preseed_files":
+              name => "/etc/puppet/files",
+            ensure => directory,
+             owner => 'root',
+             group => 'root',
+        }
+
         service { "puppet":
             enable => false,
             hasrestart => true,
             ensure => stopped,
-            require => File["$::puppet_agent::install::/etc/puppet/files"],
         }
     
     }
