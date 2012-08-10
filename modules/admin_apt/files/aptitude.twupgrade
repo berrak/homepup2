@@ -1,0 +1,23 @@
+#!/bin/bash
+# /root/bin/aptitude.twupgrade
+#
+# Console usage: aptitude.twupgrade
+#
+# aptitude safe-upgrade with tripwire run
+#
+#
+OPT="--prompt --show-versions --verbose --without-recommends"
+
+/usr/bin/aptitude update
+
+if [ $? -eq 0 ] ; then
+    /usr/bin/aptitude $OPT safe-upgrade
+fi
+
+if [ -d "/etc/tripwire" ] ; then 
+    /root/bin/tripwire.check
+else
+    echo "Tripwire is not installed - skipping integrity database update."
+fi
+
+exit 0
