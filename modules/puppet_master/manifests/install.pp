@@ -5,7 +5,6 @@
 class puppet_master::install {
 
     include puppet_master::params
-    include puppet_agent::install
 
     # Debian defaults to install puppet-common which
     # depends on facter - but just to show both.
@@ -29,7 +28,7 @@ class puppet_master::install {
             enable => false,
             hasrestart => true,
             ensure => stopped,
-            require => File["/etc/puppet/files"],
+            require => File["$::puppet_agent::install::/etc/puppet/files"],
         }
     
     }
