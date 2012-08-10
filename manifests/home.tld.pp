@@ -1,17 +1,18 @@
 node basenode {
 
     include admin_home
+    include admin_hosts
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
-
+	
     admin_bndl::install { 'cliadminapps' : }
 
 }
 
-## carbon is currently our puppetserver and
-## the desktop working puppet test platform.
+## carbon is currently our puppetserver and the
+## desktop working puppet agent (test) platform.
 node 'carbon.home.tld' inherits basenode {
 
 	include puppet_master
