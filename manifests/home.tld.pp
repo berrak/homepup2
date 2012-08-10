@@ -4,6 +4,7 @@ node basenode {
     include admin_hosts
 	include admin_fstab
 	include admin_apt
+	include admin_bashrc
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
