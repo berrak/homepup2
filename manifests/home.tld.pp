@@ -2,6 +2,7 @@ node basenode {
 
     include admin_home
     include admin_hosts
+	include admin_fstab
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
@@ -11,8 +12,8 @@ node basenode {
 
 }
 
-## carbon is currently our puppetserver and the
-## desktop working puppet agent (test) platform.
+## 'carbon' is currently our puppetserver and the
+## working puppet agent (development desktop.
 node 'carbon.home.tld' inherits basenode {
 
 	include puppet_master
@@ -34,6 +35,7 @@ node 'carbon.home.tld' inherits basenode {
 
 }
 
+# home.tld --> 'gondor-gw' --> dmz.tld --> firewall --> internet
 node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
