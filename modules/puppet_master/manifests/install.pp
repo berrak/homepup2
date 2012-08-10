@@ -13,9 +13,10 @@ class puppet_master::install {
         ensure => present,
     }
     
-    # if this host is the puppet server, also install the puppet
+    # If this host is the puppet server, also install the puppet
     # agent, and set service - but don't run puppet::config since
-    # puppet.conf is named identical for P't master and P't agent
+    # puppet.conf is named identical for P't master and P't agent.
+    # 'files' stores possible Debian preseed files for appl. installs
     
     if $hostname == $::puppet_master::params::mypuppetserver_hostname {
       
@@ -27,6 +28,7 @@ class puppet_master::install {
             enable => false,
             hasrestart => true,
             ensure => stopped,
+            require => File["/etc/puppet/files"],
         }
     
     }

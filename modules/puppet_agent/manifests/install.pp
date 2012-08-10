@@ -9,5 +9,13 @@ class puppet_agent::install {
     package { [ "puppet", "facter" ] :
         ensure => present,
     }
+    
+    # create a sub directory 'files' for Debian preseed files
+	file { "/etc/puppet/files":
+		ensure => directory,
+		owner => 'root',
+		group => 'root',
+	}
+    
 
 }
