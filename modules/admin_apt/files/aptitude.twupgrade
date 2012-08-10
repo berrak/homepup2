@@ -1,9 +1,9 @@
 #!/bin/bash
-# /root/bin/aptitude.twupgrade
+# /root/bin/upgrade
 #
-# Console usage: aptitude.twupgrade
+# Console usage: upgrade
 #
-# aptitude safe-upgrade with tripwire run
+# aptitude safe-upgrade with (possible) tripwire run
 #
 #
 OPT="--prompt --show-versions --verbose --without-recommends"
