@@ -19,6 +19,7 @@ node basenode {
 node 'carbon.home.tld' inherits basenode {
 
 	include puppet_master
+	user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
 	
     admin_bndl::install { 'guiadminapps' : }
