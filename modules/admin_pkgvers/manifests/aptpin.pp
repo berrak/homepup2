@@ -18,22 +18,20 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 			
         puppet_masterbndl : {
         
-		    $file = "/etc/apt/preferences.d/puppetmaster"
             $package = 'puppetmaster'
 		    $version = $::admin_pkgvers::params::puppetmaster_version
 			
-		    file { $file:
+		    file { "/etc/apt/preferences.d/puppetmaster":
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
                 content => template("admin_pkgvers/preferences.d.erb"),
 		    }
 			
-		    $file = "/etc/apt/preferences.d/puppetmaster-common"
 		    $package = 'puppetmaster-common'
 		    $version = $::admin_pkgvers::params::puppetmaster_common_version
 			
-		    file { $file:
+		    file { "/etc/apt/preferences.d/puppetmaster-common":
 				ensure  => present, 
 				owner   => 'root',
 				group   => 'root',
@@ -44,11 +42,10 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 
         puppet_agentbndl : {
 	
-		    $file = "/etc/apt/preferences.d/puppet"
             $package = 'puppet'
 		    $version = $::admin_pkgvers::params::puppet_version
 			
-		    file { $file:
+		    file { "/etc/apt/preferences.d/puppet":
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
@@ -56,11 +53,10 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 		    }
 			
 			
-		    $file = "/etc/apt/preferences.d/puppet-common"
 		    $package = 'puppet-master-common'
 		    $version = $::admin_pkgvers::params::puppet_common_version
 			
-		    file { $file:
+		    file { "/etc/apt/preferences.d/puppet-common":
 				ensure  => present, 
 				owner   => 'root',
 				group   => 'root',
@@ -71,11 +67,10 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 		
         puppet_facter : {
 	
-		    $file = "/etc/apt/preferences.d/facter"
             $package = 'facter'
 		    $version = $::admin_pkgvers::params::facter_version
 			
-		    file { $file:
+		    file { "/etc/apt/preferences.d/facter":
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
@@ -87,11 +82,10 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 
         puppet_rubylib : {
 	
-		    $file = "/etc/apt/preferences.d/ruby"
             $package = 'ruby'
 		    $version = $::admin_pkgvers::params::rubylib_version
 			
-		    file { $file:
+		    file { "/etc/apt/preferences.d/ruby":
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
