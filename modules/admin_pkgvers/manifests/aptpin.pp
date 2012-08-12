@@ -33,7 +33,7 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
-                content => template("apt-pin/preferences.d.erb"),
+                content => template("admin_pkgvers/preferences.d.erb"),
 		    }
 			
 		    $file = "/etc/apt/preferences.d/puppetmaster-common"
@@ -44,7 +44,7 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 				ensure  => present, 
 				owner   => 'root',
 				group   => 'root',
-				content => template("apt-pin/preferences.d.erb"),
+				content => template("admin_pkgvers/preferences.d.erb"),
 		    }		
         
         }
@@ -59,7 +59,7 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
-                content => template("apt-pin/preferences.d.erb"),
+                content => template("admin_pkgvers/preferences.d.erb"),
 		    }
 			
 			
@@ -71,7 +71,7 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
 				ensure  => present, 
 				owner   => 'root',
 				group   => 'root',
-				content => template("apt-pin/preferences.d.erb"),
+				content => template("admin_pkgvers/preferences.d.erb"),
 		    }			
 		
 		}
@@ -86,7 +86,7 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
-                content => template("apt-pin/preferences.d.erb"),
+                content => template("admin_pkgvers/preferences.d.erb"),
 		    }		
 		
 		}
@@ -102,7 +102,7 @@ define admin_pkgvers::aptpin ( $pinning_priority ){
                 ensure  => present, 
         	    owner   => 'root',
                 group   => 'root',
-                content => template("apt-pin/preferences.d.erb"),
+                content => template("admin_pkgvers/preferences.d.erb"),
 		    }		
 		
 		}
