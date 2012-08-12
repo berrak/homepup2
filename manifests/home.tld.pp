@@ -11,6 +11,8 @@ node basenode {
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
 	
     admin_bndl::install { 'cliadminapps' : }
+	admin_pkgvers::aptpin { 'puppet_facter' : pinning_priority => '1001' }
+    admin_pkgvers::aptpin { 'puppet_rubylib' : pinning_priority => '1001' }
 
 }
 
@@ -19,9 +21,11 @@ node basenode {
 node 'carbon.home.tld' inherits basenode {
 
 	include puppet_master
+	
 	user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
 	
+	admin_pkgvers::aptpin { 'puppet_masterbndl' : pinning_priority => '1001' }
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
@@ -44,6 +48,7 @@ node 'gondor.home.tld' inherits basenode {
 	include puppet_agent
     include puppet_tripwire
 	
+	admin_pkgvers::aptpin { 'puppet_agentbndl' : pinning_priority => '1001' }
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
 		
