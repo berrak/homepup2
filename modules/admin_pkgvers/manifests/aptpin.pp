@@ -11,13 +11,6 @@
 define admin_pkgvers::aptpin ( $pinning_priority ){
 
     include admin_pkgvers::params
-
-	# ensure that apt's /preferences.d directory exists  
-	file { "/etc/apt/preferences.d":
-		ensure => directory,
-		 owner => 'root',
-		 group => 'root',
-	}
 	
     $priority = $pinning_priority
 	
