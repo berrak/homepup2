@@ -43,6 +43,8 @@ node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
     include puppet_tripwire
+	
+	admin_server::timezone { 'CET' : }
 		
 	# this our gateway
     class { puppet_network::interfaces :
