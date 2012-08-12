@@ -8,7 +8,7 @@
 ##       admin_pkgvers::aptpin { 'puppet_facter' : pinning_priority => '1001' }
 ##       admin_pkgvers::aptpin { 'puppet_rubylib' : pinning_priority => '1001' }
 ##
-define admin_pkgvers::aptpin {
+define admin_pkgvers::aptpin ( $pinning_priority ){
 
     include admin_pkgvers::params
 
