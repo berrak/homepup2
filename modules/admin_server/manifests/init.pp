@@ -3,6 +3,6 @@
 ##
 class admin_server {
 
-    include admin_server::timezone
+    include admin_server::timezone, admin_server::nohistory
 
 }
