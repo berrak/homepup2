@@ -67,14 +67,13 @@ class admin_pkgvers {
         }
     }
     
-    # pin version of facter to 1.6 branch and ruby to 1.8 branch
 
     set_pinning { 'facter' :
         version => "$::admin_pkgvers::params::facter_version",
         priority => "$::admin_pkgvers::params::pin_priority",
     }
         
-    set_pinning { 'ruby':
+    set_pinning { 'ruby1.9.1':
         version => "$::admin_pkgvers::params::rubylib_version",
         priority => "$::admin_pkgvers::params::pin_priority",
     }
