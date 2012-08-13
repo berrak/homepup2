@@ -14,7 +14,13 @@ class puppet_iptables::config {
 		       mode => '0700',
 		    require => File["/root/bin"],
 		     notify => Exec["/bin/sh /root/bin/fw.gateway"],
-		}	
+		}
+		
+		exec { "/bin/sh /root/bin/fw.gateway":
+		      subscribe => File["/root/bin/fw.gateway"],
+		    refreshonly => true,
+	}
+		
 	
 	} else {
 	
@@ -25,7 +31,15 @@ class puppet_iptables::config {
 		       mode => '0700',
 		    require => File["/root/bin"],
 		     notify => Exec["/bin/sh /root/bin/fw.desktop"],
-	    }	
+	    }
+		
+		exec { "/bin/sh /root/bin/fw.desktop":
+		      subscribe => File["/root/bin/fw.desktop"],
+		    refreshonly => true,
+	    }
+		
+		
+		
 
     }
 

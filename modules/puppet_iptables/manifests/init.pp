@@ -3,6 +3,6 @@
 ##
 class puppet_iptables inherits admin_home {
 
-    include puppet_iptables::install, puppet_iptables::service, puppet_iptables::config, puppet_iptables::params
+    include puppet_iptables::install, puppet_iptables::config, puppet_iptables::params
 
 }
