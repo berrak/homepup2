@@ -20,7 +20,7 @@ define user_bashrc::config {
 	    }		
 
 		file { "/home/${name}/.bashrc":
-			content => ("user_bashrc/user.erb"),
+			source => "puppet:///modules/user_bashrc/user",
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
