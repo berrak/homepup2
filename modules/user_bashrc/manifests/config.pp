@@ -19,6 +19,14 @@ define user_bashrc::config {
 		     group => "${name}",
 	    }		
 
+		append_if_no_such_line { "enable_${name}_customization" :
+				
+		    file => "/home/${name}/.bashrc.d/bashrc",
+		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 
+		
+		}
+
+		# now copy the new .bashrc file to ~ directory
 		file { "/home/${name}/.bashrc":
 			source => "puppet:///modules/user_bashrc/bashrc",
 			 owner => "${name}",
@@ -33,14 +41,6 @@ define user_bashrc::config {
 			  mode => '0644',
 		   require => File["/home/${name}/.bashrc.d"],
 	   	}
-	
-		# this will source the customization file
-		append_if_no_such_line { "enable_${name}_customization" :
-				
-		    file => "/home/${name}/.bashrc",
-		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 
-		
-		}
 	
 		# if the local file is changed, source .bashrc again
 	
