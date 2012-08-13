@@ -3,7 +3,7 @@ node basenode {
     include admin_home
     include admin_hosts
 	include admin_fstab
-	include admin_apt
+	include admin_aptconf
 	include admin_bashrc
     include admin_pkgvers
 	
