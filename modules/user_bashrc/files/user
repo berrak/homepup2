@@ -104,7 +104,7 @@ fi
 
 ## Source in our local user customizations
 
-[ -f "~/.bashrc.d/bashrc_user" ] && source "~/.bashrc.d/bashrc_user"
+[ -f "~/.bashrc.d/bekr" ] && source "~/.bashrc.d/bekr"
 
 
 
