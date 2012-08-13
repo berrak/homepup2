@@ -17,7 +17,6 @@ class puppet_iptables::config {
 		}
 		
 		exec { "/bin/sh /root/bin/fw.gateway":
-		      subscribe => File["/root/bin/fw.gateway"],
 		    refreshonly => true,
 	}
 		
@@ -34,7 +33,6 @@ class puppet_iptables::config {
 	    }
 		
 		exec { "/bin/sh /root/bin/fw.desktop":
-		      subscribe => File["/root/bin/fw.desktop"],
 		    refreshonly => true,
 	    }
 		
