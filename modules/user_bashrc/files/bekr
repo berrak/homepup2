@@ -1,5 +1,5 @@
-# $HOME/bash_user: Local users .bashrc customization
-# This file is sourced from .bashrc 
+# $HOME/.bashrc.d/bekr: Local user (bekr) .bashrc 
+# snippet customization. This file is sourced from .bashrc 
 
 # umask 022
 

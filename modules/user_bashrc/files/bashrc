@@ -1,6 +1,9 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# for examples.
+##########################################################################
+# Puppet: This file is 'untouched' (except for the bottom comment line).
+##########################################################################
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -102,5 +105,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-## Source in local user customizations (append lines for each customization):
+#####################################################
+## Puppet will append lines below for customization:
+#####################################################
 
