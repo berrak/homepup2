@@ -3,7 +3,28 @@
 ##
 class puppet_iptables::config {
 
+	# facter (assumes eth0 always primary, and the internal iface)
+	
+    $myhostaddr = $::ipaddress_eth0
+	
 	include puppet_iptables::params
+	
+    $net_int = $::puppet_iptables::params::net_int
+    $if_int = $::puppet_iptables::params::if_int
+    
+    $ntphostaddr = $::puppet_iptables::params::ntphostaddr
+    
+    $ntpprn_hp3015_addr = $::puppet_iptables::params::ntpprn_hp3015_addr
+    
+    $mdnsmulticastaddr = $::puppet_iptables::params::mdnsmulticastaddr
+    $puppetmasterhostaddr = $::puppet_iptables::params::puppetmasterhostaddr
+
+    $gwhostaddr = $::puppet_iptables::params::gwhostaddr
+    
+    $net_ext = $::puppet_iptables::params::net_ext
+    $gwhostextaddr = $::puppet_iptables::params::gwhostextaddr
+    $if_ext = $::puppet_iptables::params::if_ext
+	
 	
 	if ( $::hostname == $::puppet_iptables::params::mygateway_hostname ) {
 	
