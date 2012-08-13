@@ -14,17 +14,17 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT="192.168.0.0/24"
-IF_INT="eth0"
+NET_INT=<%= net_int %>
+IF_INT=<%= if_int %>
 
-NET_EXT="192.168.1.0/24"
-IF_EXT="eth1"
+NET_EXT=<%= net_ext %>
+IF_EXT=<%= if_ext %>
 
-FWHOSTADDR="192.168.0.1"
-PUPPETHOSTADDR="192.168.0.24"
-FWHOSTEXTADDR="192.168.1.254"
+GWHOSTADDR=<%= gwhostaddr %>
+PUPPETMASTERHOSTADDR=<%= puppetmasterhostaddr %>
+GWHOSTEXTADDR=<%= gwhostextaddr %>
 
-NETPRNADDR="192.168.0.30"
+NETPRN_HP3015_ADDR=<%= netprn_hp3015_addr %>
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"
@@ -70,8 +70,8 @@ $IPTABLES -A broadcast-drop -j RETURN
 #--------------------------------------------------------------------------------------
 ## Blacklist some internal servers, net printers etc that never should traffic the outside
 $IPTABLES -N blacklist-log-n-drop
-$IPTABLES -A blacklist-log-n-drop -s $NETPRNADDR -j $LOGOPT $RLIMIT --log-prefix "BLACKLIST HOST DROP "
-$IPTABLES -A blacklist-log-n-drop -s $NETPRNADDR -j DROP
+$IPTABLES -A blacklist-log-n-drop -s $NETPRN_HP3015_ADDR -j $LOGOPT $RLIMIT --log-prefix "BLACKLIST HOST DROP "
+$IPTABLES -A blacklist-log-n-drop -s $NETPRN_HP3015_ADDR -j DROP
 $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 
@@ -99,7 +99,7 @@ $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 # allow established and related traffic pass
 $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# block internal some host IP's that never should traffic the outside
+# block internal some host IP's to pass this firewall 'inside' <---> 'outside' 
 $IPTABLES -A FORWARD -j blacklist-log-n-drop
 
 # allow ftp pass
@@ -143,27 +143,27 @@ $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 #-----------------------------------------------------------
 
 # allow established and related traffic to fwhost
-$IPTABLES -A INPUT -s $NET_INT -d $FWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # remote ssh management
-$IPTABLES -A INPUT -p tcp -s $NET_INT -d $FWHOSTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -d $GWHOSTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # time service for our internal net (broadcast)
-$IPTABLES -A INPUT -p udp -s $NET_INT -d $FWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -s $NET_INT -d $GWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # allow puppet master to communicate with this client on port 8139
-$IPTABLES -A INPUT -p tcp -s $NET_INT -d $FWHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -d $GWHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
 # allow ping etc
-$IPTABLES -A INPUT -p icmp -s $NET_INT -d $FWHOSTADDR -j ACCEPT
+$IPTABLES -A INPUT -p icmp -s $NET_INT -d $GWHOSTADDR -j ACCEPT
 
 # drop all other form internal net to fwhost
-$IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $FWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF INT2FW "
-$IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $FWHOSTADDR -j DROP
+$IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF INT2FW "
+$IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j DROP
 
 # drop all other traffic - altghugh broadcasts can be tricky to catch
-$IPTABLES -A INPUT -s $NET_INT -d $FWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INT2FW "
-$IPTABLES -A INPUT -s $NET_INT -d $FWHOSTADDR -j DROP
+$IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INT2FW "
+$IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -j DROP
 
 # do not not allow broadcasts either, except if allowed (above) from internal net to fwhost
 $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
@@ -195,18 +195,18 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 #---------------------------------------------------------
 
 # allow established and related traffic to fwhost
-$IPTABLES -A INPUT -i $IF_EXT -d $FWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -i $IF_EXT -d $GWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # time service broadcasts for our internal NTP server (this host)
-$IPTABLES -A INPUT -p udp -i $IF_EXT -d $FWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
+$IPTABLES -A INPUT -p udp -i $IF_EXT -d $GWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
 
 # drop all other from external net to fwhost
-$IPTABLES -A INPUT -i $IF_EXT -s $FWHOSTEXTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF EXT2FW "
-$IPTABLES -A INPUT -i $IF_EXT -s $FWHOSTEXTADDR -j DROP
+$IPTABLES -A INPUT -i $IF_EXT -s $GWHOSTEXTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF EXT2FW "
+$IPTABLES -A INPUT -i $IF_EXT -s $GWHOSTEXTADDR -j DROP
 
 # drop all other as well
-$IPTABLES -A INPUT -d $FWHOSTEXTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT EXT2FW "
-$IPTABLES -A INPUT -d $FWHOSTEXTADDR -j DROP
+$IPTABLES -A INPUT -d $GWHOSTEXTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT EXT2FW "
+$IPTABLES -A INPUT -d $GWHOSTEXTADDR -j DROP
 
 ## drop any other broadcasts, unless allowed (above) from external net to fwhost
 $IPTABLES -t filter -A INPUT -i $IF_EXT -j broadcast-drop
@@ -221,7 +221,7 @@ $IPTABLES -t filter -A INPUT -i $IF_EXT -j broadcast-drop
 $IPTABLES -A OUTPUT -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 ## allow puppet agent to connect to our Puppet server
-$IPTABLES -A OUTPUT -p tcp -d $PUPPETHOSTADDR -m tcp --dport 8140 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -d $PUPPETMASTERHOSTADDR -m tcp --dport 8140 -m state --state NEW -j ACCEPT
 
 # allow broadcast the time service for our internal net
 $IPTABLES -A OUTPUT -p udp -d $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
