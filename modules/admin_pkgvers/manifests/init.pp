@@ -73,7 +73,7 @@ class admin_pkgvers {
         priority => "$::admin_pkgvers::params::pin_priority",
     }
         
-    set_pinning { 'ruby1.9.1':
+    set_pinning { 'ruby1.9.1' :
         version => "$::admin_pkgvers::params::rubylib_version",
         priority => "$::admin_pkgvers::params::pin_priority",
     }
