@@ -42,12 +42,7 @@ define user_bashrc::config {
 		
 		}
 	
-		# if one or both of these files are created/changed, source .bashrc
-	    exec { "reloaduserbashrc":
-			command => "/bin/sh . /home/${name}/.bashrc",
-		  subscribe => File["/home/${name}/.bashrc"],
-		refreshonly => true,
-		}
+		# if the local file is changed, source .bashrc again
 	
 	    exec { "reloadlocaluserbashrc":
 			command => "/bin/sh . /home/${name}/.bashrc",
