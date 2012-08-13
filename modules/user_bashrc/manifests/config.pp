@@ -43,7 +43,7 @@ define user_bashrc::config {
 	
 	    exec { "reloadlocaluserbashrc":
 			command => "/bin/sh . /home/${name}/.bashrc",
-	      subscribe => File["/home/.bashrc.d/${name}"],
+	      subscribe => File["/home/${name}/.bashrc.d/${name}"],
 	    refreshonly => true,
 		}
 	
