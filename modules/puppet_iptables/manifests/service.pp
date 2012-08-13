@@ -3,6 +3,7 @@
 ##
 class puppet_iptables::service {
 
+	include puppet_iptables::config
 	
 	# reload firewall configuration on changes
 	
