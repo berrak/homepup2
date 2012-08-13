@@ -1,4 +1,4 @@
-# $HOME/.bash_user: Local users .bashrc customization
+# $HOME/bash_user: Local users .bashrc customization
 # This file is sourced from .bashrc 
 
 # umask 022
@@ -29,7 +29,3 @@ function backup() {
 	echo "Backed up $1 to $newname."; 
 	cp -p $newname $1;
 }
-
-# User customized environment:
-
-

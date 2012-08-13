@@ -104,8 +104,7 @@ fi
 
 ## Source in our local user customizations
 
-if [ -f ~/.bashrc_user ] ; then
-	. ~/.bashrc_user
-fi
+[ -f "~/.bashrc.d/bashrc_user" ] && source "~/.bashrc.d/bashrc_user"
+
 
 
