@@ -31,7 +31,7 @@ define user_bashrc::config {
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
-		   require => File["/home/${name}/.bashrc"],
+		   require => File["/home/${name}/.bashrc.d"],
 	   	}
 	
 		# if one or both of these files are created/changed, source .bashrc
