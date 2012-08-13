@@ -16,8 +16,8 @@ class admin_pkgvers {
     
     define set_pinning ( $version, $priority ) {
     
-        $file = "/etc/apt/preferences.d/${name}"
-        $package = ${name}
+        $file = "/etc/apt/preferences.d/$name"
+        $package = $name
 
         file { $file:
             ensure  => present 
@@ -33,50 +33,50 @@ class admin_pkgvers {
     
     if ( $::hostname == $::admin_pkgvers::params::mypuppetserver_hostname ) {
         
-        set_pinning { "puppet":
+        set_pinning { 'puppet' :
             version => "$::admin_pkgvers::params::puppet_version",
-            priority => "$::admin_pkgvers::params::pin_priority"
+            priority => "$::admin_pkgvers::params::pin_priority",
         }
         
-        set_pinning { "puppet-common":
+        set_pinning { 'puppet-common':
             version => "$::admin_pkgvers::params::puppet_common_version",
-            priority => "$::admin_pkgvers::params::pin_priority"
+            priority => "$::admin_pkgvers::params::pin_priority",
         }
         
-        set_pinning { "puppet-master":
+        set_pinning { 'puppet-master' :
             version => "$::admin_pkgvers::params::puppetmaster_version",
-            priority => "$::admin_pkgvers::params::pin_priority"
+            priority => "$::admin_pkgvers::params::pin_priority",
         }
         
-        set_pinning { "puppet-master-common":
+        set_pinning { 'puppet-master-common' :
             version => "$::admin_pkgvers::params::puppetmaster_common_version",
-            priority => "$::admin_pkgvers::params::pin_priority"
+            priority => "$::admin_pkgvers::params::pin_priority",
         }
         
     
     } else {
     
-        set_pinning { "puppet":
+        set_pinning { 'puppet' :
             version => "$::admin_pkgvers::params::puppet_version",
-            priority => "$::admin_pkgvers::params::pin_priority"
+            priority => "$::admin_pkgvers::params::pin_priority",
         }
         
-        set_pinning { "puppet-common":
+        set_pinning { 'puppet-common' :
             version => "$::admin_pkgvers::params::puppet_common_version",
-            priority => "$::admin_pkgvers::params::pin_priority"
+            priority => "$::admin_pkgvers::params::pin_priority",
         }
     }
     
     # pin version of facter to 1.6 branch and ruby to 1.8 branch
 
-    set_pinning { "facter":
+    set_pinning { 'facter' :
         version => "$::admin_pkgvers::params::facter_version",
-        priority => "$::admin_pkgvers::params::pin_priority"
+        priority => "$::admin_pkgvers::params::pin_priority",
     }
         
-    set_pinning { "ruby":
+    set_pinning { 'ruby':
         version => "$::admin_pkgvers::params::rubylib_version",
-        priority => "$::admin_pkgvers::params::pin_priority"
+        priority => "$::admin_pkgvers::params::pin_priority",
     }
     
 
