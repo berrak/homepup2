@@ -104,7 +104,3 @@ fi
 
 ## Source in local user customizations (append lines for each customization):
 
-[ -f "~/.bashrc.d/<%= name %>" ] && source "~/.bashrc.d/<%= name %>"
-
-
-

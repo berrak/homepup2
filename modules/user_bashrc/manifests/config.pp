@@ -20,7 +20,7 @@ define user_bashrc::config {
 	    }		
 
 		file { "/home/${name}/.bashrc":
-			source => "puppet:///modules/user_bashrc/user",
+			source => "puppet:///modules/user_bashrc/bashrc",
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
@@ -33,6 +33,14 @@ define user_bashrc::config {
 			  mode => '0644',
 		   require => File["/home/${name}/.bashrc.d"],
 	   	}
+	
+		# this will source the customization file
+		append_if_no_such_line { "enable_${name}_customization" :
+				
+		    file => "/home/${name}/.bashrc",
+		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 
+		
+		}
 	
 		# if one or both of these files are created/changed, source .bashrc
 	    exec { "reloaduserbashrc":
