@@ -14,7 +14,7 @@ class puppet_iptables::config {
     
     $ntphostaddr = $::puppet_iptables::params::ntphostaddr
     
-    $ntpprn_hp3015_addr = $::puppet_iptables::params::ntpprn_hp3015_addr
+    $netprn_hp3015_addr = $::puppet_iptables::params::netprn_hp3015_addr
     
     $mdnsmulticastaddr = $::puppet_iptables::params::mdnsmulticastaddr
     $puppetmasterhostaddr = $::puppet_iptables::params::puppetmasterhostaddr

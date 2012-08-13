@@ -14,7 +14,7 @@ class puppet_iptables::params {
     $ntphostaddr = '192.168.0.1'
     
     # net printers
-    $ntpprn_hp3015_addr = '192.168.0.30'
+    $netprn_hp3015_addr = '192.168.0.30'
     
     # special addresses
     $mdnsmulticastaddr = '224.0.0.251'
