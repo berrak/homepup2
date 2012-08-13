@@ -20,7 +20,7 @@ class admin_pkgvers {
         $package = $name
 
         file { $file:
-            ensure  => present 
+            ensure  => present, 
         	owner   => 'root',
             group   => 'root',
             content => template("admin_pkgvers/preferences.d.erb"),
