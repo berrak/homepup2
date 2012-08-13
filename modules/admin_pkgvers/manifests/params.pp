@@ -4,6 +4,10 @@
 ##
 class admin_pkgvers::params {
 
+    $mypuppetserver_hostname = 'carbon'
+
+    $pin_priority = '1001'
+
     $puppetmaster_version = '1.7'
     $puppetmaster_common_version = '1.7'
     
