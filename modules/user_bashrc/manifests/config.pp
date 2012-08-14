@@ -19,12 +19,6 @@ define user_bashrc::config {
 		     group => "${name}",
 	    }		
 
-		append_if_no_such_line { "enable_${name}_customization" :
-				
-		    file => "/home/${name}/.bashrc.d/bashrc",
-		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 
-		
-		}
 
 		# now copy the new .bashrc file to ~ directory
 		file { "/home/${name}/.bashrc":
@@ -33,7 +27,17 @@ define user_bashrc::config {
 			 group => "${name}",
 			  mode => '0644',
 		}
+		
+		# now append one lien to source the user customization file.
+		# Note: this must follow above resource to make the append line persistent.
+		append_if_no_such_line { "enable_${name}_customization" :
+				
+		    file => "/home/${name}/.bashrc.d/bashrc",
+		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 
+		
+		}
 	
+	    # add the actual customization file to the .bashrc.d snippet directory
 	    file { "/home/${name}/.bashrc.d/${name}":
 			source => "puppet:///modules/user_bashrc/${name}",
 			 owner => "${name}",
@@ -42,7 +46,7 @@ define user_bashrc::config {
 		   require => File["/home/${name}/.bashrc.d"],
 	   	}
 	
-		# if the local file is changed, source .bashrc again
+		# if the local customization file is changed, source .bashrc again
 	
 	    exec { "reloadlocaluserbashrc":
 			command => "/bin/sh . /home/${name}/.bashrc",
