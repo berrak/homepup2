@@ -2,9 +2,9 @@
 ## This class set a predefined set of packages to a given priority level.
 ## This will pin this to a specified version defined in 'admin_pkgvers::params' 
 ##
-class admin_pkgvers {
+class admin_pinpuppet1.7 {
 
-    include admin_pkgvers::params
+    include admin_pinpuppet1.7::params
 
 	# ensure that apt's /preferences.d directory exists
     
@@ -23,7 +23,7 @@ class admin_pkgvers {
             ensure  => present, 
         	owner   => 'root',
             group   => 'root',
-            content => template("admin_pkgvers/preferences.d.erb"),
+            content => template("admin_pinpuppet1.7/preferences.d.erb"),
         }
     
     }
