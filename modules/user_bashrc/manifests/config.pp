@@ -4,8 +4,9 @@
 ## Sample usage:
 ##		user_bashrc::config { 'bekr' : }
 ##
-define user_bashrc::config inherits admin_utils::append_if_no_such_line {
+define user_bashrc::config {
     
+	include admin_utils
 	
     # array of real users...(not root, or system accounts)
 		
