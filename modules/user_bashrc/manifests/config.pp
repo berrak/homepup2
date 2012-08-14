@@ -4,7 +4,7 @@
 ## Sample usage:
 ##		user_bashrc::config { 'bekr' : }
 ##
-define user_bashrc::config {
+define user_bashrc::config inherits admin_utils {
     
 	
     # array of real users...(not root, or system accounts)
@@ -30,7 +30,7 @@ define user_bashrc::config {
 		
 		# Now append one line to .bashrc to source user customization file.
 		# Note: this must follow above resource to make the append line persistent.
-		append_if_no_such_line { "enable_${name}_customization" :
+		admin_utils::append_if_no_such_line { "enable_${name}_customization" :
 				
 		    file => "/home/${name}/.bashrc",
 		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 

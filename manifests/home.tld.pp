@@ -6,6 +6,7 @@ node basenode {
 	include admin_aptconf
 	include admin_bashrc
     include admin_pkgvers
+	include admin_utils
 	
 	include puppet_iptables
 	
