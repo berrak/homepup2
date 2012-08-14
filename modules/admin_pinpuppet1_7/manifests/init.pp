@@ -1,6 +1,6 @@
 ##
-## This class set a predefined set of packages to a given priority level.
-## This will pin this to a specified version defined in 'admin_pkgvers::params' 
+## This class set a predefined set of packages to a given priority level. This
+## will pin this to a specified version defined in 'admin_pinpuppet1_7::params' 
 ##
 class admin_pinpuppet1_7 {
 
@@ -31,51 +31,51 @@ class admin_pinpuppet1_7 {
 
     # Puppet master runs both as server and agent
     
-    if ( $::hostname == $::admin_pkgvers::params::mypuppetserver_hostname ) {
+    if ( $::hostname == $::admin_pinpuppet1_7::params::mypuppetserver_hostname ) {
         
         set_pinning { 'puppet' :
-            version => "$::admin_pkgvers::params::puppet_version",
-            priority => "$::admin_pkgvers::params::pin_priority",
+            version => "$::admin_pinpuppet1_7::params::puppet_version",
+            priority => "$::admin_pinpuppet1_7::params::pin_priority",
         }
         
         set_pinning { 'puppet-common':
-            version => "$::admin_pkgvers::params::puppet_common_version",
-            priority => "$::admin_pkgvers::params::pin_priority",
+            version => "$::admin_pinpuppet1_7::params::puppet_common_version",
+            priority => "$::admin_pinpuppet1_7::params::pin_priority",
         }
         
         set_pinning { 'puppet-master' :
-            version => "$::admin_pkgvers::params::puppetmaster_version",
-            priority => "$::admin_pkgvers::params::pin_priority",
+            version => "$::admin_pinpuppet1_7::params::puppetmaster_version",
+            priority => "$::admin_pinpuppet1_7::params::pin_priority",
         }
         
         set_pinning { 'puppet-master-common' :
-            version => "$::admin_pkgvers::params::puppetmaster_common_version",
-            priority => "$::admin_pkgvers::params::pin_priority",
+            version => "$::admin_pinpuppet1_7::params::puppetmaster_common_version",
+            priority => "$::admin_pinpuppet1_7::params::pin_priority",
         }
         
     
     } else {
     
         set_pinning { 'puppet' :
-            version => "$::admin_pkgvers::params::puppet_version",
-            priority => "$::admin_pkgvers::params::pin_priority",
+            version => "$::admin_pinpuppet1_7::params::puppet_version",
+            priority => "$::admin_pinpuppet1_7::params::pin_priority",
         }
         
         set_pinning { 'puppet-common' :
-            version => "$::admin_pkgvers::params::puppet_common_version",
-            priority => "$::admin_pkgvers::params::pin_priority",
+            version => "$::admin_pinpuppet1_7::params::puppet_common_version",
+            priority => "$::admin_pinpuppet1_7::params::pin_priority",
         }
     }
     
 
     set_pinning { 'facter' :
-        version => "$::admin_pkgvers::params::facter_version",
-        priority => "$::admin_pkgvers::params::pin_priority",
+        version => "$::admin_pinpuppet1_7::params::facter_version",
+        priority => "$::admin_pinpuppet1_7::params::pin_priority",
     }
         
     set_pinning { 'ruby1.9.1' :
-        version => "$::admin_pkgvers::params::rubylib_version",
-        priority => "$::admin_pkgvers::params::pin_priority",
+        version => "$::admin_pinpuppet1_7::params::rubylib_version",
+        priority => "$::admin_pinpuppet1_7::params::pin_priority",
     }
     
 
