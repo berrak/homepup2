@@ -2,7 +2,7 @@
 ## Parameters used to set what version to pin
 ## a specific package.
 ##
-class admin_pinpuppet1.7::params {
+class admin_pinpuppet1_7::params {
 
     $mypuppetserver_hostname = 'carbon'
 
