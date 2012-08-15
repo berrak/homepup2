@@ -1,19 +1,19 @@
 node basenode {
 
+    include puppet_utils
+	
     include root_home
     include root_bashrc
-    include admin_utils
 	
     include admin_hosts
 	include admin_aptconf
-
     include admin_pinpuppet2_7
+
+    admin_bndl::install { 'cliadminapps' : }
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
-	
-    admin_bndl::install { 'cliadminapps' : }
 
 }
 
@@ -21,8 +21,13 @@ node basenode {
 ## working puppet agent (development desktop.
 node 'carbon.home.tld' inherits basenode {
 
-	include puppet_master
     include admin_fstab
+	
+	include puppet_master
+    include puppet_iptables
+    include puppet_tripwire
+    include puppet_cups
+
 	
 	user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
@@ -31,7 +36,6 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
 	
-    include puppet_iptables
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
@@ -39,8 +43,7 @@ node 'carbon.home.tld' inherits basenode {
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    include puppet_tripwire
-    include puppet_cups
+
 
 }
 

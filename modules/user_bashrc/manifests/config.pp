@@ -6,7 +6,7 @@
 ##
 define user_bashrc::config {
     
-	include admin_utils
+	include puppet_utils
 	
     # array of real users...(not root, or system accounts)
 		
@@ -31,7 +31,7 @@ define user_bashrc::config {
 		
 		# Now append one line to .bashrc to source user customization file.
 		# Note: this must follow above resource to make the append line persistent.
-		admin_utils::append_if_no_such_line { "enable_${name}_customization" :
+		puppet_utils::append_if_no_such_line { "enable_${name}_customization" :
 				
 		    file => "/home/${name}/.bashrc",
 		    line => "[ -f ~/.bashrc.d/${name} ] && source ~/.bashrc.d/${name}" 
