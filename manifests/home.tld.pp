@@ -8,16 +8,12 @@ node basenode {
 	include admin_aptconf
 
     include admin_pinpuppet2_7
-
-	
-	include puppet_iptables
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
 	
     admin_bndl::install { 'cliadminapps' : }
-
 
 }
 
@@ -35,6 +31,7 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
 	
+    include puppet_iptables
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
@@ -59,6 +56,7 @@ node 'gondor.home.tld' inherits basenode {
 	admin_server::nohistory{ 'gondor' :}
 		
 	# this is our gateway host
+    include puppet_iptables
     class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		iface_one => 'eth1', gateway_one => '192.168.1.1', bcstnet_one => '192.168.1.255',
