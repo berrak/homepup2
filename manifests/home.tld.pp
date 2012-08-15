@@ -5,7 +5,7 @@ node basenode {
 	include admin_fstab
 	include admin_aptconf
 	include admin_bashrc
-    include admin_pinpuppet1_7
+    include admin_pinpuppet2_7
 	include admin_utils
 	
 	include puppet_iptables
