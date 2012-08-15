@@ -19,7 +19,7 @@
 
 ## Source in our local customizations
 
-if [ -f ~/.bash_root ] ; then
-	. ~/.bash_root
+if [ -f ~/.bashrc_root ] ; then
+	. ~/.bashrc_root
 fi
 

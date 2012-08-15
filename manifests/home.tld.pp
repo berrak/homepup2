@@ -1,7 +1,7 @@
 node basenode {
 
     include root_home
-    include admin_bashrc
+    include root_bashrc
     include admin_utils
 	
     include admin_hosts

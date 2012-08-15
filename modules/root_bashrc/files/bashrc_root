@@ -1,4 +1,4 @@
-# /root/.bash_root: Local root's .bashrc customization
+# /root/.bashrc_root: Local root's .bashrc customization
 # This file is sourced from .bashrc 
 
 # umask 022

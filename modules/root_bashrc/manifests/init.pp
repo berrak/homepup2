@@ -1,20 +1,20 @@
 ##
 ## This class customize root's .bashrc
 ##
-class admin_bashrc {
+class root_bashrc {
 
 
     # This file is Debian original + one source statement for .bash_root 
 	file { "/root/.bashrc":
-		source => "puppet:///modules/admin_bashrc/root_bashrc",
+		source => "puppet:///modules/root_bashrc/bashrc",
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0600',
 	}
 
     # This file contains all customization for root
-	file { "/root/.bash_root":
-		source => "puppet:///modules/admin_bashrc/root_admbashrc",
+	file { "/root/.bashrc_root":
+		source => "puppet:///modules/root_bashrc/bashrc_root",
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0600',
@@ -30,7 +30,7 @@ class admin_bashrc {
 	
 	exec { "reloadadmbashrc":
 		command => '/bin/sh . /root/.bashrc',
-		subscribe => File["/root/.bash_root"],
+		subscribe => File["/root/.bashrc_root"],
 		refreshonly => true,
 	}
 	
