@@ -1,12 +1,14 @@
 node basenode {
 
     include admin_home
+    include admin_bashrc
+    include admin_utils
+	
     include admin_hosts
-	include admin_fstab
 	include admin_aptconf
-	include admin_bashrc
+
     include admin_pinpuppet2_7
-	include admin_utils
+
 	
 	include puppet_iptables
 	
@@ -16,6 +18,7 @@ node basenode {
 	
     admin_bndl::install { 'cliadminapps' : }
 
+
 }
 
 ## 'carbon' is currently our puppetserver and the
@@ -23,6 +26,7 @@ node basenode {
 node 'carbon.home.tld' inherits basenode {
 
 	include puppet_master
+    include admin_fstab
 	
 	user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
@@ -49,6 +53,8 @@ node 'gondor.home.tld' inherits basenode {
 	include puppet_agent
     include puppet_tripwire
 	
+    include admin_fstab
+	
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
 		
@@ -61,5 +67,16 @@ node 'gondor.home.tld' inherits basenode {
 	# and is the local lan ntp server, providing time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
     
+
+}
+
+# local mail server
+node 'rohan.home.tld' inherits basenode {
+
+	user_bashrc::config { 'bekr' : }
+
+	class { puppet_network::interfaces :
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		addfirewall => 'true' }
 
 }
