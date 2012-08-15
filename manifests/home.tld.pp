@@ -18,10 +18,11 @@ node basenode {
 }
 
 ## 'carbon' is currently our puppetserver and the
-## working puppet agent (development desktop.
+## working puppet agent (development desktop)
 node 'carbon.home.tld' inherits basenode {
 
-    include admin_fstab
+	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    class { admin_fstab : fstabhost => 'carbon' }
 	
 	include puppet_master
     include puppet_iptables
@@ -42,8 +43,6 @@ node 'carbon.home.tld' inherits basenode {
 	
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
-	
-
 
 }
 
@@ -53,7 +52,8 @@ node 'gondor.home.tld' inherits basenode {
 	include puppet_agent
     include puppet_tripwire
 	
-    include admin_fstab
+    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    class { admin_fstab : fstabhost => 'gondor' }
 	
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
@@ -67,7 +67,6 @@ node 'gondor.home.tld' inherits basenode {
 	
 	# and is the local lan ntp server, providing time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
-    
 
 }
 
@@ -77,9 +76,15 @@ node 'rohan.home.tld' inherits basenode {
 	user_bashrc::config { 'bekr' : }
 	
     include puppet_agent
+	
+    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    class { admin_fstab : fstabhost => 'rohan' }
 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
+		
+    # This is the local node client daemon to query for time status
+	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 
 }
