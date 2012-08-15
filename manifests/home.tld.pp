@@ -72,6 +72,8 @@ node 'gondor.home.tld' inherits basenode {
 node 'rohan.home.tld' inherits basenode {
 
 	user_bashrc::config { 'bekr' : }
+	
+    include puppet_agent
 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
