@@ -6,7 +6,7 @@
 ##
 define admin_server::nohistory {
 
-    if ! ( $name in [ "gondor" ] ) {
+    if ! ( $name in [ "gondor", "rohan" ] ) {
 		fail("Unknown server host ($name). Not in list for use of zero history.")
 	}
 

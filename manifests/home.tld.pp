@@ -77,6 +77,9 @@ node 'rohan.home.tld' inherits basenode {
 	
     include puppet_agent
 	
+    admin_server::timezone { 'CET' :}
+	admin_server::nohistory{ 'rohan' :}
+	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab : fstabhost => 'rohan' }
 
