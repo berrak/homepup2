@@ -1,7 +1,7 @@
 ##
 ## This class set up the /root/bin subdirectory and permissions
 ##
-class admin_home {
+class root_home {
 
 	# set /root directory only for root's eyes
 	file { "/root":
