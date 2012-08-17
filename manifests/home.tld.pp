@@ -28,9 +28,6 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_iptables
     include puppet_tripwire
     include puppet_cups
-
-    # Disable ipv6 in kernel/grub
-    class { admin_ipv6 : ensure => 'absent' }
 	
 	user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
@@ -45,6 +42,9 @@ node 'carbon.home.tld' inherits basenode {
 	
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	
+    # Disable ipv6 in kernel/grub - this will reboot host when ensure changes
+    class { admin_ipv6 : ensure => 'absent' }
 
 }
 
@@ -69,6 +69,9 @@ node 'gondor.home.tld' inherits basenode {
 	
 	# and is the local lan ntp server, providing time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
+	
+    # Disable ipv6 in kernel/grub - this will reboot host when ensure changes
+    class { admin_ipv6 : ensure => 'absent' }
 
 }
 
@@ -91,5 +94,8 @@ node 'rohan.home.tld' inherits basenode {
 		
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	
+    # Disable ipv6 in kernel/grub - this will reboot host when ensure changes
+    class { admin_ipv6 : ensure => 'absent' }
 
 }
