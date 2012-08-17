@@ -28,10 +28,12 @@ define admin_bndl::install {
         cliadminapps : {
         
             # Can be applied to desktops and non-public servers
+            #--------------------------------------------------
+            # lsof: list open files
             # psmisc: miscellaneous utilities that use the proc FS
             # gddrescue: backup image of disk despite disk/head errors
         
-            package  { [ "psmisc", "gddrescue" ] :
+            package  { [ "lsof", "psmisc", "gddrescue" ] :
                  ensure => installed }
         
         }
