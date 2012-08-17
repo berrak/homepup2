@@ -29,6 +29,8 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_tripwire
     include puppet_cups
 
+    # Disable ipv6 in kernel/grub
+    class { admin_ipv6 : ensure => 'absent' }
 	
 	user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
