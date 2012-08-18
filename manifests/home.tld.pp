@@ -25,7 +25,7 @@ node 'carbon.home.tld' inherits basenode {
     class { admin_fstab : fstabhost => 'carbon' }
 	
 	include puppet_master
-    include puppet_iptables
+
     include puppet_tripwire
     include puppet_cups
 	
@@ -35,6 +35,9 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
+	
+    # this adds the default desktop firewall.
+    include puppet_iptables
 	
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -60,8 +63,9 @@ node 'gondor.home.tld' inherits basenode {
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
 		
-	# this is our gateway host
+	# this adds the gateway host firewall
     include puppet_iptables
+	
     class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		iface_one => 'eth1', gateway_one => '192.168.1.1', bcstnet_one => '192.168.1.255',
@@ -83,10 +87,13 @@ node 'rohan.home.tld' inherits basenode {
     include puppet_agent
 	
     admin_server::timezone { 'CET' :}
-	admin_server::nohistory{ 'rohan' :}
+	admin_server::nohistory { 'rohan' :}
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab : fstabhost => 'rohan' }
+
+    # this adds the default desktop firewall to rohan (for now. Todo: customize for rohan).
+	include puppet_iptables
 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
