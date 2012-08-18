@@ -68,7 +68,7 @@ $IPTABLES -A INPUT -m state --state INVALID -j DROP
 $IPTABLES -A INPUT -p all -d $HOSTADDR -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # multicast mDNS packets from internal printers to this host.
-$IPTABLES -A INPUT -p udp -m udp --dport 5353 -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
 
 # allow ping etc
 $IPTABLES -A INPUT -p icmp -d $HOSTADDR -s $NET_INT -j ACCEPT
