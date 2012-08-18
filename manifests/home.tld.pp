@@ -9,6 +9,7 @@ node basenode {
 	include admin_aptconf
     include admin_pinpuppet2_7
 
+    admin_bndl::install { 'coresysapps' : }
     admin_bndl::install { 'cliadminapps' : }
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used

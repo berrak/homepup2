@@ -8,13 +8,22 @@
 #
 define admin_bndl::install {
   
-    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps' ]) {
+    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps' ]) {
         fail("Package bundle parameter ($name) not recognized!")
     }
   
   
     case $name {
     
+        coresysapps : {
+        
+            # Non-default core system add-on applications
+            
+            package  { [ "linux-firmware-free" ] :
+                ensure => installed }
+        
+        }        
+
         officeapps : {
         
             # Applications in addition to the default
