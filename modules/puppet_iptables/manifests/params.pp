@@ -5,6 +5,7 @@
 class puppet_iptables::params {
 
     $mygateway_hostname = 'gondor'
+    $mypuppetmaster_hostname = 'carbon'
     
     # desktops
     

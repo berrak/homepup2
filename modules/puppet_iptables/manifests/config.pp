@@ -39,10 +39,24 @@ class puppet_iptables::config {
 		
 		exec { "/bin/sh /root/bin/fw.gateway":
 		    refreshonly => true,
-	}
+	    }
 		
+     } elsif ( $::hostname == $::puppet_iptables::params::mypuppetmaster_hostname ) {
 	
-	} else {
+		file { "/root/bin/fw.puppetmaster":
+		    content => template( "puppet_iptables/fw.puppetmaster.erb" ),
+		      owner => 'root',
+		      group => 'root',
+		       mode => '0700',
+		    require => File["/root/bin"],
+		     notify => Exec["/bin/sh /root/bin/fw.puppetmaster"],
+		}
+		
+		exec { "/bin/sh /root/bin/fw.puppetmaster":
+		    refreshonly => true,
+	    }
+	
+     } else {
 	
 		file { "/root/bin/fw.desktop":
 		    content => template( "puppet_iptables/fw.desktop.erb" ),
