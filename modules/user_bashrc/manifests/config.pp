@@ -19,18 +19,9 @@ define user_bashrc::config {
 		     owner => "${name}",
 		     group => "${name}",
 	    }		
-
-
-		# Copy the .bashrc file to ~ directory
-		file { "/home/${name}/.bashrc":
-			source => "puppet:///modules/user_bashrc/bashrc",
-			 owner => "${name}",
-			 group => "${name}",
-			  mode => '0644',
-		}
 		
-		# Now append one line to .bashrc to source user customization file.
-		# Note: this must follow above resource to make the append line persistent.
+		# Now append one line to original .bashrc to source user customizations.
+		
 		puppet_utils::append_if_no_such_line { "enable_${name}_customization" :
 				
 		    file => "/home/${name}/.bashrc",
@@ -39,6 +30,7 @@ define user_bashrc::config {
 		}
 	
 	    # add the actual customization file to the .bashrc.d snippet directory
+		
 	    file { "/home/${name}/.bashrc.d/${name}":
 			source => "puppet:///modules/user_bashrc/${name}",
 			 owner => "${name}",
