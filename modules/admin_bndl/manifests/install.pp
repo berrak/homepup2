@@ -19,7 +19,7 @@ define admin_bndl::install {
         
             # Non-default core system add-on applications
             
-            package  { [ "linux-firmware-free" ] :
+            package  { [ "firmware-linux-free" ] :
                 ensure => installed }
         
         }        
