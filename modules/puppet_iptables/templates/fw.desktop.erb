@@ -67,14 +67,14 @@ $IPTABLES -A INPUT -m state --state INVALID -j DROP
 # allow all established and related in
 $IPTABLES -A INPUT -p all -d $HOSTADDR -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# multicast mDNS packets from internal printers to this host.
+$IPTABLES -A INPUT -p udp -m udp --dport 5353 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
 # allow ping etc
 $IPTABLES -A INPUT -p icmp -d $HOSTADDR -s $NET_INT -j ACCEPT
 
 # allow cups network printer packets
 $IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
-
-# multicast mDNS packets from capable printers to this host.
-$IPTABLES -A INPUT -p udp -m udp --dport 5353 -m state --state NEW -j ACCEPT
 
 # ntp time information (udp) from our internal LAN NTP server
 $IPTABLES -A INPUT -p udp -d $HOSTADDR -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
