@@ -42,7 +42,7 @@ class puppet_iptables::config ( $role,
 		
     ## Select which iptables rule set to distribute 
 	
-	if ( $hostnm != '' ) {
+	if ( $hostnm == '' ) {
 	
 		file { "/root/bin/fw.${role}":
 		    content => template( "puppet_iptables/fw.${role}.erb" ),
