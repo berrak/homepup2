@@ -1,6 +1,6 @@
 #!/bin/sh
-# /root/bin/fw.puppetmaster
-# Generic iptables rules for a local puppet master host
+# /root/bin/fw.server
+# Generic iptables rules for a local server host
 #
 # Todo: Add usual disclaimers
 #
@@ -79,8 +79,8 @@ $IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 631 -m state -
 # ntp time information (udp) from our internal LAN NTP server
 $IPTABLES -A INPUT -p udp -d $HOSTADDR -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
-# puppet client requests to this master server
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 8140 -m state --state NEW -j ACCEPT
+# puppet master talks to clients on this port
+$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
 
 #-------------------------------------------------------------------------
@@ -149,8 +149,8 @@ $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 22 -m state --state NEW -j
 # udp is stateless but iptables keeps track of udp 'states'
 $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
-# puppet clients listen on this port from the puppet master server
-$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
+# talk to the puppet master server on this port
+$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8140 -m state --state NEW -j ACCEPT
 
 # allow ping etc out 
 $IPTABLES -A OUTPUT -p icmp -d $NET_INT -j ACCEPT

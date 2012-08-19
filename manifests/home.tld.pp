@@ -37,8 +37,8 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
 	
-    # this adds the default desktop firewall.
-    include puppet_iptables
+    # this adds the firewall for puppetmaster.
+    class { puppet_iptables::config : role => 'puppetmaster' }
 	
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -47,7 +47,7 @@ node 'carbon.home.tld' inherits basenode {
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when ensure changes
+    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
     class { admin_ipv6 : ensure => 'absent' }
 
 }
@@ -64,8 +64,8 @@ node 'gondor.home.tld' inherits basenode {
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
 		
-	# this adds the gateway host firewall
-    include puppet_iptables
+	# this adds the firewall to the gateway host.
+    class { puppet_iptables::config : role => 'gateway' }
 	
     class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -75,7 +75,7 @@ node 'gondor.home.tld' inherits basenode {
 	# and is the local lan ntp server, providing time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when ensure changes
+    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
     class { admin_ipv6 : ensure => 'absent' }
 
 }
@@ -93,9 +93,9 @@ node 'rohan.home.tld' inherits basenode {
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab : fstabhost => 'rohan' }
 
-    # this adds the default desktop firewall to rohan (for now. Todo: customize for rohan).
-	include puppet_iptables
-
+    # this adds the default server firewall to rohan (for now. Todo: customize for rohan).
+    class { puppet_iptables::config : role => 'server' }
+	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
@@ -103,7 +103,7 @@ node 'rohan.home.tld' inherits basenode {
     # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when ensure changes
+    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
     class { admin_ipv6 : ensure => 'absent' }
 
 }
