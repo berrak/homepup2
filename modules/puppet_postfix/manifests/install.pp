@@ -43,7 +43,7 @@ define puppet_postfix::install(
     
     # Use of qualified varaiables requires no hyphens in class names!
 
-    file { "$::puppet_postfix::params::postfix_${mta_type}_preseedfilepath" : 
+    file { "$::puppet_postfix::params::${mta_type}.preseedfilepath" : 
         source => $real_source,
          owner => 'root',
          group => 'root', 
@@ -51,8 +51,8 @@ define puppet_postfix::install(
 
     package { postfix :   
               ensure => $ensure,
-        responsefile => "$::puppet_postfix::params::postfix_${mta_type}_preseedfilepath",
-        require      => File[ "$::puppet_postfix::params::postfix_${mta_type}_preseedfilepath" ],    
+        responsefile => "$::puppet_postfix::params::${mta_type}.preseedfilepath",
+        require      => File[ "$::puppet_postfix::params::${mta_type}.preseedfilepath" ],    
         }
 
 }
