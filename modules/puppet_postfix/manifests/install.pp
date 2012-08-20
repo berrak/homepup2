@@ -25,11 +25,6 @@ define puppet_postfix::install(
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
     
-    $real_source = $source ? {
-        'UNSET' => "puppet:///modules/puppet_postfix/${mta_type}.postfix.preseed",
-        default => $source,
-    }
-    
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
     # the fqdn to agent host. Then refer to that file in the preseed files.
     
@@ -40,19 +35,52 @@ define puppet_postfix::install(
     
     }
     
+    if ( $mta_type == 'server' ) {
     
-    # Use of qualified varaiables requires no hyphens in class names!
-
-    file { "$::puppet_postfix::params::mta_type_preseedfilepath" : 
-        source => $real_source,
-         owner => 'root',
-         group => 'root', 
-    }
-
-    package { postfix :   
-              ensure => $ensure,
-        responsefile => "$::puppet_postfix::params::mta_type_preseedfilepath",
-        require      => File[ "$::puppet_postfix::params::mta_type_preseedfilepath" ],    
+        $real_source = $source ? {
+            'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",
+            default => $source,
         }
+        
+    
+        file { "$::puppet_postfix::params::server_preseedfilepath" : 
+            source => $real_source,
+             owner => 'root',
+             group => 'root', 
+        }
+    
+        package { postfix :   
+                  ensure => $ensure,
+            responsefile => "$::puppet_postfix::params::server_preseedfilepath",
+            require      => File[ "$::puppet_postfix::params::server_preseedfilepath" ],    
+            }
+        
+        
+    } elsif ( $mta_type == 'satellite' ) {
+    
+        $real_source = $source ? {
+        'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",
+        default => $source,
+        }
+        
+    
+        file { "$::puppet_postfix::params::satellite_preseedfilepath" : 
+            source => $real_source,
+             owner => 'root',
+             group => 'root', 
+        }
+    
+        package { postfix :   
+                  ensure => $ensure,
+            responsefile => "$::puppet_postfix::params::satellite_preseedfilepath",
+            require      => File[ "$::puppet_postfix::params::satellite_preseedfilepath" ],    
+        }
+    
+    
+    } else {
+    
+        fail( "FAIL: Unexpected mta_type ($mta_type) parameter failure." )
+    
+    }
 
 }
