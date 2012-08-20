@@ -77,7 +77,7 @@ node 'gondor.home.tld' inherits basenode {
 
 }
 
-## local intralan mail server
+## local intra-lan mail server
 node 'rohan.home.tld' inherits basenode {
 
     include puppet_agent
@@ -98,6 +98,29 @@ node 'rohan.home.tld' inherits basenode {
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
     puppet_postfix::install { 'mta' : ensure => installed, mta_type => server }
+	
+    user_bashrc::config { 'bekr' : }
+
+}
+
+## developer host
+node 'mordor.home.tld' inherits basenode {
+
+    include puppet_agent
+	
+    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    # class { admin_fstab : fstabhost => 'rohan' }
+
+    # load server firewall script
+    class { puppet_iptables::config : role => 'desktop' }
+	 
+	class { puppet_network::interfaces :
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		addfirewall => 'true' }
+		
+	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	
+    puppet_postfix::install { 'mta' : ensure => installed, mta_type => satellite }
 	
     user_bashrc::config { 'bekr' : }
 

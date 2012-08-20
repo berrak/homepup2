@@ -35,6 +35,14 @@ define puppet_postfix::install(
     
     }
     
+    # in case exim4 family of packages are installed - remove them, since
+    # they conflicts with postfix. Note that mua 'bsd-mailx' is removed as well.
+    
+    package { "exim4" : ensure => absent }
+    package { "exim4-base" : ensure => absent }
+    package { "exim4-config" : ensure => absent }
+    
+    
     if ( $mta_type == 'server' ) {
     
         $real_source = $source ? {
@@ -49,7 +57,7 @@ define puppet_postfix::install(
              group => 'root', 
         }
     
-        package { postfix :   
+        package { "postfix" :   
                   ensure => $ensure,
             responsefile => "$::puppet_postfix::params::server_preseedfilepath",
             require      => File[ "$::puppet_postfix::params::server_preseedfilepath" ],    
@@ -70,7 +78,7 @@ define puppet_postfix::install(
              group => 'root', 
         }
     
-        package { postfix :   
+        package { "postfix" :   
                   ensure => $ensure,
             responsefile => "$::puppet_postfix::params::satellite_preseedfilepath",
             require      => File[ "$::puppet_postfix::params::satellite_preseedfilepath" ],    
