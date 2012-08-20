@@ -1,6 +1,9 @@
 node basenode {
 
-    include puppet_utils
+    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
+    class { admin_ipv6 : ensure => 'absent' }
+	
+	include puppet_utils
 	
     include root_home
     include root_bashrc
@@ -18,24 +21,15 @@ node basenode {
 
 }
 
-## 'carbon' is currently our puppetserver and the
-## working puppet agent (development desktop)
+## puppet master server
 node 'carbon.home.tld' inherits basenode {
 
+    include puppet_master
+	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab : fstabhost => 'carbon' }
 	
-	include puppet_master
-
     include puppet_tripwire
-    include puppet_cups
-	
-	user_bashrc::config { 'bekr' : }
-    puppet_devtools::tools { 'bekr' : }
-	
-    admin_bndl::install { 'guiadminapps' : }
-    admin_bndl::install { 'officeapps' : }
-    admin_bndl::install { 'developerapps' : }
 	
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster' }
@@ -44,18 +38,24 @@ node 'carbon.home.tld' inherits basenode {
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
 	
-    # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
-    class { admin_ipv6 : ensure => 'absent' }
+    user_bashrc::config { 'bekr' : }
+    puppet_devtools::tools { 'bekr' : }
+	
+    admin_bndl::install { 'guiadminapps' : }
+    admin_bndl::install { 'officeapps' : }
+    admin_bndl::install { 'developerapps' : }
+	
+    include puppet_cups
 
 }
 
-# home.tld --> 'gondor-gw' --> dmz.tld --> firewall --> internet
+## gateway host/lan ntp server
 node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
+	
     include puppet_tripwire
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
@@ -64,7 +64,7 @@ node 'gondor.home.tld' inherits basenode {
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
 		
-	# this adds the firewall to the gateway host.
+    # load gateway firewall script
     class { puppet_iptables::config : role => 'gateway' }
 	
     class { puppet_network::interfaces :
@@ -72,19 +72,14 @@ node 'gondor.home.tld' inherits basenode {
 		iface_one => 'eth1', gateway_one => '192.168.1.1', bcstnet_one => '192.168.1.255',
 		addfirewall => 'true' }
 	
-	# and is the local lan ntp server, providing time services to all lan clients
+	# lan ntp server provids time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
-	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
-    class { admin_ipv6 : ensure => 'absent' }
 
 }
 
-# local mail server
+## local intralan mail server
 node 'rohan.home.tld' inherits basenode {
 
-	user_bashrc::config { 'bekr' : }
-	
     include puppet_agent
 	
     admin_server::timezone { 'CET' :}
@@ -93,17 +88,17 @@ node 'rohan.home.tld' inherits basenode {
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab : fstabhost => 'rohan' }
 
-    # this adds the default server firewall to rohan (for now. Todo: customize for rohan).
+    # load server firewall script
     class { puppet_iptables::config : role => 'server' }
 	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
 		
-    # This is the local node client daemon to query for time status
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
-    class { admin_ipv6 : ensure => 'absent' }
+    puppet_postfix::install { 'mta' : ensure => installed, mta_type => server }
+	
+    user_bashrc::config { 'bekr' : }
 
 }
