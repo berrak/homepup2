@@ -2,7 +2,7 @@ postfix	postfix/root_address	string
 postfix	postfix/rfc1035_violation	boolean	false
 postfix	postfix/mydomain_warning	boolean	
 postfix	postfix/mynetworks	string	127.0.0.0/8 192.168.0.0/24
-postfix	postfix/mailname	string	home.tld
+postfix	postfix/mailname	string	/etc/mailname
 postfix	postfix/tlsmgr_upgrade_warning	boolean	
 postfix	postfix/recipient_delim	string	+
 postfix	postfix/main_mailer_type	select	Satellite system
