@@ -129,10 +129,16 @@ node 'mordor.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' : ensure => installed, mta_type => satellite }
 	
     user_bashrc::config { 'bekr' : }
+    puppet_devtools::tools { 'bekr' : }
+	
+    admin_bndl::install { 'guiadminapps' : }
+    admin_bndl::install { 'officeapps' : }
+    admin_bndl::install { 'developerapps' : }
+	
+    include puppet_cups
 	
     # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
     class { admin_ipv6 : ensure => 'absent' }
 	
-	puppet_desktop::install { 'lxde' : }
 
 }
