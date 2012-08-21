@@ -66,10 +66,10 @@ define puppet_postfix::install(
            
         # remove the preseed file every time to make
         # sure we always use an updated version 
-        exec { "remove_old_server_preseed" :
-            command => "/bin/rm $serverpath",
-            require => Package["postfix"],
-        }
+        #exec { "remove_old_server_preseed" :
+        #    command => "/bin/rm $serverpath",
+        #    require => Package["postfix"],
+        #}
         
         
     } elsif ( $mta_type == 'satellite' ) {
@@ -95,11 +95,11 @@ define puppet_postfix::install(
         
         # remove the preseed file every time to make
         # sure we always use an updated version
-        
-        exec { "remove_old_satellite_preseed" :
-            command => "/bin/rm $satellitepath",
-            require => Package["postfix"],
-        }
+        #
+        #exec { "remove_old_satellite_preseed" :
+        #    command => "/bin/rm $satellitepath",
+        #    require => Package["postfix"],
+        #}
     
     
     } else {

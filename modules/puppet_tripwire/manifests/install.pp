@@ -37,8 +37,8 @@ define puppet_tripwire::install(
         
     # remove the preseed file every time to make sure we
     # always use an updated version next run.
-    exec { "remove_old_tripwire_preseed" :
-            command => "/bin/rm $preseedpath",
-    }
+    #exec { "remove_old_tripwire_preseed" :
+    #        command => "/bin/rm $preseedpath",
+    #}
 
 }
