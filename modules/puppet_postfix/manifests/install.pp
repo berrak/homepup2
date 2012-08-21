@@ -75,7 +75,7 @@ define puppet_postfix::install(
     } elsif ( $mta_type == 'satellite' ) {
     
         $satellite_source = $source ? {
-        'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",
+        'UNSET' => "puppet:///modules/puppet_postfix/satellite.postfix.preseed",
         default => $source,
         }
         
