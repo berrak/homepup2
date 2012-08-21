@@ -21,18 +21,24 @@ define puppet_tripwire::install(
         default => $source,
     }
     
-    # Use of qualified varaiables requires no hyphens in class names!
+    # remove old preseed file every time to make sure we use updated version
+    
+    $preseedpath = $::puppet_tripwire::params::preseedfilepath
+    
+    exec { "remove_old_tripwire_preseed" :
+        command => "[ -f $preseedpath ] && /bin/rm $preseedpath",
+    } 
 
-    file { $puppet_tripwire::params::preseedfilepath : 
+    file { "$preseedpath" : 
         source => $real_source,
          owner => 'root',
          group => 'root', 
     }
 
-    package { tripwire :   
+    package { "tripwire" :   
               ensure => $ensure,
-        responsefile => $puppet_tripwire::params::preseedfilepath,
-        require      => File[ $puppet_tripwire::params::preseedfilepath ],    
+        responsefile => "$preseedpath",
+        require      => File[ "$preseedpath" ],    
         }
 
 }
