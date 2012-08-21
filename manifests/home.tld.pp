@@ -132,5 +132,7 @@ node 'mordor.home.tld' inherits basenode {
 	
     # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
     class { admin_ipv6 : ensure => 'absent' }
+	
+	puppet_desktop::install { 'lxde' : }
 
 }
