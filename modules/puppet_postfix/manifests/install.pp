@@ -50,6 +50,10 @@ define puppet_postfix::install(
             default => $source,
         }
         
+        # remove old preseed file every time to make sure we use updated version
+        exec { "remove_old_server_preseed" :
+            command => "/bin/rm $::puppet_postfix::params::server_preseedfilepath",
+        }
     
         file { "$::puppet_postfix::params::server_preseedfilepath" : 
             source => $real_source,
@@ -71,6 +75,10 @@ define puppet_postfix::install(
         default => $source,
         }
         
+        # remove old preseed file every time to make sure we use updated version
+        exec { "remove_old_satellite_preseed" :
+            command => "/bin/rm $::puppet_postfix::params::satellite_preseedfilepath",
+        }
     
         file { "$::puppet_postfix::params::satellite_preseedfilepath" : 
             source => $real_source,
