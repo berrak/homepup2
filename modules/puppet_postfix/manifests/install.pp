@@ -68,6 +68,7 @@ define puppet_postfix::install(
         # sure we always use an updated version 
         exec { "remove_old_server_preseed" :
             command => "/bin/rm $serverpath",
+            require => Package["postfix"],
         }
         
         
@@ -97,6 +98,7 @@ define puppet_postfix::install(
         
         exec { "remove_old_satellite_preseed" :
             command => "/bin/rm $satellitepath",
+            require => Package["postfix"],
         }
     
     
