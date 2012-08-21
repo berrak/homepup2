@@ -126,7 +126,7 @@ node 'mordor.home.tld' inherits basenode {
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    #puppet_postfix::install { 'mta' : ensure => installed, mta_type => satellite }
+    puppet_postfix::install { 'mta' : ensure => installed, mta_type => satellite }
 	
     user_bashrc::config { 'bekr' : }
 	
