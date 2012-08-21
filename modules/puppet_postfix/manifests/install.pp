@@ -58,16 +58,17 @@ define puppet_postfix::install(
                path => "/usr/bin:/bin",
         }
     
-        file { "$::puppet_postfix::params::server_preseedfilepath" : 
-            source => $real_source,
-             owner => 'root',
-             group => 'root', 
+        file { "$serverpath" : 
+             source => $real_source,
+              owner => 'root',
+              group => 'root',
+            require => Exec[ "remove_old_server_preseed"],
         }
     
         package { "postfix" :   
                   ensure => $ensure,
-            responsefile => "$::puppet_postfix::params::server_preseedfilepath",
-            require      => File[ "$::puppet_postfix::params::server_preseedfilepath" ],    
+            responsefile => "$serverpath",
+            require      => File[ "$serverpath" ],    
             }
         
         
@@ -86,16 +87,17 @@ define puppet_postfix::install(
                path => "/usr/bin:/bin",
         }
     
-        file { "$::puppet_postfix::params::satellite_preseedfilepath" : 
+        file { "$satellitepath" : 
             source => $real_source,
              owner => 'root',
-             group => 'root', 
+             group => 'root',
+            require => Exec[ "remove_old_satellite_preseed" ],
         }
     
         package { "postfix" :   
                   ensure => $ensure,
-            responsefile => "$::puppet_postfix::params::satellite_preseedfilepath",
-            require      => File[ "$::puppet_postfix::params::satellite_preseedfilepath" ],    
+            responsefile => "$satellitepath",
+            require      => File[ "$satellitepath" ],    
         }
     
     

@@ -31,9 +31,10 @@ define puppet_tripwire::install(
     } 
 
     file { "$preseedpath" : 
-        source => $real_source,
-         owner => 'root',
-         group => 'root', 
+         source => $real_source,
+          owner => 'root',
+          group => 'root',
+        require => Exec[ "remove_old_tripwire_preseed" ],
     }
 
     package { "tripwire" :   
