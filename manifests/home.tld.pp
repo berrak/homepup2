@@ -109,13 +109,13 @@ node 'rohan.home.tld' inherits basenode {
 
 }
 
-## developer host
+## developer host (laptop)
 node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    # class { admin_fstab : fstabhost => 'rohan' }
+    class { admin_fstab : fstabhost => 'mordor' }
 
     # load server firewall script
     class { puppet_iptables::config : role => 'desktop' }
