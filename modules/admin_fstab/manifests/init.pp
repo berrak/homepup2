@@ -7,9 +7,9 @@
 ##
 class admin_fstab ( $fstabhost='' ) {
 	
-	if ! ( $fstabhost in [ "carbon", "gondor", "rohan" ] ) {
+	if ! ( $fstabhost in [ "carbon", "gondor", "rohan", "mordor" ] ) {
 	
-		fail("Could not find ($fstabhost) fstab file on puppetmaster! Please copy it over.")
+		fail("FAIL: Could not find ($fstabhost) fstab file on puppetmaster! Please copy it over.")
 	
 	}
 
