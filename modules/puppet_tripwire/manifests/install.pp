@@ -21,20 +21,12 @@ define puppet_tripwire::install(
         default => $source,
     }
     
-    # remove old preseed file every time to make sure we use updated version
-    
     $preseedpath = $::puppet_tripwire::params::preseedfilepath
-    
-    exec { "remove_old_tripwire_preseed" :
-        command => "/bin/sh 'if [ -f $preseedpath ] ; then /bin/rm $preseedpath ; fi'",
-
-    } 
 
     file { "$preseedpath" : 
          source => $real_source,
           owner => 'root',
           group => 'root',
-        require => Exec[ "remove_old_tripwire_preseed" ],
     }
 
     package { "tripwire" :   
@@ -42,5 +34,11 @@ define puppet_tripwire::install(
         responsefile => "$preseedpath",
         require      => File[ "$preseedpath" ],    
         }
+        
+    # remove the preseed file every time to make sure we
+    # always use an updated version next run.
+    exec { "remove_old_tripwire_preseed" :
+            command => "/bin/rm $preseedpath",
+    }
 
 }

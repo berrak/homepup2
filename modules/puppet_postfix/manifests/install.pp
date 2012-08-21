@@ -51,17 +51,11 @@ define puppet_postfix::install(
         }
         
         $serverpath = $::puppet_postfix::params::server_preseedfilepath
-        
-        # remove old preseed file every time to make sure we use updated version
-        exec { "remove_old_server_preseed" :
-            command => "/bin/sh 'if [ -f $serverpath ] ; then /bin/rm $serverpath ; fi'",
-        }
     
         file { "$serverpath" : 
              source => $real_source,
               owner => 'root',
               group => 'root',
-            require => Exec[ "remove_old_server_preseed"],
         }
     
         package { "postfix" :   
@@ -69,6 +63,12 @@ define puppet_postfix::install(
             responsefile => "$serverpath",
             require      => File[ "$serverpath" ],    
             }
+           
+        # remove the preseed file every time to make
+        # sure we always use an updated version 
+        exec { "remove_old_server_preseed" :
+            command => "/bin/rm $serverpath",
+        }
         
         
     } elsif ( $mta_type == 'satellite' ) {
@@ -79,23 +79,24 @@ define puppet_postfix::install(
         }
         
         $satellitepath = $::puppet_postfix::params::satellite_preseedfilepath
-        
-        # remove old preseed file every time to make sure we use updated version
-        exec { "remove_old_satellite_preseed" :
-            command => "/bin/sh 'if [ -f $satellitepath ] ; then /bin/rm $satellitepath ; fi'",
-        }
     
         file { "$satellitepath" : 
             source => $real_source,
              owner => 'root',
              group => 'root',
-            require => Exec[ "remove_old_satellite_preseed" ],
         }
     
         package { "postfix" :   
                   ensure => $ensure,
             responsefile => "$satellitepath",
             require      => File[ "$satellitepath" ],    
+        }
+        
+        # remove the preseed file every time to make
+        # sure we always use an updated version
+        
+        exec { "remove_old_satellite_preseed" :
+            command => "/bin/rm $satellitepath",
         }
     
     
