@@ -45,7 +45,7 @@ define puppet_postfix::install(
     
     if ( $mta_type == 'server' ) {
     
-        $real_source = $source ? {
+        $server_source = $source ? {
             'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",
             default => $source,
         }
@@ -53,7 +53,7 @@ define puppet_postfix::install(
         $serverpath = $::puppet_postfix::params::server_preseedfilepath
     
         file { "$serverpath" : 
-             source => $real_source,
+             source => $server_source,
               owner => 'root',
               group => 'root',
         }
@@ -73,7 +73,7 @@ define puppet_postfix::install(
         
     } elsif ( $mta_type == 'satellite' ) {
     
-        $real_source = $source ? {
+        $satellite_source = $source ? {
         'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",
         default => $source,
         }
@@ -81,7 +81,7 @@ define puppet_postfix::install(
         $satellitepath = $::puppet_postfix::params::satellite_preseedfilepath
     
         file { "$satellitepath" : 
-            source => $real_source,
+            source => $satellite_source,
              owner => 'root',
              group => 'root',
         }
