@@ -26,8 +26,8 @@ define puppet_tripwire::install(
     $preseedpath = $::puppet_tripwire::params::preseedfilepath
     
     exec { "remove_old_tripwire_preseed" :
-        command => "test -f $preseedpath && rm $preseedpath",
-           path => "/usr/bin:/bin",
+        command => "/bin/sh 'if [ -f $preseedpath ] ; then /bin/rm $preseedpath ; fi'",
+
     } 
 
     file { "$preseedpath" : 

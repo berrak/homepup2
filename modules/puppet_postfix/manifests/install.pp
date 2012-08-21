@@ -54,8 +54,7 @@ define puppet_postfix::install(
         
         # remove old preseed file every time to make sure we use updated version
         exec { "remove_old_server_preseed" :
-            command => "test -f $serverpath && rm $serverpath",
-               path => "/usr/bin:/bin",
+            command => "/bin/sh 'if [ -f $serverpath ] ; then /bin/rm $serverpath ; fi'",
         }
     
         file { "$serverpath" : 
@@ -83,8 +82,7 @@ define puppet_postfix::install(
         
         # remove old preseed file every time to make sure we use updated version
         exec { "remove_old_satellite_preseed" :
-            command => "test -f $satellitepath && rm $satellitepath",
-               path => "/usr/bin:/bin",
+            command => "/bin/sh 'if [ -f $satellitepath ] ; then /bin/rm $satellitepath ; fi'",
         }
     
         file { "$satellitepath" : 
