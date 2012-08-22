@@ -25,6 +25,7 @@ class admin_ipv6_disable::config {
 	
 		notify {"ipv6_reboot_msg":
 		message => "PUPPET IPv6 DISABLE: REBOOT SYSTEM TO TAKE EFFECT AND TEST WITH: dmesg | grep -i ipv6",
+		}
 		
     }
 	
