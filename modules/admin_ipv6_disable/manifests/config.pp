@@ -22,7 +22,7 @@ class admin_ipv6_disable::config {
 		content => template( "admin_ipv6_disable/grub.erb" ),
 		owner => 'root',
 		group => 'root',
-		notify => [ Exec["updategrub"], Notify["ipv6_reboot_msg"] ],
+		notify => Exec["updategrub"],
 	}
 
 }
