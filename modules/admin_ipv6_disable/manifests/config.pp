@@ -14,14 +14,15 @@ class admin_ipv6_disable::config {
     }
 
 	file { "/etc/default/grub":
-		content => template( "admin_ipv6/grub.erb" ),
+		content => template( "admin_ipv6_disable/grub.erb" ),
 		owner => 'root',
 		group => 'root',
-		notify => [ Exec["updategrub"], Notify["ipv6_reboot_msg"] ],
+		notify => Exec["updategrub"],
 	}
 	
 	notify {"ipv6_reboot_msg":
 		message => "PUPPET IPv6 DISABLE: PLEASE REBOOT SYSTEM MANUALLY TO TAKE EFFECT",
+		subscribe => File["/etc/default/grub"],
     }
 
 }
