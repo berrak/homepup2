@@ -21,6 +21,6 @@ class puppet_agent::config {
     
     notify {"agent_reload_msg":
 		message => "PUPPET AGENT RECONFIGURE: PLEASE RELOAD AGENT MANUALLY TO TAKE EFFECT",
-    {
+    }
 
 }

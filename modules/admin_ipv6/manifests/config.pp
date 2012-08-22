@@ -37,6 +37,6 @@ class admin_ipv6::config ( $ensure='' ) {
 	
 	notify {"ipv6_reboot_msg":
 		message => "PUPPET IPv6 DISABLE: PLEASE REBOOT SYSTEM MANUALLY TO TAKE EFFECT",
-    {
+    }
 
 }
