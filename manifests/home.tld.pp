@@ -47,7 +47,7 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_cups
 	
     # Disable ipv6 in kernel/grub
-    class { admin_ipv6::config : ensure => 'absent' }
+    include admin_ipv6_disable
 
 }
 
@@ -76,7 +76,7 @@ node 'gondor.home.tld' inherits basenode {
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
 	
     # Disable ipv6 in kernel/grub
-    class { admin_ipv6::config : ensure => 'absent' }
+    include admin_ipv6_disable
 
 }
 
@@ -105,7 +105,7 @@ node 'rohan.home.tld' inherits basenode {
     user_bashrc::config { 'bekr' : }
 	
     # Disable ipv6 in kernel/grub
-    class { admin_ipv6::config : ensure => 'absent' }
+    include admin_ipv6_disable
 
 }
 
@@ -138,7 +138,7 @@ node 'mordor.home.tld' inherits basenode {
     include puppet_cups
 	
     # Disable ipv6 in kernel/grub
-    class { admin_ipv6::config : ensure => 'absent' }
+    include admin_ipv6_disable
 	
 
 }

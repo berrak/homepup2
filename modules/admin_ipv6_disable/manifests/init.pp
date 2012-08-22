@@ -4,8 +4,8 @@
 ## "Ipv6: Loaded, but administratively disabled, ..."
 ##
 ##
-class admin_ipv6 {
+class admin_ipv6_disable {
 	
-    include admin_ipv6::config
+    include admin_ipv6_disable::config
 
 }

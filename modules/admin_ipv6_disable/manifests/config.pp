@@ -3,26 +3,11 @@
 ## reboot confirm with "dmesg | grep -i ipv6" which should give:
 ## "Ipv6: Loaded, but administratively disabled, ..."
 ##
-## Sample use:
-##    class { admin_ipv6::config : ensure => 'absent' }
 ##
-class admin_ipv6::config ( $ensure='' ) {
-	
-	if ! ( $ensure in [ "present", "absent" ] ) {
-	
-		fail("FAIL: Use enable or absent as parameter to manage ipv6 in kernel-")
-	
-	}
+class admin_ipv6_disable::config {
 
-    # set GRUB_CMDLINE_LINUX
-	if $ensure == 'present' {
-		$grubcmdline =''
-	} elsif $ensure == 'absent' {
-		$grubcmdline = 'ipv6.disable=1'	
-	} else {
-		fail("Ensure parameter ($ensure) unknown.")
-	}
-    
+    $grubcmdline = 'ipv6.disable=1'	
+
 	exec { "updategrub" :
 		command => "/usr/sbin/update-grub",
 		refreshonly => true,
