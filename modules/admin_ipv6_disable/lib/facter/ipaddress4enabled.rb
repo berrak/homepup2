@@ -7,7 +7,7 @@
 # Test if Linux kernel exports the ipv4 variables to user space.
 # Fact as complementary to 'ipaddress6enabled' for test.
 #
-# K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
