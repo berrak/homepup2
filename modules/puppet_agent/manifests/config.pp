@@ -16,8 +16,11 @@ class puppet_agent::config {
         owner => 'root',
         group => 'root',
         require => Class["puppet_agent::install"],
+        notify => Notify["agent_reload_msg"],
     }
     
-    notify {"PUPPET AGENT RECONFIGURE: PLEASE RELOAD AGENT MANUALLY TO TAKE EFFECT":}
+    notify {"agent_reload_msg":
+		message => "PUPPET AGENT RECONFIGURE: PLEASE RELOAD AGENT MANUALLY TO TAKE EFFECT",
+    {
 
 }
