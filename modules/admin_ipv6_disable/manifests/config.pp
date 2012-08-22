@@ -8,6 +8,11 @@ class admin_ipv6_disable::config {
 
     $grubcmdline = 'ipv6.disable=1'	
 
+	notify {"ipv6_reboot_msg":
+		message => "PUPPET IPv6 DISABLE: PLEASE REBOOT SYSTEM MANUALLY TO TAKE EFFECT",
+		subscribe => File["/etc/default/grub"],
+    }
+
 	exec { "updategrub" :
 		command => "/usr/sbin/update-grub",
 		refreshonly => true,
@@ -17,12 +22,7 @@ class admin_ipv6_disable::config {
 		content => template( "admin_ipv6_disable/grub.erb" ),
 		owner => 'root',
 		group => 'root',
-		notify => Exec["updategrub"],
+		notify => [ Exec["updategrub"], Notify["ipv6_reboot_msg"] ],
 	}
-	
-	notify {"ipv6_reboot_msg":
-		message => "PUPPET IPv6 DISABLE: PLEASE REBOOT SYSTEM MANUALLY TO TAKE EFFECT",
-		subscribe => File["/etc/default/grub"],
-    }
 
 }
