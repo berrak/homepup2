@@ -24,7 +24,7 @@ class admin_ipv6 ( $ensure='' ) {
 	}
     
 	exec { "updategrub" :
-		command => "/usr/sbin/update-grub && /sbin/reboot",
+		command => "/usr/sbin/update-grub",
 		refreshonly => true,
     }
 
@@ -34,5 +34,7 @@ class admin_ipv6 ( $ensure='' ) {
 		group => 'root',
 		notify => Exec["updategrub"],
 	}
+	
+	notify {"PUPPET IPv6 DISABLE: PLEASE REBOOT SYSTEM MANUALLY TO TAKE EFFECT":}
 
 }

@@ -46,7 +46,7 @@ node 'carbon.home.tld' inherits basenode {
 	
     include puppet_cups
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
+    # Disable ipv6 in kernel/grub
     class { admin_ipv6 : ensure => 'absent' }
 
 }
@@ -75,7 +75,7 @@ node 'gondor.home.tld' inherits basenode {
 	# lan ntp server provids time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
+    # Disable ipv6 in kernel/grub
     class { admin_ipv6 : ensure => 'absent' }
 
 }
@@ -104,7 +104,7 @@ node 'rohan.home.tld' inherits basenode {
 	
     user_bashrc::config { 'bekr' : }
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
+    # Disable ipv6 in kernel/grub
     class { admin_ipv6 : ensure => 'absent' }
 
 }
@@ -115,7 +115,7 @@ node 'mordor.home.tld' inherits basenode {
     include puppet_agent
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab : fstabhost => 'mordor' }
+    # class { admin_fstab : fstabhost => 'mordor' }
 
     # load server firewall script
     class { puppet_iptables::config : role => 'desktop' }
@@ -137,7 +137,7 @@ node 'mordor.home.tld' inherits basenode {
 	
     include puppet_cups
 	
-    # Disable ipv6 in kernel/grub - this will reboot host when $ensure changes
+    # Disable ipv6 in kernel/grub
     class { admin_ipv6 : ensure => 'absent' }
 	
 
