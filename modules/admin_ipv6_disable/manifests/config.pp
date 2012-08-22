@@ -8,11 +8,6 @@ class admin_ipv6_disable::config {
 
     $grubcmdline = 'ipv6.disable=1'	
 
-	notify {"ipv6_reboot_msg":
-		message => "PUPPET IPv6 DISABLE: PLEASE REBOOT SYSTEM MANUALLY TO TAKE EFFECT",
-		subscribe => File["/etc/default/grub"],
-    }
-
 	exec { "updategrub" :
 		command => "/usr/sbin/update-grub",
 		refreshonly => true,
@@ -24,5 +19,16 @@ class admin_ipv6_disable::config {
 		group => 'root',
 		notify => Exec["updategrub"],
 	}
+	
+	notify {"$::ipaddress4enabled":}
+	if ( $::ipaddress4enabled == 'ipv4') {
+	
+		notify {"Here we get ipv4 as test ($::ipaddress4enabled)":}
+	
+	}
+	
+#    notify {"ipv6_reboot_msg":
+#		message => "PUPPET IPv6 DISABLE: REBOOT SYSTEM TO TAKE EFFECT. TEST WITH: dmesg | grep -i ipv6",
+#    }
 
 }
