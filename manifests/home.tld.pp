@@ -12,6 +12,9 @@ node basenode {
     admin_bndl::install { 'coresysapps' : }
     admin_bndl::install { 'cliadminapps' : }
 	
+	# high memory usage during index rebuild
+    admin_pkg::blacklist { 'apt-xapian-index' :}
+	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
