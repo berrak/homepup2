@@ -25,4 +25,17 @@ class root_home {
 		mode => '0700',
 	}
 	
+	# set up a mount point for usb flash memory on /media/usb
+	
+    file { "/media/usb0":
+		ensure => "directory",
+		owner => 'root',
+		group => 'root',
+	}
+
+	file { "/media/usb":
+		ensure => link,
+		target => "/media/usb0",
+	}
+	
 }
