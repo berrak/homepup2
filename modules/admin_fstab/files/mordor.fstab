@@ -4,7 +4,7 @@
 # device; this may be used with UUID= as a more robust way to name devices
 # that works even if disks are added and removed. See fstab(5).
 #
-# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# <file system> <mount point>   <type>  <options>   <dump>  <pass>
 # / was on /dev/sda1 during installation
 UUID=1244a110-6ee7-4f63-a8bf-330c425ff71c /               ext4    errors=remount-ro 0       1
 /dev/mapper/sda5_crypt none            swap    sw              0       0
