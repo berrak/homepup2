@@ -84,16 +84,6 @@ define puppet_postfix::install(
             require      => File[ "$serverpath" ],    
         }
         
-        # Replace the Debian initial configuration files with our template
-        
-        file { '/etc/postfix/main.cf' :
-              content =>  template( 'puppet_postfix/server.main.cf.erb' ),
-                owner => 'root',
-                group => 'root',
-              require => Package["postfix"],
-               notify => Service["postfix"],
-        }
-    
         # define template variables to allow smtp mail to leave internal lan
     
         if $no_lan_outbound_mail == 'true' {
@@ -106,6 +96,16 @@ define puppet_postfix::install(
             $defer_transport = ''          
         }
         
+        
+        # Replace the Debian initial configuration files with our template
+        
+        file { '/etc/postfix/main.cf' :
+              content =>  template( 'puppet_postfix/server.main.cf.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],
+               notify => Service["postfix"],
+        } 
     
         file { '/etc/postfix/master.cf' :
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),
