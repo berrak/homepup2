@@ -108,7 +108,7 @@ node 'rohan.home.tld' inherits basenode {
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
     puppet_postfix::install { 'mta' : ensure => installed,
-						mta_type => server, no_lan_outbound_mail => true }
+						mta_type => server, no_lan_outbound_mail => 'true' }
 	
     user_bashrc::config { 'bekr' : }
 	
@@ -135,7 +135,7 @@ node 'mordor.home.tld' inherits basenode {
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
     puppet_postfix::install { 'mta' : ensure => installed,
-	              mta_type => satellite, no_lan_outbound_mail => true }
+	              mta_type => satellite, no_lan_outbound_mail => 'true' }
 	
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }

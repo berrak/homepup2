@@ -30,7 +30,7 @@ define puppet_postfix::install(
     
     
     if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
-        fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either 'true' or 'false'.")
+        fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either true or false.")
     }
  
     
