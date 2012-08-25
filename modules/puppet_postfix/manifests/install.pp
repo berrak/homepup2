@@ -51,6 +51,8 @@ define puppet_postfix::install(
     
     $mynetwork_eth0 = $::network_eth0
     $mydomain = $::domain
+    $myfqdn = $::fqdn
+    
     
     if ( $mta_type == 'server' ) {
     
@@ -75,12 +77,12 @@ define puppet_postfix::install(
         
         # Now replace the Debian default configuration files with our templates
         
-        #file { '/etc/postfix/main.cf' :
-        #      content =>  template( 'puppet_postfix/server.main.cf.erb' ),
-        #        owner => 'root',
-        #        group => 'root',
-        #      require => Package["postfix"],
-        #}
+        file { '/etc/postfix/main.cf' :
+              content =>  template( 'puppet_postfix/server.main.cf.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],
+        }
     
         file { '/etc/postfix/master.cf' :
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),

@@ -14,9 +14,10 @@ inet_protocols = ipv4
 
 mailbox_size_limit = 0
 
-myhostname = rohan.home.tld
+myhostname = <%= myfqdn %>
+mydestination = <%= mydomain %>, <%= myfqdn %>, localhost.<%= mydomain %>, localhost
 myorigin = <%= mydomain %>
-mydestination = home.tld, rohan.home.tld, localhost.home.tld, localhost
+mail_name = /etc/mailname
 mynetworks = 127.0.0.0/8 <%= mynetwork_eth0 %>/24
 
 readme_directory = no
