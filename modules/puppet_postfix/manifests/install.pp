@@ -87,11 +87,13 @@ define puppet_postfix::install(
         # define template variables to allow smtp mail to leave internal lan
     
         if $no_lan_outbound_mail == 'true' {
-            $lan_outbound_hold_service = 'hold   unix  -    -    -    -    -   smtp'
+            $lan_outbound_hold_service = 'hold      unix  -       -       -       -       -       smtp'
+            
             $default_transport = 'default_transport = hold'
             $defer_transport = 'defer_transport = hold'            
         } else {
             $lan_outbound_hold_service = '#'
+            
             $default_transport = ''
             $defer_transport = ''          
         }
