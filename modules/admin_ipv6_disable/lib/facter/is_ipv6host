@@ -27,9 +27,9 @@ Facter.add(:is_ipv6host) do
     output = Facter::Util::Resolution.exec('/bin/ls /proc/sys/net')
     isipv6 = false
     
-    output.scan(/ipv4/).each do |str|
+    output.scan(/ipv6/).each do |str|
       ip = str.to_s
-      if ip == "ipv4" then
+      if ip == "ipv6" then
         isipv6 = true
       end
     end
