@@ -1,7 +1,7 @@
-# Fact: ipaddress6enabled
+# Fact: is_ipv6host
 #
-# Purpose: Returns either nil (no ipv6) or
-# string 'ipv6' in an ipv6 enabled system.
+# Purpose:
+# Returns either false (no ipv6) or 'true' in an ipv6 enabled system.
 #
 # Resolution:
 # Test if Linux kernel exports the ipv6 variables to user space.
@@ -21,14 +21,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-Facter.add(:ipaddress6enabled) do
+Facter.add(:is_ipv6host) do
   confine :kernel => :linux
   setcode do
     output = Facter::Util::Resolution.exec('/bin/ls /proc/sys/net')
-    ip = nil
+    isipv6 = false
     
     output.scan(/ipv6/).each do |str|
       ip = str.to_s
+      if ip == "ipv6" then
+        isipv6 = true
+      end
     end
     
   end
