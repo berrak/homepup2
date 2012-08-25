@@ -29,7 +29,7 @@ Facter.add(:is_ipv6host) do
     
     output.scan(/ipv6/).each do |str|
       ip = str.to_s
-      if ip == "ipv6" then
+      if ip == "ipv4" then
         isipv6 = true
       end
     end
