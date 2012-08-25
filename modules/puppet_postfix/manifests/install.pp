@@ -15,6 +15,7 @@ define puppet_postfix::install(
 ) {
 
     include puppet_postfix::params
+    include puppet_postfix::service
     include puppet_utils
 
     if ! ( $ensure in [ "present", "installed" ]) {
