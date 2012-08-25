@@ -42,6 +42,15 @@ define puppet_postfix::install(
     package { "exim4-base" : ensure => absent }
     package { "exim4-config" : ensure => absent }
     
+    # now when we possible have removed the mail reader, let's install one.
+    
+    package { "heirloom-mailx" : ensure => present }
+    
+    
+    # facter variables (assumes server interface is on eth0)
+    
+    $mynetwork_eth0 = $::network_eth0
+    $mydomain = $::domain
     
     if ( $mta_type == 'server' ) {
     
@@ -62,14 +71,25 @@ define puppet_postfix::install(
                   ensure => $ensure,
             responsefile => "$serverpath",
             require      => File[ "$serverpath" ],    
-            }
-           
-        # remove the preseed file every time to make
-        # sure we always use an updated version 
-        #exec { "remove_old_server_preseed" :
-        #    command => "/bin/rm $serverpath",
-        #    require => Package["postfix"],
-        #}
+        }
+        
+        # Now replace the Debian default configuration files with our templates
+        
+        file { '/etc/postfix/main.cf' :
+              content =>  template( 'puppet_postfix/server.main.cf.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],
+        }
+    
+        file { '/etc/postfix/master.cf' :
+              content =>  template( 'puppet_postfix/server.master.cf.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],           
+        }
+        
+        
         
         
     } elsif ( $mta_type == 'satellite' ) {
@@ -93,13 +113,7 @@ define puppet_postfix::install(
             require      => File[ "$satellitepath" ],    
         }
         
-        # remove the preseed file every time to make
-        # sure we always use an updated version
-        #
-        #exec { "remove_old_satellite_preseed" :
-        #    command => "/bin/rm $satellitepath",
-        #    require => Package["postfix"],
-        #}
+        
     
     
     } else {
