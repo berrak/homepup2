@@ -5,7 +5,11 @@ node basenode {
     include root_home
     include root_bashrc
 	
-    include admin_hosts
+    class { admin_hosts::config :
+		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+		smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+		
 	include admin_aptconf
     include admin_pinpuppet2_7
 

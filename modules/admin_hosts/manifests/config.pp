@@ -1,9 +1,13 @@
 ##
-## This class manage the setting in each nodes host file
+## This class manage the setting in each node host file.
+## 
 ##
-class admin_hosts::config {
+class admin_hosts::config (
+				$puppetserver_ip = '', $puppetserver_hostname = '',
+				     $gateway_ip = '',      $gateway_hostname = '',
+				        $smtp_ip = '',         $smtp_hostname = '',
+) {
 
-	include admin_hosts::params
 	
 	# Facter node variables
 	
@@ -12,20 +16,14 @@ class admin_hosts::config {
 	$myip = $::ipaddress
 	
 	
-	# Add puppet server and gateway ip to every hosts file
+	# Add puppet server, gateway, smtp ip to default hosts file
+	# but do not duplicate entries on these hosts. Assumes that,
+	# puppetmaster, smtp and the gateway host are on different systems.
 	
-	$mypuppetserverip = $::serverip
-	$mypuppetserverhostname = $::admin_hosts::params::mypuppetserver_hostname
-	$mygatewayip = $::admin_hosts::params::gateway_ip
-	
-	
-	# Since we do not wan't to duplicate host entries we have to test for
-	# the puppetserver and the gateway first, otherwise deploy the default
-	# host template. Assumes that puppetmsaster is NOT on the gateway host.
 	
 	case $myip {
     
-        $mypuppetserverip: {
+        $puppetserver_ip: {
         
             file { '/etc/hosts' :
                 content =>  template( 'admin_hosts/puppetserver.hosts.erb' ),
@@ -36,7 +34,7 @@ class admin_hosts::config {
         
         }
 	
-        $mygatewayip: {
+        $gateway_ip: {
         
             file { '/etc/hosts' :
                 content =>  template( 'admin_hosts/gateway.hosts.erb' ),
@@ -46,6 +44,18 @@ class admin_hosts::config {
             }
 
         }
+		
+        $smtp_ip: {
+        
+            file { '/etc/hosts' :
+                content =>  template( 'admin_hosts/smtp.hosts.erb' ),
+                  owner => 'root',
+                  group => 'root',
+                   mode => '0644',
+            }
+
+        }	
+		
         
         default: {
         
