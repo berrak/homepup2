@@ -9,22 +9,22 @@ class admin_ipv6_disable::config {
 
     $grubcmdline = 'ipv6.disable=1'	
 
-	exec { "updategrub" :
-		command => "/usr/sbin/update-grub",
-		refreshonly => true,
-    }
+	if ( $::is_ipv6host == 'true') {
 
-	file { "/etc/default/grub":
-		content => template( "admin_ipv6_disable/grub.erb" ),
-		owner => 'root',
-		group => 'root',
-		notify => Exec["updategrub"],
-	}
+		notify { "ipv6_reboot_msg":
+		message => "PUPPET IPv6 DISABLE: Reboot system to make changes active. Test with: dmesg | grep -i ipv6",
+		}
+
+		exec { "updategrub" :
+			command => "/usr/sbin/update-grub",
+			refreshonly => true,
+		}
 	
-	if ( $::ipaddress6enabled == 'ipv6') {
-	
-		notify {"ipv6_reboot_msg":
-		message => "PUPPET IPv6 DISABLE: REBOOT SYSTEM TO TAKE EFFECT AND TEST WITH: dmesg | grep -i ipv6",
+		file { "/etc/default/grub":
+			content => template( "admin_ipv6_disable/grub.erb" ),
+			owner => 'root',
+			group => 'root',
+			notify => Exec["updategrub"],
 		}
 		
     }
