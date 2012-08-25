@@ -6,12 +6,14 @@
 # Sample usage:
 #   puppet_postfix::install { 'mta' :
 #                              ensure => installed,
-#                            mta_type => server }
+#                            mta_type => server,
+#                no_lan_outbound_mail => 'true' }
 #
 define puppet_postfix::install(
     $ensure ,
     $mta_type = 'satellite',
-    $source = 'UNSET'
+    $source = 'UNSET',
+    $no_lan_outbound_mail = '',
 ) {
 
     include puppet_postfix::params
@@ -25,6 +27,12 @@ define puppet_postfix::install(
     if ! ( $mta_type in [ "server", "satellite" ]) {
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
+    
+    
+    if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
+        fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either 'true' or 'false'.")
+    }
+ 
     
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
     # the fqdn to agent host. Then refer to that file in the preseed files.
@@ -85,6 +93,19 @@ define puppet_postfix::install(
               require => Package["postfix"],
                notify => Service["postfix"],
         }
+    
+        # define template variables to allow smtp mail to leave internal lan
+    
+        if $no_lan_outbound_mail == 'true' {
+            $lan_outbound_hold_service = 'hold   unix  -    -    -    -    -   smtp'
+            $default_transport = 'default_transport = hold'
+            $defer_transport = 'defer_transport = hold'            
+        } else {
+            $lan_outbound_hold_service = '#'
+            $default_transport = ''
+            $defer_transport = ''          
+        }
+        
     
         file { '/etc/postfix/master.cf' :
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),

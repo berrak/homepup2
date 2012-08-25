@@ -1,4 +1,6 @@
-#
+#############################################################
+# MANAGED BY PUPPET DO NOT EDIT - CHANGES WILL BE WIPED OUT #
+#############################################################
 # Postfix master process configuration file.  For details on the format
 # of the file, see the master(5) manual page (command: "man 5 master").
 #
@@ -39,6 +41,7 @@ verify    unix  -       -       -       -       1       verify
 flush     unix  n       -       -       1000?   0       flush
 proxymap  unix  -       -       n       -       -       proxymap
 proxywrite unix -       -       n       -       1       proxymap
+<%= lan_outbound_hold_service %>
 smtp      unix  -       -       -       -       -       smtp
 relay     unix  -       -       -       -       -       smtp
 #       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
