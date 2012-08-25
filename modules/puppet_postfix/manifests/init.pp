@@ -4,6 +4,6 @@
 #
 class puppet_postfix {
 
-    include puppet_postfix::params, puppet_postfix::install
+    include puppet_postfix::params, puppet_postfix::install, puppet_postfix::service
 
 }

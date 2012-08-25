@@ -75,20 +75,22 @@ define puppet_postfix::install(
             require      => File[ "$serverpath" ],    
         }
         
-        # Now replace the Debian default configuration files with our templates
+        # Replace the Debian initial configuration files with our template
         
         file { '/etc/postfix/main.cf' :
               content =>  template( 'puppet_postfix/server.main.cf.erb' ),
                 owner => 'root',
                 group => 'root',
               require => Package["postfix"],
+               notify => Service["postfix"],
         }
     
         file { '/etc/postfix/master.cf' :
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["postfix"],           
+              require => Package["postfix"],
+               notify => Service["postfix"],
         }
         
         
