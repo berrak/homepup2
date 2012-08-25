@@ -6,7 +6,7 @@ postfix	postfix/mailname	string
 postfix	postfix/tlsmgr_upgrade_warning	boolean	
 postfix	postfix/recipient_delim	string	+
 postfix	postfix/main_mailer_type	select	Internet Site
-postfix	postfix/destinations	string	localhost
+postfix	postfix/destinations	string	localhost.localdomain
 postfix	postfix/retry_upgrade_warning	boolean	
 postfix	postfix/kernel_version_warning	boolean	
 postfix	postfix/not_configured	error	
