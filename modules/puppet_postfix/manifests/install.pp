@@ -7,13 +7,15 @@
 #   puppet_postfix::install { 'mta' :
 #                              ensure => installed,
 #                            mta_type => server,
-#                no_lan_outbound_mail => 'true' }
+#                no_lan_outbound_mail => 'true',
+#                      fqdn_relayhost => 'rohan.home.tld' }
 #
 define puppet_postfix::install(
     $ensure ,
     $mta_type = 'satellite',
     $source = 'UNSET',
     $no_lan_outbound_mail = '',
+    $fqdn_relayhost = ''
 ) {
 
     include puppet_postfix::params
@@ -57,6 +59,19 @@ define puppet_postfix::install(
     $mydomain = $::domain
     $myfqdn = $::fqdn
     
+    # define template variables to control external net mail delivery
+
+    if $no_lan_outbound_mail == 'true' {
+        $lan_outbound_hold_service = 'hold      unix  -       -       -       -       -       smtp'
+        
+        $default_transport = 'default_transport = hold'
+        $defer_transport = 'defer_transport = hold'            
+    } else {
+        $lan_outbound_hold_service = '#'
+        
+        $default_transport = ''
+        $defer_transport = ''          
+    }
     
     if ( $mta_type == 'server' ) {
     
@@ -83,21 +98,6 @@ define puppet_postfix::install(
             require      => File[ "$serverpath" ],    
         }
         
-        # define template variables to allow smtp mail to leave internal lan
-    
-        if $no_lan_outbound_mail == 'true' {
-            $lan_outbound_hold_service = 'hold      unix  -       -       -       -       -       smtp'
-            
-            $default_transport = 'default_transport = hold'
-            $defer_transport = 'defer_transport = hold'            
-        } else {
-            $lan_outbound_hold_service = '#'
-            
-            $default_transport = ''
-            $defer_transport = ''          
-        }
-        
-        
         # Replace the Debian initial configuration files with our template
         
         file { '/etc/postfix/main.cf' :
@@ -117,9 +117,11 @@ define puppet_postfix::install(
         }
         
         
-        
-        
     } elsif ( $mta_type == 'satellite' ) {
+    
+        if $fqdn_relayhost == '' {
+            fail("FAIL: In a satellite configuration the FQDN must be given!")
+        }
     
         $satellite_source = $source ? {
         'UNSET' => "puppet:///modules/puppet_postfix/satellite.postfix.preseed",
@@ -129,18 +131,27 @@ define puppet_postfix::install(
         $satellitepath = $::puppet_postfix::params::satellite_preseedfilepath
     
         file { "$satellitepath" : 
-            source => $satellite_source,
-             owner => 'root',
-             group => 'root',
+             source => $satellite_source,
+              owner => 'root',
+              group => 'root',
         }
     
         package { "postfix" :   
                   ensure => $ensure,
             responsefile => "$satellitepath",
-            require      => File[ "$satellitepath" ],    
+            require      => File[ "$satellitepath" ],
+            
         }
         
+        # Replace the Debian initial configuration file with our template
         
+        file { '/etc/postfix/main.cf' :
+              content =>  template( 'puppet_postfix/satellite.main.cf.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],
+               notify => Service["postfix"],
+        } 
     
     
     } else {
