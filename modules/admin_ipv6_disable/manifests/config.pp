@@ -9,7 +9,7 @@ class admin_ipv6_disable::config {
 
     $grubcmdline = 'ipv6.disable=1'	
 
-	if ( $::is_ipv6host == 'true') {
+	if ( $::is_ipv6host ) {
 
 		notify { "ipv6_reboot_msg":
 		message => "PUPPET IPv6 DISABLE: Reboot system to make changes active. Test with: dmesg | grep -i ipv6",
