@@ -147,7 +147,7 @@ node 'mordor.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' :
 	                            ensure => installed,
 						      mta_type => satellite,
-						fqdn_relayhost => 'rohan.home.tld' }		
+						smtp_relayhost_ip => '192.168.0.11' }		
 	
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }

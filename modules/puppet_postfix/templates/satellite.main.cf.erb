@@ -20,13 +20,13 @@ mailbox_size_limit = 0
 
 myhostname = <%= myfqdn %>
 mydestination = <%= myfqdn %>, localhost.<%= mydomain %>, localhost
-myorigin = /etc/mailname
+myorigin = $myhostname
 mynetworks = 127.0.0.0/8 <%= mynetwork_eth0 %>/24
 
 readme_directory = no
 recipient_delimiter = +
 relay_domains =
-relayhost = [<%= fqdn_relayhost %>]
+relayhost = <%= smtp_relayhost_ip %>
 
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
@@ -34,5 +34,5 @@ smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
 smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
-smtpd_use_tls=no
+smtpd_use_tls=yes
 

@@ -8,14 +8,14 @@
 #                              ensure => installed,
 #                            mta_type => server,
 #                no_lan_outbound_mail => 'true',
-#                      fqdn_relayhost => 'rohan.home.tld' }
+#                      smtp_relayhost_ip => '192.168.0.11' }
 #
 define puppet_postfix::install(
     $ensure ,
     $mta_type = 'satellite',
     $source = 'UNSET',
     $no_lan_outbound_mail = '',
-    $fqdn_relayhost = ''
+    $smtp_relayhost_ip = ''
 ) {
 
     include puppet_postfix::params
@@ -119,7 +119,7 @@ define puppet_postfix::install(
         
     } elsif ( $mta_type == 'satellite' ) {
     
-        if $fqdn_relayhost == '' {
+        if $smtp_relayhost_ip == '' {
             fail("FAIL: In a satellite configuration the FQDN must be given!")
         }
     
