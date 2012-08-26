@@ -99,7 +99,7 @@ node 'rohan.home.tld' inherits basenode {
     class { admin_fstab : fstabhost => 'rohan' }
 
     # load server firewall script
-    class { puppet_iptables::config : role => 'server',  }
+    class { puppet_iptables::config : role => 'server', hostnm => 'rohan' }
 	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -126,7 +126,7 @@ node 'mordor.home.tld' inherits basenode {
     class { admin_fstab : fstabhost => 'mordor' }
 
     # load server firewall script
-    class { puppet_iptables::config : role => 'server', hostnm => 'rohan' }
+    class { puppet_iptables::config : role => 'server' }
 	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
