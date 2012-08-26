@@ -1,7 +1,7 @@
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
-# $HOME/.bashrc.d/bekr: Local user (bekr) .bashrc 
+# $HOME/.bashrc.d/dakr: Local user (dakr) .bashrc 
 # snippet customization. This file is sourced from .bashrc 
 
 # umask 022
@@ -19,12 +19,6 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 alias cls='clear'
-
-# set PATH to include user's IDE if it exists
-if [ -d "$HOME/Komodo-IDE-6" ] ; then
-    PATH="$PATH:/$HOME/Komodo-IDE-6/bin"
-fi
-
 
 function backup() {
 	newname=$1.`date +%Y%m%d.%H%M.UTC.bak`;
