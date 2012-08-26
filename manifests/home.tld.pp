@@ -57,6 +57,9 @@ node 'carbon.home.tld' inherits basenode {
 	
     include puppet_cups
 	
+    puppet_postfix::install { 'mta' : ensure => installed,
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable
 
@@ -86,6 +89,9 @@ node 'gondor.home.tld' inherits basenode {
 	
 	# lan ntp server provids time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
+	
+    puppet_postfix::install { 'mta' : ensure => installed,
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable
@@ -144,10 +150,8 @@ node 'mordor.home.tld' inherits basenode {
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    puppet_postfix::install { 'mta' :
-	                            ensure => installed,
-						      mta_type => satellite,
-						smtp_relayhost_ip => '192.168.0.11' }		
+    puppet_postfix::install { 'mta' : ensure => installed,
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }		
 	
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
