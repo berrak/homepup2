@@ -1,7 +1,7 @@
 #
 # Install preseed define. The two preseed files are created
-# with postfix alternatives Internet and Satellite.
-# The preseeds files are created with ipv6 disabled.
+# with Debian postfix alternatives Internet and Satellite.
+# Post-install configuration with templates after initial setup.
 #
 # Sample usage:
 #   puppet_postfix::install { 'mta' :
@@ -26,11 +26,6 @@ define puppet_postfix::install(
 
     if ! ( $mta_type in [ "server", "satellite" ]) {
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
-    }
-    
-    
-    if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
-        fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either true or false.")
     }
  
     
@@ -64,6 +59,10 @@ define puppet_postfix::install(
     
     
     if ( $mta_type == 'server' ) {
+    
+        if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
+            fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either true or false.")
+        }
     
         $server_source = $source ? {
             'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",

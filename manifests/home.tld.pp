@@ -1,3 +1,6 @@
+###############################
+## Included in every node
+###############################
 node basenode {
 	
 	include puppet_utils
@@ -16,7 +19,7 @@ node basenode {
     admin_bndl::install { 'coresysapps' : }
     admin_bndl::install { 'cliadminapps' : }
 	
-	# high memory usage during index rebuild
+	# high memory usage during index rebuild - never allow install.
     admin_pkg::blacklist { 'apt-xapian-index' :}
 	
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
@@ -24,8 +27,9 @@ node basenode {
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
 
 }
-
+###############################
 ## puppet master server
+###############################
 node 'carbon.home.tld' inherits basenode {
 
     include puppet_master
@@ -57,8 +61,9 @@ node 'carbon.home.tld' inherits basenode {
     include admin_ipv6_disable
 
 }
-
+###############################
 ## gateway host/lan ntp server
+###############################
 node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
@@ -86,8 +91,9 @@ node 'gondor.home.tld' inherits basenode {
     include admin_ipv6_disable
 
 }
-
+###############################
 ## local intra-lan mail server
+###############################
 node 'rohan.home.tld' inherits basenode {
 
     include puppet_agent
@@ -107,17 +113,21 @@ node 'rohan.home.tld' inherits basenode {
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    puppet_postfix::install { 'mta' : ensure => installed,
-						mta_type => server, no_lan_outbound_mail => 'true' }
+    puppet_postfix::install { 'mta' :
+						      ensure => installed,
+				            mta_type => server,
+				no_lan_outbound_mail => 'true' }
 	
     user_bashrc::config { 'bekr' : }
+    user_bashrc::config { 'dakr' : }
 	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable
 
 }
-
+###############################
 ## developer host (laptop)
+###############################
 node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
@@ -125,8 +135,8 @@ node 'mordor.home.tld' inherits basenode {
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab : fstabhost => 'mordor' }
 
-    # load server firewall script
-    class { puppet_iptables::config : role => 'server' }
+    # load desktop firewall script
+    class { puppet_iptables::config : role => 'desktop' }
 	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -134,8 +144,7 @@ node 'mordor.home.tld' inherits basenode {
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    puppet_postfix::install { 'mta' : ensure => installed,
-	              mta_type => satellite, no_lan_outbound_mail => 'true' }
+    puppet_postfix::install { 'mta' : ensure => installed, mta_type => satellite }
 	
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
@@ -151,3 +160,6 @@ node 'mordor.home.tld' inherits basenode {
 	
 
 }
+###############################
+## eof
+###############################
