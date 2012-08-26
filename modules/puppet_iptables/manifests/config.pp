@@ -5,7 +5,7 @@
 ##
 ## Sample usage:
 ##     class { puppet_iptables::config : role => 'server' }
-##     class { puppet_iptables::config : role => 'server', hostnm = 'rohan' }
+##     class { puppet_iptables::config : role => 'server', hostnm => 'rohan' }
 ##
 class puppet_iptables::config ( $role,
                                 $hostnm='',
