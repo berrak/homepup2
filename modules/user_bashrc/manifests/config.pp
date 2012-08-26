@@ -41,7 +41,7 @@ define user_bashrc::config {
 	
 		# if the local customization file is changed, source .bashrc again
 	
-	    exec { "reloadlocaluserbashrc":
+	    exec { "reloadlocaluserbashrc.${name}":
 			command => "/bin/sh . /home/${name}/.bashrc",
 	      subscribe => File["/home/${name}/.bashrc.d/${name}"],
 	    refreshonly => true,
