@@ -25,7 +25,7 @@ mynetworks = 127.0.0.0/8 <%= mynetwork_eth0 %>/24
 
 readme_directory = no
 recipient_delimiter = +
-relay_domains =
+relay_domains = $mydestination
 relayhost = 
 
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache

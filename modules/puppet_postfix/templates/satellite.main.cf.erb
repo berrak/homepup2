@@ -26,7 +26,7 @@ mynetworks = 127.0.0.0/8 <%= mynetwork_eth0 %>/24
 readme_directory = no
 recipient_delimiter = +
 relay_domains =
-relayhost = <%= fqdn_relayhost %>
+relayhost = [<%= fqdn_relayhost %>]
 
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
