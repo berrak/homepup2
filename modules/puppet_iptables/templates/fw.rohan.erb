@@ -1,8 +1,8 @@
 #!/bin/sh
+# /root/bin/fw.rohan
 #############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
-# /root/bin/fw.rohan
 #
 # Custom iptables rules for a dedicated postfix server
 #
@@ -20,7 +20,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 #
 ## Basic data
 
@@ -58,6 +57,14 @@ $IPTABLES -P INPUT DROP
 $IPTABLES -P OUTPUT DROP
 $IPTABLES -P FORWARD DROP
 
+#--------------------------------------------------------------------------------------
+## Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
+$IPTABLES -N broadcast-drop
+# $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST DROP "
+$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
+$IPTABLES -A broadcast-drop -j RETURN
+#--------------------------------------------------------------------------------------
+
 ## Free reign to loopback interfaces
 $IPTABLES -I INPUT 1 -i lo -j ACCEPT
 $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
@@ -87,17 +94,26 @@ $IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 25 -m state --
 # ntp time information (udp) from our internal LAN NTP server
 $IPTABLES -A INPUT -p udp -d $HOSTADDR -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
+# imap clients access user mailboxes to this server on this port
+$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
+
 # puppet master talks to clients on this port
 $IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
 # allow ping in from our internal net
 $IPTABLES -A INPUT -p icmp -d $HOSTADDR -s $NET_INT -j ACCEPT
 
+# do not not allow broadcasts from internal net
+$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
+
 #-------------------------------------------------------------------------
 # Potential external inbound traffic (from external net --> this host)
 #-------------------------------------------------------------------------
 
 $IPTABLES -A INPUT -p all -d $HOSTADDR ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# do not not allow broadcasts from any other non-local addresses
+$IPTABLES -t filter -A INPUT ! -s $NET_INT -j broadcast-drop
 
 ## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
 
@@ -127,10 +143,10 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 43 -m state --state NEW 
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
 
-# allow web http out to external net
+# allow web http out to external net to get Debian upgrades
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 80 -m state --state NEW -j ACCEPT
 
-# allow https out to external net
+# allow https out to external net (remove?)
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW -j ACCEPT
 
 
@@ -140,9 +156,6 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW
 
 # allow all established and related out to internal net
 $IPTABLES -A OUTPUT -p all -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# allow ssh out to internal net
-$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow smtp to internal net
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25 -m state --state NEW -j ACCEPT
