@@ -48,7 +48,8 @@ define puppet_postfix::install(
     package { "exim4-base" : ensure => absent }
     package { "exim4-config" : ensure => absent }
     
-    # now when we possible have removed the mail reader, let's install one.
+    # now when we possible have removed the mua, let's install one
+    # for testing sending emails.
     
     package { "heirloom-mailx" : ensure => present }
     
@@ -97,6 +98,11 @@ define puppet_postfix::install(
             responsefile => "$serverpath",
             require      => File[ "$serverpath" ],    
         }
+        
+        # install mutt mail reader for IMAP tests.
+        
+        package { "mutt" : ensure => present }
+
         
         # Replace the Debian initial configuration files with our template
         
