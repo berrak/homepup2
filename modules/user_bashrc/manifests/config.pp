@@ -10,7 +10,7 @@ define user_bashrc::config {
 	
     # array of real users...(not root, or system accounts)
 		
-    if ( $name in ["bekr"] ) {
+    if ( $name in ["bekr", "dakr"] ) {
 		
         # ensure that a local .bashrc sub directory for our snippets exist 
     
@@ -49,7 +49,7 @@ define user_bashrc::config {
 	
 	} else {
 		
-	    fail("Unknown user ($name) on this host!")
+	    fail("FAIL: Unknown user ($name) for puppet on this host!")
 		
 	}
 	
