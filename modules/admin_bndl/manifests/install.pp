@@ -29,7 +29,7 @@ define admin_bndl::install {
             # Applications in addition to the default
             # Debian (wheezy) LXDE desktop installation.
             
-            package  { [ "abiword", "evince" ] :
+            package  { [ "abiword", "evince", "icedove", "libreoffice" ] :
                 ensure => installed }
         
         }
