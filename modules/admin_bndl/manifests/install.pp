@@ -41,8 +41,9 @@ define admin_bndl::install {
             # lsof: list open files
             # psmisc: miscellaneous utilities that use the proc FS
             # gddrescue: backup image of disk despite disk/head errors
+			# lshw: system hardware information
         
-            package  { [ "lsof", "psmisc", "gddrescue" ] :
+            package  { [ "lsof", "psmisc", "gddrescue", "lshw" ] :
                  ensure => installed }
         
         }
