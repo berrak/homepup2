@@ -25,12 +25,15 @@ class puppet_dovecot_imap::config ( $ipv6 ='' ) {
         
         }
 
+        # for ipv4 only listen change, do not depend on a successful install, only
+        # that /etc/dovecot exist and then change the dovecot configuration file.
+
         file { '/etc/dovecot/dovecot.conf' :
         
             content =>  template( 'puppet_dovecot_imap/dovecot.conf.erb' ),
               owner => 'root',
               group => 'root',
-		    require => Class["puppet_dovecot_imap::install"],
+
             
         }
         

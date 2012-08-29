@@ -3,7 +3,7 @@
 ##
 class puppet_dovecot_imap::service {
 
-    include puppet_dovecot_imap::install
+    include puppet_dovecot_imap::config
 
 	service { "dovecot":
 		
@@ -11,7 +11,7 @@ class puppet_dovecot_imap::service {
 		 hasstatus => true,
 		hasrestart => true,
 		    enable => true,
-		   require => Class["puppet_dovecot_imap::install"],
+		   require => File["/etc/dovecot/dovecot.conf"],
 
 	}
 
