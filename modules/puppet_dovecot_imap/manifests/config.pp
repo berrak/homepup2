@@ -28,7 +28,7 @@ class puppet_dovecot_imap::config ( $ipv6 ='' ) {
             content =>  template( 'puppet_dovecot_imap/dovecot.conf.erb' ),
               owner => 'root',
               group => 'root',
-            require => Package["dovecot"],
+            require => Package["dovecot-imapd"],
             
         }
         

@@ -9,7 +9,7 @@ class puppet_dovecot_imap::service {
 		 hasstatus => true,
 		hasrestart => true,
 		    enable => true,
-		   require => Package["dovecot"],
+		   require => Package["dovecot-imapd"],
 
 	}
 
