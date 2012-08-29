@@ -7,6 +7,8 @@
 ##
 class puppet_dovecot_imap::config ( $ipv6 ='' ) {
 
+        include puppet_dovecot_imap::install
+
         if ! ( $ipv6 in [ "yes", "no" ]) {
         
             fail("FAIL: Missing ipv6 capability parameter ($ipv6), must be 'yes' or 'no'.")
@@ -28,7 +30,7 @@ class puppet_dovecot_imap::config ( $ipv6 ='' ) {
             content =>  template( 'puppet_dovecot_imap/dovecot.conf.erb' ),
               owner => 'root',
               group => 'root',
-            require => Package["dovecot-imapd"],
+		    require => Class["puppet_dovecot_imap::install"],
             
         }
         

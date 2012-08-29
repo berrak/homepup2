@@ -3,13 +3,15 @@
 ##
 class puppet_dovecot_imap::service {
 
+    include puppet_dovecot_imap::install
+
 	service { "dovecot":
 		
 		    ensure => running,
 		 hasstatus => true,
 		hasrestart => true,
 		    enable => true,
-		   require => Package["dovecot-imapd"],
+		   require => Class["puppet_dovecot_imap::install"],
 
 	}
 

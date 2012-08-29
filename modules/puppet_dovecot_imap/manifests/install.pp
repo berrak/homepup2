@@ -3,7 +3,7 @@
 ##
 class puppet_dovecot_imap::install {
 
-    $dovecotlist = [ "dovecot-core", "dovecot_imapd" ]
+    $dovecotlist = [ "dovecot-core", "dovecot-imapd" ]
     
     package { [ "$dovecotlist" : ensure => present }
     
