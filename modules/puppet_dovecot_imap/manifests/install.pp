@@ -8,7 +8,7 @@
 class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
     include puppet_dovecot_imap::service
-    include virtual_accounts
+    include virtual_groups, virtual_accounts
   
     if ! ( $ipv6 in [ "yes", "no" ]) {
         fail("FAIL: Missing ipv6 capability parameter ($ipv6), must be 'yes' or 'no'.")
@@ -48,7 +48,7 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     
     # create the virtual dovecot mailuser
     
-    realize( User["vmail"] )
+    realize( Group["vmail"], User["vmail"] )
     
     # create unique dovecot log files
 
