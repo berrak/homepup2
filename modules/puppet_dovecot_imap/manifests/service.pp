@@ -10,6 +10,7 @@ class puppet_dovecot_imap::service {
 		hasrestart => true,
 		    enable => true,
 		   require => Package["dovecot-imapd"],
+		 subscribe => File["/etc/dovecot/dovecot.conf"],
 	}
 
 }

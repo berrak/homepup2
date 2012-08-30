@@ -29,7 +29,7 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 		group => 'root',
 	}
 
-    # debian installer should not overwrite this initial /etc/dovecot.conf 
+    # Debian does not overwrite this initial /etc/dovecot.conf 
 
     file { "initial_dovecot_conf_file" :
            name => '/etc/dovecot/dovecot.conf',
@@ -39,5 +39,23 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     } 
   
     package { "dovecot-imapd" : ensure => present }
+    
+    
+    ## Here we can modify and use the post-install version of 'dovecot.conf'
+
+    if $ipv6 == 'no' {
+        $mysourcetemplate = 'puppet_dovecot_imap/dovecot.conf.ipv4.erb'
+    
+    } elsif ($ipv6 == 'yes')  {
+        $mysourcetemplate = 'puppet_dovecot_imap/dovecot.conf.ipv4_ipv6.erb'
+    
+    }
+
+    file { "/etc/dovecot/dovecot.conf" :
+        content =>  template( $mysourcetemplate ),
+          owner => 'root',
+          group => 'root',
+          notify => Class["puppet_dovecot_imap::service"],
+    } 
     
 }
