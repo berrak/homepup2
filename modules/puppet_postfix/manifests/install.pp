@@ -144,8 +144,7 @@ define puppet_postfix::install(
               group => 'root',
         }
     
-        package { $postlist :
-                   alias => 'mailpackages', 
+        package { "mailpackages" :
                   ensure => $ensure,
             responsefile => "$satellitepath",
             require      => File[ "$satellitepath" ],
