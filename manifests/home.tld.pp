@@ -124,7 +124,7 @@ node 'rohan.home.tld' inherits basenode {
 				            mta_type => server,
 				no_lan_outbound_mail => 'true' }
 				
-    class { puppet_dovecot_imap::config : ipv6 => 'no' }
+    class { puppet_dovecot_imap::install : ipv6 => 'no' }
 	
     user_bashrc::config { 'bekr' : }
     user_bashrc::config { 'dakr' : }
