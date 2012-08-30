@@ -45,6 +45,9 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
     package { "dovecot-imapd" : ensure => present }
     
+    # create the virtual dovecot mailuser
+    
+    realize( User["vmail"] )
     
     # create unique dovecot log files
 
