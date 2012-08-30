@@ -42,14 +42,13 @@ define puppet_postfix::install(
     }
     
     # in case exim4 family of packages are installed - remove them, since
-    # they conflicts with postfix. Note that mua 'bsd-mailx' is removed as well.
+    # they conflicts with postfix. Note 'bsd-mailx' (mua) is removed as well.
     
     package { "exim4" : ensure => absent }
     package { "exim4-base" : ensure => absent }
     package { "exim4-config" : ensure => absent }
     
-    # now when we possible have removed the mua, let's install one
-    # for testing sending emails.
+    # install a new mail user agent (mua) for cli test emails.
     
     package { "heirloom-mailx" : ensure => present }
     
@@ -76,8 +75,11 @@ define puppet_postfix::install(
         
     package { "mutt" : ensure => present }
     
-    # add also cyrus SASL pluggable authentication modules and common binaries
-    $postlist = [ "postfix", "libsasl2-modules", "sasl2-bin" ] 
+    # install cyrus SASL pluggable authentication modules and common binaries
+    
+    package { "libsasl2-modules" : ensure => present }
+    package { "sasl2-bin" : ensure => present }
+    
     
     if ( $mta_type == 'server' ) {
     
@@ -98,8 +100,7 @@ define puppet_postfix::install(
               group => 'root',
         }
     
-        package { $postlist :
-                   alias => 'mailpackages', 
+        package { "postfix" :
                   ensure => $ensure,
             responsefile => "$serverpath",
             require      => File[ "$serverpath" ],    
@@ -112,7 +113,7 @@ define puppet_postfix::install(
               content =>  template( 'puppet_postfix/server.main.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["mailpackages"],
+              require => Package["postfix"],
                notify => Service["postfix"],
         } 
     
@@ -120,7 +121,7 @@ define puppet_postfix::install(
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["mailpackages"],
+              require => Package["postfix"],
                notify => Service["postfix"],
         }
         
@@ -144,7 +145,7 @@ define puppet_postfix::install(
               group => 'root',
         }
     
-        package { "mailpackages" :
+        package { "postfix" :
                   ensure => $ensure,
             responsefile => "$satellitepath",
             require      => File[ "$satellitepath" ],
@@ -157,7 +158,7 @@ define puppet_postfix::install(
               content =>  template( 'puppet_postfix/satellite.main.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["mailpackages"],
+              require => Package["postfix"],
                notify => Service["postfix"],
         } 
     

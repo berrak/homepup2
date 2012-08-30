@@ -9,7 +9,7 @@ class puppet_postfix::service {
 		 hasstatus => true,
 		hasrestart => true,
 		    enable => true,
-		   require => Package["mailpackages"],
+		   require => Package["postfix"],
 	}
 
 }
