@@ -8,7 +8,7 @@ class virtual_accounts {
 
     @user { "vmail" :
         ensure => present,
-           uid => 'vmail',
+           uid => '2000',
            gid => 'vmail',
         groups => 'mail',
           home => '/var/mail',
