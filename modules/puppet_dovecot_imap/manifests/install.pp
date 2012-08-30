@@ -7,6 +7,8 @@
 ##
 class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
+    include puppet_dovecot_imap::service
+  
     if ! ( $ipv6 in [ "yes", "no" ]) {
         fail("FAIL: Missing ipv6 capability parameter ($ipv6), must be 'yes' or 'no'.")
     }
@@ -27,11 +29,17 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 		 ensure => directory,
 		  owner => 'root',
 		  group => 'root',
-        require => Package["dovecot-imapd"],
-         notify => Class["puppet_dovecot_imap::service"],
 	}
 
     # Debian does not overwrite the /etc/dovecot.conf during package install!
+    
+    file { "/etc/dovecot/dovecot.conf":
+        content =>  template( $mysourcetemplate ),
+          owner => 'root',
+          group => 'root',
+         notify => Class["puppet_dovecot_imap::service"],
+	} 
+    
   
     package { "dovecot-imapd" : ensure => present }
     
