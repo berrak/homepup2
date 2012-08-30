@@ -4,9 +4,6 @@
 ##
 class puppet_dovecot_imap::config {
 
-    include puppet_dovecot_imap::service
-    include puppet_dovecot_imap::install
-
     # create unique dovecot log files
 
     file { "/var/log/dovecot-imap.err":
@@ -30,6 +27,4 @@ class puppet_dovecot_imap::config {
          notify => Class["puppet_dovecot_imap::service"],
 	}
 	
-	
-
 }
