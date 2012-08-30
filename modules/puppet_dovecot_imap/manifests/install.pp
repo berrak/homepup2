@@ -41,8 +41,33 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
          notify => Class["puppet_dovecot_imap::service"],
 	} 
     
+    # now install dovecot
   
     package { "dovecot-imapd" : ensure => present }
+    
+    
+    # create unique dovecot log files
+
+    file { "/var/log/dovecot-imap.err":
+		 ensure => present,
+		  owner => 'root',
+		  group => 'root',
+	}
+
+    file { "/var/log/dovecot-imap.info":
+		 ensure => present,
+		  owner => 'root',
+		  group => 'root',
+	}
+    
+	# dovecot configuration snippets
+
+    file { "/etc/dovecot/conf.d/10-logging.conf":
+		 source => "puppet:///modules/puppet_dovecot_imap/10-logging.conf",
+		  owner => 'root',
+		  group => 'root',
+         notify => Class["puppet_dovecot_imap::service"],
+	}    
     
     
 }
