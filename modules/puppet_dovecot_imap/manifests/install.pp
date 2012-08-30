@@ -50,7 +50,11 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     
     realize( Group["vmail"], User["vmail"] )
     
-    # create unique dovecot log files
+    ##
+    ## dovecot configuration snippets
+    ##
+    
+    ## create unique dovecot log files
 
     file { "/var/log/dovecot-imap.err":
 		 ensure => present,
@@ -63,8 +67,6 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 		  owner => 'root',
 		  group => 'root',
 	}
-    
-	# dovecot configuration snippets
 
     file { "/etc/dovecot/conf.d/10-logging.conf":
 		 source => "puppet:///modules/puppet_dovecot_imap/10-logging.conf",
@@ -72,6 +74,15 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 		  group => 'root',
          notify => Class["puppet_dovecot_imap::service"],
 	}    
+    
+    # authentication processes section
+    
+    file { "/etc/dovecot/conf.d/10-auth.conf":
+		 source => "puppet:///modules/puppet_dovecot_imap/10-auth.conf",
+		  owner => 'root',
+		  group => 'root',
+         notify => Class["puppet_dovecot_imap::service"],
+	}  
     
     
 }
