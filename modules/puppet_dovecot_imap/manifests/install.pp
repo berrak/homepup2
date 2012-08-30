@@ -37,6 +37,7 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
         content =>  template( $mysourcetemplate ),
           owner => 'root',
           group => 'root',
+         before => Package["dovecot-imapd"],
          notify => Class["puppet_dovecot_imap::service"],
 	} 
     
