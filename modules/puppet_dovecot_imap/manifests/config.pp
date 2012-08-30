@@ -10,24 +10,26 @@ class puppet_dovecot_imap::config {
     # create unique dovecot log files
 
     file { "/var/log/dovecot-imap.err":
-		 ensure => present,
+		 ensure => file,
 		  owner => 'root',
 		  group => 'root',
 	}
 
     file { "/var/log/dovecot-imap.info":
-		 ensure => present,
+		 ensure => file,
 		  owner => 'root',
 		  group => 'root',
 	}
     
 	# dovecot configuration snippets
 
-    file { "/etc/dovecot/conf.d":
-		 source => "puppet:///modules/puppet_dovecot_imap/files",
-		recurse => true,
-		require => Package["dovecot-imapd"],
+    file { "/etc/dovecot/conf.d/10-logging.conf":
+		 source => "puppet:///modules/puppet_dovecot_imap/10-logging.conf",
+		  owner => 'root',
+		  group => 'root',
          notify => Class["puppet_dovecot_imap::service"],
 	}
+	
+	
 
 }
