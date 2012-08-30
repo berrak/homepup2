@@ -72,6 +72,13 @@ define puppet_postfix::install(
         
     }
     
+    # install mutt mail reader for mail tests.
+        
+    package { "mutt" : ensure => present }
+    
+    # add also cyrus SASL pluggable authentication modules and common binaries
+    $postlist = [ "postfix", "libsasl2-modules", "sasl2-bin" ] 
+    
     if ( $mta_type == 'server' ) {
     
         if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
@@ -91,16 +98,13 @@ define puppet_postfix::install(
               group => 'root',
         }
     
-        package { "postfix" :   
+        package { $postlist :
+                   alias => 'mailpackages', 
                   ensure => $ensure,
             responsefile => "$serverpath",
             require      => File[ "$serverpath" ],    
         }
         
-        # install mutt mail reader for IMAP tests.
-        
-        package { "mutt" : ensure => present }
-
         
         # Replace the Debian initial configuration files with our template
         
@@ -108,7 +112,7 @@ define puppet_postfix::install(
               content =>  template( 'puppet_postfix/server.main.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["postfix"],
+              require => Package["mailpackages"],
                notify => Service["postfix"],
         } 
     
@@ -116,7 +120,7 @@ define puppet_postfix::install(
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["postfix"],
+              require => Package["mailpackages"],
                notify => Service["postfix"],
         }
         
@@ -140,7 +144,8 @@ define puppet_postfix::install(
               group => 'root',
         }
     
-        package { "postfix" :   
+        package { $postlist :
+                   alias => 'mailpackages', 
                   ensure => $ensure,
             responsefile => "$satellitepath",
             require      => File[ "$satellitepath" ],
@@ -153,7 +158,7 @@ define puppet_postfix::install(
               content =>  template( 'puppet_postfix/satellite.main.cf.erb' ),
                 owner => 'root',
                 group => 'root',
-              require => Package["postfix"],
+              require => Package["mailpackages"],
                notify => Service["postfix"],
         } 
     
