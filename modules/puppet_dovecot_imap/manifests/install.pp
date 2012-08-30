@@ -8,6 +8,7 @@
 class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
     include puppet_dovecot_imap::service
+    include virtual_accounts
   
     if ! ( $ipv6 in [ "yes", "no" ]) {
         fail("FAIL: Missing ipv6 capability parameter ($ipv6), must be 'yes' or 'no'.")
