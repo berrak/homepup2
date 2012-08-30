@@ -42,8 +42,9 @@ define admin_bndl::install {
             # psmisc: miscellaneous utilities that use the proc FS
             # gddrescue: backup image of disk despite disk/head errors
 			# lshw: system hardware information
+			# telnet: telnet client
         
-            package  { [ "lsof", "psmisc", "gddrescue", "lshw" ] :
+            package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet" ] :
                  ensure => installed }
         
         }
