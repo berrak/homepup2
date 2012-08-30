@@ -12,10 +12,10 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     }
     
     if $ipv6 == 'no' {
-        $mylisten = 'listen = *'
+        $mysourcetemplate = 'puppet_dovecot_imap/dovecot.conf.ipv4.erb'
     
     } elsif ($ipv6 == 'yes')  {
-        $mylisten = 'listen = *,::'  
+        $mysourcetemplate = 'puppet_dovecot_imap/dovecot.conf.ipv4_ipv6.erb'
     
     }
     
@@ -24,38 +24,16 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     # to set listen to ip4+ipv6, and 'terminate itself' on an ipv4 system.
     
     file { "/etc/dovecot":
-		ensure => directory,
-		owner => 'root',
-		group => 'root',
+		 ensure => directory,
+		  owner => 'root',
+		  group => 'root',
+        require => Package["dovecot-imapd"],
+         notify => Class["puppet_dovecot_imap::service"],
 	}
 
-    # Debian does not overwrite this initial /etc/dovecot.conf 
-
-    file { "initial_dovecot_conf_file" :
-           name => '/etc/dovecot/dovecot.conf',
-        content =>  template( 'puppet_dovecot_imap/dovecot.conf.initial.erb' ),
-          owner => 'root',
-          group => 'root',
-    } 
+    # Debian does not overwrite the /etc/dovecot.conf during package install!
   
     package { "dovecot-imapd" : ensure => present }
     
-    
-    ## Here we can modify and use the post-install version of 'dovecot.conf'
-
-    if $ipv6 == 'no' {
-        $mysourcetemplate = 'puppet_dovecot_imap/dovecot.conf.ipv4.erb'
-    
-    } elsif ($ipv6 == 'yes')  {
-        $mysourcetemplate = 'puppet_dovecot_imap/dovecot.conf.ipv4_ipv6.erb'
-    
-    }
-
-    file { "/etc/dovecot/dovecot.conf" :
-        content =>  template( $mysourcetemplate ),
-          owner => 'root',
-          group => 'root',
-          notify => Class["puppet_dovecot_imap::service"],
-    } 
     
 }
