@@ -1,8 +1,14 @@
 ##
-## Class to manage mutt Mail User Agent (mua).
+## Define to manage mutt Mail User Agent (mua).
 ##
-class puppet_mutt::install {
+define puppet_mutt::install {
 
     package { "mutt" : ensure => present }
+    
+    file { "/home/${name}/.muttrc" : 
+        source => "puppet:///modules/puppet_mutt/muttrc",
+        require => Package["mutt"],
+    }
+    
 
 }

@@ -31,8 +31,10 @@ define puppet_postfix::install(
     if ! ( $mta_type in [ "server", "satellite" ]) {
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
- 
-    
+
+    if ( $root_mail_user == '') {
+        fail("FAIL: A local user on the mail server must be appointed for 'roots' mails.")
+    } 
     
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
     # the fqdn to agent host. Then refer to that file in the preseed files.
