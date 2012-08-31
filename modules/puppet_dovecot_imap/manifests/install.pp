@@ -7,7 +7,7 @@
 ##
 class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
-    include puppet_dovecot_imap::service
+    include puppet_dovecot_imap::service, puppet_dovecot_imap::vmail
     include virtual_groups, virtual_accounts
   
     if ! ( $ipv6 in [ "yes", "no" ]) {
