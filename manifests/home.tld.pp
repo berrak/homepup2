@@ -58,7 +58,7 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_cups
 	
 	# install local mail reader 
-	puppet_mutt::install { 'bekr': }
+	puppet_mutt::install { 'bekr' : }
 	
     puppet_postfix::install { 'mta' : ensure => installed,
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
