@@ -8,7 +8,7 @@
 #                              ensure => installed,
 #                            mta_type => server,
 #                no_lan_outbound_mail => 'true',
-#                      root_mail_user => 'bekr',
+#               server_root_mail_user => 'bekr',
 #                   smtp_relayhost_ip => '192.168.0.11' }
 #
 define puppet_postfix::install(
@@ -16,7 +16,7 @@ define puppet_postfix::install(
     $mta_type = 'satellite',
     $source = 'UNSET',
     $no_lan_outbound_mail = '',
-    $root_mail_user='',
+    $server_root_mail_user='',
     $smtp_relayhost_ip = ''
 ) {
 
@@ -32,8 +32,7 @@ define puppet_postfix::install(
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
 
-    if ( $root_mail_user == '') {
-        fail("FAIL: A local user on the mail server must be appointed for 'roots' mails.")
+  
     } 
     
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
@@ -43,8 +42,6 @@ define puppet_postfix::install(
             
         file => "/etc/mailname",
         line => "${::hostname}.${::domain}", 
-    
-    }
     
     # in case exim4 family of packages are installed - remove them, since
     # they conflicts with postfix. Note 'bsd-mailx' (mua) is removed as well.
@@ -87,7 +84,11 @@ define puppet_postfix::install(
         if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
             fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either true or false.")
         }
-    
+
+        if ( $root_mail_user == '') {
+            fail("FAIL: A local user on the mail server must be appointed for 'roots' mails.")
+        }
+
         $server_source = $source ? {
             'UNSET' => "puppet:///modules/puppet_postfix/server.postfix.preseed",
             default => $source,
@@ -129,7 +130,7 @@ define puppet_postfix::install(
         # create an alias file and send root mails to an
         # admin user for local and in domain transports.
         
-        $rootmailuser = $root_mail_user
+        $rootmailuser = $server_root_mail_user
         
         file { '/etc/postfix/virtual' :
               content =>  template( 'puppet_postfix/virtualaliases.erb' ),

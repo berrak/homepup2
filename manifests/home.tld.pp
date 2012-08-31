@@ -125,7 +125,7 @@ node 'rohan.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' :
 						      ensure => installed,
 				            mta_type => server,
-				      root_mail_user => 'bekr',
+		       server_root_mail_user => 'bekr',
 				no_lan_outbound_mail => 'true' }
 				
     class { puppet_dovecot_imap::install : ipv6 => 'no' }
