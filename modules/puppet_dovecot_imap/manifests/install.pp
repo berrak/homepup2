@@ -71,4 +71,16 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
          notify => Class["puppet_dovecot_imap::service"],
 	}    
     
+    file { "/etc/dovecot/imap.passwd":
+        ensure => present,
+		 owner => 'root',
+		 group => 'root',
+	}    
+
+    puppet_utils::append_if_no_such_line { "create_imap_user" :
+                        
+                        file => '/etc/dovecot/imap.passwd',
+                        line => 'bekr:{PLAIN}pass',
+    }
+    
 }
