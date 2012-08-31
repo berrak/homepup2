@@ -3,8 +3,8 @@
 ##
 class puppet_mutt {
 
-   package { "mutt" : ensure => present }
-
    include puppet_mutt::install 
+
+   package { "mutt" : ensure => present }
 
 }
