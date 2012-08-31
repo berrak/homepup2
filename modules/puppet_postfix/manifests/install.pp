@@ -32,8 +32,6 @@ define puppet_postfix::install(
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
 
-  
-    } 
     
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
     # the fqdn to agent host. Then refer to that file in the preseed files.
@@ -41,7 +39,8 @@ define puppet_postfix::install(
     puppet_utils::append_if_no_such_line { "postfix_fqdn" :
             
         file => "/etc/mailname",
-        line => "${::hostname}.${::domain}", 
+        line => "${::hostname}.${::domain}",
+    }
     
     # in case exim4 family of packages are installed - remove them, since
     # they conflicts with postfix. Note 'bsd-mailx' (mua) is removed as well.
