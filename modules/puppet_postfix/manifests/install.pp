@@ -84,7 +84,7 @@ define puppet_postfix::install(
             fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either true or false.")
         }
 
-        if ( $root_mail_user == '') {
+        if ( $server_root_mail_user == '') {
             fail("FAIL: A local user on the mail server must be appointed for 'roots' mails.")
         }
 
