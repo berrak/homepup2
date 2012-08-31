@@ -25,7 +25,9 @@ mynetworks = 127.0.0.0/8 <%= mynetwork_eth0 %>/24
 readme_directory = no
 recipient_delimiter = +
 relay_domains = $mydestination
-relayhost = 
+relayhost =
+
+virtual_alias_maps = hash:/etc/postfix/virtual
 
 # SASL: enable SMTP auth for relaying
 #------------------------------------

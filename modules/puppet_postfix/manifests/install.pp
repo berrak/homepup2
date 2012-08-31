@@ -8,13 +8,15 @@
 #                              ensure => installed,
 #                            mta_type => server,
 #                no_lan_outbound_mail => 'true',
-#                      smtp_relayhost_ip => '192.168.0.11' }
+#                      root_mail_user => 'bekr',
+#                   smtp_relayhost_ip => '192.168.0.11' }
 #
 define puppet_postfix::install(
     $ensure ,
     $mta_type = 'satellite',
     $source = 'UNSET',
     $no_lan_outbound_mail = '',
+    $root_mail_user='',
     $smtp_relayhost_ip = ''
 ) {
 
@@ -30,6 +32,7 @@ define puppet_postfix::install(
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
  
+    
     
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
     # the fqdn to agent host. Then refer to that file in the preseed files.
@@ -124,6 +127,27 @@ define puppet_postfix::install(
               require => Package["postfix"],
                notify => Service["postfix"],
         }
+        
+        # create an alias file and send root mails to an
+        # admin user for local and in domain transports.
+        
+        $mydomain = $::domain
+        $rootmailuser = $root_mail_user
+        
+        file { '/etc/postfix/virtualaliases' :
+              content =>  template( 'puppet_postfix/virtualaliases.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],
+        }
+        
+        exec { "refresh_postfix_aliases":
+            command => "postmap /etc/postfix/virtualaliases",
+            path => '/usr/sbin',
+            subscribe => File["/etc/postfix/virtualaliases"],
+            refreshonly => true,
+        }
+        
         
         
     } elsif ( $mta_type == 'satellite' ) {
