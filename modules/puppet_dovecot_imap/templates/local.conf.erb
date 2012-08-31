@@ -29,12 +29,28 @@ ssl = no
 # MAIL 
 # use virtual user vmail (see 10-mail.conf for details)
 #------------------------------------------------------------
-mail_location = maildir:~/home/vmail/%u/Maildir
+mail_location = maildir:/home/vmail/%u/Maildir
 
 # LDA
 # use dovecot Local Delivery Agent (see 15-lda.conf for details)
 #------------------------------------------------------------
-postmaster_address = postmaster@home.tld
+postmaster_address = postmaster@<%= mydomain %>
+
+# 
+# USER/PWD FILE
+# initial authentication setup (see auth-passwdfile.conf.ext)
+#------------------------------------------------------------
+passdb {
+  driver = passwd-file
+  args = /etc/dovecot/imap.passwd
+}
+
+userdb {
+  driver = static
+  args = uid=vmail gid=vmail home=/home/vmail/%u
+
+}
+
 
 
 

@@ -56,12 +56,16 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 	}
     
     ##
-    ## my dovecot configurations changes in 
+    ## local dovecot configurations changes in 
     ## local.conf overrides settings in conf.d/
     ##
     
+    # facter variables
+    
+    $mydomain = $::domain
+    
     file { "/etc/dovecot/local.conf":
-		 source => "puppet:///modules/puppet_dovecot_imap/local.conf",
+        content =>  template( 'puppet_dovecot_imap/local.conf.erb' ),
 		  owner => 'root',
 		  group => 'root',
          notify => Class["puppet_dovecot_imap::service"],
