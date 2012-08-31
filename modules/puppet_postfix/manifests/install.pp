@@ -133,7 +133,7 @@ define puppet_postfix::install(
         
         $rootmailuser = $root_mail_user
         
-        file { '/etc/postfix/virtualaliases' :
+        file { '/etc/postfix/virtual' :
               content =>  template( 'puppet_postfix/virtualaliases.erb' ),
                 owner => 'root',
                 group => 'root',
@@ -141,9 +141,9 @@ define puppet_postfix::install(
         }
         
         exec { "refresh_postfix_aliases":
-            command => "postmap /etc/postfix/virtualaliases",
-            path => '/usr/sbin',
-            subscribe => File["/etc/postfix/virtualaliases"],
+                command => "postmap /etc/postfix/virtual",
+                   path => '/usr/sbin',
+              subscribe => File["/etc/postfix/virtual"],
             refreshonly => true,
         }
         
