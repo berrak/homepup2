@@ -7,8 +7,8 @@
 ##
 class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
-    include puppet_dovecot_imap::service, puppet_dovecot_imap::vmail
-    include virtual_groups, virtual_accounts
+    include puppet_dovecot_imap::service
+
   
     if ! ( $ipv6 in [ "yes", "no" ]) {
         fail("FAIL: Missing ipv6 capability parameter ($ipv6), must be 'yes' or 'no'.")
@@ -45,16 +45,7 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     # now install dovecot
   
     package { "dovecot-imapd" : ensure => present }
-    
-    # create vmail home directory
-    
-    file { "/home/vmail":
-		 ensure => directory,
-		  owner => 'vmail',
-		  group => 'vmail',
-        require => Class["puppet_dovecot_imap::vmail"],
-	}
-    
+     
     ##
     ## local dovecot configurations changes in 
     ## local.conf overrides settings in conf.d/

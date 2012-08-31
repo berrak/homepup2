@@ -27,9 +27,9 @@ disable_plaintext_auth = no
 ssl = no
 
 # MAIL 
-# use virtual user vmail (see 10-mail.conf for details)
+# use system users homes (see 10-mail.conf for details)
 #------------------------------------------------------------
-mail_location = maildir:/home/vmail/%u/Maildir
+mail_location = ~/Maildir
 
 # LDA
 # use dovecot Local Delivery Agent (see 15-lda.conf for details)
@@ -42,12 +42,12 @@ postmaster_address = postmaster@<%= mydomain %>
 #------------------------------------------------------------
 passdb {
   driver = passwd-file
-  args = /etc/dovecot/imap.passwd
+  args = username_format=%n /etc/dovecot/imap.passwd
 }
 
 userdb {
-  driver = static
-  args = uid=vmail gid=vmail home=/home/vmail/%u
+  driver = passwd-file
+  args = username_format=%n /etc/dovecot/imap.passwd
 
 }
 
