@@ -39,6 +39,7 @@ postmaster_address = postmaster@<%= mydomain %>
 # 
 # USER/PWD FILE
 # initial authentication setup (see auth-passwdfile.conf.ext)
+# (once done use 'passwd pam + userdb passwd' authentication)
 #------------------------------------------------------------
 passdb {
   driver = passwd-file
