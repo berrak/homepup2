@@ -74,10 +74,6 @@ define puppet_postfix::install(
         
     }
     
-    # install mutt mail reader for mail tests.
-        
-    package { "mutt" : ensure => present }
-    
     # install cyrus SASL pluggable authentication modules and common binaries
     
     package { "libsasl2-modules" : ensure => present }
