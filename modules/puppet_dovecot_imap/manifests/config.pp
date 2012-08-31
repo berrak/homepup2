@@ -8,14 +8,14 @@ class puppet_dovecot_imap::config {
 
     file { "/var/log/dovecot-imap.err":
 		 ensure => present,
-		  owner => 'root',
-		  group => 'root',
+		  owner => 'vmail',
+		  group => 'vmail',
 	}
 
     file { "/var/log/dovecot-imap.info":
 		 ensure => present,
-		  owner => 'root',
-		  group => 'root',
+		  owner => 'vmail',
+		  group => 'vmail',
 	}
 
 }
