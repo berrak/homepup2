@@ -11,6 +11,7 @@ class puppet_dovecot_imap::service {
 		    enable => true,
 		   require => Package["dovecot-imapd"],
 		 subscribe => File["/etc/dovecot/dovecot.conf"],
+		 subscribe => File["/etc/dovecot/local.conf"],		 
 	}
 
 }

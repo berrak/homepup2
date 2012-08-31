@@ -46,43 +46,25 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
     package { "dovecot-imapd" : ensure => present }
     
-    # create the virtual dovecot mailuser
+    # create vmail home directory
     
-    realize( Group["vmail"], User["vmail"] )
+    file { "/home/vmail":
+		 ensure => directory,
+		  owner => 'vmail',
+		  group => 'vmail',
+        require => Class["puppet_dovecot_imap::vmail"],
+	}
     
     ##
-    ## dovecot configuration snippets
+    ## my dovecot configurations changes in 
+    ## local.conf overrides settings in conf.d/
     ##
     
-    ## create unique dovecot log files
-
-    file { "/var/log/dovecot-imap.err":
-		 ensure => present,
-		  owner => 'root',
-		  group => 'root',
-	}
-
-    file { "/var/log/dovecot-imap.info":
-		 ensure => present,
-		  owner => 'root',
-		  group => 'root',
-	}
-
-    file { "/etc/dovecot/conf.d/10-logging.conf":
-		 source => "puppet:///modules/puppet_dovecot_imap/10-logging.conf",
+    file { "/etc/dovecot/local.conf":
+		 source => "puppet:///modules/puppet_dovecot_imap/local.conf",
 		  owner => 'root',
 		  group => 'root',
          notify => Class["puppet_dovecot_imap::service"],
 	}    
-    
-    # authentication processes section
-    
-    file { "/etc/dovecot/conf.d/10-auth.conf":
-		 source => "puppet:///modules/puppet_dovecot_imap/10-auth.conf",
-		  owner => 'root',
-		  group => 'root',
-         notify => Class["puppet_dovecot_imap::service"],
-	}  
-    
     
 }
