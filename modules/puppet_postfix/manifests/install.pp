@@ -131,7 +131,6 @@ define puppet_postfix::install(
         # create an alias file and send root mails to an
         # admin user for local and in domain transports.
         
-        $mydomain = $::domain
         $rootmailuser = $root_mail_user
         
         file { '/etc/postfix/virtualaliases' :
