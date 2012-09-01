@@ -133,7 +133,8 @@ node 'rohan.home.tld' inherits basenode {
     user_bashrc::config { 'bekr' : }
     user_bashrc::config { 'dakr' : }
 	
-    # install local mail reader 
+    # install local mail reader
+    puppet_mutt::install { 'root': }
 	puppet_mutt::install { 'bekr': }
     puppet_mutt::install { 'dakr': }
 	
