@@ -9,16 +9,14 @@
 set mbox_type=Maildir
 set folder=~/Maildir
 
-## IMAP Settings
-#set realname=                   
-#set from=
-#set imap_user=          
-#set folder=imaps://imap.gmail.com                
-#set spoolfile=imaps://imap.gmail.com/INBOX       
-#set record=imaps://imap.gmail.com/Sent            
-#set postponed=imaps://imap.gmail.com/Drafts        
-#mailboxes =INBOX # check for new email here                                 
-#set header_cache=~/.mutt_cache     
+set mask="!^\\.[^.]"
+set mbox="~/Maildir"
+set record="+.Sent"
+set postponed=".Drafts"
+set spoolfile="~/Maildir"
+
+## Set mailboxes by scanning for subfolders
+mailboxes `echo -n "+ "; find ~/Maildir -maxdepth 1 -type d -name ".*" -printf "+'%f' "`
 
 ## Reading Mail
 set timeout=10  
