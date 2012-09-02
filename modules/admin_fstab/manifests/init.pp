@@ -10,13 +10,14 @@
 ##
 class admin_fstab {
 
-    # this is the UUID data CSV for for all hosts - this will 
-	# stop P't at this host if this file does not exist.
+    # this is the UUID data CSV for for all hosts - this 
+	# stops P't at this host if this file does not exist.
 	
 	file { "/etc/puppet/files/fstab_sda1_uuid.csv" : 
 		  source => "puppet:///modules/admin_fstab/fstab_sda1_uuid.csv",
 		   owner => 'root',
 		   group => 'root',
+		   before => Class["admin_fstab::config"],
 	}
 	
 }

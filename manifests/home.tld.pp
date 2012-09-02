@@ -5,8 +5,6 @@ node basenode {
 	
 	include puppet_utils
 	
-    stage { "last": require => Stage["main"] }
-	
     include root_home
     include root_bashrc
 	
@@ -37,7 +35,7 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_master
 	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab::config : fstabhost => 'carbon', stage => "last" }
+    class { admin_fstab::config : fstabhost => 'carbon' }
 	
     include puppet_tripwire
 	
