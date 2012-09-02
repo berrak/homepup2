@@ -16,7 +16,9 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         $mailspooldirectory = ''
     
     }
+    
 
+    
     if $name == 'root' {
     
         file { "/root/.muttrc" : 
@@ -24,6 +26,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               owner => 'root',
               group => 'root',
         }
+        
+        file { "/root/Maildir/Drafts":
+            ensure => "directory",
+             owner => 'root',
+             group => 'root',
+        }
+        
+        file { "/root/Maildir/Sent":
+            ensure => "directory",
+             owner => 'root',
+             group => 'root',
+        }        
+        
     
     } else {
 
@@ -32,6 +47,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               owner => $name,
               group => $name,
         }
+        
+        file { "/home/${name}/Maildir/Drafts":
+            ensure => "directory",
+             owner => $name,
+             group => $name,
+        }
+        
+        file { "/home/${name}/Maildir/Sent":
+            ensure => "directory",
+             owner => $name,
+             group => $name,
+        }
+        
         
     }
     
