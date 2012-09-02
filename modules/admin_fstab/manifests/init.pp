@@ -24,7 +24,7 @@ class admin_fstab ( $fstabhost='', $source = 'UNSET' ) {
           group => 'root',
     }
 	
-	$fstab_uuid_sda1 = extlookup( $fstabhost )
+	$fstab_uuid_sda1 = extlookup( $fstabhost, "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
 	
 	notify{"external uuid lookup returns ($fstab_uuid_sda1) for ($fstabhost)" : }
 	
