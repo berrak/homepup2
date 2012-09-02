@@ -27,16 +27,24 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               group => 'root',
         }
         
-        file { "/root/Maildir/Drafts":
+        file { "/root/Maildir":
             ensure => "directory",
              owner => 'root',
              group => 'root',
         }
         
+        file { "/root/Maildir/Drafts":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+            require => File["/root/Maildir"],
+        }
+        
         file { "/root/Maildir/Sent":
-            ensure => "directory",
-             owner => 'root',
-             group => 'root',
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+            require => File["/root/Maildir"],
         }        
         
     
@@ -48,16 +56,24 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               group => $name,
         }
         
-        file { "/home/${name}/Maildir/Drafts":
+        file { "/home/${name}/Maildir":
             ensure => "directory",
              owner => $name,
              group => $name,
+        }        
+        
+        file { "/home/${name}/Maildir/Drafts":
+             ensure => "directory",
+              owner => $name,
+              group => $name,
+            require => File["/home/${name}/Maildir"],
         }
         
         file { "/home/${name}/Maildir/Sent":
             ensure => "directory",
-             owner => $name,
-             group => $name,
+              owner => $name,
+              group => $name,
+            require => File["/home/${name}/Maildir"],             
         }
         
         
