@@ -70,7 +70,7 @@ fi
 ## Check that Tripwire database exist
 
 if [ ! -e $TWDBPATH/${HOSTNAME}.twd ] ; then
-	echo "**** Error: Tripwire database for ${HOSTNAME} not found.   ****"
+	echo "**** Error: Tripwire database for ${HOSTNAME} not found. Is it not configured? ****"
 	exit 1
 fi
 
