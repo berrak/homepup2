@@ -26,7 +26,7 @@ class admin_fstab ( $fstabhost='', $source = 'UNSET' ) {
 		  group => 'root',
 	}
 	
-    $fstab_uuid_sda1 = extlookup( $fstabhost, "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
+    $fstab_uuid_sda1 = extlookup( "$fstabhost", "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
 	notify{"Disk, sda1-uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
 	
 	# This will ensure we use the correct disk data for the host

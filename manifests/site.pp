@@ -1,7 +1,7 @@
 ##
 ## site.pp
 ##
-$extlookup_datadir = "/etc/puppet/files"
+$extlookup_datadir = "/etc/puppet/files/"
 
 import "users/*"
 import 'home.tld.pp'
