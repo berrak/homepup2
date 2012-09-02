@@ -20,7 +20,7 @@ class admin_fstab::config ( $fstabhost='' ) {
 	if $fstab_uuid_sda1 != 'FSTAB_UNCOPIED_TO_PUPPET_MASTER'  {
 		
 		file { "/etc/fstab":
-				source => "puppet:///${fstab_uuid_sda1}.${fstabhost}.fstab",
+				source => "puppet:///modules/admin_fstab/${fstab_uuid_sda1}.${fstabhost}.fstab",
 				owner => 'root',
 				group => 'root',
 				mode => '644',
