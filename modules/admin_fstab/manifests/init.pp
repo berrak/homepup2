@@ -26,6 +26,9 @@ class admin_fstab ( $fstabhost='', $source = 'UNSET' ) {
 		  group => 'root',
 	}
 	
+	$extlookup_datadir = "/etc/puppet/files"
+    $extlookup_precedence = ["carbon"]
+	
     $fstab_uuid_sda1 = extlookup( "$fstabhost", "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
 	notify{"Disk, sda1-uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
 	
