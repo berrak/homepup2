@@ -18,19 +18,20 @@ class admin_fstab ( $fstabhost='', $source = 'UNSET' ) {
         'UNSET' => "puppet:///modules/admin_fstab/${fstabhost}.csv",
         default => $source,
 	}
+
+    # this is the UUID data CSV for for host - this will stop P't
+	# if file does not exist and prevent fstab to be corrupted.
+	file { "/etc/puppet/files/${fstabhost}.csv" : 
+		 source => $real_source,
+		  owner => 'root',
+		  group => 'root',
+	}
 	
     $fstab_uuid_sda1 = extlookup( $fstabhost, "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
 	notify{"Disk, sda1-uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
 	
-	
+	# This will ensure we use the correct disk data for the host
 	if $fstab_uuid_sda1 != 'FSTAB_UNCOPIED_TO_PUPPET_MASTER'  {
-	
-		# this is the UUID data CSV for for host 
-		file { "/etc/puppet/files/${fstabhost}.csv" : 
-			 source => $real_source,
-			  owner => 'root',
-			  group => 'root',
-		}
 		
 		file { "/etc/fstab":
 				source => "puppet:///modules/admin_fstab/064b4f90-9c73-49ea-8734-9b62bfd55471.${fstabhost}.fstab",
