@@ -13,8 +13,11 @@ class admin_fstab::config ( $fstabhost='' ) {
     # not return anything the first P't run. Re-run P't and it works second run.
     
     $fstab_uuid_sda1 = extlookup( "$fstabhost", "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
-	notify{"Disk, sda1-uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
-	
+    
+    if $fstab_uuid_sda1 == 'FSTAB_UNCOPIED_TO_PUPPET_MASTER' {
+        notify{"Disk, sda1-uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
+    }
+    
 	# This will ensure we use the correct disk data and not corrupt fstab
 	
 	if $fstab_uuid_sda1 != 'FSTAB_UNCOPIED_TO_PUPPET_MASTER'  {
