@@ -13,7 +13,7 @@ set mask="!^\\.[^.]"
 set mbox="~/Maildir"
 set record="+.Sent"
 set postponed=".Drafts"
-set spoolfile="~/Maildir"
+set spoolfile="<%= mailspooldirectory %>"
 
 ## Set mailboxes by scanning for subfolders
 mailboxes `echo -n "+ "; find ~/Maildir -maxdepth 1 -type d -name ".*" -printf "+'%f' "`

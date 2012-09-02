@@ -133,10 +133,10 @@ node 'rohan.home.tld' inherits basenode {
     user_bashrc::config { 'bekr' : }
     user_bashrc::config { 'dakr' : }
 	
-    # install local mail reader
-    puppet_mutt::install { 'root': }
-	puppet_mutt::install { 'bekr': }
-    puppet_mutt::install { 'dakr': }
+    # install local mail reader, we need non-default .muttrc for mail server
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+	puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
+    puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable
