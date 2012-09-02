@@ -11,7 +11,6 @@
 ##
 class admin_fstab ( $fstabhost='', $source = 'UNSET' ) {
 	
-	$extlookup_datadir = "/etc/puppet/files"
 	
     # this is the original data file for each host 
     $real_source = $source ? {
