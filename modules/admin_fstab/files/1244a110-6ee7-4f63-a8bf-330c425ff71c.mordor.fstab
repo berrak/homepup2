@@ -1,4 +1,9 @@
-# /etc/fstab: static file system information.
+#
+# /etc/fstab: static file system information for mordor.
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
 #
 # Use 'blkid' to print the universally unique identifier for a
 # device; this may be used with UUID= as a more robust way to name devices
