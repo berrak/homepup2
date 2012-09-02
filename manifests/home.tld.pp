@@ -35,7 +35,7 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_master
 	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab : fstabhost => 'carbon' }
+    class { admin_fstab::config : fstabhost => 'carbon' }
 	
     include puppet_tripwire
 	
@@ -77,7 +77,7 @@ node 'gondor.home.tld' inherits basenode {
     include puppet_tripwire
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab : fstabhost => 'gondor' }
+    class { admin_fstab::config : fstabhost => 'gondor' }
 	
 	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
@@ -111,7 +111,7 @@ node 'rohan.home.tld' inherits basenode {
 	admin_server::nohistory { 'rohan' :}
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab : fstabhost => 'rohan' }
+    class { admin_fstab::config : fstabhost => 'rohan' }
 
     # load server firewall script
     class { puppet_iptables::config : role => 'server', hostnm => 'rohan' }
@@ -150,7 +150,7 @@ node 'mordor.home.tld' inherits basenode {
     include puppet_agent
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab : fstabhost => 'mordor' }
+    class { admin_fstab::config : fstabhost => 'mordor' }
 
     # load desktop firewall script
     class { puppet_iptables::config : role => 'desktop' }
