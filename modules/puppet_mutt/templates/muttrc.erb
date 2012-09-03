@@ -10,15 +10,17 @@
 <%= imap_user %>
 <%= imap_passwd %>
 
-## Local folder
+set spoolfile=<%= mailspool %>
+set folder=<%= mailfolder %>
+
+## Local folder type
 set mbox_type=Maildir
-set folder=~/Maildir
 
 set mask="!^\\.[^.]"
 set mbox="~/Maildir"
 set record="+.Sent"
 set postponed=".Drafts"
-set spoolfile="<%= mailspooldirectory %>"
+
 
 ## Set mailboxes by scanning for subfolders
 mailboxes `echo -n "+ "; find ~/Maildir -maxdepth 1 -type d -name ".*" -printf "+'%f' "`

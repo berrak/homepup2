@@ -10,18 +10,26 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     
     $mymailserver = $mailserver_hostname
     $mydomain = $::domain
+    
+    ###########################################################
+    ## were simple unsecure authentication for test (change) ##
     $mypasswd = 'pass'
 
-    # mutt configuration for the mail server and all other hosts
+    # mutt configuration for direct access on the mail server
+    # and else for remote access from our lan hosts with imap.
 
     if $::hostname == $mailserver_hostname {
-        $mailspooldirectory = '~/Maildir'
+        $mailspool = '~/Maildir'
+        $mailfolder = '~/Maildir'
+        
         $imap_user = ''
         $imap_passwd = ''
         
         
     } else {
-        $mailspooldirectory = ''
+        $mailspool = "imap://${$mymailserver}.${mydomain}/INBOX"
+        $mailfolder = "imap://${$mymailserver}.${mydomain}"
+                
         $imap_user = "set imap_user = $name"
         $imap_passwd = "set imap_pass = $mypasswd"
     
