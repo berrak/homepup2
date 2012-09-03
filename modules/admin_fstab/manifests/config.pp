@@ -12,10 +12,6 @@ class admin_fstab::config ( $fstabhost='' ) {
     # Unfortunately have no control when this function will execute, and thus will
     # not return anything the first P't run. Re-run P't and it works second run.
     
-    # this the file name to lookup globally
-    
-    $extlookup_precedence = ["fstab_sda1_uuid"]
-    
     $fstab_uuid_sda1 = extlookup( "$fstabhost", "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
     
     if $fstab_uuid_sda1 == 'FSTAB_UNCOPIED_TO_PUPPET_MASTER' {
