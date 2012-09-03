@@ -45,7 +45,12 @@ class puppet_network::interfaces ( $iface_zero = '',
         $eth0_network = "network $::network_eth0"
         
         $bcstnet0 = "broadcast $bcstnet_zero"
-        $gateway0 = "gateway $gateway_zero"
+        
+        if $gateway_zero != '' {
+            $gateway0 = "gateway $gateway_zero"
+        } else {
+            $gateway0 =''
+        }
         
         ## eth1
         
@@ -62,7 +67,13 @@ class puppet_network::interfaces ( $iface_zero = '',
         $eth1_network = "network $::network_eth1"
         
         $bcstnet1 = "broadcast $bcstnet_one"
-        $gateway1 = "gateway $gateway_one" 
+        
+        if $gateway_one != '' {
+            $gateway1 = "gateway $gateway_one"
+        } else {
+            $gateway1 = ''
+        }
+        
         
     }
     elsif ( $iface_zero != '' ) and ( $iface_one == '' ) {
@@ -80,7 +91,12 @@ class puppet_network::interfaces ( $iface_zero = '',
         $eth0_network = "network $::network_eth0"
         
         $bcstnet0 = "broadcast $bcstnet_zero"
-        $gateway0 = "gateway $gateway_zero"
+        
+        if $gateway_zero != '' {
+            $gateway0 = "gateway $gateway_zero"
+        } else {
+            $gateway0 =''
+        }
         
         ## Set unused eth1 template variables to empty strings
         
@@ -111,7 +127,12 @@ class puppet_network::interfaces ( $iface_zero = '',
         $eth1_network = "network $::network_eth1"
         
         $bcstnet1 = "broadcast $bcstnet_one"
-        $gateway1 = "gateway $gateway_one"
+        
+        if $gateway_one != '' {
+            $gateway1 = "gateway $gateway_one"
+        } else {
+            $gateway1 = ''
+        }
         
         
         ## Set unused eth0 template variables to empty strings
