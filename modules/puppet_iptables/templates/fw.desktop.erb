@@ -201,6 +201,12 @@ $IPTABLES -A OUTPUT -m state --state INVALID -j DROP
 $IPTABLES -A OUTPUT ! -o lo -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT DEFAULT "
 $IPTABLES -A OUTPUT ! -o lo -j DROP
 
+#############################
+## SAVE THE FILE
+#############################
+
+$IPTSAVE > $IPTSAVEFILE
+chmod 700 $IPTSAVEFILE
 
 #############################
 ## LIST LOADED IPTABLES RULES
@@ -208,11 +214,5 @@ $IPTABLES -A OUTPUT ! -o lo -j DROP
 
 $IPTABLES -L -v --line-numbers
 
-#############################
-## SAVE THE FILE
-#############################
-
-$IPTSAVE > $IPTSAVEFILE
-chmod 700 $IPTSAVEFILE
 exit 0
 

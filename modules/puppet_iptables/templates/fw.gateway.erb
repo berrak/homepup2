@@ -316,16 +316,17 @@ $IPTABLES -A FORWARD ! -i lo -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARD DEFAU
 $IPTABLES -A FORWARD ! -i lo -j DROP
 
 ##############################
-## LIST LOADED IPTABLES RULES
-##############################
-
-$IPTABLES -L -v --line-numbers
-
-##############################
 ## SAVE THE FILE
 ##############################
 
 $IPTSAVE > $IPTSAVEFILE
 chmod 700 $IPTSAVEFILE
+
+##############################
+## LIST LOADED IPTABLES RULES
+##############################
+
+$IPTABLES -L -v --line-numbers
+
 exit 0
 
