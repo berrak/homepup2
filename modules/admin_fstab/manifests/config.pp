@@ -25,10 +25,8 @@ class admin_fstab::config ( $fstabhost='' ) {
         
         # if UUID from grep does not match on target host, P't will abort run.
         
-        exec { "Verifying target disk UUID match fstab data" :
+        exec { "Verifying that target disk UUID match fstab data" :
                 command => "/bin/grep -w '$fstab_uuid_sda1' '/etc/fstab'",
-              subscribe => File["/etc/fstab"],
-            refreshonly => true,
         }
         
 		file { "/etc/fstab":
