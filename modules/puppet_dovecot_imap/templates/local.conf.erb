@@ -41,17 +41,20 @@ postmaster_address = postmaster@<%= mydomain %>
 # initial authentication setup (see auth-passwdfile.conf.ext)
 # (once done use 'passwd pam + userdb passwd' authentication)
 #------------------------------------------------------------
-passdb {
-  driver = passwd-file
-  args = username_format=%n /etc/dovecot/imap.passwd
+auth default {
+
+    mechanisms = plain
+    passdb {
+      driver = passwd-file
+      args = username_format=%n /etc/dovecot/imap.passwd
+    }
+    
+    userdb {
+      driver = passwd-file
+      args = username_format=%n /etc/dovecot/imap.passwd
+    
+    }
+
 }
-
-userdb {
-  driver = passwd-file
-  args = username_format=%n /etc/dovecot/imap.passwd
-
-}
-
-
 
 
