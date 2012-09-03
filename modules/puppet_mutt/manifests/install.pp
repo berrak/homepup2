@@ -7,13 +7,23 @@
 ##
 define puppet_mutt::install ( $mailserver_hostname='' ) {
 
+    
+    $mymailserver = $mailserver_hostname
+    $mydomain = $::domain
+    $mypasswd = 'pass'
+
     # mutt configuration for the mail server and all other hosts
 
     if $::hostname == $mailserver_hostname {
         $mailspooldirectory = '~/Maildir'
+        $imap_user = ''
+        $imap_passwd = ''
+        
         
     } else {
         $mailspooldirectory = ''
+        $imap_user = "set imap_user = $name"
+        $imap_passwd = "set imap_pass = $mypasswd"
     
     }
     
