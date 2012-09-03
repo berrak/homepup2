@@ -27,7 +27,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         
         
     } else {
-        $mailspool = "imap://${$mymailserver}.${mydomain}/INBOX"
+        $mailspool = "imap://${mymailserver}.${mydomain}/INBOX"
         $mailfolder = "imap://${$mymailserver}.${mydomain}"
                 
         $imap_user = "set imap_user = $name"
