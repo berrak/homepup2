@@ -60,7 +60,7 @@ node 'carbon.home.tld' inherits basenode {
 	# install local mail reader 
 	puppet_mutt::install { 'bekr' : }
 	
-    puppet_postfix::install { 'mta' : ensure => installed,
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 	
     # Disable ipv6 in kernel/grub
@@ -93,7 +93,7 @@ node 'gondor.home.tld' inherits basenode {
 	# lan ntp server provids time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
 	
-    puppet_postfix::install { 'mta' : ensure => installed,
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 	
     # Disable ipv6 in kernel/grub
@@ -125,6 +125,7 @@ node 'rohan.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' :
 						      ensure => installed,
 				            mta_type => server,
+				  install_cyrus_sasl => 'true',
 		       server_root_mail_user => 'bekr',
 				no_lan_outbound_mail => 'true' }
 				
@@ -161,7 +162,7 @@ node 'mordor.home.tld' inherits basenode {
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
-    puppet_postfix::install { 'mta' : ensure => installed,
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }		
 	
     user_bashrc::config { 'bekr' : }

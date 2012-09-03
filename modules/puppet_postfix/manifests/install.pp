@@ -8,6 +8,7 @@
 #                              ensure => installed,
 #                            mta_type => server,
 #                no_lan_outbound_mail => 'true',
+#                  install_cyrus_sasl => 'true',
 #               server_root_mail_user => 'bekr',
 #                   smtp_relayhost_ip => '192.168.0.11' }
 #
@@ -16,6 +17,7 @@ define puppet_postfix::install(
     $mta_type = 'satellite',
     $source = 'UNSET',
     $no_lan_outbound_mail = '',
+    $install_cyrus_sasl = '',
     $server_root_mail_user='',
     $smtp_relayhost_ip = ''
 ) {
@@ -32,6 +34,9 @@ define puppet_postfix::install(
         fail("FAIL: The mta_type ($mta_type) must be either 'server' or 'satellite'.")
     }
 
+    if ! ( $install_cyrus_sasl in [ "true", "false" ]) {
+        fail("FAIL: Please decide if you need cyrus SASL installed. Must be either 'true' or 'false'.")
+    }
     
     # Since our mailhost fqdn varies, create the file: '/etc/mailname' which holds
     # the fqdn to agent host. Then refer to that file in the preseed files.
@@ -53,7 +58,6 @@ define puppet_postfix::install(
     
     package { "heirloom-mailx" : ensure => present }
     
-    
     # facter variables (assumes server interface is on eth0)
     
     $mynetwork_eth0 = $::network_eth0
@@ -72,20 +76,20 @@ define puppet_postfix::install(
         
     }
     
-    # install cyrus SASL pluggable authentication modules and common binaries
+    # install cyrus SASL pluggable authentication modules
+    # and common binaries in case needed for authentication.
     
-    package { "libsasl2-modules" : ensure => present }
-    package { "sasl2-bin" : ensure => present }
+    if $install_cyrus_sasl == 'true' {
+        package { "libsasl2-modules" : ensure => present }
+        package { "sasl2-bin" : ensure => present }
+    } 
     
+    # start the real postfix installation
     
     if ( $mta_type == 'server' ) {
     
         if ! ( $no_lan_outbound_mail in [ "true", "false" ]) {
             fail("FAIL: Allow outbound lan mail ($no_lan_outbound_mail) must be either true or false.")
-        }
-
-        if ( $server_root_mail_user == '') {
-            fail("FAIL: A local user on the mail server must be appointed for 'roots' mails.")
         }
 
         $server_source = $source ? {
@@ -126,26 +130,28 @@ define puppet_postfix::install(
                notify => Service["postfix"],
         }
         
-        # create an alias file and send root mails to an
-        # admin user for local and in domain transports.
+        # if defined, create an alias file and send root mails
+        # to an admin user for local and in domain transports.
         
-        $rootmailuser = $server_root_mail_user
+        if $server_root_mail_user != '' {
         
-        file { '/etc/postfix/virtual' :
-              content =>  template( 'puppet_postfix/virtualaliases.erb' ),
-                owner => 'root',
-                group => 'root',
-              require => Package["postfix"],
+            $rootmailuser = $server_root_mail_user
+            
+            file { '/etc/postfix/virtual' :
+                  content =>  template( 'puppet_postfix/virtualaliases.erb' ),
+                    owner => 'root',
+                    group => 'root',
+                  require => Package["postfix"],
+            }
+            
+            exec { "refresh_postfix_aliases":
+                    command => "postmap /etc/postfix/virtual",
+                       path => '/usr/sbin',
+                  subscribe => File["/etc/postfix/virtual"],
+                refreshonly => true,
+            }
+        
         }
-        
-        exec { "refresh_postfix_aliases":
-                command => "postmap /etc/postfix/virtual",
-                   path => '/usr/sbin',
-              subscribe => File["/etc/postfix/virtual"],
-            refreshonly => true,
-        }
-        
-        
         
     } elsif ( $mta_type == 'satellite' ) {
     
