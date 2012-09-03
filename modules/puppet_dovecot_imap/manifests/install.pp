@@ -80,13 +80,13 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 		 group => 'root',
 	}    
 
-    puppet_utils::append_if_no_such_line { "create_imap_user" :
+    puppet_utils::append_if_no_such_line { "create_imap_user_bekr" :
                         
                         file => '/etc/dovecot/imap.passwd',
                         line => 'bekr:{PLAIN}pass',
     }
     
-    puppet_utils::append_if_no_such_line { "create_imap_user" :
+    puppet_utils::append_if_no_such_line { "create_imap_user_dakr" :
                         
                         file => '/etc/dovecot/imap.passwd',
                         line => 'dakr:{PLAIN}pass',
