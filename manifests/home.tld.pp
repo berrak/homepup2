@@ -58,7 +58,7 @@ node 'carbon.home.tld' inherits basenode {
     include puppet_cups
 	
 	# install local mail reader 
-	puppet_mutt::install { 'bekr' : }
+	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
 	
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
@@ -175,8 +175,8 @@ node 'mordor.home.tld' inherits basenode {
     include puppet_cups
 	
 	# install local mail reader 
-	puppet_mutt::install { 'bekr': }
-
+	puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
+	puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable

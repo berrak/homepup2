@@ -3,12 +3,15 @@
 ##
 ##  Sample use:
 ##  	puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
-##      puppet_mutt::install { 'bekr':  }
+##      puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
 ##
 define puppet_mutt::install ( $mailserver_hostname='' ) {
 
+    if $mailserver_hostname == '' {
+        fail("FAIL: The mailserver hostname parameter is missing.")
+    }
     
-    $mymailserver = $mailserver_hostname
+
     $mydomain = $::domain
     
     ###########################################################
@@ -27,8 +30,8 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         
         
     } else {
-        $mailspool = "imap://${mymailserver}.${mydomain}/INBOX"
-        $mailfolder = "imap://${$mymailserver}.${mydomain}"
+        $mailspool = "imap://${mailserver_hostname}/INBOX"
+        $mailfolder = "imap://${mailserver_hostname}.${mydomain}"
                 
         $imap_user = "set imap_user = $name"
         $imap_passwd = "set imap_pass = $mypasswd"
