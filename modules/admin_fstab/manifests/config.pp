@@ -22,7 +22,6 @@ class admin_fstab::config ( $fstabhost='' ) {
 	
 	if $fstab_uuid_sda1 != 'FSTAB_UNCOPIED_TO_PUPPET_MASTER'  {
 		
-        
         # if UUID from grep does not match on target host, P't will abort run.
         
         exec { "Verifying that target disk UUID match fstab data" :
@@ -34,7 +33,7 @@ class admin_fstab::config ( $fstabhost='' ) {
 			  owner => 'root',
 			  group => 'root',
 			   mode => '644',
-            require => Exec["Verifying target disk UUID match fstab data"],
+            require => Exec["Verifying that target disk UUID match fstab data"],
 		}
 		
     }
