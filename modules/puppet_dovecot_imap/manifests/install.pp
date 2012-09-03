@@ -47,8 +47,20 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
     package { "dovecot-imapd" : ensure => present }
      
     ##
-    ## local dovecot configurations changes in 
-    ## local.conf overrides settings in conf.d/
+    ## Selection configuration files to manage by Puppet.
+    ## 10-auth.conf includes a selection of *.ext files.
+    ##
+
+    file { "/etc/dovecot/conf.d/10-auth.conf" : 
+         source => "puppet:///modules/puppet_dovecot_imap/10-auth.conf",
+          owner => 'root',
+          group => 'root',
+    }  
+    
+    ##
+    ## Local dovecot configurations changes can sometimes
+    ## override settings in conf.d/ with local.conf.
+    ## Test with 'doveconf -a' and 'doveconf -n'
     ##
     
     # facter variables
@@ -72,6 +84,12 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
                         
                         file => '/etc/dovecot/imap.passwd',
                         line => 'bekr:{PLAIN}pass',
+    }
+    
+    puppet_utils::append_if_no_such_line { "create_imap_user" :
+                        
+                        file => '/etc/dovecot/imap.passwd',
+                        line => 'dakr:{PLAIN}pass',
     }
     
 }
