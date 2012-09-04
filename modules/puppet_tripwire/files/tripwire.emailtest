@@ -15,9 +15,9 @@ if [ ! -x "$TWBIN" ] ; then
     echo "done"
 fi
 
-echo -n "Sending test email from tripwire to admin (root)..."
-    $TWBIN --test --email root@home.tld
-echo "done"
+echo -n "Tripwire: "
+$TWBIN --test --email root@home.tld
+
 
 if [ -x "$TWBIN" ] ; then
     echo -n "Disabling local execution of original tripwire file..."
