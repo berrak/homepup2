@@ -65,13 +65,13 @@ class root_home {
 	}	
 	
     exec { "make_root_maildirs_drafts":
-		command => "/bin/mkdir /root/Maildir/.Drafts/{new,cur,tmp}",
+		command => "/bin/mkdir -p /root/Maildir/.Drafts/{new,cur,tmp}",
 		subscribe => File["/root/Maildir/.Drafts"],
 		refreshonly => true,
 	}
 	
     exec { "make_root_maildirs_sent":
-		command => "/bin/mkdir /root/Maildir/.Sent/{new,cur,tmp}",
+		command => "/bin/mkdir -p /root/Maildir/.Sent/{new,cur,tmp}",
 		subscribe => File["/root/Maildir/.Sent"],
 		refreshonly => true,
 	}
