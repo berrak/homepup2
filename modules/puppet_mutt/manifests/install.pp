@@ -17,6 +17,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     ###########################################################
     ## were simple unsecure authentication for test (change) ##
     $mypasswd = 'pass'
+    ###########################################################
 
     # mutt configuration for direct access on the mail server
     # and else for remote access from our lan hosts with imap.

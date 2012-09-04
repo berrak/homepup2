@@ -5,7 +5,16 @@
 # MANAGE BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 #############################################################
 
-# IMAP + SMTP later
+## Sending Mail (SMTP) - need to erb'ized, and strengthen the authentication
+
+#set smtp_url="smtp://bekr@rohan.home.tld:25
+#set smtp_pass=""
+#set from="your_username@home.tld"
+#set realname="Your Real_name"
+
+#set copy=yes 
+
+## Retrieving Mail (IMAP)
 
 <%= imap_user %>
 <%= imap_passwd %>
@@ -19,7 +28,7 @@ set mbox_type=Maildir
 set mask="!^\\.[^.]"
 set mbox="~/Maildir"
 set record="+.Sent"
-set postponed=".Drafts"
+set postponed="+.Drafts"
 
 
 ## Set mailboxes by scanning for subfolders
@@ -37,16 +46,25 @@ unignore Date: From: To: CC: Bcc: Subject:
 hdr_order Subject: Date: From: To: CC: Bcc:
 set index_format="%{%b %d} %-15.15L [%Z] %s" # custom index format
 
+## macros
+
+macro index c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+macro pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this message"
+
+
 ## Composing Mail
 set editor="nano"     
 set markers=no     
 #set signature=~/.sig  
-set include=yes     
-set forward_format="Fwd: %s"                
+set include=yes
 
-## Sending Mail
-#set copy=yes      
-#set smtp_url=
+# this line may cause the issue with .Sent box creation (smtp)
+# set forward_format="Fwd: %s"                
 
 ## Pretty Colors
 color status white blue
