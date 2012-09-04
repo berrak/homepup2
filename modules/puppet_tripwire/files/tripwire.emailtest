@@ -9,6 +9,7 @@
 TWBIN="/usr/sbin/tripwire"
 CHMOD="/bin/chmod"
 
+# normally enabled by debian installer (but local admin my change that)
 if [ ! -x "$TWBIN" ] ; then
     echo -n "Enabling local execution of original tripwire file..."
     $CHMOD u+x $TWBIN
@@ -17,12 +18,16 @@ fi
 
 echo -n "Tripwire: "
 $TWBIN --test --email root@home.tld
+twsuccess=$?
 
-
-if [ -x "$TWBIN" ] ; then
-    echo -n "Disabling local execution of original tripwire file..."
-    $CHMOD u-x $TWBIN
-    echo "done"
+# if failure due to tripwire is not configured by local admin, do not
+# disable file, leave in its original debian package install state.
+if [ "$twsuccess" ] ; then 
+    if [ -x "$TWBIN" ] ; then
+        echo -n "Disabling local execution of original tripwire file..."
+        $CHMOD u-x $TWBIN
+        echo "done"
+    fi
 fi
 
 ## EOF
