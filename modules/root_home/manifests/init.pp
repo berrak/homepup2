@@ -48,6 +48,12 @@ class root_home {
 		  mode => '0700',
 	}
 	
+    exec { "make_root_maildirs":
+		command => "/bin/mkdir -p /root/Maildir/{new,cur,tmp}",
+		subscribe => File["/root/Maildir"],
+		refreshonly => true,
+	}
+	
     file { "/root/Maildir/.Sent":
 		 ensure => "directory",
 		  owner => 'root',
