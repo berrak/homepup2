@@ -9,16 +9,14 @@
 TWBIN="/usr/sbin/tripwire"
 CHMOD="/bin/chmod"
 
-# normally enable execution by debian installer (but local admin my change that)
-if [ -x "$TWBIN" ] ; then
-    echo -n "Enabling local execution of original tripwire file..."
-    $CHMOD 0555 $TWBIN
-    echo "done"
-fi
+# normally, execution is enabled by debian installer (local admin my change that)
+
+echo -n "Enabling local execution of original tripwire file..."
+$CHMOD 0750 $TWBIN
+echo "done"
 
 echo -n "Tripwire: "
 $TWBIN --test --email root@home.tld
-echo
 
 echo -n "Do you want to set tripwire execution bits to prevent execution from $TWBIN? (Y/N): "
 read answer
@@ -26,7 +24,7 @@ read answer
 case "$answer" in
         [Yy])
             echo -n "Disabling local execution of on disk $TWBIN file..."
-            $CHMOD 0400 $TWBIN
+            $CHMOD 0640 $TWBIN
             echo "done"
             ;;
 
