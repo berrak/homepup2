@@ -39,7 +39,7 @@ class root_home {
 		target => "/media/usb0",
 	}
 	
-	# set up Maildir structure for root
+	# set up ~/Maildir mailbox structure for root
 	
 	file { "/root/Maildir":
 		ensure => "directory",
@@ -48,13 +48,27 @@ class root_home {
 		  mode => '0700',
 	}
 	
-    exec { "make_root_maildirs":
-		command => "/bin/mkdir -p /root/Maildir/{new,cur,tmp}",
+    exec { "make_root_maildirs_new":
+		command => "/bin/mkdir -p /root/Maildir/new",
 		subscribe => File["/root/Maildir"],
 		refreshonly => true,
 	}
 	
-    file { "/root/Maildir/.Sent":
+    exec { "make_root_maildirs_cur":
+		command => "/bin/mkdir -p /root/Maildir/cur",
+		subscribe => File["/root/Maildir"],
+		refreshonly => true,
+	}	
+	
+    exec { "make_root_maildirs_tmp":
+		command => "/bin/mkdir -p /root/Maildir/tmp",
+		subscribe => File["/root/Maildir"],
+		refreshonly => true,
+	}
+	
+	# ~/Maildir/.Drafts
+	
+    file { "/root/Maildir/.Drafts":
 		 ensure => "directory",
 		  owner => 'root',
 		  group => 'root',
@@ -62,7 +76,28 @@ class root_home {
 		require => File["/root/Maildir"],
 	}
 	
-    file { "/root/Maildir/.Drafts":
+    exec { "make_root_maildirs_drafts_new":
+		command => "/bin/mkdir -p /root/Maildir/.Drafts/new",
+		subscribe => File["/root/Maildir/.Drafts"],
+		refreshonly => true,
+	}
+
+    exec { "make_root_maildirs_drafts_cur":
+		command => "/bin/mkdir -p /root/Maildir/.Drafts/cur",
+		subscribe => File["/root/Maildir/.Drafts"],
+		refreshonly => true,
+	}
+	
+    exec { "make_root_maildirs_drafts_tmp":
+		command => "/bin/mkdir -p /root/Maildir/.Drafts/tmp",
+		subscribe => File["/root/Maildir/.Drafts"],
+		refreshonly => true,
+	}
+
+
+	# ~/Maildir/.Sent
+	
+    file { "/root/Maildir/.Sent":
 		 ensure => "directory",
 		  owner => 'root',
 	 	  group => 'root',
@@ -70,18 +105,23 @@ class root_home {
 		require => File["/root/Maildir"],
 	}	
 	
-    exec { "make_root_maildirs_drafts":
-		command => "/bin/mkdir -p /root/Maildir/.Drafts/{new,cur,tmp}",
-		subscribe => File["/root/Maildir/.Drafts"],
+    exec { "make_root_maildirs_sent_new":
+		command => "/bin/mkdir -p /root/Maildir/.Sent/new",
+		subscribe => File["/root/Maildir/.Sent"],
 		refreshonly => true,
 	}
-	
-    exec { "make_root_maildirs_sent":
-		command => "/bin/mkdir -p /root/Maildir/.Sent/{new,cur,tmp}",
+
+    exec { "make_root_maildirs_sent_cur":
+		command => "/bin/mkdir -p /root/Maildir/.Sent/cur",
 		subscribe => File["/root/Maildir/.Sent"],
 		refreshonly => true,
 	}
 	
-	
+    exec { "make_root_maildirs_sent_tmp":
+		command => "/bin/mkdir -p /root/Maildir/.Sent/tmp",
+		subscribe => File["/root/Maildir/.Sent"],
+		refreshonly => true,
+	}
+
 	
 }
