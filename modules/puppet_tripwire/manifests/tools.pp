@@ -45,8 +45,10 @@ class puppet_tripwire::tools {
 		require => File["/root/bin"],
 	}
 
+    $mydomain = $::domain
+
 	file { "/root/bin/tripwire.emailtest" :
-		 source => "puppet:///modules/puppet_tripwire/tripwire.emailtest",
+            content =>  template( 'puppet_tripwire/tripwire.emailtest.erb' ),
 		  owner => 'root',
 		  group => 'root',
 		   mode => '0700',

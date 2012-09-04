@@ -4,32 +4,31 @@
 ## Console usage: tripwire.emailtest
 ## Send test mail to root@domain
 #
-# Todo: erb'ized it for domain
 
 TWBIN="/usr/sbin/tripwire"
 CHMOD="/bin/chmod"
 
 # normally, execution is enabled by debian installer (local admin my change that)
 
-echo -n "Enabling local execution of original tripwire file..."
+echo -n "Enable local execution of original tripwire file..."
 $CHMOD 0750 $TWBIN
 echo "done"
 
 echo -n "Tripwire: "
-$TWBIN --test --email root@home.tld
+$TWBIN --test --email root@<%= mydomain %>
 
 echo -n "Do you want to set tripwire execution bits to prevent execution from $TWBIN? (Y/N): "
 read answer
 
 case "$answer" in
         [Yy])
-            echo -n "Disabling local execution of on disk $TWBIN file..."
+            echo -n "Disable local execution on disk $TWBIN file..."
             $CHMOD 0640 $TWBIN
             echo "done"
             ;;
 
         [Nn])
-            echo "Ok, will not touch the execution bits."
+            echo "Ok, will not touch $TWBIN execution bits."
             ;;
           *)
             echo "Did not get any answer - leave it enabled then."
