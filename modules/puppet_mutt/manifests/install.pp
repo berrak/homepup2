@@ -57,7 +57,8 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               group => $name,
         }
         
-        # set up ~/Maildir mailbox structure for each user
+        # set up ~/Maildir mailbox structure for each user. Set owner-
+        # ship to user, for 'tmp','cur', 'new' created with 'exec'
         
         file { "/home/${name}/Maildir":
             ensure => "directory",
@@ -67,19 +68,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         }
         
         exec { "make_${name}_maildirs_new":
-            command => "/bin/mkdir -p /home/${name}/Maildir/new",
+            command => "/bin/mkdir -p /home/${name}/Maildir/new && /bin/chown ${name}:${name} /home/${name}/Maildir/new",
             subscribe => File["/home/${name}/Maildir"],
             refreshonly => true,
         }
         
         exec { "make_${name}_maildirs_cur":
-            command => "/bin/mkdir -p /home/${name}/Maildir/cur",
+            command => "/bin/mkdir -p /home/${name}/Maildir/cur && /bin/chown ${name}:${name} /home/${name}/Maildir/cur",
             subscribe => File["/home/${name}/Maildir"],
             refreshonly => true,
         }	
         
         exec { "make_${name}_maildirs_tmp":
-            command => "/bin/mkdir -p /home/${name}/Maildir/tmp",
+            command => "/bin/mkdir -p /home/${name}/Maildir/tmp && /bin/chown ${name}:${name} /home/${name}/Maildir/tmp",
             subscribe => File["/home/${name}/Maildir"],
             refreshonly => true,
         }
@@ -95,19 +96,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         }
         
         exec { "make_${name}_maildirs_drafts_new":
-            command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/new",
+            command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/new && /bin/chown ${name}:${name} /home/${name}/Maildir/.Drafts/new",
             subscribe => File["/home/${name}/Maildir/.Drafts"],
             refreshonly => true,
         }
     
         exec { "make_${name}_maildirs_drafts_cur":
-            command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/cur",
+            command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/cur && /bin/chown ${name}:${name} /home/${name}/Maildir/.Drafts/cur",
             subscribe => File["/home/${name}/Maildir/.Drafts"],
             refreshonly => true,
         }
         
         exec { "make_${name}_maildirs_drafts_tmp":
-            command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/tmp",
+            command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/tmp && /bin/chown ${name}:${name} /home/${name}/Maildir/.Drafts/tmp",
             subscribe => File["/home/${name}/Maildir/.Drafts"],
             refreshonly => true,
         }
@@ -124,30 +125,23 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         }	
         
         exec { "make_${name}_maildirs_sent_new":
-            command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/new",
+            command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/new && /bin/chown ${name}:${name} /home/${name}/Maildir/.Sent/new",
             subscribe => File["/home/${name}/Maildir/.Sent"],
             refreshonly => true,
         }
     
         exec { "make_${name}_maildirs_sent_cur":
-            command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/cur",
+            command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/cur && /bin/chown ${name}:${name} /home/${name}/Maildir/.Sent/cur",
             subscribe => File["/home/${name}/Maildir/.Sent"],
             refreshonly => true,
         }
         
         exec { "make_${name}_maildirs_sent_tmp":
-            command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/tmp",
+            command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/tmp && /bin/chown ${name}:${name} /home/${name}/Maildir/.Sent/tmp",
             subscribe => File["/home/${name}/Maildir/.Sent"],
             refreshonly => true,
         }     
         
-        # set ownership to user, for 'tmp','cur' and 'new' created with 'exec'
-        
-        exec { "set_${name}_ownership":
-            command => "/bin/chown -R  ${name}:${name} /home/${name}/Maildir/*",
-            subscribe => File["/home/${name}/Maildir"],
-            refreshonly => true,
-        }
         
     }
     
