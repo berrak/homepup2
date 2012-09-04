@@ -1,0 +1,29 @@
+#!/bin/bash
+# /root/bin/tripwire.emailtest
+#
+## Console usage: tripwire.emailtest
+## Send test mail to root@domain
+#
+# Todo: erb'ized it for domain
+
+TWBIN="/usr/sbin/tripwire"
+CHMOD="/bin/chmod"
+
+if [ ! -x "$TWBIN" ] ; then
+    echo -n "Enabling local execution of original tripwire file..."
+    $CHMOD u+x $TWBIN
+    echo "done"
+fi
+
+echo -n "Sending test email from tripwire to admin (root)..."
+    $TWBIN --test --email root@home.tld
+echo "done"
+
+if [ -x "$TWBIN" ] ; then
+    echo -n "Disabling local execution of original tripwire file..."
+    $CHMOD u-x $TWBIN
+    echo "done"
+fi
+
+## EOF
+

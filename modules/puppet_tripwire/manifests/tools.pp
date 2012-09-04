@@ -45,6 +45,13 @@ class puppet_tripwire::tools {
 		require => File["/root/bin"],
 	}
 
+	file { "/root/bin/tripwire.emailtest" :
+		 source => "puppet:///modules/puppet_tripwire/tripwire.emailtest",
+		  owner => 'root',
+		  group => 'root',
+		   mode => '0700',
+		require => File["/root/bin"],
+	}
 
 	# Create a mount directory only for tripwire (use system default mode setting).
 	file { "/media/tripwire":
