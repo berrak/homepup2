@@ -141,6 +141,13 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
             refreshonly => true,
         }     
         
+        # set ownership to user, for 'tmp','cur' and 'new' created with 'exec'
+        
+        exec { "set_${name}_ownership":
+            command => "/bin/chown -R  ${name}:${name} /home/${name}/Maildir/*",
+            subscribe => File["/home/${name}/Maildir"],
+            refreshonly => true,
+        }
         
     }
     
