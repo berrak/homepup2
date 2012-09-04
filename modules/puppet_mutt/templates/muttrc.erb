@@ -5,7 +5,20 @@
 # MANAGE BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 #############################################################
 
-## Sending Mail (SMTP) - need to erb'ized, and strengthen the authentication
+
+## First the local folder type and other important stuff
+set mbox_type=Maildir
+
+set mask="!^\\.[^.]"
+set mbox="~/Maildir"
+
+# Use fixed paths (otherwise mutt can not find/create eg .Sent)
+set record="~/Maildir/.Sent"
+set postponed="~/Maildir/.Drafts"
+
+
+## Sending Mail (SMTP)
+## (works uncommented in the initial plain tests. Needs authentication!)
 
 #set smtp_url="smtp://bekr@rohan.home.tld:25
 #set smtp_pass=""
@@ -22,19 +35,15 @@
 set spoolfile=<%= mailspool %>
 set folder=<%= mailfolder %>
 
-## Local folder type
-set mbox_type=Maildir
+## (alt a) use mutt org solution for mailboxes
 
-set mask="!^\\.[^.]"
-set mbox="~/Maildir"
-set record="+.Sent"
-set postponed="+.Drafts"
+mailboxes ! + `for file in ~/Maildir/.*; do box=$(basename "$file"); if [ ! "$box" = '.' -a ! "$box" = '..' -a ! "$box" = '.customflags' -a ! "$box" = '.subscriptions' ]; then echo -n "\"+$box\" "; fi; done`
 
-
-## Set mailboxes by scanning for subfolders
-mailboxes `echo -n "+ "; find ~/Maildir -maxdepth 1 -type d -name ".*" -printf "+'%f' "`
+## (alt b) Set mailboxes by scanning for subfolders (does it work?)
+## mailboxes `echo -n "+ "; find ~/Maildir -maxdepth 1 -type d -name ".*" -printf "+'%f' "`
 
 ## Reading Mail
+
 set timeout=10  
 set mail_check=5
 set sort=threads
@@ -46,7 +55,7 @@ unignore Date: From: To: CC: Bcc: Subject:
 hdr_order Subject: Date: From: To: CC: Bcc:
 set index_format="%{%b %d} %-15.15L [%Z] %s" # custom index format
 
-## macros
+## Macros
 
 macro index c "<change-folder>?<toggle-mailboxes>" "open a different folder"
 macro pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
@@ -58,12 +67,13 @@ macro compose A "<attach-message>?<toggle-mailboxes>" "attach message(s) to this
 
 
 ## Composing Mail
+
 set editor="nano"     
 set markers=no     
 #set signature=~/.sig  
 set include=yes
 
-# this line may cause the issue with .Sent box creation (smtp)
+# what is this?
 # set forward_format="Fwd: %s"                
 
 ## Pretty Colors
