@@ -66,19 +66,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               mode => '0750',
         }
         
-        exec { "make_user_maildirs_new":
+        exec { "make_${name}_maildirs_new":
             command => "/bin/mkdir -p /home/${name}/Maildir/new",
             subscribe => File["/home/${name}/Maildir"],
             refreshonly => true,
         }
         
-        exec { "make_user_maildirs_cur":
+        exec { "make_${name}_maildirs_cur":
             command => "/bin/mkdir -p /home/${name}/Maildir/cur",
             subscribe => File["/home/${name}/Maildir"],
             refreshonly => true,
         }	
         
-        exec { "make_user_maildirs_tmp":
+        exec { "make_${name}_maildirs_tmp":
             command => "/bin/mkdir -p /home/${name}/Maildir/tmp",
             subscribe => File["/home/${name}/Maildir"],
             refreshonly => true,
@@ -94,19 +94,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
             require => File["/home/${name}/Maildir"],
         }
         
-        exec { "make_user_maildirs_drafts_new":
+        exec { "make_${name}_maildirs_drafts_new":
             command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/new",
             subscribe => File["/home/${name}/Maildir/.Drafts"],
             refreshonly => true,
         }
     
-        exec { "make_user_maildirs_drafts_cur":
+        exec { "make_${name}_maildirs_drafts_cur":
             command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/cur",
             subscribe => File["/home/${name}/Maildir/.Drafts"],
             refreshonly => true,
         }
         
-        exec { "make_user_maildirs_drafts_tmp":
+        exec { "make_${name}_maildirs_drafts_tmp":
             command => "/bin/mkdir -p /home/${name}/Maildir/.Drafts/tmp",
             subscribe => File["/home/${name}/Maildir/.Drafts"],
             refreshonly => true,
@@ -123,19 +123,19 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
             require => File["/home/${name}/Maildir"],
         }	
         
-        exec { "make_user_maildirs_sent_new":
+        exec { "make_${name}_maildirs_sent_new":
             command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/new",
             subscribe => File["/home/${name}/Maildir/.Sent"],
             refreshonly => true,
         }
     
-        exec { "make_user_maildirs_sent_cur":
+        exec { "make_${name}_maildirs_sent_cur":
             command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/cur",
             subscribe => File["/home/${name}/Maildir/.Sent"],
             refreshonly => true,
         }
         
-        exec { "make_user_maildirs_sent_tmp":
+        exec { "make_${name}_maildirs_sent_tmp":
             command => "/bin/mkdir -p /home/${name}/Maildir/.Sent/tmp",
             subscribe => File["/home/${name}/Maildir/.Sent"],
             refreshonly => true,
