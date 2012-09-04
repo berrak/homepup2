@@ -1,5 +1,6 @@
 ##
-## This class set up the /root/bin subdirectory and permissions
+## This class set up the /root subdirectories and permissions, incl 
+## mails (postfix/mutt etc) although not recommended to read mail as root.
 ##
 class root_home {
 
@@ -37,5 +38,44 @@ class root_home {
 		ensure => link,
 		target => "/media/usb0",
 	}
+	
+	# set up Maildir structure for root
+	
+	file { "/root/Maildir":
+		ensure => "directory",
+		 owner => 'root',
+		 group => 'root',
+		  mode => '0700',
+	}
+	
+    file { "/root/Maildir/.Sent":
+		 ensure => "directory",
+		  owner => 'root',
+		  group => 'root',
+		   mode => '0700',
+		require => File["/root/Maildir"],
+	}
+	
+    file { "/root/Maildir/.Drafts":
+		 ensure => "directory",
+		  owner => 'root',
+	 	  group => 'root',
+		   mode => '0700',
+		require => File["/root/Maildir"],
+	}	
+	
+    exec { "make_root_maildirs_drafts":
+		command => "/bin/mkdir /root/Maildir/.Drafts/{new,cur,tmp}",
+		subscribe => File["/root/Maildir/.Drafts"],
+		refreshonly => true,
+	}
+	
+    exec { "make_root_maildirs_sent":
+		command => "/bin/mkdir /root/Maildir/.Sent/{new,cur,tmp}",
+		subscribe => File["/root/Maildir/.Sent"],
+		refreshonly => true,
+	}
+	
+	
 	
 }
