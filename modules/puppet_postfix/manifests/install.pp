@@ -64,11 +64,12 @@ define puppet_postfix::install(
     $mydomain = $::domain
     $myfqdn = $::fqdn
     
-    # define template variables to control external net mail delivery (hold)
+    # define template variables to control external domain mail
+    # delivery. Since it does notlworks as expected, not used.
 
     if $no_lan_outbound_mail == 'true' {
-        $lan_outbound_hold_service = 'hold      unix  -       -       -       -       -       smtp'
-        $default_transport = 'default_transport = hold'
+        $lan_outbound_hold_service = '#'
+        $default_transport = ''
          
     } else {
         $lan_outbound_hold_service = '#'
