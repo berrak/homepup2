@@ -9,8 +9,6 @@ alias_maps = hash:/etc/aliases
 append_dot_mydomain = no
 biff = no
 
-<%= default_transport %>
-
 home_mailbox = Maildir/
 
 inet_interfaces = all
@@ -59,4 +57,8 @@ smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
 #            permit_mynetworks,
 #            permit_sasl_authenticated,
 #            reject_unauth_destinations, 
-#            reject_unknown_sender_domain, 
+#            reject_unknown_sender_domain,
+
+# manage mails transport for internal domain vs. ext domains
+<%= transport_maps %>
+

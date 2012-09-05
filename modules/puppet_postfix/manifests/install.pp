@@ -65,15 +65,15 @@ define puppet_postfix::install(
     $myfqdn = $::fqdn
     
     # define template variables to control external domain mail
-    # delivery. Since it does notlworks as expected, not used.
+    # delivery. This will bounce back to sender if external destination.
 
     if $no_lan_outbound_mail == 'true' {
-        $lan_outbound_hold_service = '#'
-        $default_transport = ''
+
+        $transport_maps = 'transport_maps = hash:/etc/postfix/transport'
          
     } else {
-        $lan_outbound_hold_service = '#'
-        $default_transport = ''
+
+        $transport_maps = ''
         
     }
     
@@ -121,7 +121,26 @@ define puppet_postfix::install(
                 group => 'root',
               require => Package["postfix"],
                notify => Service["postfix"],
-        } 
+        }
+        
+        if $no_lan_outbound_mail == 'true' {
+        
+            file { '/etc/postfix/transport' :
+                  content =>  template( 'puppet_postfix/transport.erb' ),
+                    owner => 'root',
+                    group => 'root',
+                  require => Package["postfix"],
+                   notify => Service["postfix"],
+            }
+            
+            exec { "refresh_postfix_transport" :
+                    command => "postmap /etc/postfix/transport",
+                       path => '/usr/sbin',
+                  subscribe => File["/etc/postfix/transport"],
+                refreshonly => true,
+            }
+            
+        }
     
         file { '/etc/postfix/master.cf' :
               content =>  template( 'puppet_postfix/server.master.cf.erb' ),
