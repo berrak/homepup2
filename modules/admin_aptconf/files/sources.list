@@ -1,18 +1,12 @@
 #############################################################
 # MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
 #############################################################
-
+#
+# This list must only contain security. Since
+# only this will be run by custom cron script.
+#
 ## security
 
 deb http://security.debian.org/ wheezy/updates main
 deb-src http://security.debian.org/ wheezy/updates main
 
-## main
-
-deb http://ftp.us.debian.org/debian/ wheezy main
-deb-src http://ftp.us.debian.org/debian/ wheezy main
-
-## updates (once wheezy is released)
-
-# deb http://ftp.debian.org/debian/ wheezy-updates main
-# deb-src http://ftp.debian.org/debian/ wheezy-updates main
