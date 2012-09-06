@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# /root/bin/tripwire.init
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+## Console usage: tripwire.init
+## Initilize our database with tripwire binary
+## and the site/host key files on CDROM or USB.
+
+MOUNT="/bin/mount"
+UMOUNT="/bin/umount"
+
+MNTPOINT="/media/tripwire"
+
+CDDEV="/dev/sr0"
+USBDEV="/dev/sdb1"
+
+TWDBPATH="/var/lib/tripwire"
+HOSTNAME=`uname -n`
+
+
+## Check that Tripwire database exist
+
+if [ ! -e $TWDBPATH/${HOSTNAME}.twd ] ; then
+	echo "Tripwire database for ${HOSTNAME} is not found. Initilizing a new database."
+fi
+
+# Ensure that non of the devices is mounted
+# since CDROM/USB are mounted on the same MNTPOINT
+
+$UMOUNT $CDDEV
+$UMOUNT $USBDEV
+
+## If grep does not return 0, mount the CDROM
+
+cat /etc/mtab | grep sr0
+if [ $? -ne 0 ] ; then
+	$MOUNT $CDDEV $MNTPOINT
+fi
+
+# If the CDROM mount failed ($?) try an USB mount
+
+if [ $? -ne 0 ] ; then  
+
+    cat /etc/mtab | grep sdb1
+    if [ $? -ne 0 ] ; then
+    	$MOUNT $USBDEV $MNTPOINT
+    fi
+    
+fi
+
+# If both mount attempts failed, abort
+if [ $? -ne 0 ] ; then  
+    echo "$0: Error: Can't mount tripwire media! No CD disk or USB stick found."
+    exit 1
+fi
+
+## Set new file mask
+
+umask 027
+
+echo -n "Add new policy to tripwire database..."
+$MNTPOINT/tripwire --init
+echo "done"
+
+echo "Run tripwire.check and tripwire.check -I to review results with new policy."
+
+## EOF
+
