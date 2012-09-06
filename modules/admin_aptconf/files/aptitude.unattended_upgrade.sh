@@ -15,8 +15,6 @@
 UPGRADE="/root/bin/upgrade"
 MV="/bin/mv"
 
-QUIET="> /dev/null 2>&1"
-
 ORIGINALSOURCEDIR="/etc/apt/sources.list.d"
 SHADOWSOURCEDIR="/etc/apt/.sources.list.d"
 
@@ -26,7 +24,7 @@ $MV $ORIGINALSOURCEDIR/* $SHADOWSOURCEDIR
 
 # runs the upgrade with repos that only is in 'source.list'
 
-$UPGRADE $QUIET
+$UPGRADE
 
 # now move source snippets back to its original place
 
