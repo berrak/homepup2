@@ -12,7 +12,7 @@
 #
 # Initial version without any error checks - todo.
 
-UPGRADE="/root/bin/upgrade"
+UPGRADE="/root/bin/upgrade -y"
 MV="/bin/mv"
 
 ORIGINALSOURCEDIR="/etc/apt/sources.list.d"

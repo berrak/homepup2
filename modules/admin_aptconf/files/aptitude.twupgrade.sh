@@ -1,12 +1,20 @@
 #!/bin/bash
+#
 # /root/bin/upgrade
 #
-# Console usage: upgrade
-#
+###############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
+###############################################################
+# Console usage: upgrade [option]
 # aptitude safe-upgrade with (possible) tripwire run
 #
-#
-OPT="--prompt --show-versions --verbose --without-recommends"
+if [ $1 = "-y" ] ; then
+    assume-yes = $1
+els
+    assume-yes = ""
+fi
+
+OPT="--prompt --show-versions --verbose --without-recommends $assume-yes"
 
 /usr/bin/aptitude update
 
