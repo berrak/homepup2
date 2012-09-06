@@ -8,18 +8,18 @@
 # Console usage: upgrade [option]
 # aptitude safe-upgrade with (possible) tripwire run
 #
-if [ $1 = "-y" ] ; then
-    assume-yes = $1
+if [ "$1" = "-y" ] ; then
+    yestoprompts = $1
 else
-    assume-yes = ""
+    yestoprompts = ""
 fi
 
-OPT="--prompt --show-versions --verbose --without-recommends $assume-yes"
+OPT="--prompt --show-versions --verbose --without-recommends"
 
 /usr/bin/aptitude update
 
 if [ $? -eq 0 ] ; then
-    /usr/bin/aptitude $OPT safe-upgrade
+    /usr/bin/aptitude $OPT $yestoprompts safe-upgrade
 fi
 
 if [ -d "/etc/tripwire" ] ; then 
