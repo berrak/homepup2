@@ -15,9 +15,11 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     $mydomain = $::domain
     
     ###########################################################
-    ## were simple unsecure authentication for test (change) ##
-    $mypasswd = 'pass'
+    ## were simple unsecure authentication for IMAP (change) ##
     ###########################################################
+    
+    $mypasswd = 'pass'
+
 
     # mutt configuration for direct access on the mail server
     # and else for remote access from our lan hosts with imap.
@@ -44,18 +46,39 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     
     if $name == 'root' {
     
-        file { "/root/.muttrc" : 
+        # directory for mutt configurations etc
+    
+        file { "/root/.mutt":
+            ensure => "directory",
+              owner => $name,
+              group => $name,
+              mode => '0700',
+        }  
+    
+        file { "/root/.mutt/muttrc" : 
             content =>  template( 'puppet_mutt/muttrc.erb' ),
               owner => 'root',
               group => 'root',
+            require => File["/root/.mutt"],
         }
     
     } else {
 
-        file { "/home/${name}/.muttrc" : 
+        # directory for mutt configurations etc
+
+        file { "/home/${name}/.mutt":
+            ensure => "directory",
+              owner => $name,
+              group => $name,
+              mode => '0700',
+        }  
+
+        file { "/home/${name}/.mutt/muttrc" : 
             content =>  template( 'puppet_mutt/muttrc.erb' ),
               owner => $name,
               group => $name,
+            require => File["/home/${name}/.mutt"],
+              
         }
         
         # set up ~/Maildir mailbox structure for each user. Set owner-
