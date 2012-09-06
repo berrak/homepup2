@@ -1,13 +1,8 @@
 #!/bin/sh -e
-
-#tripwire=/usr/sbin/tripwire
-
-#[ -x $tripwire ] || exit 0
-
-#umask 027
-
-#$tripwire --check --quiet --email-report
-
-## Customized, but not final: 2012-06-30
-
+#
+# /etc/cron.daily/tripwire
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
 /root/bin/tripwire.check

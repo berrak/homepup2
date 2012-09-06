@@ -7,6 +7,7 @@ class puppet_tripwire::cron {
 		source => "puppet:///puppet_tripwire/cron.tripwire",
 		 owner => 'root',
 		 group => 'root',
+		  mode => '0700',
     }
 
 
