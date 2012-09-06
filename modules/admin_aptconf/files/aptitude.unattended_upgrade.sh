@@ -15,7 +15,7 @@
 UPGRADE="/root/bin/upgrade"
 MV="/bin/mv"
 
-QUIET="2>&1 /dev/null"
+QUIET="> /dev/null 2>&1"
 
 ORIGINALSOURCEDIR="/etc/apt/sources.list.d"
 SHADOWSOURCEDIR="/etc/apt/.sources.list.d"
