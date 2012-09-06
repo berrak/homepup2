@@ -10,7 +10,7 @@
 #
 if [ $1 = "-y" ] ; then
     assume-yes = $1
-els
+else
     assume-yes = ""
 fi
 
