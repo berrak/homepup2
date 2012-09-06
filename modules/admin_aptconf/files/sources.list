@@ -1,10 +1,16 @@
+#
+# /etc/apt/sources.list
+#
 #############################################################
 # MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# This list must only contain security. Since
-# only this will be run by custom cron script.
+# This list must only contain security. Since these 
+# repos listed here will run as an unattended cron script.
 #
+# All other list repos should be placed in /sources.list.d
+#
+
 ## security
 
 deb http://security.debian.org/ wheezy/updates main

@@ -1,13 +1,11 @@
 #
-# /etc/apt/sources.list.d/main.list
+# /etc/apt/sources.list.d/updates.list
 #
 #############################################################
 # MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
 #############################################################
 
-## main
+## updates (once wheezy is released)
 
-deb http://ftp.us.debian.org/debian/ wheezy main
-deb-src http://ftp.us.debian.org/debian/ wheezy main
-
-
+# deb http://ftp.debian.org/debian/ wheezy-updates main
+# deb-src http://ftp.debian.org/debian/ wheezy-updates main
