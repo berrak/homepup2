@@ -10,7 +10,7 @@
 #
 echo "DEBUG: $1"
 
-if [ "$1" = "-y" ] ; then
+if [ $1 = "-y" ] ; then
     yestoprompts = $1
 else
     yestoprompts = ""
