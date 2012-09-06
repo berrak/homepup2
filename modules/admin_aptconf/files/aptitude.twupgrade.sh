@@ -8,22 +8,19 @@
 # Console usage: upgrade [option]
 # aptitude safe-upgrade with (possible) tripwire run
 #
-echo "DEBUG: $1"
 
-if [ $1 = "-y" ] ; then
-    yestoprompts = $1
+# $1 can hold any additional options, but here we receive '-y'
+
+if [ -z $1 ] ; then
+    OPT="--prompt --show-versions --verbose --without-recommends"
 else
-    yestoprompts = ""
+    OPT="--prompt --show-versions --verbose --without-recommends $1"
 fi
-
-echo "DEBUG: yestoprompts is ($yestoprompts)"
-
-OPT="--prompt --show-versions --verbose --without-recommends"
 
 /usr/bin/aptitude update
 
 if [ $? -eq 0 ] ; then
-    /usr/bin/aptitude $OPT $yestoprompts safe-upgrade
+    /usr/bin/aptitude $OPT safe-upgrade
 fi
 
 if [ -d "/etc/tripwire" ] ; then 
