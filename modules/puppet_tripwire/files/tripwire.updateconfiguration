@@ -1,17 +1,21 @@
-#!/bin/bash
-# 2012-06-13
+##!/bin/bash
+#
 # /root/bin/tripwire.updateconfiguration
-
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
 ## Console usage: tripwire.updateconfiguration
 ## Encrypt the configuration file from updated clear text file
 
 TWADMIN="/usr/sbin/twadmin"
 CFGFILE="/etc/tripwire/twcfg.txt"
-SITEKEY="/media/cdrom0/site.key"
+SITEKEY="/media/tripwire/site.key"
 
 MOUNT="/sbin/mount"
+RM="/bin/rm"
 CDDEV="/dev/sr0"
-MNTPOINT="/media/cdrom0"
+MNTPOINT="/media/tripwire"
 
 
 ## Test, does the clear text configuration file exist
@@ -40,6 +44,24 @@ $TWADMIN --create-cfgfile  --site-keyfile  $SITEKEY  $CFGFILE
 echo "done"
 
 echo "Do not forget to delete the clear text configuration file!"
+echo -n "Do you want to delete the clear text $CFGFILE file now ? (Y/N): "
+read answer
+
+case "$answer" in
+        [Yy])
+            echo -n "Removing the $CFGFILE file..."
+            $RM $CFGFILE
+            echo "done"
+            ;;
+
+        [Nn])
+            echo "Ok, will not remove the $CFGFILE file now."
+            ;;
+          *)
+            echo "Did not get any answer - leave it there then."
+            ;;
+esac
+
 
 ls -l /etc/tripwire
 

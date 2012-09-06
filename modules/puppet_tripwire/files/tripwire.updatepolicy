@@ -1,12 +1,16 @@
 #!/bin/bash
-# 2012-06-13
+#
 # /root/bin/tripwire.updatepolicy
-
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
 ## Console usage: tripwire.updatepolicy
 ## Encrypt the policy
 
 TWADMIN="/usr/sbin/twadmin"
 POLFILE="/etc/tripwire/twpol.txt"
+RM="/bin/rm"
 
 ## Set more restrictive file mask
 
@@ -17,7 +21,26 @@ $TWADMIN --create-polfile $POLFILE
 echo "done"
 
 echo "Do not forget to delete the clear text policy file!"
-echo "Do not forget to initilize the database after this change!"
+echo -n "Do you want to delete the clear text $POLFILE policy file now ? (Y/N): "
+read answer
+
+case "$answer" in
+        [Yy])
+            echo -n "Removing the $POLFILE file..."
+            $RM $POLFILE
+            echo "done"
+            ;;
+
+        [Nn])
+            echo "Ok, will not remove the $POLFILE file now."
+            ;;
+          *)
+            echo "Did not get any answer - leave it there then."
+            ;;
+esac
+
+
+echo "Do not forget to initilize the database (i.e. run tripwire.init) after this change!"
 
 ls -l /etc/tripwire
 

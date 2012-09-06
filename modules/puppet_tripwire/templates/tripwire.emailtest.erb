@@ -1,9 +1,12 @@
 #!/bin/bash
+#
 # /root/bin/tripwire.emailtest
 #
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
 ## Console usage: tripwire.emailtest
 ## Send test mail to root@domain
-#
 
 TWBIN="/usr/sbin/tripwire"
 CHMOD="/bin/chmod"
@@ -17,7 +20,7 @@ echo "done"
 echo -n "Tripwire: "
 $TWBIN --test --email root@<%= mydomain %>
 
-echo -n "Do you want to set tripwire execution bits to prevent execution from $TWBIN? (Y/N): "
+echo -n "Do you want to set tripwire execution bits to prevent execution from $TWBIN ? (Y/N): "
 read answer
 
 case "$answer" in
