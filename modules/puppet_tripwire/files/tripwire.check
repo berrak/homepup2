@@ -18,9 +18,9 @@ USBDEV="/dev/sdb1"
 TWDBPATH="/var/lib/tripwire"
 HOSTNAME=`uname -n`
 
-# this is the default reportlevel in tw.cfg
+# this is the default reportlevel for tripwire
 
-emaillevel=1
+emaillevel=3
 
 # Set the initial options to an empty string
 fname=""
