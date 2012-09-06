@@ -8,11 +8,15 @@
 # Console usage: upgrade [option]
 # aptitude safe-upgrade with (possible) tripwire run
 #
+echo "DEBUG: $1"
+
 if [ "$1" = "-y" ] ; then
     yestoprompts = $1
 else
     yestoprompts = ""
 fi
+
+echo "DEBUG: yestoprompts is ($yestoprompts)"
 
 OPT="--prompt --show-versions --verbose --without-recommends"
 
