@@ -12,7 +12,7 @@
 #
 # Initial version without any error checks - todo.
 
-UPGRADE="/root/bin/upgrade -y"
+UPGRADE="/root/bin/upgrade"
 MV="/bin/mv"
 
 ORIGINALSOURCEDIR="/etc/apt/sources.list.d"
@@ -24,7 +24,7 @@ $MV $ORIGINALSOURCEDIR/* $SHADOWSOURCEDIR
 
 # runs the upgrade with repos that only is in 'source.list'
 
-$UPGRADE
+$UPGRADE -y
 
 # now move source snippets back to its original place
 
