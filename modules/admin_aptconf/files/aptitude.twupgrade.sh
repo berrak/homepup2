@@ -7,7 +7,6 @@
 ###############################################################
 # Console usage: upgrade [option]
 # aptitude safe-upgrade with (possible) tripwire run
-#
 
 # $1 can hold any additional options, but here we receive '-y'
 
