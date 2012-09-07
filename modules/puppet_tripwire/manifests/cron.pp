@@ -21,5 +21,13 @@ class puppet_tripwire::cron {
 		  mode => '0644',
     }
 
+    # test only with P't labs cron
+	
+	cron { tripwire-test :
+				command => '/root/bin/tripwire.check',
+			environment => 'PATH=/root/bin:$PATH',
+				   user => 'root',
+				 minute => [ 10, 20, 30, 40, 50 ],
+	}
 
 }
