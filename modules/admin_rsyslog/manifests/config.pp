@@ -7,8 +7,8 @@ class admin_rsyslog::config {
         owner => 'root',
         group => 'root',
         content => template("admin_rsyslog/rsyslog.conf.erb"),
-        require => Class["rsyslog::install"],
-        notify => Class["rsyslog::service"],
+        require => Class["admin_rsyslog::install"],
+        notify => Class["admin_rsyslog::service"],
     }
     
 }
