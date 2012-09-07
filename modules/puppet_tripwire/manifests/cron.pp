@@ -9,25 +9,18 @@ class puppet_tripwire::cron {
     puppet_utils::append_if_no_such_line { "Add_tripwire_placeholder" :
 		
 	    file => "/etc/cron.daily/tripwire",
-	    line => "PUPPET: Do not remove. TW use cron.d. Prevents Apt putting tripwire job here." 
+	    line => "PUPPET: Do not remove. Prevents TW maintainer putting tripwire job here." 
     }
 	
-    # this is the real cron tripwire job in /etc/cron.d
 
-    file { "/etc/cron.d/tripwire" :
-		source => "puppet:///puppet_tripwire/cron.tripwire",
-		 owner => 'root',
-		 group => 'root',
-		  mode => '0644',
-    }
-
-    # test only with P't labs cron
+    # Set up the cron job for 
 	
 	cron { tripwire-test :
 				command => '/root/bin/tripwire.check',
 			environment => 'PATH=/root/bin:$PATH',
 				   user => 'root',
-				 minute => [ 10, 20, 30, 40, 50 ],
+				   hour => [ 7, 13, 21 ],
+				 minute => '19 ',
 	}
 
 }
