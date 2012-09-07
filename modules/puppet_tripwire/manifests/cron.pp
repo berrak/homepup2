@@ -20,7 +20,7 @@ class puppet_tripwire::cron {
 			environment => 'PATH=/root/bin:$PATH',
 				   user => 'root',
 				   hour => [ 7, 13, 21 ],
-				 minute => '19 ',
+				 minute => '19',
 	}
 
 }
