@@ -8,6 +8,8 @@ node basenode {
     include root_home
     include root_bashrc
 	
+	include admin_rsyslog
+	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
 		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
