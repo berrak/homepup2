@@ -1,8 +1,11 @@
-#!/bin/sh -e
 #
-# /etc/cron.daily/tripwire
+# Regular cron job for tripwire.check (runs every hour)
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
-/root/bin/tripwire.check
+#
+PATH=/root/bin:$PATH
+SHELL=/bin/sh
+#
+0  *  *  *  *   root  test -x /root/bin/tripwire.check && /root/bin/tripwire.check
