@@ -9,7 +9,7 @@ class puppet_tripwire::cron {
     puppet_utils::append_if_no_such_line { "Add_tripwire_placeholder" :
 		
 	    file => "/etc/cron.daily/tripwire",
-	    line => "PUPPET: Do not remove. Placeholder to prevent Apt putting another tripwire job here." 
+	    line => "PUPPET: Do not remove. TW use cron.d. Prevents Apt putting tripwire job here." 
     }
 	
     # this is the real cron tripwire job in /etc/cron.d
