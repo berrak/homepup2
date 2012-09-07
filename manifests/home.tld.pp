@@ -9,6 +9,7 @@ node basenode {
     include root_bashrc
 	
 	include admin_rsyslog
+	include admin_logrotate
 	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
