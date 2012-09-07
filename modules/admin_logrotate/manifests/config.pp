@@ -19,7 +19,7 @@ class admin_logrotate::config {
     file { '/etc/logrotate.d/rsyslog':
         owner => 'root',
         group => 'root',
-        content =>  template('admin_logrotate/logrotate.erb'),
+        content =>  template('admin_logrotate/rsyslog.erb'),
         require => Class["admin_logrotate::install"],
     }
     
