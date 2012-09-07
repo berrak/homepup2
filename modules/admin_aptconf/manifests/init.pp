@@ -3,8 +3,8 @@
 ##
 class admin_aptconf {
 
-	# the source list alone is always included
-	# when cron runs our script 'aptitude.unattended'
+	# only the 'sources.list' file is included 
+	# when cron runs our script 'upgrade.security'
 
 	file { "/etc/apt/sources.list":
 		source => "puppet:///modules/admin_aptconf/sources.list",
@@ -13,12 +13,12 @@ class admin_aptconf {
 		  mode => '0644',
 	}
 
-	# put all other sources in the sources.list.d directory.	
-	# source list snippets is disabled during unattended runs.
+	# put all other sources in the sources.list.d directory. The source list	
+	# snippets is disabled during cron unattended upgrade security runs.
 	
 	
 	
-	### repo files
+	### repo file snippets
 
 	file { "/etc/apt/sources.list.d/main.list":
 		source => "puppet:///modules/admin_aptconf/main.list",
@@ -35,7 +35,7 @@ class admin_aptconf {
 		  mode => '0644',
 	}
 
-    ### end repo files
+    ### end repo file snippets
 
 
 
@@ -50,8 +50,8 @@ class admin_aptconf {
 
 	}	
 
-	## Configures daily updates/downloads but do NOT auto upgrade (i.e. do
-	## not use the package unattended-upgrades. Use my 'aptitude.unattended'
+	## Configures daily updates/downloads but do NOT auto upgrade (i.e. do not
+	## use the debian package unattended-upgrades. Use my 'upgrade.security'
 	
 	file { "/etc/apt/apt.conf.d/02periodic":
 		source => "puppet:///modules/admin_aptconf/02periodic",
@@ -60,8 +60,8 @@ class admin_aptconf {
 		  mode => '0644',
 	}
 	
-	# create a bin subdirectory directory only for an unattended cron
-	# upgrade script. Needs this to shuffle source lists when run unattended.
+	# create a bin subdirectory directory only for an unattended cron upgrade
+	# script. This is required to shuffle source lists when run unattended.
 	
 	file { "/etc/apt/.sources.list.d":
 		ensure => "directory",
@@ -82,7 +82,7 @@ class admin_aptconf {
 	## Always use this script for unattended security updates. This script
 	## will only read 'sources.list' and not any snippets in /sources.list.d
 
-		file { "/root/bin/aptitude.unattended_upgrade":
+		file { "/root/bin/upgrade.security":
 			source => "puppet:///modules/admin_aptconf/aptitude.unattended_upgrade.sh",
 			 owner => 'root',
 			 group => 'root',

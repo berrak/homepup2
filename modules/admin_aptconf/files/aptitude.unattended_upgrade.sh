@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# /root/bin/aptitude.unattended_upgrade.sh
+# /root/bin/upgrade.security
 #
 ###############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
