@@ -19,6 +19,7 @@ USBDEV="/dev/sdb1"
 
 TWDBPATH="/var/lib/tripwire"
 HOSTNAME=`uname -n`
+OLDPOLICYFILE="/etc/tripwire/twpol.cfg.bak"
 
 
 ## Check that Tripwire database exist
@@ -61,11 +62,35 @@ fi
 
 umask 027
 
-echo -n "Add new policy to tripwire database..."
+echo "Add new policy to tripwire database..."
 $MNTPOINT/tripwire --init
-echo "done"
 
-echo "Run tripwire.check and tripwire.check -I to review results with new policy."
+twresult=$?
+
+# if successful, ask to remove the previuos policy file 'twpol.cfg.bak'
+if [ $twresult -eq 0 ] ; then
+
+    echo "Do not leave the old policy file on disk!"
+    echo -n "Do you want to delete the backup ($OLDPOLICYFILE) policy file now ? (Y/N): "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo -n "Removing the $OLDPOLICYFILE file..."
+                $RM $OLDPOLICYFILE
+                echo "done"
+                ;;
+    
+            [Nn])
+                echo "Ok, will not remove the $OLDPOLICYFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
+
+fi
+
 
 ## EOF
 

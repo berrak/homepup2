@@ -7,5 +7,10 @@ class puppet_tripwire::params {
     # In this case the 'tripwire.preseed' file.
     
     $preseedfilepath = "/etc/puppet/files/tripwire.preseed"
+    
+    # tripwire configuration file (twcfg.txt)
+    
+    $smtphost_name = 'rohan'
+    $editorpath = '/bin/nano'
 
 }

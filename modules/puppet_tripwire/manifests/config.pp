@@ -3,6 +3,7 @@
 ##
 class puppet_tripwire::config {
 
+    include puppet_tripwire::params
 
 	# directory for tripwire 'default' text configuration files
 	# these are the file which is managed by puppet. When changing
@@ -27,6 +28,9 @@ class puppet_tripwire::config {
 		   mode => '0600',
 		require => File["/usr/local/etc/tripwire"],
 	}
+
+    $myeditor = $::puppet_tripwire::params::editorpath
+	$mysmtp_fqdn = "$::puppet_tripwire::params::smtphost_name.${mydomain}"
 
 	file { "/usr/local/etc/tripwire/twcfg.txt" :
         content =>  template( 'puppet_tripwire/twcfg.txt.erb' ),
