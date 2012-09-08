@@ -10,7 +10,7 @@ define admin_cron::install (
 		$month=undef,
 		$monthday=undef,
 		$weekday=endef,
-		$environment='PATH=/root/bin:/sbin:/bin'
+		$environment='PATH=/root/bin:/sbin:/bin',
 		$special=undef,
 ) {
 
