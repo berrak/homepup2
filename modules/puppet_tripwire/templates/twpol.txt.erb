@@ -1,0 +1,436 @@
+#
+# Site Tripwire Policy
+#
+# '/usr/local/etc/tripwire/twpol.txt'
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###################################################
+# Global Variable Definitions
+#
+# NOTE: TWBIN refer to binaries on disk but we actually
+# run from ro-media. Leave TWBIN as defined here.
+
+@@section GLOBAL
+TWBIN = /usr/sbin;
+TWETC = /etc/tripwire;
+TWVAR = /var/lib/tripwire;
+
+###################################################
+# File System Definitions
+#
+@@section FS
+
+#
+# First, some variables to make configuration easier
+#
+SEC_CRIT      = $(IgnoreNone)-SHa ;  # Critical files that cannot change
+
+SEC_BIN       = $(ReadOnly) ;        # Binaries that should not change
+
+SEC_CONFIG    = $(Dynamic) ;         # Config files that are changed
+									 # infrequently but accessed often
+
+SEC_LOG       = $(Growing) ;         # Files that grow, but that
+			                         # should never change ownership
+
+SEC_INVARIANT = +tpug ;              # Directories that should never
+				                     # change permission or ownership
+
+################################################### 
+# Severity Levels (1-100) are used when we want
+# post run selective analysis. Used as flag in email.
+# Use a wide spread to make post analysis easier.
+# Modify these to your preferences (below is my defaults)
+#
+
+## Critical files that are significant points of vulnerability
+# --> Select roughly a severity between 66 and 100.
+
+## Non-critical files that are of critical security impact
+# --> Select a severity between 33 and 65.
+
+
+## Non-critical files that are of minimal security impact
+# --> Select a severity between 1 and 32.
+
+######################################################################
+#
+#
+# Tripwire Data Files - Configuration Files, Policy Files, 
+# Keys, Reports and Databases
+#
+(
+  rulename = "Tripwire",
+  severity = "100",
+  emailto = root@<%= mydomain %>
+)
+{
+	$(TWVAR)/$(HOSTNAME).twd	-> $(SEC_CONFIG) -i ;
+	$(TWETC)/tw.pol				-> $(SEC_BIN)       ;
+	$(TWETC)/tw.cfg				-> $(SEC_BIN)       ;
+
+	#don't scan the individual reports
+	$(TWVAR)/report				-> $(SEC_CONFIG) (recurse=0) ;
+}
+
+
+
+
+###################################################
+# Login and Privilege Raising Programs
+#
+(
+  rulename = "Password",
+  severity = "95",
+  emailto = root@<%= mydomain %>
+)
+{
+	/etc/passwd				-> $(SEC_CONFIG) ;
+	/etc/shadow				-> $(SEC_CONFIG) ;
+	/etc/pam.d/passwd       -> $(SEC_CONFIG) ;
+}
+
+
+
+
+###################################################
+# Critical System Boot Files
+# These files are critical to a correct system boot.
+#
+(
+  rulename = "Boot",
+  severity = "90",
+  emailto = root@<%= mydomain %>
+)
+{
+	/boot				-> $(SEC_CRIT) ;
+	/lib/modules		-> $(SEC_CRIT) ;
+}
+
+
+
+###################################################
+# This is always updated when aptitude runs. 
+# Use as flag when system last get updated.
+#
+(
+  rulename ="AptRunDate",
+  severity = "90",
+  emailto = root@<%= mydomain %>
+)
+{
+	/root/.aptitude/config	-> $(SEC_CRIT)   ; 
+}
+
+
+
+###################################################
+# These files change the behavior of the root account
+#
+(
+  rulename = "UserRoot",
+  severity = "90",
+  emailto = root@<%= mydomain %>
+)
+{
+    !/root/.aptitude                     ;
+	!/root/Maildir                       ;
+	/root				-> $(SEC_CRIT)   ; 
+	/root/.profile		-> $(SEC_CONFIG) ;
+	/root/.bashrc		-> $(SEC_CONFIG) ;
+}
+
+
+
+###################################################
+# System init boot up scripts
+#
+(
+  rulename = "BootScripts",
+  severity = "85",
+  emailto = root@<%= mydomain %>
+)
+{
+	/etc/init.d		-> $(SEC_BIN) ;
+	/etc/rc.local	-> $(SEC_BIN) ; 
+	/etc/rcS.d		-> $(SEC_BIN) ;
+	/etc/rc0.d		-> $(SEC_BIN) ;
+	/etc/rc1.d		-> $(SEC_BIN) ;
+	/etc/rc2.d		-> $(SEC_BIN) ;
+	/etc/rc3.d		-> $(SEC_BIN) ;
+	/etc/rc4.d		-> $(SEC_BIN) ;
+	/etc/rc5.d		-> $(SEC_BIN) ;
+	/etc/rc6.d		-> $(SEC_BIN) ;
+}
+
+
+
+
+
+###################################################
+# Critical executables
+#
+(
+  rulename = "Bin",
+  severity = "80",
+  emailto = root@<%= mydomain %>
+)
+{
+	/bin			-> $(SEC_BIN) ;
+	/sbin			-> $(SEC_BIN) ;
+}
+
+
+
+
+###################################################
+# Critical Libraries
+#
+(
+  rulename = "Lib",
+  severity = "80",
+  emailto = root@<%= mydomain %>
+)
+{
+	/lib			-> $(SEC_BIN) ;
+}
+
+
+
+
+
+###################################################
+# Other system configuration files
+#
+(
+  rulename = "EtcFiles",
+  severity = "75",
+  emailto = root@<%= mydomain %>
+)
+{
+	!/etc/network/run             ;
+    !/etc/network/ifstate         ; 
+    !/etc/adjtime                 ; 	 
+	/etc		    -> $(SEC_BIN) ;
+}
+
+
+
+
+###################################################
+# System log, run and lock files
+#
+(
+  rulename = "VarLog",
+  severity = "70",
+  emailto = root@<%= mydomain %>
+)
+{
+	/var/lock		-> $(SEC_CONFIG)    ;
+	/var/run		-> $(SEC_CONFIG)    ;    # daemon PIDs
+	/var/log		-> $(SEC_CONFIG) -i ;  # inode numbers does change
+}
+
+
+
+
+
+###################################################
+# Critical devices
+#
+(
+  rulename = "Dev",
+  severity = "70",
+  emailto = root@<%= mydomain %>
+)
+{
+	!/dev/pts                            ; 
+	!/dev/disk                           ;
+	!/dev/bsg                            ;             
+	!/dev/bus                            ;
+	!/dev/char                           ;                          	
+	/dev				    -> $(Device) ;
+}
+
+
+
+
+###################################################
+# Critical processes
+#
+(
+  rulename = "Proc",
+  severity = "65",
+  emailto = root@<%= mydomain %>
+)
+{
+
+	# Directories in /proc
+	/proc/acpi		-> $(Device) ;
+	/proc/asound	-> $(Device) ;
+	/proc/bus		-> $(Device) ;
+	/proc/dri		-> $(Device) ;
+	/proc/driver	-> $(Device) ;
+	/proc/fs		-> $(Device) ;
+	/proc/irq		-> $(Device) ;
+	/proc/sys		-> $(Device) ;
+	/proc/sysvipc	-> $(Device) ;
+	/proc/tty		-> $(Device) ;
+	
+
+	# Files in /proc
+
+	/proc/buddyinfo		-> $(Device) ;
+	/proc/cgroups		-> $(Device) ;
+	/proc/cmdline		-> $(Device) ;
+	/proc/consoles		-> $(Device) ;
+	/proc/cpuinfo		-> $(Device) ;
+	/proc/crypto		-> $(Device) ;
+	/proc/devices		-> $(Device) ;
+	/proc/diskstats		-> $(Device) ;
+	/proc/dma			-> $(Device) ;
+	/proc/execdomains	-> $(Device) ;
+	/proc/fb			-> $(Device) ;
+	/proc/filesystems	-> $(Device) ;
+	/proc/interrupts	-> $(Device) ;
+	/proc/iomem			-> $(Device) ;
+	/proc/ioports		-> $(Device) ;
+	/proc/kallsyms		-> $(Device) ;
+	/proc/kcore			-> $(Device) ;
+	/proc/keys			-> $(Device) ;
+	/proc/key-users		-> $(Device) ;
+	/proc/kmsg			-> $(Device) ;
+	/proc/kpagecount	-> $(Device) ;
+	/proc/kpageflags	-> $(Device) ;
+	/proc/loadavg		-> $(Device) ;
+	/proc/locks			-> $(Device) ;
+	/proc/meminfo		-> $(Device) ;
+	/proc/misc			-> $(Device) ;
+	/proc/modules		-> $(Device) ;
+	/proc/mtrr			-> $(Device) ;
+	/proc/pagetypeinfo	-> $(Device) ;
+	/proc/partitions	-> $(Device) ;
+	/proc/sched_debug	-> $(Device) ;
+	/proc/slabinfo		-> $(Device) ;
+	/proc/softirqs		-> $(Device) ;
+	/proc/stat			-> $(Device) ;
+	/proc/swaps			-> $(Device) ;
+	/proc/sysrq-trigger	-> $(Device) ;
+	/proc/timer_list	-> $(Device) ;
+	/proc/timer_stats	-> $(Device) ;
+	/proc/uptime		-> $(Device) ;
+	/proc/version		-> $(Device) ;
+	/proc/vmallocinfo	-> $(Device) ;
+	/proc/vmstat		-> $(Device) ;
+	/proc/zoneinfo		-> $(Device) ;
+
+	# Symlinks in /proc
+
+	/proc/mounts	-> $(Device) ;
+	/proc/net		-> $(Device) ;
+	/proc/self		-> $(Device) ;
+
+}
+
+
+###################################################
+# Usr Local Hierarchy
+#
+(
+  rulename = "UsrLocal",
+  severity = "55",
+  emailto = root@<%= mydomain %>
+)
+{
+	/usr/local	-> $(SEC_BIN) ;
+}
+
+
+
+
+###################################################
+# Binaries
+#
+(
+  rulename = "UsrBin",
+  severity = "55",
+  emailto = root@<%= mydomain %>
+)
+{
+	/usr/sbin	    -> $(SEC_BIN) ;
+	/usr/bin	    -> $(SEC_BIN) ;
+}
+
+
+
+
+###################################################
+# Libraries
+#
+(
+  rulename = "UsrLib",
+  severity = "50",
+  emailto = root@<%= mydomain %>
+)
+{
+	/usr/lib		-> $(SEC_BIN) ;
+}
+
+
+
+
+###################################################
+# Commonly accessed directories that should remain 
+# static with regards to owner and group.
+#
+(
+  rulename = "VarTmpHomeFile",
+  severity = "30",
+  emailto = root@<%= mydomain %>
+)
+{
+	/		    -> $(SEC_INVARIANT) (recurse = 0) ;
+	/home		-> $(SEC_INVARIANT) (recurse = 0) ;
+	/tmp		-> $(SEC_INVARIANT) (recurse = 0) ;
+	/usr		-> $(SEC_INVARIANT) (recurse = 0) ;
+	/var		-> $(SEC_INVARIANT) (recurse = 0) ;
+	/var/tmp	-> $(SEC_INVARIANT) (recurse = 0) ;
+}
+
+
+
+###################################################
+# Tripwire Binaries (honeypot)
+# (But we execute secured (ro) tripwire from CDROM)
+#
+(
+  rulename = "Honeypot",
+  severity = "20",
+  emailto = root@<%= mydomain %>
+)
+{
+	$(TWBIN)/siggen			-> $(SEC_BIN) ;
+	$(TWBIN)/tripwire		-> $(SEC_BIN) ;
+	$(TWBIN)/twadmin		-> $(SEC_BIN) ;
+	$(TWBIN)/twprint		-> $(SEC_BIN) ;
+}
+
+## EOF

@@ -11,8 +11,8 @@ class puppet_tripwire::tools {
 		require => File["/root/bin"],
 	}
 		
-	file { "/root/bin/tripwire.createtextfiles" :
-		 source => "puppet:///modules/puppet_tripwire/tripwire.createtextfiles",
+	file { "/root/bin/tripwire.recovertextfiles" :
+		 source => "puppet:///modules/puppet_tripwire/tripwire.recovertextfiles",
 		  owner => 'root',
 		  group => 'root',
 		   mode => '0700',

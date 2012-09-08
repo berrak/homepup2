@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# /root/bin/tripwire.recovertextfiles
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+## Console usage: tripwire.recovertextfiles
+## Recovers the policy and configuration as text files
+
+TWADMIN="/usr/sbin/twadmin"
+CFGFILE="/etc/tripwire/twcfg.txt"
+POLFILE="/etc/tripwire/twpol.txt"
+
+LS="/bin/ls -l"
+
+## Set more restrictive file mask
+
+umask 027
+
+echo -n "Recreating clear text configuration file from encrypted file..."
+$TWADMIN --print-cfgfile > $CFGFILE
+echo "done"
+
+echo -n "Recreating clear text policy file from encrypted file..."
+$TWADMIN --print-polfile > $POLFILE
+echo "done"
+
+echo "Do not leave any clear text files in /etc/tripwire after updates in configuration and/or policy files!"
+echo "------------------------------------------------------------------------------------------------------"
+$LS /etc/tripwire
+
+## EOF
+
