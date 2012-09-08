@@ -33,7 +33,7 @@ class puppet_tripwire::config {
 		  owner => 'root',
 		  group => 'root',
 		   mode => '0600',
-		require => Package["/usr/local/etc/tripwire"],
+		require => File["/usr/local/etc/tripwire"],
 	}
 
 
