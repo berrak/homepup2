@@ -13,7 +13,6 @@ SITEKEY="/media/tripwire/site.key"
 
 CFGFILE="/etc/tripwire/twcfg.txt"
 PUPTWCFGFILE="/usr/local/etc/tripwire/twcfg.txt"
-
 CFGBAKFILE="/etc/tripwire/tw.cfg.bak"
 
 MOUNT="/sbin/mount"
@@ -107,13 +106,12 @@ if [ $twresult -eq 0 ] ; then
     # ask user the option to remove the old (backup) configuration file
     echo
     echo "There is a backup file in the directory from previous used configuration."
-    echo
     echo -n "Do you want to delete the previous $CFGBAKFILE file now ? (Y/N): "
     read answer
     
     case "$answer" in
             [Yy])
-                echo -n "Removing the $CFGBAKFILE file..."
+                echo "Removing the $CFGBAKFILE file..."
                 $RM $CFGBAKFILE
                 ;;
     

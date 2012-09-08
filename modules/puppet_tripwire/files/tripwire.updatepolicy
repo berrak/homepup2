@@ -9,8 +9,63 @@
 ## Encrypt the policy
 
 TWADMIN="/usr/sbin/twadmin"
+SITEKEY="/media/tripwire/site.key"
+
 POLFILE="/etc/tripwire/twpol.txt"
+PUPTWPOLFILE="/usr/local/etc/tripwire/twpol.txt"
+POLBAKFILE="/etc/tripwire/tw.pol.bak"
+
+CP="/bin/cp"
+LS="/bin/ls -lA"
 RM="/bin/rm"
+
+## first copy the clear text policy file (managed by puppet) to the usual tripwire directory
+
+if  [ ! -f $PUPTWPOLFILE ]; then
+	echo "Can not find the puppet managed clear text configuration file ($PUPTWPOLFILE)!"
+	exit 1
+else
+
+    # do not overwrite an existing file without asking
+    if  [ -f $POLFILE ]; then
+
+        echo -n "Found existing configuration ($POLFILE) file. Do you want to replace it ? (Y/N): "
+        read answer
+        
+            case "$answer" in
+            [Yy])
+                echo "Replacing the old $POLFILE file..."
+                $CP $PUPTWPOLFILE $POLFILE
+                ;;
+    
+            [Nn])
+                echo "Ok, will not replace the $POLFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+        esac
+    
+    # no old text configuration found - copy it over
+    else
+        $CP $PUPTWPOLFILE $POLFILE
+    fi
+    
+fi
+
+## Test, does the clear text configuration file exist (it should)
+
+if  [ ! -f $POLFILE ]; then
+	echo "Can not find the clear text configuration file ($POLFILE)!"
+	exit 1
+fi
+
+## If media is not mounted, mount it first
+
+cat /etc/mtab | grep sr0
+if [ $? -ne 0 ] ; then
+	$MOUNT $CDDEV $MNTPOINT
+fi
 
 ## Set more restrictive file mask
 
@@ -18,31 +73,54 @@ umask 027
 
 echo "Encrypting the clear text policy file..."
 $TWADMIN --create-polfile $POLFILE
-echo "done"
 
-echo "Do not forget to delete the clear text policy file!"
-echo -n "Do you want to delete the clear text $POLFILE policy file now ? (Y/N): "
-read answer
+twresult=$?
 
-case "$answer" in
-        [Yy])
-            echo -n "Removing the $POLFILE file..."
-            $RM $POLFILE
-            echo "done"
-            ;;
+if [ $twresult -eq 0 ] ; then
 
-        [Nn])
-            echo "Ok, will not remove the $POLFILE file now."
-            ;;
-          *)
-            echo "Did not get any answer - leave it there then."
-            ;;
-esac
+    echo "Do not forget to delete the clear text policy file!"
+    echo -n "Do you want to delete the clear text $POLFILE policy file now ? (Y/N): "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo -n "Removing the $POLFILE file..."
+                $RM $POLFILE
+                ;;
+    
+            [Nn])
+                echo "Ok, will not remove the $POLFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
+    
+    # ask user the option to remove the old (backup) policy file
+    echo
+    echo "There is a backup file in the directory from previous used policy."
+    echo -n "Do you want to delete the previous $POLBAKFILE file now ? (Y/N): "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo "Removing the $CFGBAKFILE file..."
+                $RM $POLBAKFILE
+                ;;
+    
+            [Nn])
+                echo "Ok, will not remove the $POLBAKFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
+    
+    echo "Do not forget to initilize the database (i.e. run tripwire.init) after this change!"
 
+fi
 
-echo "Do not forget to initilize the database (i.e. run tripwire.init) after this change!"
-
-ls -l /etc/tripwire
+$LS /etc/tripwire
 
 ## EOF
 
