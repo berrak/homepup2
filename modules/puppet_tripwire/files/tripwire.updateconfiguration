@@ -12,7 +12,7 @@ TWADMIN="/usr/sbin/twadmin"
 SITEKEY="/media/tripwire/site.key"
 
 CFGFILE="/etc/tripwire/twcfg.txt"
-PUPTWCFGFILE="/usr/local/etc/tripwire/tw.cfg.txt"
+PUPTWCFGFILE="/usr/local/etc/tripwire/twcfg.txt"
 
 CFGBAKFILE="/etc/tripwire/tw.cfg.bak"
 
