@@ -20,8 +20,8 @@ class puppet_tripwire::cron {
 				command => '/root/bin/tripwire.check',
 			environment => 'PATH=/root/bin:/sbin:/bin',
 				   user => 'root',
-				   hour => [ 7, 13, 21 ],
-				 minute => '19',
+				   hour => [ 3, 9, 15, 21 ],
+				 minute => '1',
 	}
 
 }
