@@ -81,8 +81,9 @@ node 'gondor.home.tld' inherits basenode {
 	include puppet_agent
 	
     include puppet_tripwire
-    admin_cron::install { 'tripwire' : 	command => '/root/bin/tripwire.check',
-	                                       hour => [ 3, 9, 15, 21 ], minute => '2 }
+    admin_cron::install { 'tripwire' :
+	                       command => '/root/bin/tripwire.check',
+	                          hour => [ 3, 9, 15, 21 ], minute => '2' }
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
