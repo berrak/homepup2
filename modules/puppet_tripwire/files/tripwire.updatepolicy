@@ -64,7 +64,7 @@ fi
 
 cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT
+	$MOUNT $CDDEV $MNTPOINT > /dev/null 2>&1
 fi
 
 ## Set more restrictive file mask

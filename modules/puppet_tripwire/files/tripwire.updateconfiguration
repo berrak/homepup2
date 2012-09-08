@@ -19,6 +19,7 @@ MOUNT="/sbin/mount"
 RM="/bin/rm"
 CP="/bin/cp"
 LS="/bin/ls -lA"
+
 CDDEV="/dev/sr0"
 MNTPOINT="/media/tripwire"
 
@@ -67,7 +68,7 @@ fi
 
 cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT
+	$MOUNT $CDDEV $MNTPOINT > /dev/null 2>&1
 fi
 
 

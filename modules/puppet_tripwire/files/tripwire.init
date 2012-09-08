@@ -19,8 +19,10 @@ USBDEV="/dev/sdb1"
 
 TWDBPATH="/var/lib/tripwire"
 HOSTNAME=`uname -n`
-OLDPOLICYFILE="/etc/tripwire/twpol.cfg.bak"
+OLDPOLICYFILE="/etc/tripwire/tw.pol.bak"
 
+LS="/bin/ls -lA"
+RM="/bin/rm"
 
 ## Check that Tripwire database exist
 
@@ -31,14 +33,14 @@ fi
 # Ensure that non of the devices is mounted
 # since CDROM/USB are mounted on the same MNTPOINT
 
-$UMOUNT $CDDEV
-$UMOUNT $USBDEV
+$UMOUNT $CDDEV > /dev/null 2>&1
+$UMOUNT $USBDEV > /dev/null 2>&1
 
 ## If grep does not return 0, mount the CDROM
 
 cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT
+	$MOUNT $CDDEV $MNTPOINT > /dev/null 2>&1
 fi
 
 # If the CDROM mount failed ($?) try an USB mount
@@ -47,7 +49,7 @@ if [ $? -ne 0 ] ; then
 
     cat /etc/mtab | grep sdb1
     if [ $? -ne 0 ] ; then
-    	$MOUNT $USBDEV $MNTPOINT
+    	$MOUNT $USBDEV $MNTPOINT > /dev/null 2>&1
     fi
     
 fi
@@ -78,7 +80,6 @@ if [ $twresult -eq 0 ] ; then
             [Yy])
                 echo -n "Removing the $OLDPOLICYFILE file..."
                 $RM $OLDPOLICYFILE
-                echo "done"
                 ;;
     
             [Nn])
@@ -91,6 +92,7 @@ if [ $twresult -eq 0 ] ; then
 
 fi
 
+$LS /etc/tripwire
 
 ## EOF
 
