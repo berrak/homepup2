@@ -12,13 +12,14 @@ TWADMIN="/usr/sbin/twadmin"
 SITEKEY="/media/tripwire/site.key"
 
 CFGFILE="/etc/tripwire/twcfg.txt"
-PUPTWCFGFILE="/usr/local/etc/tripwire/twcfg.txt"
+PUPTWCFGFILE="/usr/local/etc/tripwire/tw.cfg.txt"
 
-CFGBAKFILE="/etc/tripwire/twcfg.bak"
+CFGBAKFILE="/etc/tripwire/tw.cfg.bak"
 
 MOUNT="/sbin/mount"
 RM="/bin/rm"
 CP="/bin/cp"
+LS="/bin/ls -lA"
 CDDEV="/dev/sr0"
 MNTPOINT="/media/tripwire"
 
@@ -37,9 +38,8 @@ else
         
             case "$answer" in
             [Yy])
-                echo -n "Replacing the old $CFGFILE file..."
+                echo "Replacing the old $CFGFILE file..."
                 $CP $PUPTWCFGFILE $CFGFILE
-                echo "done"
                 ;;
     
             [Nn])
@@ -86,17 +86,14 @@ twresult=$?
 if [ $twresult -eq 0 ] ; then
 
     # ask user the option to remove the clear text configuration file
-    echo
     echo "Do not forget to delete the clear text configuration file!"
-    echo
     echo -n "Do you want to delete the clear text $CFGFILE file now ? (Y/N): "
     read answer
     
     case "$answer" in
             [Yy])
-                echo -n "Removing the $CFGFILE file..."
+                echo "Removing the $CFGFILE file..."
                 $RM $CFGFILE
-                echo "done"
                 ;;
     
             [Nn])
@@ -118,7 +115,6 @@ if [ $twresult -eq 0 ] ; then
             [Yy])
                 echo -n "Removing the $CFGBAKFILE file..."
                 $RM $CFGBAKFILE
-                echo "done"
                 ;;
     
             [Nn])
@@ -131,7 +127,7 @@ if [ $twresult -eq 0 ] ; then
 
 fi
 
-ls -l /etc/tripwire
+$LS /etc/tripwire
 
 ## EOF
 
