@@ -3,7 +3,6 @@
 ##
 class puppet_tripwire::cron {
 	
-		
     include puppet_utils
 
     puppet_utils::append_if_no_such_line { "Add_tripwire_placeholder" :
@@ -12,16 +11,6 @@ class puppet_tripwire::cron {
 	    line => "PUPPET: Do not remove. Prevents TW maintainer putting tripwire job here." 
     }
 	
-
-    # Set up the cron job for tripwire. Note: cron and thus 'environment =>'
-	# can not substitute $PATH. This will prevent the job from running.
-	
-	cron { tripwire-test :
-				command => '/root/bin/tripwire.check',
-			environment => 'PATH=/root/bin:/sbin:/bin',
-				   user => 'root',
-				   hour => [ 3, 9, 15, 21 ],
-				 minute => '1',
-	}
+    # The cron job itself is defined by the 'admin_cron::install' module.
 
 }
