@@ -9,16 +9,55 @@
 ## Encrypt the configuration file from updated clear text file
 
 TWADMIN="/usr/sbin/twadmin"
-CFGFILE="/etc/tripwire/twcfg.txt"
 SITEKEY="/media/tripwire/site.key"
+
+CFGFILE="/etc/tripwire/twcfg.txt"
+PUPTWCFGFILE="/usr/local/etc/tripwire/twcfg.txt"
+
+CFGBAKFILE="/etc/tripwire/twcfg.bak"
 
 MOUNT="/sbin/mount"
 RM="/bin/rm"
+CP="/bin/cp"
 CDDEV="/dev/sr0"
 MNTPOINT="/media/tripwire"
 
+## first copy the clear text cfg file (managed by puppet) to the usual tripwire directory
 
-## Test, does the clear text configuration file exist
+if  [ ! -f $PUPTWCFGFILE ]; then
+	echo "Can not find the puppet managed clear text configuration file ($PUPTWCFGFILE)!"
+	exit 1
+else
+
+    # do not overwrite an existing file without asking
+    if  [ -f $CFGFILE ]; then
+
+        echo -n "Found existing configuration ($CFGFILE) file. Do you want to replace it ? (Y/N): "
+        read answer
+        
+            case "$answer" in
+            [Yy])
+                echo -n "Replacing the old $CFGFILE file..."
+                $CP $PUPTWCFGFILE $CFGFILE
+                echo "done"
+                ;;
+    
+            [Nn])
+                echo "Ok, will not replace the $CFGFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+        esac
+    
+    # no old text configuration found - copy it over
+    else
+        $CP $PUPTWCFGFILE $CFGFILE
+    fi
+    
+fi
+
+## Test, does the clear text configuration file exist (it should)
 
 if  [ ! -f $CFGFILE ]; then
 	echo "Can not find the clear text configuration file ($CFGFILE)!"
@@ -41,27 +80,56 @@ umask 027
 
 echo "Encrypting configuration file from clear text configuration file..."
 $TWADMIN --create-cfgfile  --site-keyfile  $SITEKEY  $CFGFILE
-echo "done"
 
-echo "Do not forget to delete the clear text configuration file!"
-echo -n "Do you want to delete the clear text $CFGFILE file now ? (Y/N): "
-read answer
+twresult=$?
 
-case "$answer" in
-        [Yy])
-            echo -n "Removing the $CFGFILE file..."
-            $RM $CFGFILE
-            echo "done"
-            ;;
+if [ $twresult -eq 0 ] ; then
 
-        [Nn])
-            echo "Ok, will not remove the $CFGFILE file now."
-            ;;
-          *)
-            echo "Did not get any answer - leave it there then."
-            ;;
-esac
+    # ask user the option to remove the clear text configuration file
+    echo
+    echo "Do not forget to delete the clear text configuration file!"
+    echo
+    echo -n "Do you want to delete the clear text $CFGFILE file now ? (Y/N): "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo -n "Removing the $CFGFILE file..."
+                $RM $CFGFILE
+                echo "done"
+                ;;
+    
+            [Nn])
+                echo "Ok, will not remove the $CFGFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
 
+    # ask user the option to remove the old (backup) configuration file
+    echo
+    echo "There is a backup file in the directory from previous used configuration."
+    echo
+    echo -n "Do you want to delete the previous $CFGBAKFILE file now ? (Y/N): "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo -n "Removing the $CFGBAKFILE file..."
+                $RM $CFGBAKFILE
+                echo "done"
+                ;;
+    
+            [Nn])
+                echo "Ok, will not remove the $CFGBAKFILE file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
+
+fi
 
 ls -l /etc/tripwire
 
