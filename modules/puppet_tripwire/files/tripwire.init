@@ -72,23 +72,27 @@ twresult=$?
 # if successful, ask to remove the previuos policy file 'twpol.cfg.bak'
 if [ $twresult -eq 0 ] ; then
 
-    echo "Do not leave the old policy file on disk!"
-    echo -n "Do you want to delete the backup ($OLDPOLICYFILE) policy file now ? (Y/N): "
-    read answer
+    if [ -f $OLDPOLICYFILE ] ; then
+
+        echo "Do not leave the old policy file on disk!"
+        echo -n "Do you want to delete the backup ($OLDPOLICYFILE) policy file now ? (Y/N): "
+        read answer
+        
+        case "$answer" in
+                [Yy])
+                    echo -n "Removing the $OLDPOLICYFILE file..."
+                    $RM $OLDPOLICYFILE
+                    ;;
+        
+                [Nn])
+                    echo "Ok, will not remove the $OLDPOLICYFILE file now."
+                    ;;
+                  *)
+                    echo "Did not get any answer - leave it there then."
+                    ;;
+        esac
     
-    case "$answer" in
-            [Yy])
-                echo -n "Removing the $OLDPOLICYFILE file..."
-                $RM $OLDPOLICYFILE
-                ;;
-    
-            [Nn])
-                echo "Ok, will not remove the $OLDPOLICYFILE file now."
-                ;;
-              *)
-                echo "Did not get any answer - leave it there then."
-                ;;
-    esac
+    fi
 
 fi
 

@@ -66,7 +66,7 @@ fi
 
 ## If media is not mounted, mount it first
 
-cat /etc/mtab | grep sr0
+cat /etc/mtab | grep sr0 > /dev/null 2>&1
 if [ $? -ne 0 ] ; then
 	$MOUNT $CDDEV $MNTPOINT > /dev/null 2>&1
 fi
