@@ -10,7 +10,10 @@ class puppet_tripwire::params {
     
     # tripwire configuration file (twcfg.txt)
     
-    $smtphost_name = 'rohan'
+    # do not use host.domain unless real DNS server on local network.
+    # 'localhost' is fine  (postfix is cfg to relay all mails to relay host).
+    
+    $smtphost_fqdn = 'localhost'
     $editorpath = '/bin/nano'
 
 }

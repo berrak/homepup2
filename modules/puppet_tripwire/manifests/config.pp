@@ -30,7 +30,7 @@ class puppet_tripwire::config {
 	}
 
     $myeditor = $::puppet_tripwire::params::editorpath
-	$mysmtp_fqdn = "$::puppet_tripwire::params::smtphost_name.${mydomain}"
+	$mysmtp_fqdn = "$::puppet_tripwire::params::smtphost_fqdn"
 
 	file { "/usr/local/etc/tripwire/twcfg.txt" :
         content =>  template( 'puppet_tripwire/twcfg.txt.erb' ),
