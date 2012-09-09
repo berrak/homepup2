@@ -7,7 +7,7 @@ define admin_cron::install (
 		$minute=undef,
 		$month=undef,
 		$monthday=undef,
-		$weekday=endef,
+		$weekday=undef,
 		$special=undef,
 ) {
 
