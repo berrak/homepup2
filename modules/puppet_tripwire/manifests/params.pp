@@ -8,14 +8,23 @@ class puppet_tripwire::params {
     
     $preseedfilepath = "/etc/puppet/files/tripwire.preseed"
     
-    # tripwire configuration file (twcfg.txt)
     
-    # do not use host.domain unless real DNS server on local network.
-    # 'localhost' is fine  (postfix is cfg to relay all mails to relay host).
     
-    $mylocalhost = 'localhost'
-    $smtphost_fqdn = $mylocalhost
+    ## tripwire configuration file (twcfg.txt)
+    ## smtphost can be fqdn if DNS is available.
     
+    $smtphost = '192.168.0.11'
     $editorpath = '/bin/nano'
+    
+    
+    ## tripwire policy file (twpol.txt)
+    
+    $mailto = 'root@home.tld'
+    
+    
+    
+
+    
+
 
 }

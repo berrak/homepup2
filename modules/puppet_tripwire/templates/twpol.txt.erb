@@ -80,7 +80,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Tripwire",
   severity = "100",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	$(TWVAR)/$(HOSTNAME).twd	-> $(SEC_CONFIG) -i ;
@@ -100,7 +100,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Password",
   severity = "95",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/etc/passwd				-> $(SEC_CONFIG) ;
@@ -118,7 +118,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Boot",
   severity = "90",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/boot				-> $(SEC_CRIT) ;
@@ -134,7 +134,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename ="AptRunDate",
   severity = "90",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/root/.aptitude/config	-> $(SEC_CRIT)   ; 
@@ -148,7 +148,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "UserRoot",
   severity = "90",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
     !/root/.aptitude                     ;
@@ -166,7 +166,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "BootScripts",
   severity = "85",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/etc/init.d		-> $(SEC_BIN) ;
@@ -191,7 +191,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Bin",
   severity = "80",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/bin			-> $(SEC_BIN) ;
@@ -207,7 +207,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Lib",
   severity = "80",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/lib			-> $(SEC_BIN) ;
@@ -223,7 +223,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "EtcFiles",
   severity = "75",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	!/etc/network/run             ;
@@ -241,7 +241,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "VarLog",
   severity = "70",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/var/lock		-> $(SEC_CONFIG)    ;
@@ -259,7 +259,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Dev",
   severity = "70",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	!/dev/pts                            ; 
@@ -279,7 +279,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Proc",
   severity = "65",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 
@@ -357,7 +357,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "UsrLocal",
   severity = "55",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/usr/local	-> $(SEC_BIN) ;
@@ -372,7 +372,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "UsrBin",
   severity = "55",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/usr/sbin	    -> $(SEC_BIN) ;
@@ -388,7 +388,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "UsrLib",
   severity = "50",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/usr/lib		-> $(SEC_BIN) ;
@@ -404,7 +404,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "VarTmpHomeFile",
   severity = "30",
-  emailto = root@<%= mydomain %>
+  <%= mymailto %>
 )
 {
 	/		    -> $(SEC_INVARIANT) (recurse = 0) ;
@@ -424,7 +424,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Honeypot",
   severity = "20",
-  emailto = root@<%= mydomain %>
+  emailto = root@<%= rootmailto %>
 )
 {
 	$(TWBIN)/siggen			-> $(SEC_BIN) ;

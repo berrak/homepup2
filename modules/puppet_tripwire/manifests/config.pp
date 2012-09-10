@@ -17,9 +17,9 @@ class puppet_tripwire::config {
 		mode => '0750',
 	}
 	
-	# do not use facter: $::domain unless internal DNS server
+    ## tripwire policy file (twpol.txt)
 	
-	$mydomain = $::puppet_tripwire::params::mylocalhost
+	$mymailto = "emailto = $::puppet_tripwire::params::mailto"
 
 	file { "/usr/local/etc/tripwire/twpol.txt" :
         content =>  template( 'puppet_tripwire/twpol.txt.erb' ),
@@ -30,8 +30,10 @@ class puppet_tripwire::config {
 	}
 
 
+    ## tripwire configuration file (twcfg.txt)
+
     $myeditor = $::puppet_tripwire::params::editorpath
-	$mysmtp_fqdn = "$::puppet_tripwire::params::smtphost_fqdn"
+	$mysmtphost = "$::puppet_tripwire::params::smtphost"
 
 	file { "/usr/local/etc/tripwire/twcfg.txt" :
         content =>  template( 'puppet_tripwire/twcfg.txt.erb' ),
