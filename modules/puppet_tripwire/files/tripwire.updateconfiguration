@@ -7,6 +7,22 @@
 ##############################################################
 ## Console usage: tripwire.updateconfiguration
 ## Encrypt the configuration file from updated clear text file
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 TWADMIN="/usr/sbin/twadmin"
 SITEKEY="/media/tripwire/site.key"
@@ -66,9 +82,9 @@ fi
 
 ## If media is not mounted, mount it first
 
-cat /etc/mtab | grep sr0 > /dev/null 2>&1
+cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT > /dev/null 2>&1
+	$MOUNT $CDDEV $MNTPOINT
 fi
 
 

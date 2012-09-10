@@ -1,18 +1,36 @@
 #!/bin/bash
+#
 # /root/bin/tripwire.report
 #
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
 # Console usage: tripwire.report [options] [report]
 #
 # Print specified tripwire report otherwise print the last known
 # report at various verbosity levels. see 'man twprint' for info.
-
-## We have our tripwire binary and the key files on CDROM or USB
-
+# We have our tripwire binaries and the key files on CDROM.
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 MOUNT="/bin/mount"
 UMOUNT="/bin/umount"
 
 CDDEV="/dev/sr0"
-USBDEV="/dev/sdb1"
+
 MNTPOINT="/media/tripwire"
 TWPRINTCMD="twprint"
 
@@ -22,14 +40,13 @@ fname=""
 printusage=""
 useusb=""
 
-while getopts f:n:hu opt
+while getopts f:n:h opt
 do
     case "$opt" in
     
             f) fname=$OPTARG ;;
             n) vlevel=$OPTARG ;;
             h) printusage="true" ;;
-            u) useusb="true" ;;
             
             *) echo "Unknown option: $opt" ;;
     esac
@@ -43,49 +60,23 @@ if [ "$printusage" = "true" ] ; then
     echo "  -f <reportfile>      :  Prints reportfile"
     echo "  -n <verbosity level> :  Levels from 0 to 4"
     echo "  -h                   :  Print usage"
-    echo "  -u                   :  Use USB for tripwire files"    
     echo
     exit 0
 
 fi
 
-# Ensure that non of the devices is mounted
-# since CDROM/USB are mounted on the same MNTPOINT
+## If grep does not return 0, mount the CDROM
 
-$UMOUNT $CDDEV
-$UMOUNT $USBDEV
-
-# If -u option is set to true, try to mount the USB drive/stick
-if [ "$useusb" = "true" ] ; then
- 
-    ## If grep does not find /dev/sdb1, i.e. returns 0, mount the USB
-    cat /etc/mtab | grep sdb1
-    if [ $? -ne 0 ] ; then
-        $MOUNT $USBDEV $MNTPOINT 
-    fi
-
-    # If mount fails for some reason, abort.
+cat /etc/mtab | grep sr0
+if [ $? -ne 0 ] ; then
+	$MOUNT $CDDEV $MNTPOINT
+    # If mount attempts failed, abort
     if [ $? -ne 0 ] ; then  
-        echo "$0: Error: Can't mount tripwire USB! Is there no stick there?"
+        echo "$0: Error: Can't mount tripwire media! No CD disk found or error reading it."
         exit 1
     fi
-
-# otherwise read key files from CDROM (i.e. no -u option is given)
-else
-
-    ## If grep does not find /dev/sr0, i.e. returns 0, mount the CDROM
-    cat /etc/mtab | grep sr0
-    if [ $? -ne 0 ] ; then
-        $MOUNT $CDDEV $MNTPOINT 
-    fi
-
-    # If mount fails for some reason, abort.
-    if [ $? -ne 0 ] ; then  
-        echo "$0: Error: Can't mount tripwire CDROM! Is there no disk loaded?"
-        exit 1
-    fi
-
 fi
+
 
 # If no file name is given run the last tripwire report
 if [ -z "$fname" ] ; then
