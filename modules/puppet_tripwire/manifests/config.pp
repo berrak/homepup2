@@ -17,9 +17,9 @@ class puppet_tripwire::config {
 		mode => '0750',
 	}
 	
-    # facter facts
+	# do not use facter: $::domain unless internal DNS server
 	
-	$mydomain = $::domain
+	$mydomain = $::mylocalhost
 
 	file { "/usr/local/etc/tripwire/twpol.txt" :
         content =>  template( 'puppet_tripwire/twpol.txt.erb' ),
@@ -28,6 +28,7 @@ class puppet_tripwire::config {
 		   mode => '0600',
 		require => File["/usr/local/etc/tripwire"],
 	}
+
 
     $myeditor = $::puppet_tripwire::params::editorpath
 	$mysmtp_fqdn = "$::puppet_tripwire::params::smtphost_fqdn"
