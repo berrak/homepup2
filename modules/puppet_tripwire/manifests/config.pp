@@ -19,7 +19,7 @@ class puppet_tripwire::config {
 	
 	# do not use facter: $::domain unless internal DNS server
 	
-	$mydomain = $::mylocalhost
+	$mydomain = $::puppet_tripwire::params::mylocalhost
 
 	file { "/usr/local/etc/tripwire/twpol.txt" :
         content =>  template( 'puppet_tripwire/twpol.txt.erb' ),
