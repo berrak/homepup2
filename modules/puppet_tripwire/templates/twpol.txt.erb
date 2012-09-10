@@ -424,7 +424,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
 (
   rulename = "Honeypot",
   severity = "20",
-  emailto = root@<%= rootmailto %>
+  <%= mymailto %>
 )
 {
 	$(TWBIN)/siggen			-> $(SEC_BIN) ;
