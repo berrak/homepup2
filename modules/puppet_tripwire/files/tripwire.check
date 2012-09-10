@@ -77,23 +77,23 @@ fi
 # Ensure that non of the devices is mounted
 # since CDROM/USB are mounted on the same MNTPOINT
 
-$UMOUNT $CDDEV > dev/null 2>&1
-$UMOUNT $USBDEV > dev/null 2>&1
+$UMOUNT $CDDEV
+$UMOUNT $USBDEV
 
 ## If grep does not return 0, mount the CDROM
 
-cat /etc/mtab | grep sr0 > dev/null 2>&1
+cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT > dev/null 2>&1
+	$MOUNT $CDDEV $MNTPOINT
 fi
 
 # If the CDROM mount failed ($?) try an USB mount
 
 if [ $? -ne 0 ] ; then  
 
-    cat /etc/mtab | grep sdb1 > dev/null 2>&1
+    cat /etc/mtab | grep sdb1
     if [ $? -ne 0 ] ; then
-    	$MOUNT $USBDEV $MNTPOINT > dev/null 2>&1
+    	$MOUNT $USBDEV $MNTPOINT
     fi
     
 fi
