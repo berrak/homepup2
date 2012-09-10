@@ -43,8 +43,9 @@ define admin_bndl::install {
             # gddrescue: backup image of disk despite disk/head errors
 			# lshw: system hardware information
 			# telnet: telnet client
+			# parted: partition table manipulator
         
-            package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet" ] :
+            package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet", "parted" ] :
                  ensure => installed }
         
         }

@@ -1,0 +1,155 @@
+#!/bin/bash
+#
+# tripwire.formatusbflash
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+# Script to: 
+#               1. partition the usb flash - as assmed correct found
+#               2. format usb flash
+#               3. copy all tripwire binaries to usb flash
+#
+# Assumptions:  a) Serach only for all disk devices in /dev/sd*
+#               b) System disk is /dev/sda (which may not be
+#                  true for Raids). Newer touch /dev/sda.
+#               c) Does not handle multiple devices sdb, sdc, sdd
+#               d  Does not know about old /dev/hd* scheme.
+#
+# WARNING: If you do not undestand this, data can be unrecoverable lost!
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+PARTED="/sbin/parted"
+DISABLEDISKCHK="/sbin/tune2fs -c -1"
+CP="/bin/cp"
+
+MOUNT="/bin/mount"
+MOUNTPNT="/media/usb0"
+
+FORMATEXT2="/sbin/mke2fs"
+USBLABEL="usb0"
+
+TRIPWIREFILES="/usr/sbin/tripwire /usr/sbin/twadmin /usr/sbin/twprint /usr/sbin/siggen"
+
+# this creates an empty partition table
+EMPTYTABLE="--script -- mklabel msdos"
+# create the first linux partition (for ext2), use all sectors
+MKPARTITON="-- unit % mkpart primary ext2 0 100"
+# set the boot flag to off for partition one
+BOOTOFF="--script -- set 1 boot off"
+
+foundusb=1
+HARDDISK_ONE="/dev/sda"
+UMOUNT="/bin/umount"
+mydisk=""
+for file in /dev/sd*
+do
+    # this match all partitions (sda1, sda5, sdb1 etc), we want dev/disks without numbers!
+    mydisk=$(echo $file | grep [123456789])
+    if [ -z $mydisk ] ; then
+ 
+        if [ $file = $HARDDISK_ONE ];then
+            echo "Information: Assuming disk ($HARDDISK_ONE) is the system. Skipping..."
+            echo
+        else 
+            foundusb=0
+            echo "Found another disk ($file) to partition/format!"
+            echo "*** WARNING THIS WILL WIPE OUT ALL DATA ON $file ****"
+            echo -n "Are you really sure you want to continue ? (Y/N): "
+            read answer
+            
+            case "$answer" in
+                    [Yy])
+
+                        # unmount before partitioning drive/format the drive
+                        one="1"
+                        partition=${file}${one}
+                         
+                        $UMOUNT $partition > /dev/null 2>&1
+                         
+                        # create empty p-table
+                        $PARTED $file $EMPTYTABLE
+                         
+                        # make partition 1 into one large chunk
+                        $PARTED $file $MKPARTITON
+                         
+                        # continue to work on the partition itself if 'parted' OK 
+                        if [ $? -eq 0 ] ; then
+                         
+                            # set flags on partition 1
+                            $PARTED $file $BOOTOFF  
+                         
+                            # format the partition with lable (in case auto mounting)
+                            $FORMATEXT2 -t ext2 -L $USBLABEL $partition
+                             
+                            # turn off filesystem check on this usb thumb drive
+                            $DISABLEDISKCHK $partition
+                            
+                            
+                            # Now copy all tripwire binaries over to this disk
+                            
+                            $MOUNT $partition $MNTPOINT
+                            # If mount attempts failed, abort
+                            if [ $? -ne 0 ] ; then  
+                                echo "$0: Error: Can't mount the new drive. Aborting..."
+                                exit 1
+                            fi
+                            
+                            for fn in $TRIPWIREFILES
+                            do
+                                $CP $fn $MNTPOINT/$fn
+                                if [ $? -eq 0 ] ; then  
+                                    echo "Copied $fn to $MNTPOINT/$fn"
+                                else    
+                                    echo "Error: Could not found any tripwire file on this system. Aborting..."
+                                    exit 0
+                                fi
+                            done
+                            
+                            echo "Info: ($partition) is still mounted. Please unmount before removal."
+                         
+                        else
+                            echo "Partitioning failed."
+                            $PARTED $file --script print
+                            echo "Aborting tripwire USB thumb drive creation now."
+                            exit 0
+                        fi                       
+                                     
+                        ;;
+            
+                    [Nn])
+                        echo "Ok, returning to the system prompt."
+                        exit 0
+                        ;;
+                      *)
+                        echo "Did not get any answer - aborting...."
+                        exit 0
+                        ;;
+            esac        
+ 
+        fi
+            
+    fi
+
+done
+
+if [ $foundusb -eq 1 ]; then
+    echo "No usb thumb drive found. Try again."
+    echo "Please insert USB thumb drive to partition and format."
+fi
+
+exit 0
