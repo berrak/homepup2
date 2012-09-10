@@ -7,8 +7,8 @@
 ##############################################################
 # Script to: 
 #               1. partition the usb flash - as assmed correct found
-#               2. format usb flash
-#               3. copy all tripwire binaries to usb flash
+#               2. format usb flash to ext2 file system
+
 #
 # Assumptions:  a) Serach only for all disk devices in /dev/sd*
 #               b) System disk is /dev/sda (which may not be
@@ -89,6 +89,7 @@ do
                         # continue to work on the partition itself if 'parted' OK 
                         if [ $? -eq 0 ] ; then
                          
+                            echo "Formatting usb flash to ext2 file system..."
                             # set flags on partition 1
                             $PARTED $file $BOOTOFF  
                          
