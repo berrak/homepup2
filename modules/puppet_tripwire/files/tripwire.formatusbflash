@@ -7,7 +7,7 @@
 ##############################################################
 # Script to: 
 #               1. partition the usb flash - as assmed correct found
-#               2. format usb flash to ext2 file system
+#               2. format usb flash to ext3 file system
 
 #
 # Assumptions:  a) Serach only for all disk devices in /dev/sd*
@@ -40,14 +40,14 @@ CP="/bin/cp"
 MOUNT="/bin/mount"
 MOUNTPNT="/media/usb0"
 
-FORMATEXT2="/sbin/mke2fs"
+FORMATEXT3="/sbin/mke2fs"
 LABEL="twkeys"
 
 TRIPWIREFILES="/usr/sbin/tripwire /usr/sbin/twadmin /usr/sbin/twprint /usr/sbin/siggen"
 
 # this creates an empty partition table
 EMPTYTABLE="--script -- mklabel msdos"
-# create the first linux partition (for ext2), use all sectors
+# create the first linux partition (ext2 hints that this is Linux), use 100% of disk
 MKPARTITON="-- unit % mkpart primary ext2 0 100"
 # set the boot flag to off for partition one
 BOOTOFF="--script -- set 1 boot off"
@@ -90,12 +90,12 @@ do
                         # continue to work on the partition itself if 'parted' OK 
                         if [ $? -eq 0 ] ; then
                          
-                            echo "Formatting usb flash to ext2 file system..."
+                            echo "Formatting usb flash to ext3 file system..."
                             # set flags on partition 1
                             $PARTED $file $BOOTOFF  
                          
                             # format the partition with lable (in case auto mounting)
-                            $FORMATEXT2 -L $LABEL -t ext2 $partition
+                            $FORMATEXT3 -L $LABEL -t ext3 $partition
                              
                             # turn off filesystem check on this usb thumb drive
                             $DISABLEDISKCHK $partition
