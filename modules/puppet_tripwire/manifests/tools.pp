@@ -53,6 +53,15 @@ class puppet_tripwire::tools {
 		require => File["/root/bin"],
 	}
 
+	file { "/root/bin/tripwire.formatusbflash" :
+		 source => "puppet:///modules/puppet_tripwire/tripwire.formatusbflash",
+		  owner => 'root',
+		  group => 'root',
+		   mode => '0700',
+		require => File["/root/bin"],
+	}
+
+
 
     # template
 
