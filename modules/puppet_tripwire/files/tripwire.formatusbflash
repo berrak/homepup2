@@ -99,28 +99,6 @@ do
                             $DISABLEDISKCHK $partition
                             
                             
-                            # Now copy all tripwire binaries over to this disk
-                            
-                            $MOUNT $partition $MNTPOINT
-                            # If mount attempts failed, abort
-                            if [ $? -ne 0 ] ; then  
-                                echo "$0: Error: Can't mount the new drive. Aborting..."
-                                exit 1
-                            fi
-                            
-                            for fn in $TRIPWIREFILES
-                            do
-                                $CP $fn $MNTPOINT/$fn
-                                if [ $? -eq 0 ] ; then  
-                                    echo "Copied $fn to $MNTPOINT/$fn"
-                                else    
-                                    echo "Error: Could not found any tripwire file on this system. Aborting..."
-                                    exit 0
-                                fi
-                            done
-                            
-                            echo "Info: ($partition) is still mounted. Please unmount before removal."
-                         
                         else
                             echo "Partitioning failed."
                             $PARTED $file --script print
