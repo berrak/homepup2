@@ -40,7 +40,7 @@ do
             r) rule=$OPTARG ;;
             t) emaillevel=$OPTARG ;;
             h) printusage="true" ;;
-            I|--interactive) interactively="true" ;;
+            I) interactively="true" ;;
             *) echo "Unknown option: $opt" ;;
     esac
 done
@@ -52,7 +52,7 @@ if [ "$printusage" = "true" ] ; then
     echo "Description: Run the tripwire check interactively or from cron."
     echo
     echo "Options:"
-    echo "  -I | --interactive         :  Run integrity check interactively."  
+    echo "  -I                         :  Run integrity check interactively."  
     echo "  -f <dir>                   :  Directory to check. (Note1)"
     echo "  -s <severity level>        :  Check all rules with level equal or greater. (Note2)"
     echo "  -r <rulename>              :  One rule name, must be one word. (Note2)"
