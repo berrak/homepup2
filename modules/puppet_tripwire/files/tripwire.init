@@ -95,5 +95,7 @@ fi
 
 $LS /etc/tripwire
 
+echo "*** Please run a first tripwire.check with the new policy ***"
+
 ## EOF
 

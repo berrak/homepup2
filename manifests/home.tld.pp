@@ -42,7 +42,7 @@ node 'carbon.home.tld' inherits basenode {
 	
     include puppet_tripwire
 	admin_cron::install { 'tripwire' : 	command => '/root/bin/tripwire.check',
-	                                       hour => [ 3, 9, 15, 21 ], minute => '1' }
+	                                       hour => [ 3, 9, 15, 21 ], minute => '0' }
 	
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster' }
@@ -83,7 +83,7 @@ node 'gondor.home.tld' inherits basenode {
     include puppet_tripwire
     admin_cron::install { 'tripwire' :
 	                       command => '/root/bin/tripwire.check',
-	                          hour => [ 3, 9, 15, 21 ], minute => '2' }
+	                          hour => [ 3, 9, 15, 21 ], minute => '0' }
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
