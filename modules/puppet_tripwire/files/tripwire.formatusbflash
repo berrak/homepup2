@@ -41,7 +41,6 @@ MOUNT="/bin/mount"
 MOUNTPNT="/media/usb0"
 
 FORMATEXT2="/sbin/mke2fs"
-USBLABEL="usb0"
 
 TRIPWIREFILES="/usr/sbin/tripwire /usr/sbin/twadmin /usr/sbin/twprint /usr/sbin/siggen"
 
@@ -94,7 +93,7 @@ do
                             $PARTED $file $BOOTOFF  
                          
                             # format the partition with lable (in case auto mounting)
-                            $FORMATEXT2 -t ext2 -L $USBLABEL $partition
+                            $FORMATEXT2 -t ext2 $partition
                              
                             # turn off filesystem check on this usb thumb drive
                             $DISABLEDISKCHK $partition
