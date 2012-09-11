@@ -1,22 +1,24 @@
 #!/bin/bash
 #
-# tripwire.formatusbflash
+# format.usbflash
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 # Script to: 
-#               1. partition the usb flash - as assmed correct found
+#               1. partition the usb flash - assumed correctly detected
 #               2. format usb flash to ext3 file system
 
 #
-# Assumptions:  a) Serach only for all disk devices in /dev/sd*
+# Assumptions:  a) Searches only for all disk devices in /dev/sd*
 #               b) System disk is /dev/sda (which may not be
 #                  true for Raids). Newer touch /dev/sda.
 #               c) Does not handle multiple devices sdb, sdc, sdd
 #               d  Does not know about old /dev/hd* scheme.
 #
-# WARNING: If you do not undestand this, data can be unrecoverable lost!
+#     TODO: more safety checks to partition/format the right device.
+#
+# WARNING: If you do not understand this, data can be unrecoverable lost!
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -35,15 +37,8 @@
 #
 PARTED="/sbin/parted"
 DISABLEDISKCHK="/sbin/tune2fs -c -1"
-CP="/bin/cp"
-
-MOUNT="/bin/mount"
-MOUNTPNT="/media/usb0"
-
 FORMATEXT3="/sbin/mke2fs"
-LABEL="twkeys"
-
-TRIPWIREFILES="/usr/sbin/tripwire /usr/sbin/twadmin /usr/sbin/twprint /usr/sbin/siggen"
+LABEL="linux"
 
 # this creates an empty partition table
 EMPTYTABLE="--script -- mklabel msdos"
@@ -94,10 +89,10 @@ do
                             # set flags on partition 1
                             $PARTED $file $BOOTOFF  
                          
-                            # format the partition with lable (in case auto mounting)
+                            # format the partition with label (in case auto mounting)
                             $FORMATEXT3 -L $LABEL -t ext3 $partition
                              
-                            # turn off filesystem check on this usb thumb drive
+                            # turn off file system check on this usb thumb drive
                             $DISABLEDISKCHK $partition
                             
                             
@@ -111,7 +106,7 @@ do
                         ;;
             
                     [Nn])
-                        echo "Ok, returning to the system prompt."
+                        echo "OK, returning to the system prompt."
                         exit 0
                         ;;
                       *)

@@ -46,7 +46,16 @@ define admin_bndl::install {
 			# parted: partition table manipulator
         
             package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet", "parted" ] :
-                 ensure => installed }
+                ensure => installed }
+				 
+			file { "/root/bin/format.usbflash" :
+					source => "puppet:///modules/admin_bndl/format.usbflash",
+					 owner => 'root',
+					 group => 'root',
+					  mode => '0700',
+			}
+				 
+				 
         
         }
         
