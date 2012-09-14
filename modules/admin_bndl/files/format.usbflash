@@ -92,7 +92,7 @@ do
                         # safety check: usb flash must have been detected in /var/log/messages
                         #result=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/Attached SCSI/{ print $10 }' | $GREP $file`
                         
-                        result="`tail -n 50 /var/log/messages | awk '/Attached SCSI/{ print $10 }' | grep sdb`"
+                        result=`tail -n 50 /var/log/messages | awk '/Attached SCSI/{ print $10 }'`
                         
                         echo "Result is ($result)"
                         if [ -z $result ]; then
