@@ -38,6 +38,7 @@
 PARTED="/sbin/parted"
 
 GREP="/bin/grep"
+SED="/bin/sed"
 TAIL="/usr/bin/tail"
 TAILLINES="50"
 MSGPATH="/var/log/messages"
@@ -94,11 +95,24 @@ do
                         
                         RESULT=`tail -n 50 /var/log/messages | awk '/Attached SCSI/{ print $10 }'`
                         
-                        # now RESULT is '[sdb]' or empty
-                        if [ $RESULT = "["${file}"]" ]; then
+                        # if noy any drives is detected, abort.
+                        if [ -z $RESULT ]; then
+                            echo "Can't find any removable usb flash drives in ($MSGPATH)"
+                            echo "Please insert USB thumb drive to partition and format."
+                            exit 0
+                        fi
+                        
+                        # check that we have the right device
+                        trim=$(echo $RESULT | sed 's/^[//')    # strip the beginning [
+                        echo "First trim ($trim)"
+                        devname=$(echo $trim | sed 's/]$//')   # strip the ending ]
+                        echo "Second trim ($devname)"
+                        
+                        # now $file shold match what is found in system /var/log/messages 
+                        if [ $devname = $file ]; then
                             echo "Found actual device attached to system. Partitioning usb flash..."
                         else
-                            echo "Can't find in ($MSGPATH) that device ($file) is a removable usb flash."
+                            echo "Can't match the actual device ($file) with drives in ($MSGPATH)."
                             echo "Please insert USB thumb drive to partition and format."
                             exit 0
                         fi
