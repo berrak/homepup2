@@ -226,10 +226,11 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
   <%= mymailto %>
 )
 {
-	!/etc/network/run             ;
-    !/etc/network/ifstate         ; 
-    !/etc/adjtime                 ; 	 
-	/etc		    -> $(SEC_BIN) ;
+	!/etc/network/run              						;
+    !/etc/network/ifstate         						; 
+    !/etc/adjtime                 						;
+	/etc/apt/sources.list.d  -> $(SEC_BIN) (recurse=1)  ;
+	/etc		    		 -> $(SEC_BIN) 			    ;
 }
 
 
