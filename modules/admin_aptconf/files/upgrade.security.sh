@@ -32,7 +32,7 @@ MV="/bin/mv"
 MKDIR="/bin/mkdir"
 
 ORIGINALSOURCEDIR="/etc/apt/sources.list.d"
-SHADOWSOURCEDIR="/etc/apt/.sources.list.d"
+SHADOWSOURCEDIR="/etc/apt/sources.list.d/.puppet"
 
 # test if both directories exists, create them if not.
 

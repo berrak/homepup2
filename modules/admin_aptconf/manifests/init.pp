@@ -73,7 +73,7 @@ class admin_aptconf {
 	## Always use aptitude safe-upgrade, and call tripwire if it exists
 
 		file { "/root/bin/upgrade":
-			source => "puppet:///modules/admin_aptconf/aptitude.twupgrade.sh",
+			source => "puppet:///modules/admin_aptconf/upgrade.sh",
 			 owner => 'root',
 			 group => 'root',
 			  mode => '0700',
@@ -83,7 +83,7 @@ class admin_aptconf {
 	## will only read 'sources.list' and not any snippets in /sources.list.d
 
 		file { "/root/bin/upgrade.security":
-			source => "puppet:///modules/admin_aptconf/aptitude.unattended_upgrade.sh",
+			source => "puppet:///modules/admin_aptconf/upgrade.security.sh",
 			 owner => 'root',
 			 group => 'root',
 			  mode => '0700',
