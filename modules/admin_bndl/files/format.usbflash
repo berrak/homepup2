@@ -36,6 +36,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 PARTED="/sbin/parted"
+
+GREP="/bin/grep"
+TAIL="/usr/bin/tail"
+TAILLINES="50"
+MSGPATH="/var/log/messages"
+AWK="/usr/bin/awk"
+MATCHSCSITXT="Attached SCSI"
+
 DISABLEDISKCHK="/sbin/tune2fs -c -1"
 FORMATEXT3="/sbin/mke2fs"
 LABEL="linux"
@@ -51,6 +59,12 @@ foundusb=1
 HARDDISK_ONE="/dev/sda"
 UMOUNT="/bin/umount"
 mydisk=""
+
+if [[ $EUID -ne 0 ]] ;then
+   echo "This script must be run as root" 
+   exit 0
+fi
+
 for file in /dev/sd*
 do
     # this match all partitions (sda1, sda5, sdb1 etc), we want dev/disks without numbers!
@@ -75,6 +89,14 @@ do
                         partition=${file}${one}
                          
                         $UMOUNT $partition > /dev/null 2>&1
+                        
+                        # safety check: usb flash must have been detected in /var/log/messages
+                        result = $TAIL -n $TAILLINES $MSGPATH | $AWK '/$MATCHSCSITXT/{ print $10 }' | $GREP $file 
+                        if [ $result -ne 0 ] ; then
+                            echo "Can't find in ($MSGPATH) that device ($file) is a removable usb flash."
+                            echo "Please insert USB thumb drive to partition and format."
+                            exit 0
+                        fi
                          
                         # create empty p-table
                         $PARTED $file $EMPTYTABLE
