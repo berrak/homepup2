@@ -42,7 +42,6 @@ TAIL="/usr/bin/tail"
 TAILLINES="50"
 MSGPATH="/var/log/messages"
 AWK="/usr/bin/awk"
-MATCHSCSITXT="Attached SCSI"
 
 DISABLEDISKCHK="/sbin/tune2fs -c -1"
 FORMATEXT3="/sbin/mke2fs"
@@ -91,7 +90,7 @@ do
                         $UMOUNT $partition > /dev/null 2>&1
                         
                         # safety check: usb flash must have been detected in /var/log/messages
-                        result=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/$MATCHSCSITXT/{ print $10 }' | $GREP $file`
+                        result=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/Attached SCSI/{ print $10 }' | $GREP $file`
                         echo "Result is ($result)"
                         zerostr=""
                         if [ $result = $zerostr ]; then
