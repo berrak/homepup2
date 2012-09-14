@@ -39,7 +39,7 @@ PARTED="/sbin/parted"
 
 GREP="/bin/grep"
 TAIL="/usr/bin/tail"
-TAILLINES="1"
+TAILLINES="50"
 MSGPATH="/var/log/messages"
 AWK="/usr/bin/awk"
 MATCHSCSITXT="Attached SCSI"
