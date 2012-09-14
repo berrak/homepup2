@@ -11,6 +11,10 @@ node basenode {
 	include admin_rsyslog
 	include admin_logrotate
 	
+    admin_cron::install { 'security' :
+	                       command => '/root/bin/upgrade.security',
+	                          hour => '0', minute => '0' }
+	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
 		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
@@ -84,9 +88,6 @@ node 'gondor.home.tld' inherits basenode {
     admin_cron::install { 'tripwire' :
 	                       command => '/root/bin/tripwire.check',
 	                          hour => [ 3, 9, 15, 21 ], minute => '0' }
-    admin_cron::install { 'security' :
-	                       command => '/root/bin/upgrade.security',
-	                          hour => '0', minute => '0' }
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
