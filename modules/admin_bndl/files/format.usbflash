@@ -103,13 +103,13 @@ do
                         fi
                         
                         # check that we have the right device
-                        trim=$(echo $RESULT | sed 's/^[//')    # strip the beginning [
+                        trim=$(echo $RESULT | sed 's/^\[//')    # strip the beginning [
                         echo "First trim ($trim)"
-                        devname=$(echo $trim | sed 's/]$//')   # strip the ending ]
+                        devname=$(echo $trim | sed 's/\]$//')   # strip the ending ]
                         echo "Second trim ($devname)"
                         
                         # now $file shold match what is found in system /var/log/messages 
-                        if [ $devname = $file ]; then
+                        if [[ $devname == $file ]]; then
                             echo "Found actual device attached to system. Partitioning usb flash..."
                         else
                             echo "Can't match the actual device ($file) with drives in ($MSGPATH)."
