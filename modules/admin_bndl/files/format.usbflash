@@ -92,9 +92,6 @@ do
                         
                         # safety check: usb flash must have been detected in /var/log/messages
                         RESULT=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/Attached SCSI/{ print $10 }'`
-                        
-                        #RESULT=`tail -n 50 /var/log/messages | awk '/Attached SCSI/{ print $10 }'`
-                        
                         # if no drives is detected, abort.
                         devname=""
                         if [ -z $RESULT ]; then
@@ -102,11 +99,11 @@ do
                             echo "Please insert USB thumb drive to partition and format."
                             exit 0
                         else
-                            trim=$(echo $RESULT | sed 's/^\[//')    # strip the beginning [
-                            devname=$(echo $trim | sed 's/\]$//')   # strip the ending ]
+                            trim=$(echo $RESULT | $SED 's/^\[//')    # strip the beginning [
+                            devname=$(echo $trim | $SED 's/\]$//')   # strip the ending ]
                         fi
                         
-                        # $file shold match what is found in system /var/log/messages
+                        # $file should match what is found in system /var/log/messages
                         devstr="/dev/"
                         devname=${devstr}${devname}                     
                         if [ $file = $devname ]; then
