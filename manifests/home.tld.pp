@@ -10,6 +10,7 @@ node basenode {
 	
 	include admin_rsyslog
 	include admin_logrotate
+	include admin_cron
 	
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
