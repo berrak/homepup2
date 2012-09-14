@@ -94,7 +94,8 @@ do
                         
                         RESULT=`tail -n 50 /var/log/messages | awk '/Attached SCSI/{ print $10 }'`
                         
-                        if [[ $RESULT == $file ]]; then
+                        # now RESULT is '[sdb]' or empty
+                        if [ $RESULT = "["${file}"]" ]; then
                             echo "Found actual device attached to system. Partitioning usb flash..."
                         else
                             echo "Can't find in ($MSGPATH) that device ($file) is a removable usb flash."
