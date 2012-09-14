@@ -109,12 +109,15 @@ do
                         # $file shold match what is found in system /var/log/messages
                         echo "Devname is ($devname)"
                         echo "File is ($file)"
-                        if [[ $file == "$devname*" ]]; then
-                            echo "Found the actual device attached to system. Partitioning usb flash..."
-                        else
+                        match=$(echo $file | sed '/$devname$/p')
+                        echo "Match is ($match)"
+                        
+                        if [ -z $match ]; then
                             echo "Can't match the actual device ($file) with drives in ($MSGPATH)."
-                            echo "Please insert USB thumb drive to partition and format."
-                            exit 0
+                            echo "Please insert USB thumb drive to partition and format."                         
+                            exit 0 
+                        else
+                            echo "Found the actual device attached to the system. Partitioning usb flash..."
                         fi
                          
                         # create empty p-table
