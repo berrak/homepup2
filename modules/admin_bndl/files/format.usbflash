@@ -92,7 +92,9 @@ do
                         
                         # safety check: usb flash must have been detected in /var/log/messages
                         result=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/$MATCHSCSITXT/{ print $10 }' | $GREP $file`
-                        if [ -z "$result" ]; then
+                        echo "Result is ($result)"
+                        zerostr=""
+                        if [ $result = $zerostr ]; then
                             echo "Can't find in ($MSGPATH) that device ($file) is a removable usb flash."
                             echo "Please insert USB thumb drive to partition and format."
                             exit 0
