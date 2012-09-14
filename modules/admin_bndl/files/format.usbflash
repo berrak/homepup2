@@ -107,6 +107,7 @@ do
                         fi
                         
                         # $file shold match what is found in system /var/log/messages
+                        devname="sdc"
                         echo "Devname is ($devname)"
                         echo "File is ($file)"
                         match=$(echo $file | sed '/$devname$/p')
