@@ -108,7 +108,7 @@ do
                         
                         # $file shold match what is found in system /var/log/messages
                         devstr="/dev/"
-                        devname=$devstr+$devname
+                        devname=${devstr}${devname}
                         echo "Devname is ($devname)"
                         echo "File is ($file)"
                         
