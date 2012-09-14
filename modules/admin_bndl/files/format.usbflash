@@ -90,10 +90,10 @@ do
                         $UMOUNT $partition > /dev/null 2>&1
                         
                         # safety check: usb flash must have been detected in /var/log/messages
-                        result=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/Attached SCSI/{ print $10 }' | $GREP $file`
+                        result="`$TAIL -n $TAILLINES $MSGPATH | $AWK '/Attached SCSI/{ print $10 }' | $GREP $file`"
+                        
                         echo "Result is ($result)"
-                        zerostr=""
-                        if [ $result = $zerostr ]; then
+                        if [ -z $result ]; then
                             echo "Can't find in ($MSGPATH) that device ($file) is a removable usb flash."
                             echo "Please insert USB thumb drive to partition and format."
                             exit 0
