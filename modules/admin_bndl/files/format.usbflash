@@ -95,22 +95,22 @@ do
                         
                         RESULT=`tail -n 50 /var/log/messages | awk '/Attached SCSI/{ print $10 }'`
                         
-                        # if noy any drives is detected, abort.
+                        # if no drives is detected, abort.
+                        devname=""
                         if [ -z $RESULT ]; then
                             echo "Can't find any removable usb flash drives in ($MSGPATH)"
                             echo "Please insert USB thumb drive to partition and format."
                             exit 0
+                        else
+                            trim=$(echo $RESULT | sed 's/^\[//')    # strip the beginning [
+                            devname=$(echo $trim | sed 's/\]$//')   # strip the ending ]
                         fi
                         
-                        # check that we have the right device
-                        trim=$(echo $RESULT | sed 's/^\[//')    # strip the beginning [
-                        echo "First trim ($trim)"
-                        devname=$(echo $trim | sed 's/\]$//')   # strip the ending ]
-                        echo "Second trim ($devname)"
-                        
-                        # now $file shold match what is found in system /var/log/messages 
-                        if [[ $devname == $file ]]; then
-                            echo "Found actual device attached to system. Partitioning usb flash..."
+                        # $file shold match what is found in system /var/log/messages
+                        echo "Devname is ($devname)"
+                        echo "File is ($file)"
+                        if [ "$devname" = "$file" ]; then
+                            echo "Found the actual device attached to system. Partitioning usb flash..."
                         else
                             echo "Can't match the actual device ($file) with drives in ($MSGPATH)."
                             echo "Please insert USB thumb drive to partition and format."
