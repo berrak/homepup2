@@ -16,8 +16,6 @@
 #               c) Does not handle multiple devices sdb, sdc, sdd
 #               d  Does not know about old /dev/hd* scheme.
 #
-#     TODO: more safety checks to partition/format the right device.
-#
 # WARNING: If you do not understand this, data can be unrecoverable lost!
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
@@ -40,7 +38,7 @@ PARTED="/sbin/parted"
 GREP="/bin/grep"
 SED="/bin/sed"
 TAIL="/usr/bin/tail"
-TAILLINES="50"
+TAILLINES="20"
 MSGPATH="/var/log/messages"
 AWK="/usr/bin/awk"
 
@@ -109,7 +107,7 @@ do
                         if [ $file = $devname ]; then
                             echo "Found the actual device attached to the system. Partitioning usb flash..."
                         else
-                            echo "Can't match the actual device ($file) with drives in ($MSGPATH)."
+                            echo "Can't match the actual device ($file) with drives in the last $TAILLINES lines in ($MSGPATH)."
                             echo "Please insert USB thumb drive to partition and format."                         
                             exit 0 
                         fi
