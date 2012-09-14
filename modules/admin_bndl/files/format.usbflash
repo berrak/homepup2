@@ -109,7 +109,7 @@ do
                         # $file shold match what is found in system /var/log/messages
                         echo "Devname is ($devname)"
                         echo "File is ($file)"
-                        if [ "$devname" = "$file" ]; then
+                        if [[ $file == "$devname*" ]]; then
                             echo "Found the actual device attached to system. Partitioning usb flash..."
                         else
                             echo "Can't match the actual device ($file) with drives in ($MSGPATH)."
