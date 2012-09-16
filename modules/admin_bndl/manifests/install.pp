@@ -44,8 +44,10 @@ define admin_bndl::install {
 			# lshw: system hardware information
 			# telnet: telnet client
 			# parted: partition table manipulator
+			# wodim: command line CD/DVD writing tool
+			# genisoimage: creates ISO-9660 CD-ROM filesystem images
         
-            package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet", "parted" ] :
+            package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
                 ensure => installed }
 				 
 			file { "/root/bin/format.usbflash" :
