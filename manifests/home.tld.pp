@@ -46,6 +46,7 @@ node 'carbon.home.tld' inherits basenode {
     class { admin_fstab::config : fstabhost => 'carbon' }
 	
     include puppet_tripwire
+    include puppet_logwatch
 	admin_cron::install { 'tripwire' : 	command => '/root/bin/tripwire.check',
 	                                       hour => '3', minute => '0' }
 	
@@ -86,6 +87,7 @@ node 'gondor.home.tld' inherits basenode {
 	include puppet_agent
 	
     include puppet_tripwire
+	include puppet_logwatch
     admin_cron::install { 'tripwire' :
 	                       command => '/root/bin/tripwire.check',
 	                          hour => '3', minute => '0' }
@@ -120,6 +122,7 @@ node 'gondor.home.tld' inherits basenode {
 node 'rohan.home.tld' inherits basenode {
 
     include puppet_agent
+    include puppet_logwatch
 	
     admin_server::timezone { 'CET' :}
 	admin_server::nohistory { 'rohan' :}
