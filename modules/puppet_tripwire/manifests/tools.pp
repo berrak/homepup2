@@ -52,7 +52,15 @@ class puppet_tripwire::tools {
 		   mode => '0700',
 		require => File["/root/bin"],
 	}
-	
+
+
+	file { "/root/bin/tripwire.burncdkeys" :
+		 source => "puppet:///modules/puppet_tripwire/tripwire.burncdkeys",
+		  owner => 'root',
+		  group => 'root',
+		   mode => '0700',
+		require => File["/root/bin"],
+	}
 
     # template
 

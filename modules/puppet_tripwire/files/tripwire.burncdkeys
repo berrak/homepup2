@@ -1,0 +1,374 @@
+#!/bin/bash
+#
+# /root/bin/tripwire.burncdkeys
+#
+# Move site.key and any new local host key, and tripwire 
+# binaries to an usb flash disc and then burn CD disc. 
+#
+# Console usage: tripwire.burncdkeys 'hostname'
+#
+# You need: an empty cd-disc media and a formatted usb flash drive
+# (use the utility format.usbflash to prepare the latter).
+#
+# If no keys exist, you are asked to create these on the cli.
+# Think about strong passwords before creating keys.
+#
+# Yes, this is a lengthy bash script (with all error checks).
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+CP="/bin/cp"
+RM="/bin/rm"
+ECHO="/bin/echo"
+GREP="/bin/grep"
+CAT="/bin/cat"
+LS="/bin/ls"
+MKDIR="/bin/mkdir"
+MOUNT="/bin/mount"
+HOSTNAME="/bin/hostname"
+WODIM="/usr/bin/wodim"
+GENISOIMAGE="/usr/bin/genisoimage"
+WHEREIS="/usr/bin/whereis"
+
+AUTOMOUNTPT="/media/usb" # auto mounts on this point if usb drive label is 'usb'
+MOUNTPT="/media/usb0"    # if auto mount have not mounted. use this directory
+USBLABEL="usb"           # use default label to identify usb flash thumb drive 
+TWBINPATH="/usr/sbin"
+TWETCPATH="/etc/tripwire"
+TRIPWIREFILES="tripwire twadmin twprint siggen"
+SITEKEY="site.key"
+
+SED="/bin/sed"
+TAIL="/usr/bin/tail"
+TAILLINES="20"
+MSGPATH="/var/log/messages"
+AWK="/usr/bin/awk"
+
+ISOFILE="/tmp/twiso"   
+
+# Set VERBOSE mode - set to 1 for verbose debug messages
+VERBOSE=0
+
+##############################################################
+## Functions
+##############################################################
+
+function debug_echo()
+{
+    # Display message if $VERBOSE >= 1
+    if [ "$VERBOSE" -ge 1 ]; then
+	$ECHO "DEBUG: $1" 1>&2
+    fi
+}
+
+function is_installed()
+{
+    local ret=`$WHEREIS $1`
+    local awkret=`$ECHO $ret | $AWK '/bin/'`
+    if [ -z "$awkret" ];then
+        return 1
+    else
+        return 0
+    fi
+}
+
+function remove_tempiso()
+{
+    for fn in $ISOFILE*
+    do
+        debug_echo "Removing temporary iso file $fn"                    
+        $RM $fn > /dev/null 2>&1                                   
+    done                        
+}
+
+function remove_keys_option()
+{
+                            
+    # ask user what to do with the secret keys in the tripwire directory.
+    echo
+    echo "After burning the CD disc, remove the key files from this local host!"
+    echo -n "Do you want to delete the secret $localkey file now? [y/n] "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo "Removing the $localkey file..."
+                $RM $TWETCPATH/$localkey
+                ;;
+    
+            [Nn])
+                echo "OK, will not remove the $localkey file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
+
+    # ask user the option to remove the old (backup) configuration file
+    echo -n "Do you want to delete the secret $SITEKEY file now? [y/n] "
+    read answer
+    
+    case "$answer" in
+            [Yy])
+                echo "Removing the $SITEKEY file..."
+                $RM $TWETCPATH/$SITEKEY
+                ;;
+    
+            [Nn])
+                echo "OK, will not remove the $SITEKEY file now."
+                ;;
+              *)
+                echo "Did not get any answer - leave it there then."
+                ;;
+    esac
+                                               
+                            
+}
+
+##############################################################
+## Main code starts here
+##############################################################
+
+debug_echo "verbose level $VERBOSE"
+
+if [[ $EUID -ne 0 ]] ;then
+   echo "This script must be run as root" 
+   exit 0
+fi
+
+# start with some information
+echo "This script will create a CD disc to be used with tripwire integrity checking."
+echo "You need to have an empty writable CD disc and one formatted usb flash drive available."
+echo -n "Continue? [y/n] "
+read answer
+
+case "$answer" in
+        [Yy])
+            echo "Doing some pre-requsites tests..."
+            ;;
+
+        [Nn])
+            echo "OK, will not continue now."
+            exit 0
+            ;;
+          *)
+            echo "Did not get any answer - aborting."
+            exit 0
+            ;;
+esac
+
+# check tripwire
+if [ ! -d $TWETCPATH ]; then 
+    echo "Looks like tripwire is not installed on this computer. Aborting."
+    exit 1
+fi
+
+# check that required cli CD burning utilities are installed
+is_installed $WODIM
+if [ $? -ne 0 ] ; then
+    echo "Missing command line CD/DVD writing tool wodim."
+    echo "Please install with: apt-get install wodim"
+    exit 1
+fi
+
+is_installed $GENISOIMAGE
+if [ $? -ne 0 ] ; then
+    echo "Missing genisoimage to create ISO-9660 CD-ROM file system images."
+    echo "Please install with: apt-get install genisoimage"
+    exit 1
+fi
+
+# check that the manual mount point (/media/usb0) directory exist, otherwise create it
+if [ ! -d $MOUNTPT ]; then 
+    $MKDIR $MOUNTPT
+fi
+
+
+## check that the host name is given by first argument
+thishost=`$HOSTNAME`
+if [ $# -ne 1 ];then
+    echo "Missing the host name for the local key file"
+    echo "Invoke the script with $0 hostname"
+    exit 0
+elif [ $1 != $thishost ]; then
+    echo "Warning: Your provided local host key name ($1) is not same as this host name i.e. ($thishost)."
+    echo "On the target host you must use actual disc to create the tripwire database and configuration files!"
+fi
+
+## check that we have the *.key in /etc/tripwire directory
+
+cd $TWETCPATH
+if [ ! -f $SITEKEY ];then
+    echo "Missing the site key ($SITEKEY). Create the key (as root) with:"
+    echo "cd /etc/tripwire"
+    echo "twadmin --generate-keys --site-keyfile $SITEKEY"
+    exit 1
+fi
+
+localkey=$1-local.key
+if [ ! -f $localkey ];then
+    echo "Missing the local key ($localkey). Create the key (as root) with:"
+    echo "cd /etc/tripwire"
+    echo "twadmin --generate-keys --local-keyfile $localkey"
+    exit 1
+fi
+
+
+## If grep does not return 0, mount the USBFLASH
+# first if auto-mounted then check /media/usb (our usb flash drive label)
+
+$CAT /etc/mtab | $GREP sdb > /dev/null 2>&1
+if [ $? -ne 0 ] ; then
+    debug_echo "Trying mount. Identify usb flash on label: $USBLABEL"
+	$MOUNT -L $USBLABEL $MOUNTPT > /dev/null 2>&1
+    # If mount attempts failed, abort
+    if [ $? -ne 0 ] ; then
+    
+        debug_echo "Failed mount. Can't identify usb flash with label!"
+        debug_echo "Trying mount with device from messages..."
+        # if this mount does not work need to find the device
+        # should match what is found in system /var/log/messages
+    
+        RESULT=`$TAIL -n $TAILLINES $MSGPATH | $AWK '/Attached SCSI/{ print $10 }'`
+        debug_echo "Found potential usb drive in messages: $RESULT"
+        # if no drives is detected, abort.
+        if [ -z $RESULT ]; then
+            echo "Can't find any removable usb flash drives in ($MSGPATH)"
+            echo "Please insert a linux formatted USB thumb drive."
+            exit 0
+        else
+            trim=$(echo $RESULT | $SED 's/^\[//')    # strip the beginning [
+            devname=$(echo $trim | $SED 's/\]$//')   # strip the ending ]
+            debug_echo "Found usb disk device after trimming: $devname"
+        fi
+
+        devstr="/dev/"
+        one="1"
+        devname=${devstr}${devname}${one}    # $devname is e.g. '/dev/sdb1'
+                            
+        debug_echo "Trying to mount: $devname"                     
+        $MOUNT $devname $MOUNTPT > /dev/null 2>&1
+        if [ $? -ne 0 ] ; then
+            echo "No usb thumb drive found. Insert usb flash and try again."
+            exit 0
+        fi
+        
+        # success with 2nd try with /dev/sdx mount
+        debug_echo "Success with device mount: $devname on $MOUNTPT."
+        
+    fi # success in the auto-mount on /media/linux
+
+else  # if usb drive is mounted - find where
+     
+    actualmountpoint=`$MOUNT | $AWK '/media/{ print $3 }'`                         
+    debug_echo "Actual mount point is: $actualmountpoint."
+    # Set to actual mount point (may be the manual in use, or the auto mount point)
+    MOUNTPT=$actualmountpoint
+fi 
+debug_echo "Usb drive is now mounted on $MOUNTPT and ready to act as master for CD burning process."
+
+# Now COPY the keys over to the usb flash drive
+
+debug_echo "Copying $SITEKEY to $MOUNTPT/$SITEKEY..."
+$CP $SITEKEY $MOUNTPT/$SITEKEY
+if [ $? -ne 0 ] ; then
+    echo "Error: Could not copy $SITEKEY to usb flash drive!"
+    echo "Aborting."
+    exit 1
+fi
+echo "Copied $SITEKEY to $MOUNTPT/$SITEKEY"
+
+debug_echo "Copying $localkey to $MOUNTPT/$localkey"
+$CP $localkey $MOUNTPT/$localkey
+if [ $? -ne 0 ] ; then
+    echo "Error: Could not copy $localkey to usb flash drive!"
+    echo "Aborting."
+    exit 1
+fi
+echo "Copied $localkey to $MOUNTPT/$localkey"
+
+# Now COPY all tripwire binaries over to this usb
+
+cd $TWBINPATH
+for fn in $TRIPWIREFILES
+do
+    debug_echo "Copying: $fn"                        
+    $CP $fn $MOUNTPT/$fn
+    if [ $? -eq 0 ] ; then  
+        echo "Copied $fn to $MOUNTPT/$fn"
+    else    
+        echo "Error: Could not found any tripwire file on this system. Aborting..."
+        exit 1
+    fi
+done
+
+## generate the iso image from the usb content
+outisofile=$ISOFILE.$$
+debug_echo "Temp iso file $outisofile"
+
+$GENISOIMAGE -input-charset default -o $outisofile -r $MOUNTPT
+
+## ask user to load the CD disc for writing
+echo
+echo "Please insert an empty CD disc in the CD writer."
+echo -n "Do you want to continue? [y/n] "
+read answer
+
+case "$answer" in
+        [Yy])
+            
+            # check that we really have a cd writer ready
+            $LS /dev/sr0  > /dev/null 2>&1
+            if [ $? -ne 0 ] ; then
+                echo "Error: Can't find the cd writer media in system."
+                echo "Please, load disc in cd writer and try again. Aborting."
+                remove_tempiso 
+                exit 1
+            fi
+            
+            # burn the CD disc
+            echo "Burning media..."
+            $WODIM -dao -speed=4 -eject dev=/dev/sr0 $outisofile
+            remove_tempiso                
+            ;;
+
+        [Nn])
+            echo "OK, aborting the cd writing this time."
+            remove_tempiso
+            exit 0
+            ;;
+          *)
+            echo "Did not get any answer - aborting."
+            remove_tempiso
+            exit 0
+            ;;
+esac
+
+remove_keys_option
+
+echo "Mark the CD disc with: Tripwire Binaries and Keys for ($1)"
+echo "Reboot target system with new disc loaded for correct tripwire mount."
+
+# list files in tripwire directory (as info after this process)
+echo "$TWETCPATH:"
+$LS -lA $TWETCPATH      
+
+# eof
