@@ -1,6 +1,6 @@
-###############################
-## Included in every node
-###############################
+#########################################
+## (BASENODE) Included in every node
+#########################################
 node basenode {
 	
 	include puppet_utils
@@ -10,18 +10,22 @@ node basenode {
 	
 	include admin_rsyslog
 	include admin_logrotate
+	
 	include admin_cron
 	
+	# apt runs Cron Daemon (06:15, see /etc/crontab:daily) to download upgradable pkg's 
+    include admin_aptconf
+	# cron will upgrade security at midnight
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
 	                          hour => '0', minute => '0' }
+	
 	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
 		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
 		smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
 		
-	include admin_aptconf
     include admin_pinpuppet2_7
 
     admin_bndl::install { 'coresysapps' : }
@@ -35,9 +39,9 @@ node basenode {
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
 
 }
-###############################
-## puppet master server
-###############################
+#########################################
+## (CARBON) puppet master server
+#########################################
 node 'carbon.home.tld' inherits basenode {
 
     include puppet_master
@@ -46,9 +50,10 @@ node 'carbon.home.tld' inherits basenode {
     class { admin_fstab::config : fstabhost => 'carbon' }
 	
     include puppet_tripwire
-    include puppet_logwatch
-	admin_cron::install { 'tripwire' : 	command => '/root/bin/tripwire.check',
-	                                       hour => '3', minute => '0' }
+	
+	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
+    include puppet_logwatch	
+	
 	
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster' }
@@ -79,18 +84,20 @@ node 'carbon.home.tld' inherits basenode {
     include admin_ipv6_disable
 
 }
-###############################
-## gateway host/lan ntp server
-###############################
+#########################################
+## (GONDOR) gateway host/lan ntp server
+#########################################
 node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
-	
     include puppet_tripwire
+	
+	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
 	include puppet_logwatch
+	# run tripwire check at noon an mailto root
     admin_cron::install { 'tripwire' :
 	                       command => '/root/bin/tripwire.check',
-	                          hour => '3', minute => '0' }
+	                          hour => '12', minute => '0' }
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
@@ -116,12 +123,14 @@ node 'gondor.home.tld' inherits basenode {
     include admin_ipv6_disable
 
 }
-###############################
-## local intra-lan mail server
-###############################
+########################################
+## (ROHAN) local intra-lan mail server
+########################################
 node 'rohan.home.tld' inherits basenode {
 
     include puppet_agent
+	
+	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
     include puppet_logwatch
 	
     admin_server::timezone { 'CET' :}
@@ -160,9 +169,9 @@ node 'rohan.home.tld' inherits basenode {
     include admin_ipv6_disable
 
 }
-###############################
-## developer host (laptop)
-###############################
+#########################################
+## (MORDOR) developer host (laptop)
+#########################################
 node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
