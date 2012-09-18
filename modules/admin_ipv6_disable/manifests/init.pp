@@ -6,6 +6,6 @@
 ##
 class admin_ipv6_disable {
 	
-    include admin_ipv6_disable::config
+    include admin_ipv6_disable::config, admin_ipv6_disable::params
 
 }

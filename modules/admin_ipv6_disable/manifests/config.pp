@@ -7,7 +7,15 @@
 ##
 class admin_ipv6_disable::config {
 
-    $grubcmdline = 'ipv6.disable=1'	
+    include admin_ipv6_disable::params
+
+    $grubcmdline = $::admin_ipv6_disable::params::mygrubcmdline
+	
+	if ( $::hostname == $::admin_ipv6_disable::params::myvgahost ) {
+	    $grubdefault = $::admin_ipv6_disable::params::myvgaline
+	} else {
+	    $grubdefault = 'quiet'
+	}
 
 	if ( $::is_ipv6host ) {
 
