@@ -8,7 +8,7 @@
 #
 define admin_bndl::install {
   
-    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps' ]) {
+    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'security' ]) {
         fail("Package bundle parameter ($name) not recognized!")
     }
   
@@ -33,7 +33,17 @@ define admin_bndl::install {
                 ensure => installed }
         
         }
+
+        securityapps : {
         
+            # Security related packages
+			# rkhunter: scans systems for rootkits, backdoors, sniffers and exploits. 
+            
+            package  { [ "rkhunter" ] :
+                ensure => installed }
+        
+        }
+
         cliadminapps : {
         
             # Can be applied to desktops and non-public servers
