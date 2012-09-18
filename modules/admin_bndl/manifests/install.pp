@@ -8,7 +8,7 @@
 #
 define admin_bndl::install {
   
-    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'security' ]) {
+    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'securityapps' ]) {
         fail("Package bundle parameter ($name) not recognized!")
     }
   
