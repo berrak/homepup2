@@ -48,9 +48,7 @@ node 'carbon.home.tld' inherits basenode {
 	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'carbon' }
-	
-    include puppet_tripwire
-	
+		
 	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
     include puppet_logwatch	
 	
