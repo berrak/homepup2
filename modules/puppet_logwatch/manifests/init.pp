@@ -3,6 +3,6 @@
 #
 class puppet_logwatch {
 
-    include puppet_logwatch::install, puppet_logwatch::config    
+    include puppet_logwatch::install, puppet_logwatch::config, puppet_logwatch::params    
 
 }
