@@ -15,7 +15,7 @@ node basenode {
 	
 	# apt runs Cron Daemon (06:15, see /etc/crontab:daily) to download upgradable pkg's 
     include admin_aptconf
-	# cron will upgrade security at midnight
+	# cron will upgrade security at midnight (will mail root about this)
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
 	                          hour => '0', minute => '0' }
