@@ -62,16 +62,6 @@ class puppet_tripwire::tools {
 		require => File["/root/bin"],
 	}
 
-	file { "/root/bin/tripwire.blindupdate" :
-		 source => "puppet:///modules/puppet_tripwire/tripwire.blindupdate",
-		  owner => 'root',
-		  group => 'root',
-		   mode => '0700',
-		require => File["/root/bin"],
-	}
-
-
-
 
     # template
 
