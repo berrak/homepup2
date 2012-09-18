@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+# /root/bin/tripwire.blindupdate
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+## Console usage: tripwire.blindupdate
+## 
+## Does a database update without a visual review (caution!)
+##
+
+## We have all tripwire binaries and the key files on CDROM.
+
+MOUNT="/bin/mount"
+UMOUNT="/bin/umount"
+
+MNTPOINT="/media/tripwire"
+
+CDDEV="/dev/sr0"
+
+TWDBPATH="/var/lib/tripwire"
+HOSTNAME=`uname -n`
+
+
+# start with some information
+echo "Warning: This script will update tripwire integrity database without any visual review!"
+echo "Consider to run: tripwire.check -I"
+echo "This gives you an opportunity to review violations first."
+echo -n "Continue anyway? [y/n] "
+read answer
+
+case "$answer" in
+        [Yy])
+            echo "Doing some pre-requsites tests..."
+            ;;
+
+        [Nn])
+            echo "OK, will not continue now."
+            exit 0
+            ;;
+          *)
+            echo "Did not get any answer - aborting."
+            exit 0
+            ;;
+esac
+
+## Check that Tripwire database exist
+
+if [ ! -e $TWDBPATH/${HOSTNAME}.twd ] ; then
+	echo "**** Error: Tripwire database for ${HOSTNAME} not found. Is it not configured? ****"
+	exit 1
+fi
+
+## If grep does not return 0, mount the CDROM
+
+cat /etc/mtab | grep sr0
+if [ $? -ne 0 ] ; then
+	$MOUNT $CDDEV $MNTPOINT
+    # If mount attempts failed, abort
+    if [ $? -ne 0 ] ; then  
+        echo "$0: Error: Can't mount tripwire media! No CD disc found or error reading it."
+        exit 1
+    fi
+fi
+
+## Set new file mask
+
+umask 027
+
+## update the database without looking at policy violations.
+$MNTPOINT/tripwire --update --accept-all
+
+## EOF
+
