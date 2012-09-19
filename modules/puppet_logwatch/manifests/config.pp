@@ -4,11 +4,8 @@
 class puppet_logwatch::config {
 
     include puppet_logwatch::params
-
-    $mydomain = $::domain 
-    $rcpt = $::puppet_logwatch::params::myrcpt
     
-    $mailtorecepient = "${rcpt}@${mydomain}"
+    $mailtorecepient = $::puppet_logwatch::params::myrcpt
 
     file { '/etc/cron.daily/00logwatch' :
         content =>  template( 'puppet_logwatch/00logwatch.erb' ),
@@ -17,7 +14,7 @@ class puppet_logwatch::config {
     }
 
     file { '/etc/logwatch/conf/logwatch.conf' :
-		 source => "puppet:///modules/puppet_logwatch/logwatch.conf",
+		content =>  template( 'puppet_logwatch/logwatch.conf.erb' ),
 		  owner => 'root',
 		  group => 'root',
 		require => Package["logwatch"],

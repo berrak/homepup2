@@ -3,8 +3,14 @@
 ##
 class puppet_logwatch::params {
 
-    # who should receive email reports from logwatch runs
+    # facter
     
-    $myrcpt = 'root'
+    $mydomain = $::domain 
+
+    # who should receive email reports from logwatch runs
+    # this is relayed to central mail server were it is
+    # aliased from root to a normal user account.
+    
+    $myrcpt = "root@${mydomain}"
 
 }
