@@ -3,6 +3,6 @@
 #
 class admin_cron {
     
-    include admin_cron::config
+    include admin_cron::config, admin_cron::params
      
 }

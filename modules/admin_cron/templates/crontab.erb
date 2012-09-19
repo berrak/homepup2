@@ -8,7 +8,7 @@
 # and files in /etc/cron.d. These files also have username fields,
 # that none of the other crontabs do.
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-MAILTO="root"
+MAILTO="<%= mailtorecipient %>"
 # m h dom mon dow user command
 0 * * * * root    cd / && run-parts --report /etc/cron.hourly
 15 6 * * * root   test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
