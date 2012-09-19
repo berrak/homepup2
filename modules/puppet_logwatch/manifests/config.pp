@@ -11,7 +11,7 @@ class puppet_logwatch::config {
         content =>  template( 'puppet_logwatch/00logwatch.erb' ),
           owner => 'root',
           group => 'root',
-           mode => '0644',
+           mode => '0755',
     }
 
     file { '/etc/logwatch/conf/logwatch.conf' :

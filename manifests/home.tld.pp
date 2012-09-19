@@ -4,7 +4,6 @@
 node basenode {
 	
 	include puppet_utils
-	include puppet_rkhunter
 	
     include root_home
     include root_bashrc
@@ -20,7 +19,6 @@ node basenode {
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
 	                          hour => '0', minute => '0' }
-	
 	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
@@ -53,12 +51,10 @@ node 'carbon.home.tld' inherits basenode {
 		
 	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
     include puppet_logwatch
-	
-    admin_cron::install { 'rkhunter' :
-	                       command => '/usr/bin/rkhunter --cronjob',
-	                          hour => '21', minute => '0' }
-	
-	
+    
+	# this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
+    include puppet_rkhunter
+		
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster' }
 	
@@ -98,14 +94,15 @@ node 'gondor.home.tld' inherits basenode {
 	
 	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
 	include puppet_logwatch
+	
+    # this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
+    include puppet_rkhunter
+	
 	# run tripwire check at noon an mailto root
     admin_cron::install { 'tripwire' :
 	                       command => '/root/bin/tripwire.check',
 	                          hour => '12', minute => '0' }
-							  
-    admin_cron::install { 'rkhunter' :
-	                       command => '/usr/bin/rkhunter --cronjob',
-	                          hour => '21', minute => '0' }						  
+							  				  
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
@@ -143,9 +140,8 @@ node 'rohan.home.tld' inherits basenode {
 	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
     include puppet_logwatch
 	
-    admin_cron::install { 'rkhunter' :
-	                       command => '/usr/bin/rkhunter --cronjob',
-	                          hour => '21', minute => '0' }
+	# this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
+    include puppet_rkhunter
 	
     admin_server::timezone { 'CET' :}
 	admin_server::nohistory { 'rohan' :}
@@ -190,9 +186,8 @@ node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
 	
-    admin_cron::install { 'rkhunter' :
-	                       command => '/usr/bin/rkhunter --cronjob',
-	                          hour => '21', minute => '0' }
+	# this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
+    include puppet_rkhunter
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'mordor' }
