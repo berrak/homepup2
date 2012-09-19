@@ -14,7 +14,7 @@ define admin_cron::install (
 		$myensure = 'present'
 		$mycommand = $command
 		$myuser = 'root'
-		$mypath = 'PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+		$mypath = 'PATH=/root/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin'
 
     if $command == '' {
 		fail("FAIL: $name is missing the command parameter ($command).")
