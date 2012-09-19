@@ -28,6 +28,7 @@ node basenode {
 		
     include admin_pinpuppet2_7
 
+    admin_bndl::install { 'securityapps' : }
     admin_bndl::install { 'coresysapps' : }
     admin_bndl::install { 'cliadminapps' : }
 	
@@ -68,7 +69,6 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
-    admin_bndl::install { 'securityapps' : }
 	
     include puppet_cups
 	

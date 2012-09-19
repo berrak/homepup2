@@ -36,10 +36,13 @@ define admin_bndl::install {
 
         securityapps : {
         
-            # Security related packages
-			# rkhunter: scans systems for rootkits, backdoors, sniffers and exploits. 
+            # Prevent disaster kind of related packages.
+			# Note only pkgs that does not require lots of
+			# tweaking of configuration files etc to work
+			
+            # gddrescue: backup image of disk despite disk/head errors 
             
-            package  { [ "rkhunter" ] :
+            package  { [ "gddrescue" ] :
                 ensure => installed }
         
         }
@@ -50,14 +53,13 @@ define admin_bndl::install {
             #--------------------------------------------------
             # lsof: list open files
             # psmisc: miscellaneous utilities that use the proc FS
-            # gddrescue: backup image of disk despite disk/head errors
 			# lshw: system hardware information
 			# telnet: telnet client
 			# parted: partition table manipulator
 			# wodim: command line CD/DVD writing tool
 			# genisoimage: creates ISO-9660 CD-ROM filesystem images
         
-            package  { [ "lsof", "psmisc", "gddrescue", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
+            package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
                 ensure => installed }
 				 
 			file { "/root/bin/format.usbflash" :
