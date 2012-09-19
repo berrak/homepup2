@@ -7,9 +7,8 @@
 ##
 define puppet_mutt::install ( $mailserver_hostname='' ) {
 
-
-    package { "mutt" : ensure => present }
-
+    # ensures package mutt is installed (class executed only one time)
+    include puppet_mutt
 
     if $mailserver_hostname == '' {
         fail("FAIL: The mailserver hostname parameter is missing.")
