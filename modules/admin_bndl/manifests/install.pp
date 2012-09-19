@@ -40,9 +40,10 @@ define admin_bndl::install {
 			# Note only pkgs that does not require lots of
 			# tweaking of configuration files etc to work
 			
-            # gddrescue: backup image of disk despite disk/head errors 
+            # gddrescue: backup image of disk despite disk/head errors
+			# chkrootkit: simple rootkit detector
             
-            package  { [ "gddrescue" ] :
+            package  { [ "gddrescue", "chkrootkit" ] :
                 ensure => installed }
         
         }
