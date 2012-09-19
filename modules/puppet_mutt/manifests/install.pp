@@ -7,6 +7,10 @@
 ##
 define puppet_mutt::install ( $mailserver_hostname='' ) {
 
+
+    package { "mutt" : ensure => present }
+
+
     if $mailserver_hostname == '' {
         fail("FAIL: The mailserver hostname parameter is missing.")
     }
@@ -15,7 +19,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     $mydomain = $::domain
     
     ###########################################################
-    ## were simple unsecure authentication for IMAP (change) ##
+    ## Very simple unsecure authentication for IMAP (change) ##
     ###########################################################
     
     $mypasswd = 'pass'
