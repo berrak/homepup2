@@ -118,6 +118,8 @@ node 'gondor.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 	
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable
 

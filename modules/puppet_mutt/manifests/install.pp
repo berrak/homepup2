@@ -22,9 +22,10 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
 
 
     # mutt configuration for direct access on the mail server
-    # and else for remote access from our lan hosts with imap.
+    # and else for normal user remote access from our lan hosts with imap.
+    # User root will only read local maildir mailbox (debug local mails)
 
-    if $::hostname == $mailserver_hostname {
+    if ( $::hostname == $mailserver_hostname ) or ( $name == 'root' ) {
         $mailspool = '~/Maildir'
         $mailfolder = '~/Maildir'
         
