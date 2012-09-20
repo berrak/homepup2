@@ -12,6 +12,7 @@ class puppet_logwatch::config {
           owner => 'root',
           group => 'root',
            mode => '0755',
+		require => Package["logwatch"],           
     }
 
     file { '/etc/logwatch/conf/logwatch.conf' :
