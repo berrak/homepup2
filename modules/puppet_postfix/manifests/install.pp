@@ -164,7 +164,7 @@ define puppet_postfix::install(
                   require => Package["postfix"],
             }
             
-            exec { "refresh_postfix_aliases":
+            exec { "refresh_postfix_virtual_aliases":
                     command => "postmap /etc/postfix/virtual",
                        path => '/usr/sbin',
                   subscribe => File["/etc/postfix/virtual"],
@@ -207,8 +207,32 @@ define puppet_postfix::install(
                 group => 'root',
               require => Package["postfix"],
                notify => Service["postfix"],
+        }
+        
+        # Update the /etc/aliases to enable local mail (root) relayed
+        # to lan mail server when using manual 'crontab -e -u root' 
+        
+        file { '/etc/aliases' :
+              content =>  template( 'puppet_postfix/aliases.erb' ),
+                owner => 'root',
+                group => 'root',
+              require => Package["postfix"],
+               notify => Service["postfix"],
+        }
+        
+        exec { "refresh_postfix_aliases":
+                command => "newaliases",
+                   path => '/usr/bin',
+              subscribe => File["/etc/aliases"],
+            refreshonly => true,
+        }
+        
+        exec { "postfix_reload":
+                command => "postfix reload",
+                   path => '/usr/sbin',
+              subscribe => Exec["refresh_postfix_aliases"],
+            refreshonly => true,
         } 
-    
     
     } else {
     
