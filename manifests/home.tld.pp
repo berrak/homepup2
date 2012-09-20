@@ -13,12 +13,23 @@ node basenode {
 	
 	include admin_cron
 	
-	# apt runs Cron Daemon (06:15, see /etc/crontab:daily) to download upgradable pkg's 
+	# apt runs Cron Daemon (06:15-06:45, crontab:daily) to download upgradable pkg's
+	# unless on a notebook, but anacron will run it when the system is available. 
     include admin_aptconf
+	
+    # this creates daily (06:15, crontab:daily) mailto to root unless on
+	# a notebook, but anacron will run it when the system is available. 
+	include puppet_logwatch
+	
+	# this creates daily (06:15, see crontab:daily) mailto if warnings unless
+	# on a notebook, but anacron will run it when the system is available. 
+    include puppet_rkhunter
+	
 	# cron will upgrade security at midnight (will mail root about this)
+
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
-	                          hour => '0', minute => '0' }
+	                          hour => [ 10, 22 ], minute => '0' }
 	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
@@ -48,12 +59,6 @@ node 'carbon.home.tld' inherits basenode {
 	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'carbon' }
-		
-	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
-    include puppet_logwatch
-    
-	# this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
-    include puppet_rkhunter
 		
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster' }
@@ -91,18 +96,11 @@ node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
     include puppet_tripwire
-	
-	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
-	include puppet_logwatch
-	
-    # this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
-    include puppet_rkhunter
-	
-	# run tripwire check at noon an mailto root
+		
+	# run tripwire check at noon and mailto root
     admin_cron::install { 'tripwire' :
 	                       command => '/root/bin/tripwire.check',
-	                          hour => '12', minute => '0' }
-							  				  
+	                          hour => '12', minute => '0' }		  				  
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
@@ -136,12 +134,6 @@ node 'gondor.home.tld' inherits basenode {
 node 'rohan.home.tld' inherits basenode {
 
     include puppet_agent
-	
-	# this creates daily (06:15, see /etc/crontab:daily) mailto to root
-    include puppet_logwatch
-	
-	# this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
-    include puppet_rkhunter
 	
     admin_server::timezone { 'CET' :}
 	admin_server::nohistory { 'rohan' :}
@@ -185,9 +177,6 @@ node 'rohan.home.tld' inherits basenode {
 node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
-	
-	# this creates daily (06:15, see /etc/crontab:daily) mailto if warnings
-    include puppet_rkhunter
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'mordor' }
