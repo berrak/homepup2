@@ -10,7 +10,16 @@ class admin_cron::config {
         ensure => installed,
     }
     
-    # create the allow file for root only
+    # facter
+    
+    $mycomputertype = $::type
+    
+    # anacron (cron-like program that doesn't go by time)
+    if $mycomputertype == 'Notebook' {
+        package  { "anacron" : ensure => installed }
+    }
+    
+    # create the cron.allow file for root only
     
     puppet_utils::append_if_no_such_line { "Cron_allow_file_creation" :
             

@@ -21,15 +21,6 @@ define admin_bndl::install {
             
             package  { [ "firmware-linux-free" ] :
                 ensure => installed }
-				
-			# facter
-			
-			$mycomputertype = $::type
-			
-			# anacron (cron-like program that doesn't go by time)
-			if $mycomputertype == 'Notebook' {
-			    package  { "anacron" : ensure => installed }
-			}
         
         }        
 
