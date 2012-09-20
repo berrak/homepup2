@@ -14,26 +14,20 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         fail("FAIL: The mailserver hostname parameter is missing.")
     }
     
+    # facter
 
     $mydomain = $::domain
-    
-    ###########################################################
-    ## Very simple unsecure authentication for IMAP (change) ##
-    ###########################################################
-    
-    $mypasswd = 'pass'
-
 
     # mutt configuration for direct access on the mail server
     # and else for normal user remote access from our lan hosts with imap.
     # User root will only read local maildir mailbox (debug local mails)
 
     if ( $::hostname == $mailserver_hostname ) or ( $name == 'root' ) {
-        $mailspool = '~/Maildir'
-        $mailfolder = '~/Maildir'
+        $mailspool = $::puppet_mutt::params::localmailspool
+        $mailfolder = $::puppet_mutt::params::localmailfolder
         
-        $imap_user = ''
-        $imap_passwd = ''
+        $imap_user = $::puppet_mutt::params::no_imap_user
+        $imap_passwd = $::puppet_mutt::params::no_imap_passwd
         
         
     } else {
@@ -41,7 +35,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         $mailfolder = "imap://${mailserver_hostname}.${mydomain}"
                 
         $imap_user = "set imap_user = $name"
-        $imap_passwd = "set imap_pass = $mypasswd"
+        $imap_passwd = "set imap_pass = $::puppet_mutt::params::mytestpasswd"
     
     }
     
