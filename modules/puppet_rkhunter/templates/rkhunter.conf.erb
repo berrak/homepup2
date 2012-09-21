@@ -190,7 +190,7 @@ COPY_LOG_ON_ERROR=0
 # Setting the value to 'none', or just leaving the option commented out,
 # disables the use of syslog.
 #
-#USE_SYSLOG=authpriv.notice
+USE_SYSLOG=authpriv.notice
 
 #
 # Set the following option to 1 if the second colour set is to be used.
@@ -301,7 +301,7 @@ DISABLE_TESTS="suspscan hidden_procs deleted_files packet_cap_apps apps"
 # NOTE: If the hash function is changed then you MUST run rkhunter with
 # the '--propupd' option to rebuild the file properties database.
 #
-#HASH_FUNC=sha1sum
+HASH_FUNC=sha1sum
 
 #
 # The HASH_FLD_IDX option specifies which field from the HASH_FUNC

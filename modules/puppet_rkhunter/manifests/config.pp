@@ -6,6 +6,7 @@ class puppet_rkhunter::config {
     include puppet_rkhunter::params
     
     # Who should receive email alerts
+    
     $mailtorecepientlist = $::puppet_rkhunter::params::rcptlist
 
     file { '/etc/rkhunter.conf' :
@@ -14,6 +15,16 @@ class puppet_rkhunter::config {
           group => 'root',
         require => Package["rkhunter"],
     }
+    
+    # update hashfile database whenever 'rkhunter.conf' is changed
+    # and that includes when rkhunter package is installed.
+    
+    exec { "update_rkhunter_filehash_database":
+		command => '/usr/bin/rkhunter --propupd',
+		subscribe => File["/etc/rkhunter.conf"],
+		refreshonly => true,
+	}
+    
     
     # set default options for rkhunter. This file is sourced by
     # cron.daily and cron.weekly and apt.conf.d for rkhunter
