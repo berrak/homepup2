@@ -31,14 +31,11 @@ class admin_cron::config {
     # set site 'default' time settings for cron hourly, daily, weekly and monthly
     # i.e. /etc/cron.hourly, /etc/daily, /etc/weekly and /etc/monthly
     
-    $mailtorecipient = $::admin_cron::params::myrecipient
+    file { "/etc/crontab":
+         source => "puppet:///modules/admin_cron/crontab",
+          owner => 'root',
+          group => 'root',
+        require => Package["cron"],
+    }
     
-	file { "/etc/crontab" :
-            content =>  template( 'admin_cron/crontab.erb' ),
-		  owner => 'root',
-		  group => 'root',
-		require => Package["cron"],
-	}    
-    
-
 }
