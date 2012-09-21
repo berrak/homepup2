@@ -8,6 +8,7 @@
 class puppet_dovecot_imap::install ( $ipv6 ='' ) {
   
     include puppet_dovecot_imap::service
+    include puppet_dovecot_imap::params
 
   
     if ! ( $ipv6 in [ "yes", "no" ]) {
@@ -80,16 +81,30 @@ class puppet_dovecot_imap::install ( $ipv6 ='' ) {
 		 group => 'root',
 	}    
 
-    puppet_utils::append_if_no_such_line { "create_imap_user_bekr" :
+    ####################################################################
+    #
+    # Unsecure authentication (PLAIN) with imap access from mail clients
+    # Matching IMAP access is in the puppet_mutt::params configuration
+    #
+    ####################################################################
+
+    $imapuser1 = $::puppet_dovecot_imap::params::myuser1
+    $imapuser2 = $::puppet_dovecot_imap::params::myuser2
+    
+    $imapuser1pwd = $::puppet_dovecot_imap::params::myuser1pwd
+    $imapuser2pwd = $::puppet_dovecot_imap::params::myuser2pwd
+    
+
+    puppet_utils::append_if_no_such_line { "create_imap_user_${imapuser1}" :
                         
                         file => '/etc/dovecot/imap.passwd',
-                        line => 'bekr:{PLAIN}pass',
+                        line => $imapuser1pwd,
     }
     
-    puppet_utils::append_if_no_such_line { "create_imap_user_dakr" :
+    puppet_utils::append_if_no_such_line { "create_imap_user_${imapuser2}" :
                         
                         file => '/etc/dovecot/imap.passwd',
-                        line => 'dakr:{PLAIN}pass',
+                        line => $imapuser2pwd,
     }
     
 }
