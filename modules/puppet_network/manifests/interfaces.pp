@@ -23,7 +23,7 @@ class puppet_network::interfaces ( $iface_zero = '',
                                    $addfirewall = 'true',
 ) {
     
-    include puppet_network::service
+    include puppet_network::service, puppet_network::params
     
     if ! ( $addfirewall in [ "true", "false" ]) {
         fail("Firewall parameter ($addfirewall) must be 'true' or 'false'")
@@ -158,9 +158,11 @@ class puppet_network::interfaces ( $iface_zero = '',
     # Build up our interface file
     
     if $addfirewall == 'true' {
-        $loadfirewall = 'pre-up /sbin/iptables-restore < /root/bin/IPTABLES.FW'
+        $loadfirewall = $::puppet_network::params::myloadfirewall
+        
     } elsif $addfirewall == 'false' {
         $loadfirewall = ''
+        
     } else {
         fail("Unrecognized option loading firewall!")
     }
