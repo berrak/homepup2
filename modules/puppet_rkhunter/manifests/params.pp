@@ -13,5 +13,10 @@ class puppet_rkhunter::params {
     
     $myrcptdomain = "root@${mydomain}"
     $mylocalroot = 'root'
+    
+    # rkhunter requires white space separated list (option) of recipients
+    # just send to root (which by postfix conf is relayed to central server)
+    
+    $rcptlist = $mylocalroot
 
 }
