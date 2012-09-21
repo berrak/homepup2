@@ -4,7 +4,6 @@
 class admin_cron::config {
 
 	include puppet_utils
-    include admin_cron::params
     
     package { 'cron' :
         ensure => installed,
