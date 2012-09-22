@@ -72,8 +72,9 @@ class admin_pinpuppet2_7 {
         version => "$::admin_pinpuppet2_7::params::facter_version",
         priority => "$::admin_pinpuppet2_7::params::pin_priority",
     }
-        
-    set_pinning { 'ruby1.9.1' :
+    
+	# can't use ruby1.9.1 as this cause apt to ignore (invalid 'extension')     
+    set_pinning { 'ruby1-9-1' :
         version => "$::admin_pinpuppet2_7::params::rubylib_version",
         priority => "$::admin_pinpuppet2_7::params::pin_priority",
     }
