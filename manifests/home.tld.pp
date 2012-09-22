@@ -25,6 +25,10 @@ node basenode {
 	# on a notebook, but anacron will run it when the system is available. 
     include puppet_rkhunter
 	
+	# this creates daily (06:15, see crontab:daily) mailto if warnings unless
+	# on a notebook, but anacron will run it when the system is available. 	
+	include puppet_chkrootkit
+	
 	# cron will upgrade security at midnight (will mail root about this)
 
     admin_cron::install { 'security' :
