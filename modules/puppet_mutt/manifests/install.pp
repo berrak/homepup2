@@ -77,7 +77,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               owner => $name,
               group => $name,
                mode => '0700',
-            require => "/home/${name}",
+            require => File["/home/${name}"],
         }  
 
         file { "/home/${name}/.mutt/muttrc" : 
@@ -96,7 +96,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               owner => $name,
               group => $name,
                mode => '0750',
-            require => "/home/${name}",  
+            require => File["/home/${name}"],  
         }
         
         exec { "make_${name}_maildirs_new":
