@@ -29,7 +29,7 @@ node basenode {
 	# on a notebook, but anacron will run it when the system is available. 	
 	include puppet_chkrootkit
 	
-	# cron will upgrade security at midnight (will mail root about this)
+	# cron will upgrade security twice a day (will mail root about this)
 
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
