@@ -62,13 +62,22 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     
     } else {
 
-        # directory for mutt configurations etc
+        # ensure that a home directory exist
 
-        file { "/home/${name}/.mutt":
+        file { "/home/${name}":
             ensure => "directory",
               owner => $name,
               group => $name,
-              mode => '0700',
+        }  
+
+        # directory for mutt configurations etc
+
+        file { "/home/${name}/.mutt":
+             ensure => "directory",
+              owner => $name,
+              group => $name,
+               mode => '0700',
+            require => "/home/${name}",
         }  
 
         file { "/home/${name}/.mutt/muttrc" : 
@@ -83,10 +92,11 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
         # ship to user, for 'tmp','cur', 'new' created with 'exec'
         
         file { "/home/${name}/Maildir":
-            ensure => "directory",
+             ensure => "directory",
               owner => $name,
               group => $name,
-              mode => '0750',
+               mode => '0750',
+            require => "/home/${name}",  
         }
         
         exec { "make_${name}_maildirs_new":
