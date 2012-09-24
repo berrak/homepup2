@@ -55,6 +55,36 @@ node basenode {
 
 }
 #########################################
+## (DEFAULT) for any new nodes - intially
+#########################################
+node default {
+
+    include puppet_agent
+    include puppet_utils
+
+    include root_home
+    include root_bashrc
+	
+    include admin_aptconf
+
+    class { admin_hosts::config :
+		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+		smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+		
+    class { admin_resolvconf::config :
+		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
+
+    class { puppet_iptables::config : role => 'desktop' }
+	 
+	class { puppet_network::interfaces :
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		addfirewall => 'true' }
+		
+    include admin_ipv6_disable		
+
+}
+#########################################
 ## (CARBON) puppet master server
 #########################################
 node 'carbon.home.tld' inherits basenode {
