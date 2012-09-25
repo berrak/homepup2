@@ -62,13 +62,12 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
     
     } else {
 
-        # ensure that a home directory exist
-
-        file { "/home/${name}":
-            ensure => "directory",
-              owner => $name,
-              group => $name,
-        }  
+        # Do not 'require' user home directory and do not create
+        # with Puppet. Create the user first with the usual
+        # cli tools like 'adduser' and then re-run P't.
+        
+        # Below actions should fail (not because of the missing
+        # directory) but because Puppet knows missing a user id.
 
         # directory for mutt configurations etc
 
@@ -76,8 +75,7 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
              ensure => "directory",
               owner => $name,
               group => $name,
-               mode => '0700',
-            require => File["/home/${name}"],
+               mode => '0750',
         }  
 
         file { "/home/${name}/.mutt/muttrc" : 
@@ -96,7 +94,6 @@ define puppet_mutt::install ( $mailserver_hostname='' ) {
               owner => $name,
               group => $name,
                mode => '0750',
-            require => File["/home/${name}"],  
         }
         
         exec { "make_${name}_maildirs_new":
