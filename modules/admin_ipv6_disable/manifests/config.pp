@@ -25,7 +25,7 @@ class admin_ipv6_disable::config {
 
 	exec { "updategrub" :
 		command => "/usr/sbin/update-grub",
-		 onlyif => "/bin/ls /proc/net/net | /bin/grep ipv6", 
+		 onlyif => "/bin/ls /proc/sys/net | /bin/grep ipv6", 
 	}
 	
 }
