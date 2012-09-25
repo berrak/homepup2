@@ -11,10 +11,18 @@ define puppet_git::config ( $codehost = '' ) {
 
     include puppet_git::install
     include puppet_git::params
+    
+    # facter - check that we target correct host
+    
+    $myhost = $::hostname 
 
     case $codehost {
 
         'carbon': {
+
+            if $myhost != $codehost {
+                fail("FAIL: Given host name ($codehost) does not match actual host: ($myhost).")
+            }
 
             $mygitname = $::puppet_git::params::gitname_puppet
             $mygitemail = $::puppet_git::params::gitemail_puppet
@@ -23,6 +31,10 @@ define puppet_git::config ( $codehost = '' ) {
         }
         
         'mordor': {
+
+            if $myhost != $codehost {
+                fail("FAIL: Given host name ($codehost) does not match actual host: ($myhost).")
+            }
 
             $mygitname = $::puppet_git::params::gitname_cpan
             $mygitemail = $::puppet_git::params::gitemail_cpan
@@ -36,8 +48,7 @@ define puppet_git::config ( $codehost = '' ) {
         
         }
     
-    }
-    
+    } 
     
     file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_git/gitconfig.erb' ),
