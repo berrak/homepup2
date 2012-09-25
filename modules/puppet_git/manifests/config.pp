@@ -8,8 +8,7 @@
 define puppet_git::config ( $gituser = '' )
 {
 
-    include puppet_git::install
-    include puppet_git::params
+    include puppet_git
     
     if ! $gituser in [ 'bekr' ] {
         fail("FAIL: Gituser parameter ($gituser) is missing.")
