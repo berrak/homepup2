@@ -3,10 +3,9 @@
 ##
 ## Sample use:
 ##
-##     puppet_git::config { 'gitglobal' : gituser => 'bekr' }
+##     puppet_git::config { 'bekr' : }
 ##
-define puppet_git::config ( $gituser = '' )
-{
+define puppet_git::config {
 
     include puppet_git::install
     include puppet_git::params
@@ -15,10 +14,10 @@ define puppet_git::config ( $gituser = '' )
     $mygitemail = $::puppet_git::params::gitemail
     $mygiteditor = $::puppet_git::params::giteditor
     
-    file { '/home/${gituser}/.gitconfig' :
+    file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_git/gitconfig.erb' ),
-            owner => $gituser,
-            group => $gituser,
+            owner => $name,
+            group => $name,
           require => Package["git"],
     }
         
