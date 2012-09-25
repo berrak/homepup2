@@ -193,12 +193,14 @@ node 'rohan.home.tld' inherits basenode {
 				
     class { puppet_dovecot_imap::install : ipv6 => 'no' }
 	
-    user_bashrc::config { 'bekr' : }
-    user_bashrc::config { 'dakr' : }
+	## users
 	
-    # install local mail reader, we need non-default .muttrc for mail server
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
-	puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
+	
+    user_bashrc::config { 'bekr' : }
+    puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
+	
+    user_bashrc::config { 'dakr' : }
     puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	
     # Disable ipv6 in kernel/grub
@@ -227,19 +229,25 @@ node 'mordor.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }		
 	
+	## users
+	
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+	
     user_bashrc::config { 'bekr' : }
+    puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
+	
+    user_bashrc::config { 'dakr' : }
+    puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
+
+
+	## application bundles
 	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
 	
     include puppet_cups
-	
-	# install local mail reader
-    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
-	puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
-	puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	
     # Disable ipv6 in kernel/grub
     include admin_ipv6_disable
