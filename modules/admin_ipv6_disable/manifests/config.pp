@@ -17,7 +17,7 @@ class admin_ipv6_disable::config {
 	    $grubdefault = 'quiet'
 	}
 
-	if ( $::is_ipv6host ) {
+	if ( $::is_ipv6host == 'true' ) {
 
 		notify { "ipv6_reboot_msg":
 		message => "PUPPET IPv6 DISABLE: Reboot system to make changes active. Test with: dmesg | grep -i ipv6",
@@ -35,6 +35,10 @@ class admin_ipv6_disable::config {
 			notify => Exec["updategrub"],
 		}
 		
-    }
+    } else {
+	
+		notify { "ipv6_status": message => "System still support ipv6" }
+	
+	}
 	
 }
