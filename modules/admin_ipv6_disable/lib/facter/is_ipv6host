@@ -25,12 +25,12 @@ Facter.add(:is_ipv6host) do
   confine :kernel => :linux
   setcode do
     output = Facter::Util::Resolution.exec('/bin/ls /proc/sys/net')
-    isipv6 = "false"
+    isipv6 = false
     
     output.scan(/ipv6/).each do |str|
       ip = str.to_s
       if ip == "ipv6" then
-        isipv6 = "true"
+        isipv6 = true
       end
     end
     
