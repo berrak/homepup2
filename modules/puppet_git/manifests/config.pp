@@ -3,15 +3,15 @@
 ##
 ## Sample use:
 ##
-##    class { puppet_git::config: gituser => 'bekr' }
+##     puppet_git::config { 'bekr' : }
 ##
-define puppet_git::config ( $gituser = '' )
-{
+define puppet_git::config {
 
+    # ensure that we run install and get our parameters
     include puppet_git
     
-    if ! $gituser in [ 'bekr' ] {
-        fail("FAIL: Gituser parameter ($gituser) is missing.")
+    if ! $name in [ 'bekr' ] {
+        fail("FAIL: Gituser parameter ($name) is missing.")
     }
     
     
