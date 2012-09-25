@@ -1,18 +1,43 @@
 ##
-## Configure global git user name/email/editor etc
+## Configure global git user name/email/editor etc.
+## Different host machines are used for diffrent coding
+## projects (carbon: puppet, mordor: perl) with github.
 ##
 ## Sample use:
 ##
-##     puppet_git::config { 'bekr' : }
+##     puppet_git::config { 'bekr' : codehost => 'mordor' }
 ##
-define puppet_git::config {
+define puppet_git::config ( $codehost = '' ) {
 
     include puppet_git::install
     include puppet_git::params
 
-    $mygitname = $::puppet_git::params::gitname
-    $mygitemail = $::puppet_git::params::gitemail
-    $mygiteditor = $::puppet_git::params::giteditor
+    case $codehost {
+
+        'carbon': {
+
+            $mygitname = $::puppet_git::params::gitname_puppet
+            $mygitemail = $::puppet_git::params::gitemail_puppet
+            $mygiteditor = $::puppet_git::params::giteditor
+        
+        }
+        
+        'mordor': {
+
+            $mygitname = $::puppet_git::params::gitname_cpan
+            $mygitemail = $::puppet_git::params::gitemail_cpan
+            $mygiteditor = $::puppet_git::params::giteditor
+        
+        }
+
+        default: {
+        
+            fail("FAIL: No coding host name ($codehost) given as parameter.")
+        
+        }
+    
+    }
+    
     
     file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_git/gitconfig.erb' ),

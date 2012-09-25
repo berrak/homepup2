@@ -106,6 +106,8 @@ node 'carbon.home.tld' inherits basenode {
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
 	
+    puppet_git::config { 'bekr': codehost => 'carbon' }
+	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
@@ -237,7 +239,7 @@ node 'mordor.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
-	puppet_git::config { 'bekr': }
+	puppet_git::config { 'bekr': codehost => 'mordor' }
 	
     user_bashrc::config { 'dakr' : }
     puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
