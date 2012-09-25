@@ -3,14 +3,10 @@
 ##
 ## Sample use:
 ##
-##     class { puppet_git::config: gituser => 'bekr' }
+##     puppet_git::config { 'gitglobal' : gituser => 'bekr' }
 ##
 define puppet_git::config ( $gituser = '' )
 {
-
-    if ! ( $gituser in [ "bekr" ] ) {
-        fail("FAIL: Git user parameter ($gituser) does not exist on this system.")
-    }
 
     include puppet_git::install
     include puppet_git::params
