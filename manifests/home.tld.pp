@@ -236,7 +236,7 @@ node 'mordor.home.tld' inherits basenode {
     user_bashrc::config { 'bekr' : }
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
-	puppet_git::config { 'bekr' : }
+	puppet_git::config { 'git_global' : gituser => 'bekr' }
 	
     user_bashrc::config { 'dakr' : }
     puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }

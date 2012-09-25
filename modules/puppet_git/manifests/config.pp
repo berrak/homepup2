@@ -3,9 +3,14 @@
 ##
 ## Sample use:
 ##
-##     puppet_git::config { 'bekr' : }
+##     puppet_git::config { 'git_global' : gituser => 'bekr' }
 ##
-define puppet_git::config {
+define puppet_git::config ($gituser ='')
+{
+
+    if ! $gituser in [ "bekr" ] {
+        fail("FAIL: Git user parameter ($gituser) does not exist on this system.")
+    }
 
     # ensure that we run install and get our parameters
     include puppet_git
@@ -14,10 +19,10 @@ define puppet_git::config {
     $mygitemail = $::puppet_git::params::gitemail
     $mygiteditor = $::puppet_git::params::giteditor
     
-    file { '/home/${name}/.gitconfig' :
+    file { '/home/${gituser}/.gitconfig' :
         content =>  template( 'puppet_git/gitconfig.erb' ),
-          owner => $name,
-          group => $name,
+          owner => $gituser,
+          group => $gituser,
     }
         
 }
