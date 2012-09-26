@@ -52,6 +52,9 @@ node basenode {
 	# If you don't use your ISP DNS ip's, OpenDNS addresses are used
     class { admin_resolvconf::config :
 		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
+	
+    # Disable ipv6 in kernel/grub and use the more text lines in console mode	
+    class { admin_grub::install : defaultline => 'vga=791', appendline => 'true', ipv6 => 'false' }
 
 }
 #########################################
@@ -81,7 +84,7 @@ node default {
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
 		
-    include admin_ipv6_disable		
+    class { admin_grub::install : defaultline => 'vga=791', appendline => 'true', ipv6 => 'false' }
 
 }
 #########################################
@@ -120,9 +123,6 @@ node 'carbon.home.tld' inherits basenode {
 	
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
-	
-    # Disable ipv6 in kernel/grub
-    include admin_ipv6_disable
 
 }
 #########################################
@@ -159,9 +159,6 @@ node 'gondor.home.tld' inherits basenode {
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 	
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
-	
-    # Disable ipv6 in kernel/grub
-    include admin_ipv6_disable
 
 }
 ########################################
@@ -204,9 +201,6 @@ node 'rohan.home.tld' inherits basenode {
 	
     user_bashrc::config { 'dakr' : }
     puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
-	
-    # Disable ipv6 in kernel/grub
-    include admin_ipv6_disable
 
 }
 #########################################
@@ -252,9 +246,6 @@ node 'mordor.home.tld' inherits basenode {
     admin_bndl::install { 'developerapps' : }
 	
     include puppet_cups
-	
-    # Disable ipv6 in kernel/grub
-    include admin_ipv6_disable
 	
 
 }
