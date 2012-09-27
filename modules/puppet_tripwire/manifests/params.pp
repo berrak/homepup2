@@ -16,6 +16,9 @@ class puppet_tripwire::params {
     $smtphost = '192.168.0.11'
     $editorpath = '/bin/nano'
     
+    # avoid to use generic temporary directory '/tmp'
+    $twtmpdirectory = '/var/lib/tripwire/tmp'
+    
     
     ## tripwire policy file (twpol.txt)
     

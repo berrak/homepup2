@@ -33,7 +33,8 @@ class puppet_tripwire::config {
     ## tripwire configuration file (twcfg.txt)
 
     $myeditor = $::puppet_tripwire::params::editorpath
-	$mysmtphost = "$::puppet_tripwire::params::smtphost"
+	$mysmtphost = $::puppet_tripwire::params::smtphost
+	$mytmpdirectory = $::puppet_tripwire::params::twtmpdirectory
 
 	file { "/usr/local/etc/tripwire/twcfg.txt" :
         content =>  template( 'puppet_tripwire/twcfg.txt.erb' ),
@@ -41,6 +42,18 @@ class puppet_tripwire::config {
 		  group => 'root',
 		   mode => '0600',
 		require => File["/usr/local/etc/tripwire"],
+	}
+	
+	# if using a custom tmp directory, we may need to create it
+	
+	if $mytmpdirectory != '/tmp' {
+	
+		file { $mytmpdirectory :
+		    ensure => "directory",
+		     owner => 'root',
+		     group => 'root',
+		      mode => '0640',			 
+	    }
 	}
 
 
