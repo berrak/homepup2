@@ -61,9 +61,11 @@ define admin_bndl::install {
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
                 ensure => installed }
-				 
-			file { "/root/bin/format.usbflash" :
-					source => "puppet:///modules/admin_bndl/format.usbflash",
+			
+			
+			# custom bash script to format usb flash drive to ext2
+			file { "/root/bin/format.flash" :
+					source => "puppet:///modules/admin_bndl/format.flash",
 					 owner => 'root',
 					 group => 'root',
 					  mode => '0700',
