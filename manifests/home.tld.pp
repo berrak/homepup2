@@ -93,6 +93,7 @@ node default {
 node 'carbon.home.tld' inherits basenode {
 
     include puppet_master
+	include puppet_tiger
 	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'carbon' }
@@ -132,6 +133,7 @@ node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
     include puppet_tripwire
+	include puppet_tiger
 		
 	# run tripwire check at noon and mailto root
     admin_cron::install { 'tripwire' :
