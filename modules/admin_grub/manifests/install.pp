@@ -51,17 +51,12 @@ class admin_grub::install (
 		content => template( "admin_grub/grub.erb" ),
 		  owner => 'root',
 		  group => 'root',	  
-		 notify => Exec["updategrub"],
+		 notify => Exec["GRUB_CONFIGURATION_CHANGED_PLEASE_REBOOT_TO_APPLY_CHANGES"],
 	}
 
-	exec { "updategrub" :
+	exec { "GRUB_CONFIGURATION_CHANGED_PLEASE_REBOOT_TO_APPLY_CHANGES" :
 		    command => "/usr/sbin/update-grub",
 		refreshonly => true,
-		     notify => Notify["REBOOT"],
-	}
-	
-	notify { "REBOOT":
-	    message => "Grub configuration changed. Please reboot to apply changes.",
 	}
 	
 }
