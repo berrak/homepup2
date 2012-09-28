@@ -31,7 +31,7 @@ UMOUNT="/bin/umount"
 
 CDDEV="/dev/sr0"
 
-MNTPOINT="/media/tripwire"
+MNTPOINT="/media/cdrom0"
 TWPRINTCMD="twprint"
 
 # Set the initial options to an empty string

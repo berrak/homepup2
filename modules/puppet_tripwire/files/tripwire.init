@@ -28,7 +28,7 @@
 MOUNT="/bin/mount"
 UMOUNT="/bin/umount"
 
-MNTPOINT="/media/tripwire"
+MNTPOINT="/media/cdrom0"
 CDDEV="/dev/sr0"
 
 TWDBPATH="/var/lib/tripwire"

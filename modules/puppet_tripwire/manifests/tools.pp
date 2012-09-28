@@ -75,11 +75,10 @@ class puppet_tripwire::tools {
 		require => File["/root/bin"],
 	}
 	
-	# Create a mount directory only for tripwire (use system default mode setting).
-	file { "/media/tripwire":
-	    ensure => "directory",
-	     owner => 'root',
-	     group => 'root',
-    }
+    file { "/media/cdrom0":
+		ensure => "directory",
+		owner => 'root',
+		group => 'root',
+	}
 
 }

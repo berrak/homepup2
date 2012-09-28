@@ -37,7 +37,7 @@ CP="/bin/cp"
 LS="/bin/ls -lA"
 
 CDDEV="/dev/sr0"
-MNTPOINT="/media/tripwire"
+MNTPOINT="/media/cdrom0"
 
 ## first copy the clear text cfg file (managed by puppet) to the usual tripwire directory
 
