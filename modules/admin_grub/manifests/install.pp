@@ -50,8 +50,7 @@ class admin_grub::install (
 	file { "/etc/default/grub":
 		content => template( "admin_grub/grub.erb" ),
 		  owner => 'root',
-		  group => 'root',
-	    message => "PLEASE REBOOT SYSTEM. GRUB CONFIGURATION HAVE BEEN UPDATED.",		  
+		  group => 'root',	  
 		 notify => Exec["updategrub"],
 	}
 
