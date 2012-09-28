@@ -24,8 +24,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+CDDEV="/dev/sr0"
+MNTPOINT="/media/cdrom0"
+
 TWADMIN="/usr/sbin/twadmin"
-SITEKEY="/media/tripwire/site.key"
+SITEKEY="$MNTPOINT/site.key"
 
 CFGFILE="/etc/tripwire/twcfg.txt"
 PUPTWCFGFILE="/usr/local/etc/tripwire/twcfg.txt"
@@ -36,8 +39,7 @@ RM="/bin/rm"
 CP="/bin/cp"
 LS="/bin/ls -lA"
 
-CDDEV="/dev/sr0"
-MNTPOINT="/media/cdrom0"
+
 
 ## first copy the clear text cfg file (managed by puppet) to the usual tripwire directory
 
