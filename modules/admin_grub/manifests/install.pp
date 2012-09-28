@@ -51,17 +51,13 @@ class admin_grub::install (
 		content => template( "admin_grub/grub.erb" ),
 		  owner => 'root',
 		  group => 'root',
+	    message => "PLEASE REBOOT SYSTEM. GRUB CONFIGURATION HAVE BEEN UPDATED.",		  
 		 notify => Exec["updategrub"],
 	}
 
 	exec { "updategrub" :
 		    command => "/usr/sbin/update-grub",
 		refreshonly => true, 
-	}
-	
-	notify { "REBOOT_TO_UPDATE_GRUB_CONFIGURATION":
-	    message => "Please reboot system. Grub configuration have been updated.",
-		require => Exec["updategrub"],
 	}
 	
 }
