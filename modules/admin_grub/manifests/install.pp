@@ -57,7 +57,12 @@ class admin_grub::install (
 
 	exec { "updategrub" :
 		    command => "/usr/sbin/update-grub",
-		refreshonly => true, 
+		refreshonly => true,
+		     notify => Notify["REBOOT"],
+	}
+	
+	notify { "REBOOT":
+	    message => "Grub configuration changed. Please reboot to apply changes.",
 	}
 	
 }
