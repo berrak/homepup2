@@ -49,7 +49,7 @@ fi
 
 cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT
+	$MOUNT -o exec $CDDEV $MNTPOINT
     # If mount attempts failed, abort
     if [ $? -ne 0 ] ; then  
         echo "$0: Error: Can't mount tripwire media! No CD disk found or error reading it."

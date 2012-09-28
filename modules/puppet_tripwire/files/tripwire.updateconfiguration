@@ -86,7 +86,7 @@ fi
 
 cat /etc/mtab | grep sr0
 if [ $? -ne 0 ] ; then
-	$MOUNT $CDDEV $MNTPOINT
+	$MOUNT -o exec $CDDEV $MNTPOINT
 fi
 
 
