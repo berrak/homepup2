@@ -8,7 +8,7 @@ class puppet_iptables::params {
     #-------------
     
     $net_int = '192.168.0.0/24'
-    $if_int = 'eth0'
+    $if_int = 'eth1'
     
     $ntphostaddr = '192.168.0.1'
     
@@ -24,12 +24,12 @@ class puppet_iptables::params {
     $puppetmasterhostaddr = '192.168.0.24'
 
 
-    # gateway gondor (use also desktop variables '$net_int' and '$if_int' and printers ip)
+    # gateway gondor (see above desktop variables '$net_int' and '$if_int' and printers ip)
     #-------------------------------------------------------------------------------------
     
     $gwhostaddr = '192.168.0.1'
     $net_ext = '192.168.1.0/24'
     $gwhostextaddr = '192.168.1.254'
-    $if_ext = 'eth1'
+    $if_ext = 'eth0'
 
 }
