@@ -38,7 +38,7 @@ class puppet_rkhunter::config {
     
     ## productivity script to re-initilize rkhunters' database of file hashes
     
-    file { "/bin/root/rkhunter.init":
+    file { "/root/bin/rkhunter.init":
          source => "puppet:///modules/puppet_rkhunter/rkhunter.init",
           owner => 'root',
           group => 'root',
