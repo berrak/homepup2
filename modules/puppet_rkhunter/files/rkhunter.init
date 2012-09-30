@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# /root/bin/rkhunter.init
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Initilize rkhunter database of file hashes, either at first
+# install or when recreating the database after false positives.
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+echo "This will re-create rkhunter datbase of file hashes."
+echo "Make sure that any false positives really are false!"
+
+echo -n "Continue ? (Y/N): "
+read answer
+
+case "$answer" in
+
+        [Yy])
+            /usr/bin/rkhunter --propupd
+            ;;
+
+        [Nn])
+            echo "OK, returning to the system prompt."
+            exit 0
+            ;;
+            
+           *)
+            echo "Did not get any answer - aborting...."
+            exit 0
+            ;;
+            
+esac  
