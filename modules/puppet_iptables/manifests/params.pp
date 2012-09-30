@@ -8,7 +8,7 @@ class puppet_iptables::params {
     #-------------
     
     $net_int = '192.168.0.0/24'
-    $if_int = 'eth1'
+    $if_int = 'eth0'
     
     $ntphostaddr = '192.168.0.1'
     
@@ -30,6 +30,6 @@ class puppet_iptables::params {
     $gwhostaddr = '192.168.0.1'
     $net_ext = '192.168.1.0/24'
     $gwhostextaddr = '192.168.1.254'
-    $if_ext = 'eth0'
+    $if_ext = 'eth1'
 
 }
