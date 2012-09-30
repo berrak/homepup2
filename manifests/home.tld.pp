@@ -143,7 +143,6 @@ node 'gondor.home.tld' inherits basenode {
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
 	
-	admin_server::timezone { 'CET' :}
 	admin_server::nohistory{ 'gondor' :}
 		
     # load gateway firewall script
@@ -170,7 +169,6 @@ node 'rohan.home.tld' inherits basenode {
 
     include puppet_agent
 	
-    admin_server::timezone { 'CET' :}
 	admin_server::nohistory { 'rohan' :}
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
