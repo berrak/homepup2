@@ -8,11 +8,15 @@ class puppet_network::kernel {
 
     $myhost = $::hostname
 
-    file { "/etc/sysctl.conf":
-        source => "puppet:///modules/puppet_network/sysctl.conf.${myhost}",
-         owner => 'root',
-         group => 'root',
-          mode => '0644',
+    if $myhost == 'gondor' {
+
+        file { "/etc/sysctl.conf":
+            source => "puppet:///modules/puppet_network/sysctl.conf.${myhost}",
+             owner => 'root',
+             group => 'root',
+              mode => '0644',
+        }
+    
     }
 
 }
