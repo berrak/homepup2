@@ -206,7 +206,7 @@ fi
 thishost=`$HOSTNAME`
 if [ $# -ne 1 ];then
     echo "Missing the host name for the local key file"
-    echo "Invoke the script with $0 hostname"
+    echo "Invoke the script with $0 $HOSTNAME"
     exit 0
 elif [ $1 != $thishost ]; then
     echo "Warning: Your provided local host key name ($1) is not same as this host name i.e. ($thishost)."
@@ -346,7 +346,7 @@ case "$answer" in
             
             # burn the CD disc
             echo "Burning media..."
-            $WODIM -dao -speed=4 -eject dev=/dev/sr0 $outisofile
+            $WODIM -dao -speed=4 dev=/dev/sr0 $outisofile
             remove_tempiso                
             ;;
 
@@ -363,12 +363,9 @@ case "$answer" in
 esac
 
 remove_keys_option
-
+echo
 echo "Mark the CD disc with: Tripwire Binaries and Keys for ($1)"
-echo "Reboot target system with new disc loaded for correct tripwire mount."
-
-# list files in tripwire directory (as info after this process)
-echo "$TWETCPATH:"
-$LS -lA $TWETCPATH      
+echo "REBOOT SYSTEM WITH THE NEW DISC LOADED FOR CORRECT TRIPWIRE MOUNT."
+echo
 
 # eof
