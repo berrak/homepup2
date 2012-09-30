@@ -23,7 +23,7 @@ class puppet_network::interfaces ( $iface_zero = '',
                                    $addfirewall = 'true',
 ) {
     
-    include puppet_network::service, puppet_network::params
+    include puppet_network::kernel, puppet_network::service, puppet_network::params
     
     if ! ( $addfirewall in [ "true", "false" ]) {
         fail("Firewall parameter ($addfirewall) must be 'true' or 'false'")
