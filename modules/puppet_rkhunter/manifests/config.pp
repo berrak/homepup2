@@ -42,6 +42,7 @@ class puppet_rkhunter::config {
          source => "puppet:///modules/puppet_rkhunter/rkhunter.init",
           owner => 'root',
           group => 'root',
+           mode => '0700', 
         require => Package["rkhunter"],
     } 
 
