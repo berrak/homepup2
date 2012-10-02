@@ -1,7 +1,7 @@
 # /root/.bashrc_root: Local root's .bashrc customization
 # This file is sourced from .bashrc 
 
-# umask 022
+umask 077
 
 # You may uncomment the following lines if you want `ls' to be colorized:
 export LS_OPTIONS='--color=auto'
