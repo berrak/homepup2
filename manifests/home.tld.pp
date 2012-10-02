@@ -60,32 +60,27 @@ node basenode {
 #########################################
 ## (DEFAULT) for any new nodes - intially
 #########################################
-node default {
+node default inherits basenode {
 
     include puppet_agent
-    include puppet_utils
 
-    include root_home
-    include root_bashrc
+    # following two classes assumes a single interface host 
+	class { puppet_iptables::config : role => 'desktop' }
 	
-    include admin_aptconf
-
-    class { admin_hosts::config :
-		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
-		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
-		smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
-		
-    class { admin_resolvconf::config :
-		dns_ip_1st => '195.67.199.18', dns_ip_2nd => '195.67.199.19' }
-
-    class { puppet_iptables::config : role => 'desktop' }
-	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
-		
-    class { admin_grub::install : defaultline => 'vga=791', appendline => 'true', ipv6 => 'false' }
 
+    user_bashrc::config { 'bekr' : }
+
+    # install local mail reader 
+	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+	
+	# always need mta
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+				
 }
 #########################################
 ## (CARBON) puppet master server
@@ -247,6 +242,34 @@ node 'mordor.home.tld' inherits basenode {
 	
     include puppet_cups
 	
+
+}
+#########################################
+## (VALHALL TEST SERVER)
+#########################################
+node 'valhall.home.tld' inherits basenode {
+
+    include puppet_agent
+    
+    class { puppet_iptables::config : role => 'desktop' }
+	 
+	class { puppet_network::interfaces :
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		addfirewall => 'true' }
+	
+	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	
+    
+	## additional users
+	
+    user_bashrc::config { 'bekr' : }
+	
+	## mail
+	
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }			
+    puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }			
 
 }
 ###############################
