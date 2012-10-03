@@ -4,8 +4,6 @@
 # $HOME/.bashrc.d/bekr: Local user (bekr) .bashrc 
 # snippet customization. This file is sourced from .bashrc 
 
-umask 077
-
 # You may uncomment the following lines if you want `ls' to be colorized:
 export LS_OPTIONS='--color=auto'
 eval "`dircolors`"
