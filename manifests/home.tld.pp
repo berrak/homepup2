@@ -251,20 +251,25 @@ node 'valhall.home.tld' inherits basenode {
 
     include puppet_agent
     
-    class { puppet_iptables::config : role => 'desktop' }
-	 
+	## standard
+	
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
 		addfirewall => 'true' }
 	
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
+	
+	## security related
+	
+    class { puppet_iptables::config : role => 'desktop' }
+    include puppet_tiger
     
-	## additional users
+	## additional users other than root
 	
     user_bashrc::config { 'bekr' : }
 	
-	## mail
+	## mail for all users
 	
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
