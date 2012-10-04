@@ -264,6 +264,7 @@ node 'valhall.home.tld' inherits basenode {
 	
     class { puppet_iptables::config : role => 'desktop' }
     include puppet_tiger
+	include admin_hardening
     
 	## additional users other than root
 	

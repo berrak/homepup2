@@ -23,6 +23,7 @@
 # Controls the use of TCP syncookies
 # See http://lwn.net/Articles/277146/
 net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_max_syn_backlog = 4096
 
 # Do not send ICMP redirects (we are not a router)
 net.ipv4.conf.all.send_redirects = 0
