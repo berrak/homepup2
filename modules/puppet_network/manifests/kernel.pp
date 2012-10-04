@@ -13,21 +13,26 @@ class puppet_network::kernel {
     
     if $myhost == 'gondor' {
 
-        file { "/etc/sysctl.conf":
-            source => "puppet:///modules/puppet_network/sysctl.conf.${myhost}",
-             owner => 'root',
-             group => 'root',
-              mode => '0644',
-        }
-    
+        $ipv4_forwarding = 'net.ipv4.ip_forward = 1'
+        
     } else {
     
-        file { "/etc/sysctl.conf":
-            source => "puppet:///modules/puppet_network/sysctl.conf.default",
-             owner => 'root',
-             group => 'root',
-              mode => '0644',  
-        }
+        $ipv4_forwarding = 'net.ipv4.ip_forward = 0'
+
     }
+    
+    file { "/etc/sysctl.conf":
+        content =>  template( 'puppet_network/sysctl.conf.erb' ),
+          owner => 'root',
+          group => 'root',
+           mode => '0644',
+		 notify => Exec["UPDATING_KERNEL_SYSCTL_CONFIGURATION"],
+    }   
+ 
+	exec { "UPDATING_KERNEL_SYSCTL_CONFIGURATION" :
+		    command => "/sbin/sysctl -p",
+		refreshonly => true,
+	}   
+    
 
 }
