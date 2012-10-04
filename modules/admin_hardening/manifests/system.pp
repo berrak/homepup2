@@ -5,11 +5,13 @@ class admin_hardening::system {
 
     # only allow root to use Ctrl-Alt-Del to reboot [lin007w]
     
-    file { "/etc/shutdown.allow":
-        ensure => present,
-         owner => 'root',
-         group => 'root',
+    include puppet_utils
+    
+    puppet_utils::append_if_no_such_line { "ctrlaltdel_allow" :
+            
+        file => "/etc/shutdown.allow",
+        line => "# This is just a place holder to prevent false positives from tiger." 
+    
     }
     
-
 }
