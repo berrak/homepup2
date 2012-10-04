@@ -27,7 +27,7 @@ class puppet_network::kernel {
              owner => 'root',
              group => 'root',
               mode => '0644',  
-    
+        }
     }
 
 }
