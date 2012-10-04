@@ -6,9 +6,9 @@ class admin_hardening::system {
     # only allow root to use Ctrl-Alt-Del to reboot [lin007w]
     
     file { "/etc/shutdown.allow":
-        enure => present,
-        owner => 'root',
-        group => 'root',
+        ensure => present,
+         owner => 'root',
+         group => 'root',
     }
     
 
