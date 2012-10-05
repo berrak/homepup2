@@ -14,4 +14,14 @@ class admin_hardening::system {
     
     }
     
+    # set grub password to allow only the defined
+    # (grub)superuser to edit entries [boot06]
+    
+	file { "/etc/grub.d/40_custom" :
+		 source => "puppet:///modules/admin_hardening/40_custom",
+		  owner => 'root',
+		  group => 'root',
+		   mode => '0755',
+	}
+    
 }
