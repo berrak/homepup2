@@ -16,3 +16,8 @@ File "\.fetchmail-UIDL-cache" in the mail spool, owned by "fetchmail"\.
 /dev/\.udev/.* is a dangling symlink\.
 The umask setting in /etc/csh\.login for the init scripts is insecure
 There are no umask entries in /etc/csh\.login
+The configuration file /boot/grub/grub.cfg has group permissions. Should be 0600
+The configuration file /boot/grub/grub.cfg has world permissions. Should be 0600
+There are no umask entries in /etc/init.d/rcS
+Unreleased Debian GNU/Linux version `wheezy/sid'
+File `/lib/modules/3.2.0-3-686-pae/modules.*' does not belong to any package.
