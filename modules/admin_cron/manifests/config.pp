@@ -7,6 +7,7 @@ class admin_cron::config {
     
     package { 'cron' :
         ensure => installed,
+        notify => Exec
     }
     
     # facter
@@ -18,13 +19,22 @@ class admin_cron::config {
         package  { "anacron" : ensure => installed }
     }
     
-    # create the cron.allow file for root only
+    # create the cron.allow (empty) file
     
-    puppet_utils::append_if_no_such_line { "Cron_allow_file_creation" :
-            
-        file => "/etc/cron.allow",
-        line => "root" 
+	file { "/etc/cron.allow":
+		ensure => present,
+		 owner => 'root',
+		 group => 'root',
+		  mode => '0600',
+        notify => Exec["Create_cron_deny_file_from_passwd"], 
+	}
+ 
+    # create the cron.deny file from all users in /etc/passwd, except root
+    # Todo: not ideal, if /etc/passwd is updated, cron.deny is not aware.
     
+    exec { "Create_cron_deny_file_from_passwd":
+            command => "/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny",
+        refreshonly => true,
     }
     
     # set site 'default' time settings for cron hourly, daily, weekly and monthly
