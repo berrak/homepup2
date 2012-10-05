@@ -26,14 +26,13 @@ class admin_cron::config {
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0600',
-        notify => Exec["Create_cron_deny_file_from_passwd"], 
+        notify => Exec["/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny"], 
 	}
  
     # create the cron.deny file from all users in /etc/passwd, except root
     # Todo: not ideal, if /etc/passwd is updated, cron.deny is not aware.
     
-    exec { "Create_cron_deny_file_from_passwd":
-            command => "/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny",
+    exec { "/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny":
         refreshonly => true,
     }
     
