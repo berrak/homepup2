@@ -26,7 +26,6 @@ class admin_cron::config {
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0600',
-        notify => Exec["/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny"], 
 	}
  
     # create the cron.deny file from all users in /etc/passwd, except root
@@ -34,6 +33,7 @@ class admin_cron::config {
     
     exec { "/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny":
         refreshonly => true,
+          subscribe => File["/etc/cron.allow"],
     }
     
     # set site 'default' time settings for cron hourly, daily, weekly and monthly
