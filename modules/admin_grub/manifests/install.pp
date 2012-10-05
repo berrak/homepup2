@@ -54,6 +54,15 @@ class admin_grub::install (
 		 notify => Exec["GRUB_CONFIGURATION_CHANGED_PLEASE_REBOOT_TO_APPLY_CHANGES"],
 	}
 
+    # set Grubv2 password to allow only (grub)superuser to edit entries
+	
+	file { "/etc/grub.d/40_custom":
+		source => "puppet:///modules/admin_grub/40_custom",
+		 owner => 'root',
+		 group => 'root',	  
+		notify => Exec["GRUB_CONFIGURATION_CHANGED_PLEASE_REBOOT_TO_APPLY_CHANGES"],
+	}	
+
 	exec { "GRUB_CONFIGURATION_CHANGED_PLEASE_REBOOT_TO_APPLY_CHANGES" :
 		    command => "/usr/sbin/update-grub",
 		refreshonly => true,
