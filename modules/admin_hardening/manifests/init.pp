@@ -5,6 +5,6 @@
 ##
 class admin_hardening {
 
-    include admin_hardening::system
+    include admin_hardening::system, admin_hardening::accounts
 
 }
