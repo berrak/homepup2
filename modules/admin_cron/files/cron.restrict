@@ -2,18 +2,22 @@
 #
 # /root/bin/cron.restrict
 #
-# Restricting cron except for cron
+# Restricting cron except for root
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 GREP=/bin/grep
 AWK=/usr/bin/awk
+CHMOD=/bin/chmod
 #
 # Create a empty cron.allow file
 #
 > /etc/cron.allow
+$CHMOD 0400 /etc/cron.allow
+
 
 # Parse /etc/passwd to create a cron deny file (except for user root)
 
 $AWK -F: '{print $1}' /etc/passwd | $GREP -v root > /etc/cron.deny
+$CHMOD 0400 /etc/cron.deny
