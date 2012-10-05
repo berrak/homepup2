@@ -8,7 +8,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 GREP=/bin/grep
-AWK=/bin/awk
+AWK=/usr/bin/awk
 #
 # Create a empty cron.allow file
 #
