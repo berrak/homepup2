@@ -26,15 +26,14 @@ class admin_cron::config {
           group => 'root',
            mode => '0700',
         require => Package["cron"],
-        notify => Exec["/root/bin/cron.restrict"],
+         notify => Exec["/root/bin/cron.restrict"],
     }
     
     # create the cron.allow (empty) file and create the cron.deny
     # file from all users in /etc/passwd, except root.
     # Todo: not ideal, if /etc/passwd is updated, cron.deny is not aware.
     
-    exec { "/root/bin/cron.restrict":
-          subscribe => File["/etc/cron.allow"],   
+    exec { "/root/bin/cron.restrict":  
         refreshonly => true,
             require => File["/root/bin/cron.restrict"],
     }
