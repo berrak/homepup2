@@ -7,7 +7,6 @@ class admin_cron::config {
     
     package { 'cron' :
         ensure => installed,
-        notify => Exec
     }
     
     # facter
@@ -19,21 +18,25 @@ class admin_cron::config {
         package  { "anacron" : ensure => installed }
     }
     
-    # create the cron.allow (empty) file
+    # restrict who can use cron to only root
     
-	file { "/etc/cron.allow":
-		ensure => present,
-		 owner => 'root',
-		 group => 'root',
-		  mode => '0600',
-	}
- 
-    # create the cron.deny file from all users in /etc/passwd, except root
+    file { "/root/bin/cron.restrict":
+         source => "puppet:///modules/admin_cron/cron.restrict",
+          owner => 'root',
+          group => 'root',
+           mode => '0700',
+        require => Package["cron"],
+        notify => Exec["/root/bin/cron.restrict"],
+    }
+    
+    # create the cron.allow (empty) file and create the cron.deny
+    # file from all users in /etc/passwd, except root.
     # Todo: not ideal, if /etc/passwd is updated, cron.deny is not aware.
     
-    exec { "/bin/awk -F: '{print $1}' /etc/passwd | /bin/grep -v root > /etc/cron.deny":
+    exec { "/root/bin/cron.restrict":
+          subscribe => File["/etc/cron.allow"],   
         refreshonly => true,
-          subscribe => File["/etc/cron.allow"],
+            require => File["/root/bin/cron.restrict"],
     }
     
     # set site 'default' time settings for cron hourly, daily, weekly and monthly
