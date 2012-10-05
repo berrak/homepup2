@@ -59,7 +59,8 @@ class admin_grub::install (
 	file { "/etc/grub.d/40_custom":
 		source => "puppet:///modules/admin_grub/40_custom",
 		 owner => 'root',
-		 group => 'root',	  
+		 group => 'root',
+		  mode => '0755', 
 		notify => Exec["GRUB_CONFIGURATION_CHANGED_PLEASE_REBOOT_TO_APPLY_CHANGES"],
 	}	
 
