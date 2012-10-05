@@ -22,5 +22,14 @@ class puppet_tiger::config {
         require => Package["tiger"],          
 	}
 	
-    
+	# warning/fail messages from tiger that we want to ignore!
+	
+	file { '/etc/tiger/tiger.ignore':
+		 source => "puppet:///modules/puppet_tiger/tiger.ignore",
+		  owner => 'root',
+		  group => 'root',
+		   mode => '0644',		  
+        require => Package["tiger"],          
+	}	
+	
 }
