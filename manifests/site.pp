@@ -8,5 +8,5 @@ import "users/*"
 import 'base.pp'
 import 'servers.pp'
 import 'gateways.pp'
-imports 'desktops.pp'
+import 'desktops.pp'
 
