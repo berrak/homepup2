@@ -3,9 +3,7 @@
 ##
 class admin_hardening::accounts {
 
-    include accounts::virtual
-    
-    # tiger [acc022w] - no accesible home directory
+    # tiger [acc022w] - not a accesible home directory (was /nonexistent)
     
     realize(User["nobody"])
     
