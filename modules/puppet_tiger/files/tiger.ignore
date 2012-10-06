@@ -21,4 +21,6 @@ The configuration file /boot/grub/grub.cfg has world permissions\.
 There are no umask entries in /etc/init.d/rcS
 Unreleased Debian GNU/Linux version `wheezy/sid'
 File `/lib/modules/3.2.0-3-686-pae/modules.*' does not belong to any package\.
+Login ID sync does not have a valid shell \(/bin/sync\)\.
 Login \(*\) is disabled, but has a valid shell\.
+
