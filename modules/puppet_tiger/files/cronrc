@@ -1,10 +1,6 @@
 #
 # Default 'tigercron' cronrc file...
 #
-##############################################################
-# DO NOT EDIT. MANAGED BY PUPPET. CHANGES WILL BE WIPED OUT. #
-##############################################################
-#
 # You can run the different checks in stages, without having to
 # clutter up the crontab for root. You can do all the checks in one
 # step or (like this file does) separate all the checks in different
@@ -70,7 +66,7 @@
 # ----------------------------------------------------------------------
 # Check for network configuration every Monday
 #
-3 * Mon		check_inetd check_exports check_aliases check_path check_crontabs check_anonftp check_tcpd
+3 * Mon		check_inetd check_exports check_aliases check_path check_crontabs check_anonftp check_printcap check_tcpd
 #
 # ----------------------------------------------------------------------
 # Check for strange file ownerships once a month
@@ -81,7 +77,7 @@
 # ----------------------------------------------------------------------
 # Check for system configuration once a month
 #
-1 2 *         check_umask check_ftpusers check_embedded check_exrc
+1 2 *         check_services check_umask check_ftpusers check_embedded check_exrc
 #
 # ----------------------------------------------------------------------
 # Run a password cracker against the local passwords once a month

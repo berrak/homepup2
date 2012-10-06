@@ -4,10 +4,8 @@
 class puppet_tiger::config {
 
 
-    include puppet_tiger::params
-
 	file { "/etc/tiger/tigerrc":
-		content => template( "puppet_tiger/tigerrc.erb" ),
+		 source => "puppet:///modules/puppet_tiger/tigerrc",
 		  owner => 'root',
 		  group => 'root',
 		   mode => '0600',
@@ -15,7 +13,7 @@ class puppet_tiger::config {
 	}
     
 	file { '/etc/tiger/cronrc':
-		content => template( "puppet_tiger/cronrc.erb" ),
+		 source => "puppet:///modules/puppet_tiger/cronrc",
 		  owner => 'root',
 		  group => 'root',
 		   mode => '0644',		  
@@ -23,6 +21,7 @@ class puppet_tiger::config {
 	}
 	
 	# warning/fail messages from tiger that we want to ignore!
+	# Note: can be tricky to use egrep reg expressions.
 	
 	file { '/etc/tiger/tiger.ignore':
 		 source => "puppet:///modules/puppet_tiger/tiger.ignore",

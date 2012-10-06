@@ -3,6 +3,6 @@
 ##
 class puppet_tiger {
 
-    include puppet_tiger::install, puppet_tiger::config, puppet_tiger::params
+    include puppet_tiger::install, puppet_tiger::config
 
 }
