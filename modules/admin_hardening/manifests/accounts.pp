@@ -3,8 +3,6 @@
 ##
 class admin_hardening::accounts {
 
-    # tiger [acc022w] - not a accesible home directory (was /nonexistent)
-    
     realize(User["nobody"])
     
 }

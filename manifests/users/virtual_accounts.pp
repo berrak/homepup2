@@ -9,7 +9,7 @@ class virtual_accounts {
            uid => '65534',
            gid => 'nogroup',
           home => '',
-         shell => '/bin/false',
+         shell => '/nonexistent',
     }
 
 }
