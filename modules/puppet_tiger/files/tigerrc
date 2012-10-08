@@ -73,7 +73,7 @@ Tiger_Check_BOOT=Y              # Default Y
 Tiger_Check_INITTAB=Y           # Default Y
 Tiger_Check_RCUMASK=Y           # Default Y
 Tiger_Check_NEVERLOG=Y          # Default Y
-Tiger_Check_OS=Y                # Default Y
+Tiger_Check_OS=N                # Default Y - bekr: complains about wheezy/sid
 ##########################################################
 # - Linux, HPUX and Solaris specific
 Tiger_Check_NETWORKCONFIG=Y     # Default Y
@@ -99,7 +99,7 @@ Tiger_Cron_Template=N           # Default N
 #
 # Should reports be compared with previous runs? (if available)
 #
-Tiger_Cron_CheckPrev=N          # Default Y - bekr: very confusing during tuning
+Tiger_Cron_CheckPrev=Y          # Default Y
 #
 # Should messages tagged with INFO be shown?
 #
@@ -312,7 +312,7 @@ Tiger_Files_of_Note="..[!.]*/.* */.*	*/.[!.]/.log/.FSP*"
 #
 Tiger_FSScan_Setuid=N		# Default N - Setuid executables
 Tiger_FSScan_Setgid=N		# Default N - Setgid executables
-Tiger_FSScan_Devs=Y		# Default Y - device files
+Tiger_FSScan_Devs=N		# Default Y - bekr: can't get rid of false positive (postfix/dev/urandom)
 Tiger_FSScan_SymLinks=Y		# Default Y - strange symbolic links
 Tiger_FSScan_ofNote=Y		# Default Y - weird filenames
 Tiger_FSScan_WDIR=N		# Default N - world writable directories
