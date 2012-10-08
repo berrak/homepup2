@@ -3,6 +3,6 @@
 ##
 class admin_hardening::accounts {
 
-    realize(User["nobody"])
+    # not used yet
     
 }
