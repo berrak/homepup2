@@ -63,6 +63,7 @@ node 'rohan.home.tld' inherits basenode {
 						      ensure => installed,
 				            mta_type => server,
 				  install_cyrus_sasl => 'true',
+				        procmail_lda => 'true',
 		       server_root_mail_user => 'bekr',
 				no_lan_outbound_mail => 'true' }
 			

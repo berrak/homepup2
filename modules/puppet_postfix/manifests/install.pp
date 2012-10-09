@@ -3,12 +3,15 @@
 # with Debian postfix alternatives Internet and Satellite.
 # Post-install configuration with templates after initial setup.
 #
+# An alternative LDA is only applicable to the server.
+#
 # Sample usage:
 #   puppet_postfix::install { 'mta' :
 #                              ensure => installed,
 #                            mta_type => server,
 #                no_lan_outbound_mail => 'true',
 #                  install_cyrus_sasl => 'true',
+#                        procmail_lda => 'true',
 #               server_root_mail_user => 'bekr',
 #                   smtp_relayhost_ip => '192.168.0.11' }
 #
@@ -18,8 +21,10 @@ define puppet_postfix::install(
     $source = 'UNSET',
     $no_lan_outbound_mail = '',
     $install_cyrus_sasl = '',
+    $procmail_lda = '',
     $server_root_mail_user='',
-    $smtp_relayhost_ip = ''
+    $smtp_relayhost_ip = '',
+
 ) {
 
     include puppet_postfix::params
@@ -114,6 +119,15 @@ define puppet_postfix::install(
         
         
         # Replace the Debian initial configuration files with our template
+        
+        if $procmail_lda == 'true' {
+            $mail_box_command = 'mailbox_command = /usr/bin/procmail'
+            
+        } else {
+            $mail_box_command = ''
+            
+        }
+        
         
         file { '/etc/postfix/main.cf' :
               content =>  template( 'puppet_postfix/server.main.cf.erb' ),
