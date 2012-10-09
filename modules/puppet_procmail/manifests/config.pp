@@ -40,6 +40,15 @@ class puppet_procmail::config {
             require => Class["puppet_procmail::install"],
         }
         
+        # logrotation of procmail logfiles
+        
+        file {"/etc/logrotate.d/procmail":      
+             source => "puppet:///modules/puppet_procmail/procmail",
+              owner => 'root',
+              group => 'root',
+            require => Class["puppet_procmail::install"],
+        }       
+        
         # For each mail user, install a ~/.procmailrc for their recipes
         # Roots' ~/.procmailrc goes to defined admin user.
         

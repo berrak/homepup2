@@ -1,0 +1,7 @@
+/var/log/procmail {
+  rotate 6
+  monthly
+  compress
+  missingok
+  notifempty
+}

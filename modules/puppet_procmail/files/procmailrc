@@ -17,4 +17,4 @@ ORGMAIL=$HOME/Maildir/
 DEFAULT=$ORGMAIL
 
 VERBOSE=ON
-LOGFILE=/var/log/procmail.log
+LOGFILE=/var/log/procmail
