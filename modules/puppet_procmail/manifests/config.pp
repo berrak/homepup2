@@ -10,7 +10,7 @@ class puppet_procmail::config {
         if $name == $::puppet_procmail::params::rootmailuser {
         
             file {"/home/${name}/.procmailrc":      
-                source => "puppet:///modules/puppet_procmail/admin_procmail",
+                source => "puppet:///modules/puppet_procmail/admin.procmailrc",
                  owner => 'root',
                  group => 'root',
                require => Class["puppet_procmail::install"],
@@ -19,7 +19,7 @@ class puppet_procmail::config {
         } else {
         
             file {"/home/${name}/.procmailrc":      
-                source => "puppet:///modules/puppet_procmail/user_procmail",
+                source => "puppet:///modules/puppet_procmail/user.procmailrc",
                  owner => 'root',
                  group => 'root',
                require => Class["puppet_procmail::install"],
@@ -34,7 +34,7 @@ class puppet_procmail::config {
     if $::hostname == $::puppet_procmail::params::mailserver_hostname {
 
         file {"/etc/procmailrc":      
-             source => "puppet:///modules/puppet_procmail/procmail",
+             source => "puppet:///modules/puppet_procmail/procmailrc",
               owner => 'root',
               group => 'root',
             require => Class["puppet_procmail::install"],
