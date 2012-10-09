@@ -1,0 +1,18 @@
+#
+# ~/.procmailrc
+#
+# Local user procmail resource file
+#
+# Note: When the target maildir ends with '/' 
+# procmail will automatically create the required
+# maildir folders (new, tmp, cur). Mutts' resource files
+# automatically adds any subfolders which begins with '.'
+#
+###########################################
+PATH=/usr/bin:$PATH
+SHELL=/bin/sh
+
+MAILDIR=$HOME/Maildir
+
+# Put normal user recipes here
+

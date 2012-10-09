@@ -1,0 +1,20 @@
+#
+# /etc/procmailrc
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Set procmail global defaults. The purpose
+# is to sort our local domain hosts mails into 
+# separate folders. This is done in ~/.procmailrc
+#
+PATH=/usr/bin:$PATH
+SHELL=/bin/sh
+
+# This sets the delivery in case no recipe match 
+ORGMAIL=$HOME/Maildir/
+DEFAULT=$ORGMAIL
+
+VERBOSE=ON
+LOGFILE=/var/log/procmail.log

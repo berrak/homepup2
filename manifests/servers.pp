@@ -65,6 +65,9 @@ node 'rohan.home.tld' inherits basenode {
 				  install_cyrus_sasl => 'true',
 		       server_root_mail_user => 'bekr',
 				no_lan_outbound_mail => 'true' }
+			
+	# add alternative local delivery agent (LDA) to filter mails into folders etc			
+    include puppet_procmail
 				
     class { puppet_dovecot_imap::install : ipv6 => 'no' }
 	
