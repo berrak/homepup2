@@ -8,6 +8,9 @@
 # maildir folders (new, tmp, cur). Mutts' resource files
 # automatically adds any subfolders which begins with '.'
 #
+# Use the '.INBOX.GONDOR' below since it will then
+# show up e.g. in icedove (but shown as 'GONDOR').
+#
 ###########################################
 PATH=/usr/bin:$PATH
 SHELL=/bin/sh
@@ -18,8 +21,8 @@ MAILDIR=$HOME/Maildir
 
 :0
 * From:.*gondor
-.GONDOR/
+.INBOX.GONDOR/
 
 :0
 * From:.*valhall
-.VALHALL/
+.INBOX.VALHALL/
