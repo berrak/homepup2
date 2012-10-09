@@ -11,8 +11,8 @@ class puppet_procmail::config {
         
             file {"/home/${name}/.procmailrc":      
                 source => "puppet:///modules/puppet_procmail/admin.procmailrc",
-                 owner => 'root',
-                 group => 'root',
+                 owner => $name,
+                 group => $name,
                require => Class["puppet_procmail::install"],
             }
         
@@ -20,8 +20,8 @@ class puppet_procmail::config {
         
             file {"/home/${name}/.procmailrc":      
                 source => "puppet:///modules/puppet_procmail/user.procmailrc",
-                 owner => 'root',
-                 group => 'root',
+                 owner => $name,
+                 group => $name,
                require => Class["puppet_procmail::install"],
             }
         
