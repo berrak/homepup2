@@ -74,7 +74,7 @@ class puppet_procmail::config {
         # append folder name to dovecot-imap 'subscriptions' file for icedove.
         # note: use capilized host names in this file to match the 'recipes.rc' file.
         
-        $mysubscription = $::puppet_procmail::params::hostsubscriptionfolders
+        $subscriptionfolders = $::puppet_procmail::params::hostsubscriptionfolders
         
         file {"/home/${::puppet_procmail::params::rootmailuser}/Maildir/subscriptions":      
             content => template("puppet_procmail/subscriptions.erb"),
