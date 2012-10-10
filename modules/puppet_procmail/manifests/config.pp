@@ -77,7 +77,7 @@ class puppet_procmail::config {
         puppet_utils::append_if_no_such_line { $::puppet_procmail::params::hostsubscriptionlist :
 				
 		    file => "/home/${::puppet_procmail::params::rootmailuser}/Maildir/subscriptions",
-		    line => $::puppet_procmail::params::hostsubscriptionlist, 
+		    line => "INBOX.${::puppet_procmail::params::hostsubscriptionlist}", 
 		}
         
     }
