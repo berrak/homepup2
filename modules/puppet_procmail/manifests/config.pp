@@ -3,7 +3,7 @@
 #
 class puppet_procmail::config {
 
-    include puppet_procmail::params, puppet_utils
+    include puppet_procmail::params
 
     define install_user_procmailrc () {
     
@@ -74,11 +74,13 @@ class puppet_procmail::config {
         # append folder name to dovecot-imap 'subscriptions' file for icedove.
         # note: use capilized host names in this file to match the 'recipes.rc' file.
         
-        puppet_utils::append_if_no_such_line { $::puppet_procmail::params::hostsubscriptionlist :
-				
-		    file => "/home/${::puppet_procmail::params::rootmailuser}/Maildir/subscriptions",
-		    line => "INBOX.${::puppet_procmail::params::hostsubscriptionlist}", 
-		}
+        $mysubscription = $::puppet_procmail::params::hostsubscriptionfolders
+        
+        file {"/home/${::puppet_procmail::params::rootmailuser}/Maildir/subscriptions":      
+            content => template("puppet_procmail/subscriptions.erb"),
+              owner => $::puppet_procmail::params::rootmailuser,
+              group => $::puppet_procmail::params::rootmailuser,
+        }
         
     }
 
