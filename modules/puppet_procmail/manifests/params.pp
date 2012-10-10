@@ -12,5 +12,9 @@ class puppet_procmail::params {
     # all mail user accounts
     $mailuserlist = ['bekr', 'dakr']
     
+    # list for the dovecot/imap 'subscriptions' to
+    # to match the folders names in recipes.rc.
+    
+    $hostsubscriptionlist = [ 'INBOX.GONDOR', 'INBOX.CARBON', 'INBOX.VALHALL', 'INBOX.MORDOR', 'INBOX.ROHAN' ]
 
 }

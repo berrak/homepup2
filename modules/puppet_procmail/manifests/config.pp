@@ -3,17 +3,32 @@
 #
 class puppet_procmail::config {
 
-    include puppet_procmail::params
+    include puppet_procmail::params, puppet_utils
 
     define install_user_procmailrc () {
     
-        if $name == $::puppet_procmail::params::rootmailuser {
+            if $name == $::puppet_procmail::params::rootmailuser {
         
             file {"/home/${name}/.procmailrc":      
                 source => "puppet:///modules/puppet_procmail/admin.procmailrc",
                  owner => $name,
                  group => $name,
                require => Class["puppet_procmail::install"],
+            }        
+        
+            # directory for server procmail recipes
+        
+        	file { "/home/${name}/.procmail":
+                ensure => "directory",
+                 owner => $name,
+                 group => $name,
+	        }
+        
+            file {"/home/${name}/.procmail/recipes.rc":      
+                content => template("puppet_procmail/recipes.erb"),
+                  owner => $name,
+                  group => $name,
+                require => File["/home/${name}/.procmail"],
             }
         
         } else {
@@ -49,11 +64,22 @@ class puppet_procmail::config {
             require => Class["puppet_procmail::install"],
         }       
         
+        
         # For each mail user, install a ~/.procmailrc for their recipes
-        # Roots' ~/.procmailrc goes to defined admin user.
+        # Roots' ~/.procmailrc goes to the defined 'admin' user.
         
         install_user_procmailrc { $::puppet_procmail::params::mailuserlist  :}
-    
+        
+        
+        # append folder name to dovecot-imap 'subscriptions' file for icedove.
+        # note: use capilized host names in this file to match the 'recipes.rc' file.
+        
+        puppet_utils::append_if_no_such_line { $::puppet_procmail::params::hostsubscriptionlist :
+				
+		    file => "/home/${::puppet_procmail::params::rootmailuser}/Maildir/subscriptions",
+		    line => $::puppet_procmail::params::hostsubscriptionlist, 
+		}
+        
     }
 
 }

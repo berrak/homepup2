@@ -3,26 +3,12 @@
 #
 # The admin local user procmail resource file
 #
-# Note: When the target maildir ends with '/' 
-# procmail will automatically create the required
-# maildir folders (new, tmp, cur). Mutts' resource files
-# automatically adds any subfolders which begins with '.'
-#
-# Use the '.INBOX.GONDOR' below since it will then
-# show up e.g. in icedove (but shown as 'GONDOR').
-#
 ###########################################
 PATH=/usr/bin:$PATH
 SHELL=/bin/sh
-
+PMDIR=$HOME/.procmail
 MAILDIR=$HOME/Maildir
 
-# Sort all mails from the internal domain hosts
+# Include all recipes
 
-:0
-* From:.*gondor
-.INBOX.GONDOR/
-
-:0
-* From:.*valhall
-.INBOX.VALHALL/
+INCLUDERC=$PMDIR/recipes.rc
