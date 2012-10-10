@@ -15,6 +15,10 @@
 # folders (icedove will not show them unless one account 
 # advanced option is set to show all folders - not default)
 #
+# Local mail does not have a host name just From 'root@home.tld'.
+# Thus do not include the mail server host here. Local 
+# mails is routed by default to top .INBOX by 'procmail'.
+#
 ###########################################
 # Sort all mails from the internal domain hosts
 #
@@ -27,10 +31,6 @@
 :0 c
 * ^From:.*valhall
 .INBOX.VALHALL/
-
-:0 c
-* ^From:.*rohan
-.INBOX.ROHAN/
 
 :0 c
 * ^From:.*mordor
