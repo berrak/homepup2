@@ -20,22 +20,27 @@
 #
 # Todo: use of template variables and get all host names automatically
 
-:0
-* From:.*gondor
+:0 c
+* ^From:.*gondor
 .INBOX.GONDOR/
 
-:0
-* From:.*valhall
+:0 c
+* ^From:.*valhall
 .INBOX.VALHALL/
 
-:0
-* From:.*rohan
+:0 c
+* ^From:.*rohan
 .INBOX.ROHAN/
 
-:0
-* From:.*mordor
+:0 c
+* ^From:.*mordor
 .INBOX.MORDOR/
 
-:0
-* From:.*carbon
+:0 c
+* ^From:.*carbon
 .INBOX.CARBON/
+
+# define (tbd) and catch the most important messages in main INBOX 
+:0
+* ^Subject:.*
+$DEFAULT
