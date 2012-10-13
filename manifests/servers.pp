@@ -123,37 +123,31 @@ node 'valhall.home.tld' inherits basenode {
 ##########################################
 ### (LOCAL APT SERVER)
 ##########################################
-#node 'asgard.home.tld' inherits basenode {
-#
-#    include puppet_agent
-#    
-#	## standard
-#	
-#	class { puppet_network::interfaces :
-#		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
-#		addfirewall => 'true' }
-#	
-#	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
-#	
-#	
-#	## security related
-#	
-#    class { puppet_iptables::config : role => 'desktop' }
-#    include puppet_tiger
-#	include admin_hardening
-#    
-#	## additional users other than root
-#	
-#    user_bashrc::config { 'bekr' : }
-#	
-#	## mail for all users
-#	
-#    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
-#				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
-#    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }			
-#    puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }			
-#
-#}
+node 'asgard.home.tld' inherits basenode {
+
+    include puppet_agent
+	
+    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    class { admin_fstab::config : fstabhost => 'asgard' }
+
+    # following two classes assumes a single interface host 
+	class { puppet_iptables::config : role => 'desktop' }
+	
+	class { puppet_network::interfaces :
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		addfirewall => 'true' }
+
+    user_bashrc::config { 'bekr' : }
+
+    # install local mail reader 
+	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+	
+	# always need mta
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+				
+}
 
 
 ###############################
