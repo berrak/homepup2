@@ -79,7 +79,7 @@ node default inherits basenode {
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
 	
 	# always need mta
-    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 				
 }
