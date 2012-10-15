@@ -9,15 +9,6 @@ class admin_cron::config {
         ensure => installed,
     }
     
-    # facter
-    
-    $mycomputertype = $::type
-    
-    # anacron (cron-like program that doesn't go by time)
-    if $mycomputertype == 'Notebook' {
-        package  { "anacron" : ensure => installed }
-    }
-    
     # restrict who can use cron to only root
     
     file { "/root/bin/cron.restrict":
