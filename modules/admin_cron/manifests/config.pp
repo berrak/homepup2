@@ -9,6 +9,13 @@ class admin_cron::config {
         ensure => installed,
     }
     
+    # Install anacron. Always required, also for servers 'cron' (see man anacron(8))
+    
+    package { 'anacron' :
+         ensure => installed,
+        require => Package["cron"],
+    }
+    
     # restrict who can use cron to only root
     
     file { "/root/bin/cron.restrict":
