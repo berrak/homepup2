@@ -27,7 +27,7 @@ UUID=19d76db0-943b-45e2-b8d9-eeaaab06a6f7 /var       ext4    defaults,nosuid  0 
 UUID=d42b4557-8e90-4c33-83d5-86743d1c4e61 /var/log   ext4    defaults,nosuid,nodev,noexec  0  2
 
 # /var/log/audit was on /dev/sda11 during installation
-UUID=24f60c4c-b7a1-49f5-b25d-7a26230c6c4d /var/log/audit  ext4  defaultsnosuid,nodev,noexec   0  2
+UUID=24f60c4c-b7a1-49f5-b25d-7a26230c6c4d /var/log/audit  ext4  defaults,nosuid,nodev,noexec   0  2
 
 /dev/mapper/sda5_crypt none            swap    sw           0   0
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0   0
