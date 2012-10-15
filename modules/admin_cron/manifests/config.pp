@@ -15,7 +15,7 @@ class admin_cron::config {
          source => "puppet:///modules/admin_cron/cron.restrict",
           owner => 'root',
           group => 'root',
-           mode => '0750',
+           mode => '0700',
         require => Package["cron"],
          notify => Exec["/root/bin/cron.restrict"],
     }

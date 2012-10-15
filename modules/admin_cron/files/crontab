@@ -10,7 +10,7 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 # m h dom mon dow user command
 0 * * * * root    cd / && run-parts --report /etc/cron.hourly
-15 6 * * * root   test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+15 7 * * * root   test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
 30 6 * * 7 root   test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
 45 6 1 * * root   test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #

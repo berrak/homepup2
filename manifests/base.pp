@@ -14,27 +14,23 @@ node basenode {
 	
 	include admin_cron
 	
-	# apt runs Cron Daemon (06:15-06:45, crontab:daily) to download upgradable pkg's
-	# unless on a notebook, but anacron will run it when the system is available. 
+	# apt runs Cron Daemon (07:15-07:45, crontab:daily) to download upgradable pkg's
     include admin_aptconf
 	
-    # this creates daily (06:15, crontab:daily) mailto to root unless on
-	# a notebook, but anacron will run it when the system is available. 
+    # this creates daily (07:15, crontab:daily) mailto to root unless on
 	include puppet_logwatch
 	
-	# this creates daily (06:15, see crontab:daily) mailto if warnings unless
-	# on a notebook, but anacron will run it when the system is available. 
+	# this creates daily (07:15, see crontab:daily) mailto if warnings unless
     include puppet_rkhunter
 	
-	# this creates daily (06:15, see crontab:daily) mailto if warnings unless
-	# on a notebook, but anacron will run it when the system is available. 	
+	# this creates daily (07:15, see crontab:daily) mailto if warnings unless 	
 	include puppet_chkrootkit
 	
-	# cron will upgrade security twice a day (will mail root about this)
+	# cron/apt will upgrade 'security' once a day (will mail root about this)
 
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
-	                          hour => [ 10, 22 ], minute => '0' }
+	                          hour => '10', minute => '0' }
 	
     class { admin_hosts::config :
 		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
