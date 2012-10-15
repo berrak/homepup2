@@ -1,7 +1,7 @@
 ##
 ## Hardening a host.
 ##
-class admin_hardening::system {
+class admin_hardening::shutdown {
 
     # only allow logged-in accounts and only root to 'Ctrl-Alt-Del' to reboot.
     
