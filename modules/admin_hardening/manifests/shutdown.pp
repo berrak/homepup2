@@ -1,9 +1,9 @@
 ##
-## Hardening a host. Tiger explanation reference in [..]
+## Hardening a host.
 ##
 class admin_hardening::system {
 
-    # only allow root to use Ctrl-Alt-Del to reboot [lin007w]
+    # only allow logged-in accounts and only root to 'Ctrl-Alt-Del' to reboot.
     
     include puppet_utils
     
