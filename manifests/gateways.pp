@@ -18,7 +18,7 @@ node 'gondor.home.tld' inherits basenode {
 	admin_server::nohistory{ 'gondor' :}
 		
     # load gateway firewall script
-    class { puppet_iptables::config : role => 'gateway' }
+    class { puppet_iptables::config : role => 'gateway', hostnm => 'gondor' }
 	
     class { puppet_network::interfaces :
 		iface_zero => 'eth0', bcstnet_zero => '192.168.0.255',

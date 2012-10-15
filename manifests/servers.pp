@@ -10,7 +10,7 @@ node 'carbon.home.tld' inherits basenode {
     class { admin_fstab::config : fstabhost => 'carbon' }
 		
     # this adds the firewall for puppetmaster.
-    class { puppet_iptables::config : role => 'puppetmaster' }
+    class { puppet_iptables::config : role => 'puppetmaster', hostnm => 'carbon' }
 	
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -51,7 +51,7 @@ node 'rohan.home.tld' inherits basenode {
     class { admin_fstab::config : fstabhost => 'rohan' }
 
     # load server firewall script
-    class { puppet_iptables::config : role => 'server', hostnm => 'rohan' }
+    class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan' }
 	 
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
@@ -102,7 +102,7 @@ node 'valhall.home.tld' inherits basenode {
 	
 	## security related
 	
-    class { puppet_iptables::config : role => 'desktop' }
+    class { puppet_iptables::config : role => 'default' }
     include puppet_tiger
 	include admin_hardening
     

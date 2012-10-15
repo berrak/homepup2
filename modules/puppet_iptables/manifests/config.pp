@@ -1,11 +1,11 @@
 ##
 ## This class manage iptables rules. If not $hostnm is given a generic set
-## of iptables rules is used based on $role. If $hostnm is given, this
+## of iptables rules is used (default). If $hostnm is given, this
 ## overrides $role, and a specific $hostnm rule are used instead.
 ##
 ## Sample usage:
-##     class { puppet_iptables::config : role => 'server' }
-##     class { puppet_iptables::config : role => 'server', hostnm => 'rohan' }
+##     class { puppet_iptables::config : role => 'default' }
+##     class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan' }
 ##
 class puppet_iptables::config ( $role,
                                 $hostnm='',
@@ -13,7 +13,7 @@ class puppet_iptables::config ( $role,
 
     include puppet_iptables
 
-    if ! ( $role in [ "default", "server", "desktop", "gateway", "puppetmaster" ]) {
+    if ! ( $role in [ "default", "mailserver", "gateway", "puppetmaster" ]) {
 	
 		fail("Unknown role parameter ($role).")
 	
@@ -39,8 +39,11 @@ class puppet_iptables::config ( $role,
     $gwhostextaddr = $::puppet_iptables::params::gwhostextaddr
     $if_ext = $::puppet_iptables::params::if_ext
 		
+	## facter	
 		
-    ## Select which iptables rule set to distribute 
+	$myhostname = $::hostname	
+		
+    ## Select iptables rule ('default' firewall if not 'hostnm' given)
 	
 	if ( $hostnm == '' ) {
 	
@@ -57,24 +60,25 @@ class puppet_iptables::config ( $role,
 		    refreshonly => true,
 	    }
 		
-     } elsif ( $hostnm == 'rohan' ) {
+     } elsif ( $hostnm == $myhostname ) {
 	
-		file { "/root/bin/fw.rohan":
-		    content => template( "puppet_iptables/fw.rohan.erb" ),
+		file { "/root/bin/fw.${myhostname}":
+		    content => template( "puppet_iptables/fw.${role}.${myhostname}.erb" ),
 		      owner => 'root',
 		      group => 'root',
 		       mode => '0700',
 		    require => File["/root/bin"],
-		     notify => Exec["/bin/sh /root/bin/fw.rohan"],
+		     notify => Exec["/bin/sh /root/bin/fw.${myhostname}"],
 		}
 		
-		exec { "/bin/sh /root/bin/fw.rohan":
+		exec { "/bin/sh /root/bin/fw.${myhostname}":
 		    refreshonly => true,
 	    }
-	
+
+
      } else {
 	
-		fail("Unknown parameter hostnm ($hostnm) given.")
+		fail("FAIL: Unknown parameter hostnm ($hostnm) given.")
 
     }
 
