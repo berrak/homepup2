@@ -13,7 +13,7 @@ class puppet_iptables::config ( $role,
 
     include puppet_iptables
 
-    if ! ( $role in [ "server", "desktop", "gateway", "puppetmaster" ]) {
+    if ! ( $role in [ "default", "server", "desktop", "gateway", "puppetmaster" ]) {
 	
 		fail("Unknown role parameter ($role).")
 	

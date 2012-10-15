@@ -28,7 +28,7 @@ node 'gondor.home.tld' inherits basenode {
 	# lan ntp server provids time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
 	
-    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 	
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }

@@ -33,7 +33,7 @@ node 'carbon.home.tld' inherits basenode {
 	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
 	
-    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
 
 }
@@ -62,7 +62,7 @@ node 'rohan.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' :
 						      ensure => installed,
 				            mta_type => server,
-				  install_cyrus_sasl => 'true',
+				  install_cyrus_sasl => 'false',
 				        procmail_lda => 'true',
 		       server_root_mail_user => 'bekr',
 				no_lan_outbound_mail => 'true' }
@@ -112,7 +112,7 @@ node 'valhall.home.tld' inherits basenode {
 	
 	## mail for all users
 	
-    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'true',
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }			
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }			
@@ -131,7 +131,7 @@ node 'asgard.home.tld' inherits basenode {
     class { admin_fstab::config : fstabhost => 'asgard' }
 
     # following two classes assumes a single interface host 
-	class { puppet_iptables::config : role => 'desktop' }
+	class { puppet_iptables::config : role => 'default' }
 	
 	class { puppet_network::interfaces :
 		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
