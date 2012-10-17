@@ -1,5 +1,5 @@
 #!/bin/sh
-# /root/bin/fw.gateway
+# /root/bin/fw.`hostname`
 #############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
@@ -30,19 +30,19 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT=192.168.2.0
+NET_INT="192.168.2.0/24"
 IF_INT=eth1
 
-NET_EXT=192.168.0.0
+NET_EXT="192.168.0.0/24"
 IF_EXT=eth0
 
-GWHOSTADDR=192.168.2.1
-GWHOSTEXTADDR=192.168.0.254
+GWHOSTADDR="192.168.2.1"
+GWHOSTEXTADDR="192.168.0.254"
 
-PUPPETMASTERHOSTADDR=192.168.0.24
+PUPPETMASTERHOSTADDR="192.168.0.24"
 
 # Maybe PRN does not make sense in this net for blacklisting, but others maybe...
-NETPRN_HP3015_ADDR=192.168.0.30
+NETPRN_HP3015_ADDR="192.168.0.30"
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"
@@ -117,7 +117,7 @@ $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 # allow established and related traffic pass
 $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# block some internal host IP's to pass this firewall 'inside' <---> 'outside' 
+# block some internal host IP's to pass this gateway 'inside' <---> 'outside' 
 $IPTABLES -A FORWARD -j blacklist-log-n-drop
 
 # allow DNS queries pass
@@ -145,11 +145,11 @@ $IPTABLES -A FORWARD -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "D
 $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 
 
-#-----------------------------------------------------------
-## Internal outbound traffic (from internal net --> fwhost)
-#-----------------------------------------------------------
+#----------------------------------------------------------------
+## Internal outbound traffic (from internal net --> gateway host)
+#----------------------------------------------------------------
 
-# allow established and related traffic to fwhost
+# allow established and related traffic to gateway
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # time service for our internal net (broadcast)
@@ -158,13 +158,13 @@ $IPTABLES -A INPUT -p udp -s $NET_INT -d $GWHOSTADDR -m udp --dport 123 -m state
 # allow puppet master to communicate with this client on port 8139
 $IPTABLES -A INPUT -p tcp -s $NET_INT -d $GWHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
-# allow some pings from internal net to this fw host
+# allow some pings from internal net to this gateway host
 $IPTABLES -A INPUT -p icmp --icmp-type echo-reply -s $NET_INT -d $GWHOSTADDR -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type echo-request -s $NET_INT -d $GWHOSTADDR -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -d $GWHOSTADDR -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -d $GWHOSTADDR -j ACCEPT
 
-# drop all other from the internal net to this fwhost
+# drop all other from the internal net to this gateway host
 $IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF INT2FW "
 $IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j DROP
 
@@ -172,7 +172,7 @@ $IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j DROP
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INT2FW "
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -j DROP
 
-# do not not allow broadcasts either, except if allowed (above) from internal net to fwhost
+# do not not allow broadcasts either, except if allowed (above) from internal net to gateway host
 $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
 
 
@@ -197,17 +197,17 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j $LOGOPT $RLIMIT --log-prefix "DRO
 $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 
 
-#---------------------------------------------------------
-## External inbound traffic (from external net --> fwhost)
-#---------------------------------------------------------
+#---------------------------------------------------------------
+## External inbound traffic (from external net --> gateway host)
+#---------------------------------------------------------------
 
-# allow established and related traffic to fwhost
+# allow established and related traffic to gateway host
 $IPTABLES -A INPUT -i $IF_EXT -d $GWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# time service broadcasts for our internal NTP server (this host)
+# time service broadcasts for our internal NTP server (this gateway host)
 $IPTABLES -A INPUT -p udp -i $IF_EXT -d $GWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
 
-# drop all other from external net to fwhost
+# drop all other from external net to gateway host
 $IPTABLES -A INPUT -i $IF_EXT -s $GWHOSTEXTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF EXT2FW "
 $IPTABLES -A INPUT -i $IF_EXT -s $GWHOSTEXTADDR -j DROP
 
@@ -215,14 +215,14 @@ $IPTABLES -A INPUT -i $IF_EXT -s $GWHOSTEXTADDR -j DROP
 $IPTABLES -A INPUT -d $GWHOSTEXTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT EXT2FW "
 $IPTABLES -A INPUT -d $GWHOSTEXTADDR -j DROP
 
-## drop any other broadcasts, unless allowed (above) from external net to fwhost
+## drop any other broadcasts, unless allowed (above) from external net to gateway host
 $IPTABLES -t filter -A INPUT -i $IF_EXT -j broadcast-drop
 
 
 
-## =======================================
-## ALLOW TRAFFIC - FWHOST TO INTERNAL-NET
-## =======================================
+## =====================================================
+## ALLOW TRAFFIC - GATEWAY HOST TO SECURE-NET (Internal)
+## =====================================================
 
 # allow established and related traffic to internal net
 $IPTABLES -A OUTPUT -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -236,21 +236,24 @@ $IPTABLES -A OUTPUT -p tcp -d $PUPPETMASTERHOSTADDR -m tcp --dport 8140 -m state
 # allow broadcast the time service for our internal net
 $IPTABLES -A OUTPUT -p udp -d $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
-# allow only 'echo-request' ping initiated from this fwhost to internal net
+# allow only some pings initiated from this gateway host to internal net
+$IPTABLES -A OUTPUT -p icmp --icmp-type echo-reply -d $NET_INT -j ACCEPT
 $IPTABLES -A OUTPUT -p icmp --icmp-type echo-request -d $NET_INT -j ACCEPT
+$IPTABLES -A OUTPUT -p icmp --icmp-type destination-unreachable -d $NET_INT -j ACCEPT
+$IPTABLES -A OUTPUT -p icmp --icmp-type time-exceeded -d $NET_INT -j ACCEPT
 
-# deny all other traffic out from fwhost to internal net
+# deny all other traffic out from gateway host to internal net
 $IPTABLES -A OUTPUT -d $NET_INT -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT FW2INT "
 $IPTABLES -A OUTPUT -d $NET_INT -j DROP
 
-# deny any other broadcasts, unless allowed (above) from fwhost to internal net
+# deny any other broadcasts, unless allowed (above) from gateway host to internal net
 $IPTABLES -t filter -A OUTPUT -d $NET_INT -j broadcast-drop
 
 
 
-## =======================================
-## ALLOW TRAFFIC - FWHOST TO EXTERNAL-NET
-## =======================================
+## ==========================================================
+## ALLOW TRAFFIC - GATEWAY HOST TO HOME-NET (EXT)/OR INTERNET
+## ==========================================================
 
 # allow established and related traffic out
 $IPTABLES -A OUTPUT ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -268,7 +271,7 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW
 # allow this NTP server communicate with other external time servers (broadcast)
 $IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
-# allow ping initiated from this fwhost to dmz net (all pings are blocked by FW upstream for Internet)
+# allow ping initiated from this host to external net (i.e. home net or Internet)
 $IPTABLES -A OUTPUT -p icmp --icmp-type echo-request ! -d $NET_INT -j ACCEPT
 
 # deny invalid packages going out
