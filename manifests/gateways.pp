@@ -51,7 +51,7 @@ node 'asgard.home.tld' inherits basenode {
 
     ## networking
 
-    class { puppet_network::interfaces : interfaces => '2', hostnm => 'gondor',
+    class { puppet_network::interfaces : interfaces => '2', hostnm => 'asgard',
                                                        addfirewall => 'false' }
 		
     ## firewall (iptables)
