@@ -1,7 +1,7 @@
 ##
 ## This class manage iptables rules. If not $hostnm is given a generic set
-## of iptables rules is used (default). If $hostnm is given, this
-## overrides $role, and a specific $hostnm rule are used instead.
+## of iptables rules is used (default). If $hostnm is given, this over-
+## rides $role (but must be given), and a specific $hostnm rule are used instead.
 ##
 ## Sample usage:
 ##     class { puppet_iptables::config : role => 'default' }
@@ -19,9 +19,7 @@ class puppet_iptables::config ( $role,
 	
 	}
 
-	## We assumes eth0 always primary, and used as the lan internal iface.
-	
-    $myhostaddr = $::ipaddress_eth0
+    ## Read in configuration parameters as required for fw rules creation 
 	
     $net_int = $::puppet_iptables::params::net_int
     $if_int = $::puppet_iptables::params::if_int
