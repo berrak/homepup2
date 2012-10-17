@@ -43,6 +43,9 @@ node 'asgard.home.tld' inherits basenode {
 
     include puppet_agent
 	
+	# realtek nic firmware driver
+    admin_bndl::install { 'nonfree' : }
+	
     admin_server::nohistory{ 'gondor' :}
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.

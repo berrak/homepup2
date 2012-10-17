@@ -8,7 +8,7 @@
 #
 define admin_bndl::install {
   
-    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'securityapps' ]) {
+    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'securityapps', 'nonfree' ]) {
         fail("Package bundle parameter ($name) not recognized!")
     }
   
@@ -22,7 +22,17 @@ define admin_bndl::install {
             package  { [ "firmware-linux-free" ] :
                 ensure => installed }
         
-        }        
+        }
+		
+        nonfree : {
+        
+            # Non-free drivers. Note: require the 'non-free' repo
+			# enabled on that host (see puppet module 'admin_aptconf').
+            
+            package  { [ "firmware-realtek" ] :
+                ensure => installed }
+        
+        }		
 
         officeapps : {
         
