@@ -4,7 +4,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# Generic iptables rules for two interfaces gateway host.
+# Iptables rules for gateway host with two interfaces.
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -62,7 +62,7 @@ $IPTABLES -F
 $IPTABLES -F -t nat
 $IPTABLES -X
 
-## Enable forwarding
+## Enable forwarding (better set this in /etc/sysctl.conf)
 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
@@ -118,15 +118,6 @@ $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATE
 # block some internal host IP's to pass this firewall 'inside' <---> 'outside' 
 $IPTABLES -A FORWARD -j blacklist-log-n-drop
 
-# allow ftp pass
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 21 -m state --state NEW -j ACCEPT
-
-# allow ssh pass
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
-
-# allow whois queries pass
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT
-
 # allow DNS queries pass
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p udp -s $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
@@ -140,13 +131,8 @@ $IPTABLES -A FORWARD -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW 
 # allow https pass
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 443 -m state --state NEW,RELATED -j ACCEPT
 
-# all git protocol pass< 
+# all git protocol pass 
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
-
-# allow ping etc
-$IPTABLES -A FORWARD -p icmp -s $NET_INT -j ACCEPT
-
-
 
 # drop spoofed packages
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF INT2EXT "
@@ -164,23 +150,23 @@ $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 # allow established and related traffic to fwhost
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# remote ssh management
-$IPTABLES -A INPUT -p tcp -s $NET_INT -d $GWHOSTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
-
 # time service for our internal net (broadcast)
 $IPTABLES -A INPUT -p udp -s $NET_INT -d $GWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # allow puppet master to communicate with this client on port 8139
 $IPTABLES -A INPUT -p tcp -s $NET_INT -d $GWHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
-# allow ping etc
-$IPTABLES -A INPUT -p icmp -s $NET_INT -d $GWHOSTADDR -j ACCEPT
+# allow some pings from internal net to this fw host
+$IPTABLES -A INPUT -p icmp --icmp-type echo-reply -s $NET_INT -d $GWHOSTADDR -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type echo-request -s $NET_INT -d $GWHOSTADDR -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -d $GWHOSTADDR -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -d $GWHOSTADDR -j ACCEPT
 
-# drop all other form internal net to fwhost
+# drop all other from the internal net to this fwhost
 $IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUTSPOOF INT2FW "
 $IPTABLES -A INPUT -i $IF_INT  ! -s $NET_INT -d $GWHOSTADDR -j DROP
 
-# drop all other traffic - altghugh broadcasts can be tricky to catch
+# drop all other traffic - broadcasts can be tricky to catch
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INT2FW "
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -j DROP
 
@@ -248,8 +234,8 @@ $IPTABLES -A OUTPUT -p tcp -d $PUPPETMASTERHOSTADDR -m tcp --dport 8140 -m state
 # allow broadcast the time service for our internal net
 $IPTABLES -A OUTPUT -p udp -d $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
-# allow ping from fwhost to internal net
-$IPTABLES -A OUTPUT -p icmp -d $NET_INT -j ACCEPT
+# allow only 'echo-request' ping initiated from this fwhost to internal net
+$IPTABLES -A OUTPUT -p icmp --icmp-type echo-request -d $NET_INT -j ACCEPT
 
 # deny all other traffic out from fwhost to internal net
 $IPTABLES -A OUTPUT -d $NET_INT -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT FW2INT "
@@ -267,12 +253,6 @@ $IPTABLES -t filter -A OUTPUT -d $NET_INT -j broadcast-drop
 # allow established and related traffic out
 $IPTABLES -A OUTPUT ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# allow ftp file transfers
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 21 -m state --state NEW -j ACCEPT
-
-# allow whois lookups
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT
-
 # allow DNS queries
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
@@ -286,9 +266,8 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW
 # allow this NTP server communicate with other external time servers (broadcast)
 $IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
-# allow ping to external net
-$IPTABLES -A OUTPUT -p icmp ! -d $NET_INT -j ACCEPT
-
+# allow ping initiated from this fwhost to dmz net (all pings are blocked by FW upstream for Internet)
+$IPTABLES -A OUTPUT -p icmp --icmp-type echo-request ! -d $NET_INT -j ACCEPT
 
 # deny invalid packages going out
 $IPTABLES -A OUTPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT INVALID "
