@@ -45,30 +45,35 @@ node 'asgard.home.tld' inherits basenode {
 	
 	# realtek nic firmware driver
     admin_bndl::install { 'nonfree' : }
-	
     admin_server::nohistory{ 'gondor' :}
-	
-    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
+	# needs accurate time (always)
+    class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+    # Note: requires a copy of hosts 'fstab' file saved at puppetmaster.
     class { admin_fstab::config : fstabhost => 'asgard' }
 
-    # following two classes assumes a single interface host 
-	class { puppet_iptables::config : role => 'default' }
-	
-	class { puppet_network::interfaces :
-		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
-		addfirewall => 'true' }
+    ## networking
+
+    class { puppet_network::interfaces :
+		iface_zero => 'eth0', bcstnet_zero => '192.168.0.255',
+		iface_one => 'eth1', bcstnet_one => '192.168.2.255',
+		addfirewall => 'false' }		
 		
-    class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }	
+    ## firewall (iptables)
 
-    user_bashrc::config { 'bekr' : }
-
-    # install local mail reader 
-	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
-    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+    # following two classes assumes a single interface host 
+	class { puppet_iptables::config : role => 'default' } 
 	
-	# always need mta
+
+    ## local users
+	
+    user_bashrc::config { 'bekr' : }
+	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
+    
+	
+	## mail options (always)
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
 				
 }
 
