@@ -32,7 +32,6 @@ IPTSAVEFILE=/root/bin/IPTABLES.FW
 NET_INT=<%= net_int %>
 IF_INT=<%= if_int %>
 
-HOSTADDR=<%= myhostaddr %>
 NTPHOSTADDR=<%= ntphostaddr %>
 
 # Printers
@@ -76,33 +75,42 @@ $IPTABLES -A INPUT -m state --state INVALID -j DROP
 ## ======================
 
 #-----------------------------------------------------------
-# Internal inbound traffic (from internal net --> this host)
+# Internal inbound traffic (from internal net --> this host).
+#
+# destination (-d ) is not required since rules are always
+# used in INPUT chain and thus implicitely gives this host.
 #-----------------------------------------------------------
 
 # allow all established and related in
-$IPTABLES -A INPUT -p all -d $HOSTADDR -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -p all -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # multicast mDNS packets from internal printers to this host.
 $IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
 
-# allow ping etc
-$IPTABLES -A INPUT -p icmp -d $HOSTADDR -s $NET_INT -j ACCEPT
+# allow some pings from internal net to this host
+$IPTABLES -A INPUT -p icmp --icmp-type echo-reply -s $NET_INT -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type echo-request -s $NET_INT -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -j ACCEPT
 
 # allow cups network printer packets
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
 
 # ntp time information (udp) from our internal LAN NTP server
-$IPTABLES -A INPUT -p udp -d $HOSTADDR -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # puppet master talks to clients on this port
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
 
 #-------------------------------------------------------------------------
-# Potential external inbound traffic (from external net --> this host)
+# Potential external inbound traffic (from external net --> this host).
+#
+# destination (-d ) is not required since rules are always
+# used in INPUT chain and thus implicitely gives this host.
 #-------------------------------------------------------------------------
 
-$IPTABLES -A INPUT -p all -d $HOSTADDR ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -p all ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 ## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
 
@@ -151,14 +159,17 @@ $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25 -m state --state NEW -j
 # allow imap out to internal mail server
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
 
+# allow imaps out to internal mail server
+$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT
+
 # ntp udp is stateless but iptables keeps track of udp 'states'
 $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # talk to the puppet master server on this port
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8140 -m state --state NEW -j ACCEPT
 
-# allow ping on internal net 
-$IPTABLES -A OUTPUT -p icmp -d $NET_INT -j ACCEPT
+# allow only 'echo-request' ping initiated from this host to internal net
+$IPTABLES -A OUTPUT -p icmp --icmp-type echo-request -d $NET_INT -j ACCEPT
 
 # allow cups network printing
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
