@@ -9,11 +9,14 @@ class admin_cron::config {
         ensure => installed,
     }
     
-    # Install anacron. Always required, also for servers 'cron' (see man anacron(8))
+    # Install anacron if laptop
     
-    package { 'anacron' :
-         ensure => installed,
-        require => Package["cron"],
+    if $::type == 'Notebook' {
+    
+        package { 'anacron' :
+             ensure => installed,
+            require => Package["cron"],
+        }
     }
     
     # restrict who can use cron to only root
