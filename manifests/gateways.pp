@@ -35,6 +35,41 @@ node 'gondor.home.tld' inherits basenode {
 
 }
 
+
+##########################################
+### (ASGARD) gateway host/apt repo server
+##########################################
+node 'asgard.home.tld' inherits basenode {
+
+    include puppet_agent
+	
+    admin_server::nohistory{ 'gondor' :}
+	
+    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    class { admin_fstab::config : fstabhost => 'asgard' }
+
+    # following two classes assumes a single interface host 
+	class { puppet_iptables::config : role => 'default' }
+	
+	class { puppet_network::interfaces :
+		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
+		addfirewall => 'true' }
+		
+    class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }	
+
+    user_bashrc::config { 'bekr' : }
+
+    # install local mail reader 
+	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
+	
+	# always need mta
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+				
+}
+
+
 ###############################
 ## eof
 ###############################
