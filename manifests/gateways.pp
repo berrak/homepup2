@@ -52,11 +52,11 @@ node 'asgard.home.tld' inherits basenode {
     ## networking
 
     class { puppet_network::interfaces : interfaces => '2', hostnm => 'asgard',
-                                                       addfirewall => 'false' }
+                                                       addfirewall => 'true' }
 		
     ## firewall (iptables)
 
-	class { puppet_iptables::config : role => 'default' } 
+    class { puppet_iptables::config : role => 'gateway', hostnm => 'asgard' }
 	
 
     ## local users

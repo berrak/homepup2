@@ -29,15 +29,14 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT=<%= net_int %>
-IF_INT=<%= if_int %>
+NET_INT=192.168.0.0/24
+IF_INT=eth0
 
-NTPHOSTADDR=<%= ntphostaddr %>
+NTPHOSTADDR=192.168.0.1
 
-# Printers
-
-NETPRN_HP3015_ADDR=<%= netprn_hp3015_addr %>
-MDNSMULTICASTADDR=<%= mdnsmulticastaddr %>
+# Printers for desktops
+NETPRN_HP3015_ADDR=192.168.0.30
+MDNSMULTICASTADDR=224.0.0.251
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"

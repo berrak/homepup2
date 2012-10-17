@@ -87,13 +87,13 @@ node 'valhall.home.tld' inherits basenode {
     
 	## network and default services
 	
-    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
-	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+    class { puppet_network::interfaces : broadcastnet => '192.168.2.0', defaultgateway => '192.168.2.1' }
+    class { puppet_iptables::config : role => 'default', inet => '192.168.2.0/24' }
 	
+	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
 	## security related
 	
-    class { puppet_iptables::config : role => 'default' }
     include puppet_tiger
 	include admin_hardening
     

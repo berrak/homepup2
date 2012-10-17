@@ -9,7 +9,7 @@
 ##
 ##  class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 ##  class { puppet_network::interfaces : interfaces => '2', hostnm => 'gondor',
-##                                                     addfirewall => 'true' }
+##                                                     addfirewall => 'false' }
 ##
 ##
 class puppet_network::interfaces ( $interfaces = '1',

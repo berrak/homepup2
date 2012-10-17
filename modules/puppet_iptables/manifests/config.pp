@@ -1,42 +1,56 @@
 ##
-## This class manage iptables rules. If not $hostnm is given a generic set
-## of iptables rules is used (default). If $hostnm is given, this over-
-## rides $role (but must be given), and a specific $hostnm rule are used instead.
+## This class manage iptables rules. If not '$hostnm' is given a generic set
+## of iptables rules is used (i.e. role => 'default'. Internal net and interface
+## parameters can be given to override defaults '192.168.0.0/24' and 'eth0'
+##
+##
+## If $hostnm is given, this overrides $role (but must be given), and a
+## specific $hostnm rule are used instead.
 ##
 ## Sample usage:
 ##     class { puppet_iptables::config : role => 'default' }
+##     class { puppet_iptables::config : role => 'default', inet => '192.168.0.2/24', iface => 'eth1' }
+##
 ##     class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan' }
 ##
 class puppet_iptables::config ( $role,
-                                $hostnm='',
+                                $inet= '',
+                                $iface= '',
+                                $hostnm= '',
 ) {
 
     include puppet_iptables
 
     if ! ( $role in [ "default", "mailserver", "gateway", "puppetmaster" ]) {
 	
-		fail("Unknown role parameter ($role).")
+		fail("FAIL: Unknown role parameter ($role).")
 	
 	}
 
-    ## Read in configuration parameters as required for fw rules creation 
+    ## Use default configuration parameters or use supplied overrides.
 	
-    $net_int = $::puppet_iptables::params::net_int
-    $if_int = $::puppet_iptables::params::if_int
+	if $role == 'default' {
+	
+        if $inet == '' {
+            $net_int = $::puppet_iptables::params::net_int
+        } else {
+		    $net_int = $inet
+        }
+		
+        if $iface == '' {
+            $if_int = $::puppet_iptables::params::if_int
+        } else {
+		    $net_int = $iface
+        }		
+		
+	}
+	
+    # Special addresses are always used in default rules
     
     $ntphostaddr = $::puppet_iptables::params::ntphostaddr
-    
     $netprn_hp3015_addr = $::puppet_iptables::params::netprn_hp3015_addr
-    
     $mdnsmulticastaddr = $::puppet_iptables::params::mdnsmulticastaddr
-    $puppetmasterhostaddr = $::puppet_iptables::params::puppetmasterhostaddr
 
-    $gwhostaddr = $::puppet_iptables::params::gwhostaddr
-    
-    $net_ext = $::puppet_iptables::params::net_ext
-    $gwhostextaddr = $::puppet_iptables::params::gwhostextaddr
-    $if_ext = $::puppet_iptables::params::if_ext
-		
 	## facter	
 		
 	$myhostname = $::hostname	
@@ -61,7 +75,7 @@ class puppet_iptables::config ( $role,
      } elsif ( $hostnm == $myhostname ) {
 	
 		file { "/root/bin/fw.${myhostname}":
-		    content => template( "puppet_iptables/fw.${role}.${myhostname}.erb" ),
+		     source => "puppet:///modules/puppet_iptables/fw.${role}.${myhostname}",
 		      owner => 'root',
 		      group => 'root',
 		       mode => '0700',

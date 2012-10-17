@@ -61,7 +61,7 @@ node default inherits basenode {
 
     include puppet_agent
 
-    # following two classes assumes a single interface host 
+    # following two classes assumes a single interface host in 192.168.0.0/24 and eth0.
 	class { puppet_iptables::config : role => 'default' }
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 

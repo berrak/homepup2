@@ -4,7 +4,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# Iptables rules for gateway host with two interfaces.
+# Iptables rules for gateway host gondor with two interfaces.
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -30,17 +30,17 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT=<%= net_int %>
-IF_INT=<%= if_int %>
+NET_INT=192.168.0.0/24
+IF_INT=eth0
 
-NET_EXT=<%= net_ext %>
-IF_EXT=<%= if_ext %>
+NET_EXT=192.168.1.0/24
+IF_EXT=eth1
 
-GWHOSTADDR=<%= gwhostaddr %>
-PUPPETMASTERHOSTADDR=<%= puppetmasterhostaddr %>
-GWHOSTEXTADDR=<%= gwhostextaddr %>
+GWHOSTADDR=192.168.0.1
+GWHOSTEXTADDR=192.168.1.254
 
-NETPRN_HP3015_ADDR=<%= netprn_hp3015_addr %>
+PUPPETMASTERHOSTADDR=192.168.0.24
+NETPRN_HP3015_ADDR=192.168.0.30
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"

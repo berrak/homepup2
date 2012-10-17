@@ -4,11 +4,14 @@
 ##
 class puppet_iptables::params {
     
-    # desktop data
-    #-------------
+    # default single interface data (e.g. for desktop host)
+    #------------------------------------------------------
     
     $net_int = '192.168.0.0/24'
     $if_int = 'eth0'
+    
+    # time server
+    #-------------  
     
     $ntphostaddr = '192.168.0.1'
     
@@ -17,19 +20,9 @@ class puppet_iptables::params {
     
     $netprn_hp3015_addr = '192.168.0.30'
     
-    # special addresses
+    # special address
     #------------------
     
     $mdnsmulticastaddr = '224.0.0.251'
-    $puppetmasterhostaddr = '192.168.0.24'
-
-
-    # gateway gondor (see above desktop variables '$net_int' and '$if_int' and printers ip)
-    #-------------------------------------------------------------------------------------
-    
-    $gwhostaddr = '192.168.0.1'
-    $net_ext = '192.168.1.0/24'
-    $gwhostextaddr = '192.168.1.254'
-    $if_ext = 'eth1'
 
 }
