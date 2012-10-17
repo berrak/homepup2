@@ -4,7 +4,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# Custom iptables rules for a dedicated postfix server
+# Custom iptables rules for a dedicated postfix/imap server
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -32,7 +32,6 @@ IPTSAVEFILE=/root/bin/IPTABLES.FW
 NET_INT=<%= net_int %>
 IF_INT=<%= if_int %>
 
-HOSTADDR=<%= myhostaddr %>
 NTPHOSTADDR=<%= ntphostaddr %>
 
 ## Log options
@@ -79,41 +78,45 @@ $IPTABLES -A INPUT -m state --state INVALID -j DROP
 ## ======================
 
 #-----------------------------------------------------------
-# Internal inbound traffic (from internal net --> this host)
+# Internal inbound traffic (from internal net --> this host).
+# destination (-d ) is not required since rules are always
+# used in INPUT chain and thus implicitely gives this host.
 #-----------------------------------------------------------
 
 # allow all established and related traffic from internal net in
-$IPTABLES -A INPUT -p all -d $HOSTADDR -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# ssh clients talks to this server on this port
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p all -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # smtp clients sends mail to this server on this port
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 25 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 25 -m state --state NEW -j ACCEPT
 
 # ntp time information (udp) from our internal LAN NTP server
-$IPTABLES -A INPUT -p udp -d $HOSTADDR -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # imap clients (internal users) access their mailboxes to this mail server on this port
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
 
 # imaps secure clients (internal users) access their mailboxes to this mail server on this port
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT
 
 # puppet master talks to this host on this port
-$IPTABLES -A INPUT -p tcp -d $HOSTADDR -s $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
-# allow ping in from our internal net to this host
-$IPTABLES -A INPUT -p icmp -d $HOSTADDR -s $NET_INT -j ACCEPT
+# allow some pings from internal net to this host
+$IPTABLES -A INPUT -p icmp --icmp-type echo-reply -s $NET_INT -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type echo-request -s $NET_INT -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -j ACCEPT
+$IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -j ACCEPT
 
 # do not not allow broadcasts from internal net to reach us
 $IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
 
 #-------------------------------------------------------------------------
-# Potential external inbound traffic (from external net --> this host)
+# Potential external inbound traffic (from external net --> this host).
+# destination (-d ) is not required since rules are always
+# used in INPUT chain and thus implicitely gives this host.
 #-------------------------------------------------------------------------
 
-$IPTABLES -A INPUT -p all -d $HOSTADDR ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -p all ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # do not not allow broadcasts from any other non-local addresses
 $IPTABLES -t filter -A INPUT ! -s $NET_INT -j broadcast-drop
@@ -138,9 +141,6 @@ $IPTABLES -A INPUT ! -i lo -j DROP
 
 # allow all established and related out to external net
 $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# allow whois queries out to external net
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT
 
 # allow dns (udp/tcp) queries out external net
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
@@ -169,9 +169,8 @@ $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state N
 # talk to the puppet master server on this port
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8140 -m state --state NEW -j ACCEPT
 
-# allow ping etc to internal net
-$IPTABLES -A OUTPUT -p icmp -d $NET_INT -j ACCEPT
-
+# allow only 'echo-request' ping initiated from this host to internal net
+$IPTABLES -A OUTPUT -p icmp --icmp-type echo-request -d $NET_INT -j ACCEPT
 
 #-------------------------------------
 # Prevent invalid output packages out
