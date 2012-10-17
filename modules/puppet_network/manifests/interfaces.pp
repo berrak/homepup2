@@ -7,13 +7,14 @@
 ##
 ## Sample Usage:
 ##
-##  class { puppet_network::interfaces : defaultgateway => '192.168.0.1' }
+##  class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 ##  class { puppet_network::interfaces : interfaces => '2', hostnm => 'gondor',
 ##                                                     addfirewall => 'true' }
 ##
 ##
 class puppet_network::interfaces ( $interfaces = '1',
                                    $addfirewall = 'true',
+                                   $broadcastnet = '',
                                    $defaultgateway = '',
                                    $hostnm = '',
 ) {
@@ -33,6 +34,10 @@ class puppet_network::interfaces ( $interfaces = '1',
         fail("FAIL: Sorry, default gateway parameter can't be empty for single interfaces.")
     }
     
+    if  ( $interfaces == '1' ) and ( $broadcastnet == '' ) {
+    
+        fail("FAIL: Sorry, broadcast net parameter can't be empty for single interfaces.")
+    }
                         
     if ( $interfaces == '1' ) {
         
@@ -48,7 +53,7 @@ class puppet_network::interfaces ( $interfaces = '1',
         $eth0_netmask = "netmask $::netmask_eth0"
         $eth0_network = "network $::network_eth0"
         
-        $bcstnet0 = "broadcast $bcstnet_zero"
+        $bcstnet0 = "broadcast $broadcastnet"
         $gateway0 = "gateway $defaultgateway"
 
         # Build up our interface file

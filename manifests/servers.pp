@@ -12,7 +12,7 @@ node 'carbon.home.tld' inherits basenode {
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster', hostnm => 'carbon' }
 	
-    class { puppet_network::interfaces : defaultgateway => '192.168.0.1' }
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 	
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
@@ -51,7 +51,7 @@ node 'rohan.home.tld' inherits basenode {
     # load server firewall script
     class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan' }
 	 
-    class { puppet_network::interfaces : defaultgateway => '192.168.0.1' }
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
@@ -85,10 +85,9 @@ node 'valhall.home.tld' inherits basenode {
 
     include puppet_agent
     
-	## standard
+	## network and default services
 	
-    class { puppet_network::interfaces : defaultgateway => '192.168.0.1' }
-	
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
 	
