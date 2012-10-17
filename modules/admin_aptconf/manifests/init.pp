@@ -3,6 +3,8 @@
 ##
 class admin_aptconf {
 
+    include admin_aptconf::params
+
 	# only the 'sources.list' file is included 
 	# when cron runs our script 'upgrade.security'
 
@@ -33,6 +35,19 @@ class admin_aptconf {
 		 owner => "root",
 		 group => "root",
 		  mode => '0644',
+	}
+	
+	# A specific host which require 'non-free' for networking firmware
+	
+	if $::hostname == $::admin_aptconf::params::mynonfreehost {
+	
+		file { "/etc/apt/sources.list.d/nonfree.list":
+			source => "puppet:///modules/admin_aptconf/nonfree.list",
+			 owner => "root",
+			 group => "root",
+			  mode => '0644',
+		}
+	
 	}
 
     ### end repo file snippets
