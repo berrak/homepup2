@@ -4,7 +4,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# Custom iptables rules for a dedicated postfix/imap server
+# Iptables rules for a dedicated postfix/imap server (rohan)
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -79,6 +79,7 @@ $IPTABLES -A INPUT -m state --state INVALID -j DROP
 
 #-----------------------------------------------------------
 # Internal inbound traffic (from internal net --> this host).
+#
 # destination (-d ) is not required since rules are always
 # used in INPUT chain and thus implicitely gives this host.
 #-----------------------------------------------------------
@@ -112,6 +113,7 @@ $IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
 
 #-------------------------------------------------------------------------
 # Potential external inbound traffic (from external net --> this host).
+#
 # destination (-d ) is not required since rules are always
 # used in INPUT chain and thus implicitely gives this host.
 #-------------------------------------------------------------------------
