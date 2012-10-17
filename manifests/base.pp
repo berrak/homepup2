@@ -63,10 +63,7 @@ node default inherits basenode {
 
     # following two classes assumes a single interface host 
 	class { puppet_iptables::config : role => 'default' }
-	
-	class { puppet_network::interfaces :
-		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
-		addfirewall => 'true' }
+    class { puppet_network::interfaces : defaultgateway => '192.168.0.1' }
 
     user_bashrc::config { 'bekr' : }
 

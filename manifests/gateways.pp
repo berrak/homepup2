@@ -20,10 +20,8 @@ node 'gondor.home.tld' inherits basenode {
     # load gateway firewall script
     class { puppet_iptables::config : role => 'gateway', hostnm => 'gondor' }
 	
-    class { puppet_network::interfaces :
-		iface_zero => 'eth0', bcstnet_zero => '192.168.0.255',
-		iface_one => 'eth1', bcstnet_one => '192.168.1.255',
-		gateway_one => '192.168.1.1', addfirewall => 'true' }
+    class { puppet_network::interfaces : interfaces => '2', hostnm => 'gondor',
+                                                       addfirewall => 'true' }
 	
 	# lan ntp server provids time services to all lan clients
     class { 'puppet_ntp' : role => 'lanserver', peerntpip => '192.168.0.1' }
@@ -53,14 +51,11 @@ node 'asgard.home.tld' inherits basenode {
 
     ## networking
 
-    class { puppet_network::interfaces :
-		iface_zero => 'eth0', bcstnet_zero => '192.168.0.255',
-		iface_one => 'eth1', bcstnet_one => '192.168.2.255',
-		addfirewall => 'false' }		
+    class { puppet_network::interfaces : interfaces => '2', hostnm => 'gondor',
+                                                       addfirewall => 'false' }
 		
     ## firewall (iptables)
 
-    # following two classes assumes a single interface host 
 	class { puppet_iptables::config : role => 'default' } 
 	
 

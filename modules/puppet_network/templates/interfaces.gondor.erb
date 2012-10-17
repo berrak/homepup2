@@ -1,0 +1,35 @@
+#
+# /etc/network/interfaces
+#
+##############################################################
+# DO NOT EDIT. MANAGED BY PUPPET. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# This file is for gondor (gateway)
+#
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+<%= loadfirewall %>
+
+# Domain 'home.tld' network interface
+auto eth0
+allow-hotplug eth0
+iface eth0 inet static
+	address 192.168.0.1
+	netmask 255.255.255.0
+	network 192.168.0.0
+	broadcast 192.168.0.255
+	
+
+# Domain 'dmz.tld' network interface
+auto eth1
+allow-hotplug eth1
+iface eth1 inet static
+	address 192.168.1.254
+	netmask 255.255.255.0
+	network 192.168.1.0
+	broadcast 192.168.1.255
+	gateway 192.168.1.1
+	

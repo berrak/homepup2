@@ -1,0 +1,35 @@
+#
+# /etc/network/interfaces
+#
+##############################################################
+# DO NOT EDIT. MANAGED BY PUPPET. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# This file is for asgard (gateway)
+#
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+<%= loadfirewall %>
+
+# Domain 'home.tld' interface
+auto eth0
+allow-hotplug eth0
+iface eth0 inet static
+	address 192.168.0.254
+	netmask 255.255.255.0
+	network 192.168.0.0
+	broadcast 192.168.0.255
+    gateway 192.168.0.1
+	
+
+# Domain 'sec.tld' interface
+auto eth1
+allow-hotplug eth1
+iface eth1 inet static
+	address 192.168.2.1
+	netmask 255.255.255.0
+	network 192.168.2.0
+	broadcast 192.168.2.255
+	

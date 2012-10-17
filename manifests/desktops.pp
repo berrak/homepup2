@@ -11,9 +11,7 @@ node 'mordor.home.tld' inherits basenode {
     # load desktop firewall script
     class { puppet_iptables::config : role => 'default' }
 	 
-	class { puppet_network::interfaces :
-		iface_zero => 'eth0', gateway_zero => '192.168.0.1', bcstnet_zero => '192.168.0.255',
-		addfirewall => 'true' }
+    class { puppet_network::interfaces : defaultgateway => '192.168.0.1' }
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
