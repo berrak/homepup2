@@ -1,5 +1,5 @@
 #!/bin/sh
-# /root/bin/fw.gateway
+# /root/bin/fw.`hostname`
 #############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
@@ -30,17 +30,17 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT=192.168.0.0/24
+NET_INT="192.168.0.0/24"
 IF_INT=eth0
 
-NET_EXT=192.168.1.0/24
+NET_EXT="192.168.1.0/24"
 IF_EXT=eth1
 
-GWHOSTADDR=192.168.0.1
-GWHOSTEXTADDR=192.168.1.254
+GWHOSTADDR="192.168.0.1"
+GWHOSTEXTADDR="192.168.1.254"
 
-PUPPETMASTERHOSTADDR=192.168.0.24
-NETPRN_HP3015_ADDR=192.168.0.30
+PUPPETMASTERHOSTADDR="192.168.0.24"
+NETPRN_HP3015_ADDR="192.168.0.30"
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"

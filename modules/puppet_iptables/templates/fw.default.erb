@@ -1,10 +1,10 @@
 #!/bin/sh
-# /root/bin/fw.desktop
+# /root/bin/fw.default
 #############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# Generic iptables rules for a desktop host
+# Generic (only one NIC) iptables rules for e.g. desktop host
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -29,15 +29,15 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT=<%= net_int %>
+NET_INT="<%= net_int %>"
 IF_INT=<%= if_int %>
 
-NTPHOSTADDR=<%= ntphostaddr %>
+NTPHOSTADDR="<%= ntphostaddr %>"
 
 # Printers
 
-NETPRN_HP3015_ADDR=<%= netprn_hp3015_addr %>
-MDNSMULTICASTADDR=<%= mdnsmulticastaddr %>
+NETPRN_HP3015_ADDR="<%= netprn_hp3015_addr %>"
+MDNSMULTICASTADDR="<%= mdnsmulticastaddr %>"
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"
