@@ -43,7 +43,7 @@ MSGPATH="/var/log/messages"
 AWK="/usr/bin/awk"
 
 DISABLEDISKCHK="/sbin/tune2fs -c -1"
-FORMAT_EXT2="/sbin/mke2fs"
+FORMAT_EXT3="/sbin/mke2fs"
 LABEL="usb"
 
 # this creates an empty partition table
@@ -121,12 +121,12 @@ do
                         # continue to work on the partition itself if 'parted' OK 
                         if [ $? -eq 0 ] ; then
                          
-                            echo "Formatting usb flash to ext2 file system..."
+                            echo "Formatting usb flash to ext3 file system..."
                             # set flags on partition 1
                             $PARTED $file $BOOTOFF  
                          
                             # format the partition with label (in case auto mounting)
-                            $FORMAT_EXT2 -L $LABEL -t ext2 $partition
+                            $FORMAT_EXT3 -L $LABEL -t ext3 $partition
                              
                             # turn off file system check on this usb thumb drive
                             $DISABLEDISKCHK $partition
