@@ -1,0 +1,2 @@
+Dpkg::Pre-Install-Pkgs {"mount -o remount,exec /tmp";};
+Dpkg::Post-Invoke {"mount -o remount /tmp";};

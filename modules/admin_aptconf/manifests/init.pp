@@ -75,6 +75,21 @@ class admin_aptconf {
 		  mode => '0644',
 	}
 	
+	## Some hosts (standard for servers) have /tmp partition mounted 'noexec'
+	## Apt may need 'exec' /tmp during install. This remount /tmp for apt. 
+	
+	if $::hostname in $::admin_aptconf::params::hosttmpremountexeclist {
+	
+		file { "/etc/apt/apt.conf.d/50tmpremountexec":
+		    source => "puppet:///modules/admin_aptconf/50tmpremountexec",
+             owner => 'root',
+		     group => 'root',
+		      mode => '0644',
+	    }
+	
+	}
+	
+	
 	# create a bin subdirectory directory only for an unattended cron upgrade
 	# script. This is required to shuffle source lists when run unattended.
 	
