@@ -44,7 +44,7 @@ AWK="/usr/bin/awk"
 
 DISABLEDISKCHK="/sbin/tune2fs -c -1"
 FORMAT_EXT3="/sbin/mke2fs"
-LABEL="usb"
+LABEL="USB"
 
 # this creates an empty partition table
 EMPTYTABLE="--script -- mklabel msdos"
