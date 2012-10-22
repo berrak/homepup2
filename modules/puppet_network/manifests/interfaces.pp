@@ -103,7 +103,7 @@ class puppet_network::interfaces ( $interfaces = '1',
         
             file { "/etc/udev/rules.d/70-persistent-net.rules" :
                 ensure => present,
-                source => "puppet:///modules/puppet_network/70-persistent-net.rules.${hostnm}"),
+                source => "puppet:///modules/puppet_network/70-persistent-net.rules.${hostnm}",
                  owner => 'root',
                  group => 'root',
                 notify => Exec["network_restart"],
