@@ -21,6 +21,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+## Notes
+#
+# The logical interface must match what is in /etc/network/interfaces
+# With multiple NICs it may be required to use udev rules to gurantee
+# that kernel does not assign a different name to the IF_*** below.
+# My policy is to always define 'internal net' where eth0 is assigned.
+# eth1 is then always external, i.e. closer to the internet gateway.
 #
 ## Basic data
 
@@ -30,11 +37,13 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
+# internal 'sec.tld' net
 NET_INT="192.168.2.0/24"
-IF_INT=eth1
+IF_INT=eth0
 
+# external 'home.tld' net
 NET_EXT="192.168.0.0/24"
-IF_EXT=eth0
+IF_EXT=eth1
 
 GWHOSTADDR="192.168.2.1"
 GWHOSTEXTADDR="192.168.0.254"

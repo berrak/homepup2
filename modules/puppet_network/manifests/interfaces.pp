@@ -95,6 +95,21 @@ class puppet_network::interfaces ( $interfaces = '1',
              group => 'root',
             notify => Exec["network_restart"],
         }
+        
+        # sometimes the gateway have built in unused NICs. Then we need to
+        # use some udev rules to 'lock' the logical name of the interface.
+        
+        if $::hostname == $::puppet_network::params::securegatewayhost {
+        
+            file { "/etc/udev/rules.d/70-persistent-net.rules" :
+                ensure => present,
+                source => "puppet:///modules/puppet_network/70-persistent-net.rules.${hostnm}"),
+                 owner => 'root',
+                 group => 'root',
+                notify => Exec["network_restart"],
+            }       
+        
+        }
     
     }
 
