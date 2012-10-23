@@ -13,7 +13,7 @@ class puppet_network::kernel {
 
     # enable kernel 'ipv4 forward' for all forwarding (gateway) hosts
     
-    if $myhost in puppet_network::params::forwardinghostslist {
+    if ( $myhost == 'gondor') or ( $myhost == 'asgard') {
 
         $ipv4_forwarding = 'net.ipv4.ip_forward = 1'
         
