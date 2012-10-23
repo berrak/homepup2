@@ -31,12 +31,7 @@ node basenode {
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
 	                          hour => '10', minute => '0' }
-	
-    class { admin_hosts::config :
-		puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
-		gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
-		smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
-		
+			
     include admin_pinpuppet2_7
 
     admin_bndl::install { 'securityapps' : }
@@ -60,6 +55,13 @@ node basenode {
 node default inherits basenode {
 
     include puppet_agent
+
+    # assumes that all host lives in the same domain, otherwise specify it as a parameter
+    class { admin_hosts::config :
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+
 
     # following two classes assumes a single interface host in 192.168.0.0/24 and eth0.
 	class { puppet_iptables::config : role => 'default' }

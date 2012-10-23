@@ -4,6 +4,13 @@
 node 'gondor.home.tld' inherits basenode {
 
 	include puppet_agent
+	
+    # assumes that all host lives in the same domain, otherwise specify it as a parameter
+    class { admin_hosts::config :
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+	
     include puppet_tripwire
 	include puppet_tiger
 		
@@ -34,12 +41,18 @@ node 'gondor.home.tld' inherits basenode {
 }
 
 
-##########################################
-### (ASGARD) gateway host/apt repo server
-##########################################
-node 'asgard.home.tld' inherits basenode {
+###################################################################
+### (ASGARD) gateway host/apt repo server - NOTE IN DOMAIN: sec.tld
+###################################################################
+node 'asgard.sec.tld' inherits basenode {
 
     include puppet_agent
+	
+    # assumes that all host lives in the same domain, otherwise specify it as a parameter
+    class { admin_hosts::config :
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon', puppetserver_domain => 'home.tld',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor', gateway_domain => 'home.tld',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan', smtp_domain => 'home.tld' }
 	
 	# realtek nic firmware driver
     admin_bndl::install { 'nonfree' : }

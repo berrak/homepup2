@@ -4,7 +4,13 @@
 node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
-	
+
+    # assumes that all host lives in the same domain, otherwise specify it as a parameter
+    class { admin_hosts::config :
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'mordor' }
 

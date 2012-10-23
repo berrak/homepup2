@@ -3,28 +3,41 @@
 ## 
 ##
 class admin_hosts::config (
-				$puppetserver_ip = '', $puppetserver_hostname = '',
-				     $gateway_ip = '',      $gateway_hostname = '',
-				        $smtp_ip = '',         $smtp_hostname = '',
+				$puppetserver_ip = '', $puppetserver_hostname = '', $puppetserver_domain = '',
+				     $gateway_ip = '',      $gateway_hostname = '', $gateway_domain = '',
+				        $smtp_ip = '',         $smtp_hostname = '', $smtp_domain = '',
 ) {
 
 	
-	# Facter node variables
-	
-	$mylocaldomain = $::domain
+	# Facter node variables, unless 
+    
 	$myhostname = $::hostname
 	$myip = $::ipaddress
-	
-	
+    $mylocaldomain = $::domain
+
 	# Add puppet server, gateway, smtp ip to default hosts file
 	# but do not duplicate entries on these hosts. Assumes that,
 	# puppetmaster, smtp and the gateway host are on different systems.
 	
+    # puppet server may live in same domain as the actual host
+    if $puppetserver_domain == '' {
+        $mypuppetserver_domain = $::domain
+    }
+	
+    # gateway may live in same domain as the actual host
+    if $gateway_domain == '' {
+        $mygateway_domain = $::domain
+    }
+	
+    # smtp server may live in same domain as the actual host
+    if $smtp_domain == '' {
+        $mysmtp_domain = $::domain
+    }
 	
 	case $myip {
     
         $puppetserver_ip: {
-        
+		
             file { '/etc/hosts' :
                 content =>  template( 'admin_hosts/puppetserver.hosts.erb' ),
                   owner => 'root',
