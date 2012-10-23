@@ -4,14 +4,16 @@
 ##
 class puppet_network::kernel {
 
+    include puppet_network::params
+    
     # facter
 
     $myhost = $::hostname
 
 
-    # special case for our gateway host (enable forwarding)
+    # enable kernel 'ipv4 forward' for all forwarding (gateway) hosts
     
-    if $myhost == 'gondor' {
+    if $myhost in puppet_network::params:forwardinghostslist {
 
         $ipv4_forwarding = 'net.ipv4.ip_forward = 1'
         

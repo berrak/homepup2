@@ -14,4 +14,8 @@ class puppet_network::params {
     
     $securegatewayhost = 'asgard'
     
+    # these hosts (i.e. our gateways) enable ipv4 forwarding in kernel
+    
+    $forwardinghostslist = [ 'gondor', 'asgard' ]
+    
 }
