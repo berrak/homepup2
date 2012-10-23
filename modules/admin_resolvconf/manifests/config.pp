@@ -11,7 +11,7 @@ class admin_resolvconf::config ( $dns_ip_1st = '208.67.222.222',
 								 $dns_ip_2nd = '208.67.220.220',
 ) {
 
-	$mylocaldomain = $::domain
+	$mydomain = $::domain
 	$dns1 = $dns_ip_1st
 	$dns2 = $dns_ip_2nd
 	
