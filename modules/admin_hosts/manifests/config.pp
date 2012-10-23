@@ -22,17 +22,23 @@ class admin_hosts::config (
     # puppet server may live in same domain as the actual host
     if $puppetserver_domain == '' {
         $mypuppetserver_domain = $::domain
-    }
+    } else {
+	    $mypuppetserver_domain = $puppetserver_domain
+	}
 	
     # gateway may live in same domain as the actual host
     if $gateway_domain == '' {
         $mygateway_domain = $::domain
-    }
+    } else {
+       $mygateway_domain = $mygateway_domain
+	}
 	
     # smtp server may live in same domain as the actual host
     if $smtp_domain == '' {
         $mysmtp_domain = $::domain
-    }
+    } else {
+	    $mysmtp_domain = $smtp_domain
+	}
 	
 	case $myip {
     
