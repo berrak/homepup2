@@ -2,14 +2,15 @@
 ## This class manage iptables rules. If not '$hostnm' is given a generic set
 ## of iptables rules is used (i.e. role => 'default'. Internal net and interface
 ## parameters can be given to override defaults '192.168.0.0/24' and 'eth0'
+## (defined in params.pp)
 ##
 ##
 ## If $hostnm is given, this overrides $role (but must be given), and a
 ## specific $hostnm rule are used instead.
 ##
 ## Sample usage:
-##     class { puppet_iptables::config : role => 'default' }
-##     class { puppet_iptables::config : role => 'default', inet => '192.168.0.2/24', iface => 'eth1' }
+##     class { puppet_iptables::config : role => 'default.desktop' }
+##     class { puppet_iptables::config : role => 'default.server', inet => '192.168.2.0/24' }
 ##
 ##     class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan' }
 ##
@@ -21,7 +22,7 @@ class puppet_iptables::config ( $role,
 
     include puppet_iptables
 
-    if ! ( $role in [ "default", "mailserver", "gateway", "puppetmaster" ]) {
+    if ! ( $role in [ 'default.desktop', 'default.server', 'mailserver', 'gateway', 'puppetmaster' ]) {
 	
 		fail("FAIL: Unknown role parameter ($role).")
 	
@@ -29,7 +30,7 @@ class puppet_iptables::config ( $role,
 
     ## Use default configuration parameters or use supplied overrides.
 	
-	if $role == 'default' {
+	if ( $role == 'default.desktop' ) or ( $role == 'default.server' ) {
 	
         if $inet == '' {
             $net_int = $::puppet_iptables::params::net_int
@@ -49,7 +50,7 @@ class puppet_iptables::config ( $role,
     
     $ntphostaddr = $::puppet_iptables::params::ntphostaddr
     $netprn_hp3015_addr = $::puppet_iptables::params::netprn_hp3015_addr
-    $mdnsmulticastaddr = $::puppet_iptables::params::mdnsmulticastaddr
+    $puppetserveraddr = $::puppet_iptables::params::puppetserveraddr
 
 	## facter	
 		

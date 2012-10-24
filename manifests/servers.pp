@@ -106,7 +106,8 @@ node 'valhall.sec.tld' inherits basenode {
 	## network and default services
 	
     class { puppet_network::interfaces : broadcastnet => '192.168.2.0', defaultgateway => '192.168.2.1' }
-    class { puppet_iptables::config : role => 'default', inet => '192.168.2.0/24' }
+	
+    class { puppet_iptables::config : role => 'default.server', inet => '192.168.2.0/24' }
 	
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	

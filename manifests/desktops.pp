@@ -15,7 +15,7 @@ node 'mordor.home.tld' inherits basenode {
     class { admin_fstab::config : fstabhost => 'mordor' }
 
     # load desktop firewall script
-    class { puppet_iptables::config : role => 'default' }
+    class { puppet_iptables::config : role => 'default.desktop' }
 	 
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 		

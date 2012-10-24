@@ -10,19 +10,22 @@ class puppet_iptables::params {
     $net_int = '192.168.0.0/24'
     $if_int = 'eth0'
     
+    
     # time server
     #-------------  
     
     $ntphostaddr = '192.168.0.1'
     
+    
     # net printers
     #-------------
     
     $netprn_hp3015_addr = '192.168.0.30'
+
     
-    # special address
+    # puppet server
     #------------------
     
-    $mdnsmulticastaddr = '224.0.0.251'
+    $puppetserveraddr = '192.168.0.24'
 
 }
