@@ -149,10 +149,15 @@ $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 9418 -m state --state NEW
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF INT2EXT "
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j DROP
 
-# drop not forward any invalid packages
+# drop don't forward any invalid packages
 $IPTABLES -A FORWARD -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARD INVALID "
 $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 
+#----------------------------------------------------------------
+## Internal outbound traffic (from internal net --> special hosts)
+#----------------------------------------------------------------
+# all puppet requests pass through gateway
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $PUPPETMASTERHOSTADDR -m tcp --dport 8140 -m state --state NEW -j ACCEPT
 
 #----------------------------------------------------------------
 ## Internal outbound traffic (from internal net --> gateway host)
@@ -196,6 +201,9 @@ $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
 
 # allow established and related traffic ext to internal net
 $IPTABLES -A FORWARD -i $IF_EXT -o $IF_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# allow puppet response pass through (is this required?)
+# $IPTABLES -A FORWARD -p tcp -s $PUPPETMASTERHOSTADDR -d $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
 # drop spoof packages
 $IPTABLES -A FORWARD -i $IF_EXT -s $NET_INT -o $IF_INT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF EXT2INT "
