@@ -1,0 +1,38 @@
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+
+# / was on /dev/sda6 during installation
+UUID=36900b2a-a2e1-409e-8b96-2724fdb2466e /               ext4    defaults,errors=remount-ro 0       1
+
+# /boot was on /dev/sda1 during installation
+UUID=810add44-4f82-45aa-a5f2-376b931f9de5 /boot           ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /home was on /dev/sda7 during installation
+UUID=7d9db704-4392-418f-a20f-83f668d44a6a /home           ext4    defaults,nosuid,nodev        0       2
+
+# /srv was on /dev/sda12 during installation
+UUID=2dc765bb-3f55-47f5-8622-8d6c920af7d7 /srv            ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /tmp was on /dev/sda8 during installation
+UUID=2a559bed-ab0c-4b11-a898-cf4145d64b90 /tmp            ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /var was on /dev/sda9 during installation
+UUID=6c1eed36-780d-4875-8a31-e283cad5c22b /var            ext4    defaults,nosuid        0       2
+
+# /var/log was on /dev/sda10 during installation
+UUID=c5e71bc0-b81e-44f0-8e0b-8a6f122b5df8 /var/log        ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /var/log/audit was on /dev/sda11 during installation
+UUID=f876abcb-a90e-4cdd-8f0e-eb48335d15e7 /var/log/audit  ext4    defaults,nosuid,nodev,noexec        0       2
+
+/dev/mapper/sda5_crypt none            swap    sw              0       0
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
