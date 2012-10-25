@@ -51,6 +51,7 @@ class puppet_iptables::config ( $role,
     $ntphostaddr = $::puppet_iptables::params::ntphostaddr
     $netprn_hp3015_addr = $::puppet_iptables::params::netprn_hp3015_addr
     $puppetserveraddr = $::puppet_iptables::params::puppetserveraddr
+	$smtphostaddr = $::puppet_iptables::params::smtphostaddr
 
 	## facter	
 		

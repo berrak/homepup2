@@ -24,8 +24,15 @@ class puppet_iptables::params {
 
     
     # puppet server
-    #------------------
+    #--------------
     
     $puppetserveraddr = '192.168.0.24'
+    
+    
+    # mail/imap server
+    #------------------
+    
+    $smtphostaddr = '192.168.0.24'
+    
 
 }
