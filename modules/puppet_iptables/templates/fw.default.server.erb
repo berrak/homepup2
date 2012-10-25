@@ -32,10 +32,12 @@ IPTSAVEFILE=/root/bin/IPTABLES.FW
 NET_INT="<%= net_int %>"
 IF_INT=<%= if_int %>
 
-# Special hosts (NTP and Puppet server)
+# Special hosts (NTP,smtp and Puppet server)
+# which may not be in the same domain as the host.
 
 NTPHOSTADDR="<%= ntphostaddr %>"
 PUPPETHOSTADDR="<%= puppetserveraddr %>"
+SMTPHOSTADDR="<%= smtphostaddr %>"
 
 ## Log options
 LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"
@@ -138,15 +140,15 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW
 # allow git protocol out
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
 
-#------------------------------------------------------------
-# Internal outbound traffic (from this host --> internal net)
-#------------------------------------------------------------
+#-----------------------------------------------------------------------------
+# Internal outbound traffic (from this host --> internal net, or special host)
+#-----------------------------------------------------------------------------
 
 # allow all established and related out to internal net
 $IPTABLES -A OUTPUT -p all -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # allow smtp out to internal mail server
-$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 25 -m state --state NEW -j ACCEPT
 
 # ntp udp is stateless but iptables keeps track of udp 'states'
 $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
