@@ -32,7 +32,7 @@ class puppet_iptables::params {
     # mail/imap server
     #------------------
     
-    $smtphostaddr = '192.168.0.24'
+    $smtphostaddr = '192.168.0.11'
     
 
 }

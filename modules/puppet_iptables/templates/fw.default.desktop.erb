@@ -177,12 +177,12 @@ $IPTABLES -A OUTPUT -p tcp -d $PUPPETHOSTADDR -m tcp --dport 8140 -m state --sta
 $IPTABLES -A OUTPUT -p icmp --icmp-type echo-request -d $NET_INT -j ACCEPT
 
 # allow cups network printing
-$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -d $NETPRN_HP3015_ADDR -m tcp --dport 631 -m state --state NEW -j ACCEPT
 
 # multicast mDNS implementation by Avahi to detect network device e.g. printers 
 $IPTABLES -A OUTPUT -p udp -d $MDNSMULTICASTADDR -m udp --dport 5353 -m state --state NEW -j ACCEPT
 
-# anything for the printer from this host
+# anything else for the printer from this host
 $IPTABLES -A OUTPUT -p tcp -d $NETPRN_HP3015_ADDR -j ACCEPT
 $IPTABLES -A OUTPUT -p udp -d $NETPRN_HP3015_ADDR -j ACCEPT
 
