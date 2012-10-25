@@ -17,6 +17,6 @@ class puppet_procmail::params {
     # Do not include the mail server host here. Local mails
     # is routed by default to top .INBOX by 'procmail'.
     
-    $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR' ]
+    $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR', 'ASGARD' ]
 
 }
