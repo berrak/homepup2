@@ -42,9 +42,9 @@ node 'gondor.home.tld' inherits basenode {
 
 
 ###################################################################
-### (ASGARD) gateway host/apt repo server - NOTE IN DOMAIN: sec.tld
+### (ASGARD) gateway host/apt repo server
 ###################################################################
-node 'asgard.sec.tld' inherits basenode {
+node 'asgard.home.tld' inherits basenode {
 
     include puppet_agent
 	

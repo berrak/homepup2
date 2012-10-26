@@ -90,10 +90,10 @@ node 'rohan.home.tld' inherits basenode {
 
 }
 
-###################################################
-## (VALHALL TEST SERVER) - NOTE IN DOMAIN: sec.tld
-###################################################
-node 'valhall.sec.tld' inherits basenode {
+##########################################################
+## (VALHALL TEST SERVER) - NOTE IN SUBDOMAIN: sec.home.tld
+##########################################################
+node 'valhall.sec.home.tld' inherits basenode {
 
     include puppet_agent
 
