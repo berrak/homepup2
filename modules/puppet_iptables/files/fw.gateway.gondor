@@ -158,7 +158,7 @@ $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # time service for our internal net (broadcast)
-$IPTABLES -A INPUT -p udp -s $NTPHOSTADDR -d $GWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -s $NET_INT -d $GWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # allow puppet master to communicate with this client on port 8139
 $IPTABLES -A INPUT -p tcp -s $PUPPETHOSTADDR -d $GWHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
