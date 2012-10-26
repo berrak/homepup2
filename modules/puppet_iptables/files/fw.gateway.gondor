@@ -157,7 +157,7 @@ $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 # allow established and related traffic to fwhost
 $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# time service for our internal net (broadcast)
+# time service communication with our internal net hosts
 $IPTABLES -A INPUT -p udp -s $NET_INT -d $GWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # allow puppet master to communicate with this client on port 8139
@@ -209,7 +209,7 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 # allow established and related traffic to fwhost
 $IPTABLES -A INPUT -i $IF_EXT -d $GWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# time service broadcasts for our internal NTP server (this host)
+# public time service broadcasts directed to our internal NTP server (this host)
 $IPTABLES -A INPUT -p udp -i $IF_EXT -d $GWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
 
 # drop all other from external net to fwhost
