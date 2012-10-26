@@ -408,7 +408,7 @@ SEC_INVARIANT = +tpug ;              # Directories that should never
   <%= mymailto %>
 )
 {
-    !/var/log/audit
+    !/var/log/audit                               ;
 	/		    -> $(SEC_INVARIANT) (recurse = 0) ;
 	/home		-> $(SEC_INVARIANT) (recurse = 0) ;
 	/tmp		-> $(SEC_INVARIANT) (recurse = 0) ;
