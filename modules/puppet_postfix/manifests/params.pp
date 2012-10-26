@@ -10,4 +10,9 @@ class puppet_postfix::params {
     $satellite_preseedfilepath = "/etc/puppet/files/satellite.postfix.preseed"
 
 
+    # Other internal sub domains that the mail server should accept mails from
+    
+    $my_subdomain_one = 'sec.tld'
+
+
 }

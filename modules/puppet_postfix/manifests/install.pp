@@ -71,6 +71,10 @@ define puppet_postfix::install(
     
     # define template variables to control external domain mail
     # delivery. This will bounce back to sender if external destination.
+    
+    # Allow our internal sub domain (this is not for the main 'home.tld')
+    
+    $mysubdomain1 = $::puppet_postfix::params::my_subdomain_one
 
     if $no_lan_outbound_mail == 'true' {
 
