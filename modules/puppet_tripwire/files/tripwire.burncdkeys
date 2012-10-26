@@ -205,8 +205,9 @@ fi
 ## check that the host name is given by first argument
 thishost=`$HOSTNAME`
 if [ $# -ne 1 ];then
-    echo "Missing the host name for the local key file"
-    echo "Invoke the script with $0 $HOSTNAME"
+    echo "Missing the target host name for the local key file"
+    echo "Invoke the script with $0 $thishost"
+    
     exit 0
 elif [ $1 != $thishost ]; then
     echo "Warning: Your provided local host key name ($1) is not same as this host name i.e. ($thishost)."
