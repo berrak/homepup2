@@ -5,15 +5,16 @@
 class admin_hosts::config (
 				$puppetserver_ip = '', $puppetserver_hostname = '', $puppetserver_domain = '',
 				     $gateway_ip = '',      $gateway_hostname = '',      $gateway_domain = '',
-                  $gateway_subip = '',    gateway_subhostname = '',   $gateway_subdomain = '',					 
+              $gateway_subdomain = '',					 
 				        $smtp_ip = '',         $smtp_hostname = '',         $smtp_domain = '',
 ) {
 
 	
-	# Facter node variables, unless 
+	# Facter node variables
     
 	$myhostname = $::hostname
-	$myip = $::ipaddress
+	$ip_eth0 = $::ipaddress_eth0
+    $ip_eth1 = $::ipaddress_eth1
     $mylocaldomain = $::domain
 
 	# Add puppet server, gateway, smtp ip to default hosts file
@@ -31,7 +32,7 @@ class admin_hosts::config (
     if $gateway_domain == '' {
         $mygateway_domain = $::domain
     } else {
-       $mygateway_domain = $mygateway_domain
+        $mygateway_domain = $mygateway_domain
 	}
 	
     # smtp server may live in same domain as the actual host
@@ -41,9 +42,9 @@ class admin_hosts::config (
 	    $mysmtp_domain = $smtp_domain
 	}
 		
-	case $myip {
+	case $myhostname {
     
-        $puppetserver_ip: {
+        'carbon' : {
 		
             file { '/etc/hosts' :
                 content =>  template( 'admin_hosts/puppetserver.hosts.erb' ),
@@ -54,7 +55,7 @@ class admin_hosts::config (
         
         }
 	
-        $gateway_ip: {
+        'gondor' : {
         
             file { '/etc/hosts' :
                 content =>  template( 'admin_hosts/gateway.hosts.erb' ),
@@ -65,7 +66,19 @@ class admin_hosts::config (
 
         }
 		
-        $smtp_ip: {
+        'asgard' : {
+        
+            file { '/etc/hosts' :
+                content =>  template( 'admin_hosts/security.hosts.erb' ),
+                  owner => 'root',
+                  group => 'root',
+                   mode => '0644',
+            }
+
+        }		
+		
+		
+        'rohan' : {
         
             file { '/etc/hosts' :
                 content =>  template( 'admin_hosts/smtp.hosts.erb' ),
