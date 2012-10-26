@@ -3,6 +3,6 @@
 ##
 class admin_resolvconf {
 
-    include admin_resolvconf::config
+    include admin_resolvconf::config, admin_resolvconf::params
 	
 }

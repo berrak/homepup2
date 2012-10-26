@@ -10,9 +10,9 @@ class puppet_postfix::params {
     $satellite_preseedfilepath = "/etc/puppet/files/satellite.postfix.preseed"
 
 
-    # Other internal sub domains that the mail server should accept mails from
+    # internal sub domains the mail server should use smtp transport for
     
-    $my_subdomain_one = 'sec.tld'
+    $my_subdomain_one = 'sec.home.tld'
 
 
 }
