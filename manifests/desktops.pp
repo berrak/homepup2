@@ -91,7 +91,9 @@ node 'shire.home.tld' inherits basenode {
     admin_bndl::install { 'developerapps' : }
 	
     include puppet_cups
-	
+
+}
+
 ###############################
 ## eof
 ###############################
