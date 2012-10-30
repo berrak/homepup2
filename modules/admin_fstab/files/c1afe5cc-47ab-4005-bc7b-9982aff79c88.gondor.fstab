@@ -13,7 +13,7 @@ UUID=1a8e6acb-93e4-4f84-9dce-d8e1aa97074c /               ext4    defaults,error
 UUID=c1afe5cc-47ab-4005-bc7b-9982aff79c88 /boot           ext4    defaults,nosuid,nodev,noexec        0       2
 
 # /home was on /dev/sda7 during installation
-UUID=a7be0fe8-15ce-4e00-96fb-2a19fb6d8887 /home           ext4    defaults,nosuid,nodev        0       2
+UUID=a7be0fe8-15ce-4e00-96fb-2a19fb6d8887 /home           ext4    defaults,nosuid,nodev,noexec        0       2
 
 # /srv was on /dev/sda12 during installation
 UUID=59c2ed6b-6a0c-4a38-83dd-e13267a1cd51 /srv            ext4    defaults,nosuid,nodev,noexec        0       2
