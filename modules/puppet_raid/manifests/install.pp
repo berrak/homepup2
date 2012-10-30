@@ -3,6 +3,6 @@
 ##
 class puppet_raid::install {
 
-    package { "mdadm" : ensure => install }
+    package { "mdadm" : ensure => installed }
 
 }
