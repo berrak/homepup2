@@ -12,11 +12,6 @@ class admin_resolvconf::config ( $dns_provider = '' ) {
 
     include admin_resolvconf::params
 
-    if ! $dns_provider in [ 'opendns', 'ispdns' ] {
-	
-	    fail("FAIL: Unknown dns provider parameter ($dns_provider). Use 'opendns' or 'ispdns'")
-	}
-
 	case $dns_provider {
          
 		 'ispdns': {
@@ -28,7 +23,10 @@ class admin_resolvconf::config ( $dns_provider = '' ) {
               $dns1 = $::admin_resolvconf::params::opendns_ip_1st
 	          $dns2 = $::admin_resolvconf::params::opendns_ip_2nd
 		 }
-	     default: {}
+		 
+	     default: {
+		      fail("FAIL: Unknown dns provider parameter ($dns_provider)")
+		 }
 	}
 
     $mydomain = $::domain
