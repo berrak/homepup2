@@ -1,25 +1,39 @@
 ##
 ## This class manage resolv.conf DNS entries.
-## If no DNS ip addresses is given OpenDNS is used.
-##
-## TODO: Move dns's to params and move subdomain up as class parameter.
-## Now its quick fix to have postfix delivering mails from subdomains.
+## 'dns_provider => ispdns | opendns' decides which
+## dns servers to use (see params)
 ##
 ## Sample usage:
 ##
-##  class { admin_resolvconf::config :
-##		dns_ip_1st => 'XXX.XXX.XXX.XXX', dns_ip_2nd => 'XXX.XXX.YYY.YYY' }
+##  class { admin_resolvconf::config : dns_provider => 'opendns' }
+##  class { admin_resolvconf::config : dns_provider => 'ispdns' }
 ##
-class admin_resolvconf::config ( $dns_ip_1st = '208.67.222.222',
-								 $dns_ip_2nd = '208.67.220.220',
-) {
+class admin_resolvconf::config ( $dns_provider = '' ) {
 
     include admin_resolvconf::params
 
-	$mydomain = $::domain
-	$dns1 = $dns_ip_1st
-	$dns2 = $dns_ip_2nd
+    if ! $dns_provider in [ 'opendns', 'ispdns' ] {
 	
+	    fail("FAIL: Unknown dns provider parameter ($dns_provider). Use 'opendns' or 'ispdns'")
+	}
+
+	case $dns_provider {
+         
+		 'ispdns': {
+              $dns1 = $::admin_resolvconf::params::ispdns_ip_1st
+	          $dns2 = $::admin_resolvconf::params::ispdns_ip_2nd
+		 }
+		 
+         'opendns': {
+              $dns1 = $::admin_resolvconf::params::opendns_ip_1st
+	          $dns2 = $::admin_resolvconf::params::opendns_ip_2nd
+		 }
+	     default: {}
+	}
+
+    $mydomain = $::domain
+	
+	# handle sub domains for postfix mail delivery
 	$mysubdomain1 = $::admin_resolvconf::params::mysubdomain_1
 	
 	file { '/etc/resolv.conf' :
