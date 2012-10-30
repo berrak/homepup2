@@ -33,5 +33,8 @@ UUID=638eef2c-8d79-47eb-8903-ca1505ac7ffb /var/log/audit  ext4    defaults,nosui
 # /var/www was on /dev/sda12 during installation
 UUID=b44b7666-584a-4f84-8802-fe371f1d8315 /var/www        ext4    defaults,nosuid,nodev,noexec        0       2
 
-/dev/mapper/sda5_crypt none            swap    sw              0       0
+# Local raid 1 (mirror for some user data)
+/dev/md0   /mnt/shireraid                                 ext4    defaults,nosuid,nodev,noexec        0       2
+
+/dev/mapper/sda5_crypt none            swap    sw           0       0
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
