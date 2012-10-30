@@ -30,7 +30,8 @@ define puppet_git::config ( $codehost = '' ) {
         
         }
         
-        'mordor': {
+        'mordor',
+        'shire' : {
 
             if $myhost != $codehost {
                 fail("FAIL: Given host name ($codehost) does not match actual host: ($myhost).")

@@ -32,6 +32,8 @@ node 'mordor.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
+    ## use this host for CPAN/perl projects
+	
 	puppet_git::config { 'bekr': codehost => 'mordor' }
 	
     user_bashrc::config { 'dakr' : }
@@ -83,7 +85,9 @@ node 'shire.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
-	# puppet_git::config { 'bekr': codehost => 'mordor' }
+	## use this host for CPAN/perl projects
+	
+	puppet_git::config { 'bekr': codehost => 'shire' }
 
 	## application bundles
 	
