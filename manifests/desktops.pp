@@ -54,6 +54,7 @@ node 'mordor.home.tld' inherits basenode {
 node 'shire.home.tld' inherits basenode {
 
     include puppet_agent
+	include puppet_raid
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
