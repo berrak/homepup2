@@ -21,8 +21,16 @@ class puppet_nfs4srv::config ( $user ='' ) {
           group => 'root',
         require => Class["puppet_nfs4srv::install"],
     }
+	
+	# if 'exports' is updated, refresh nfs server
+	
+	exec { "reload_NFSv4_exports":
+		command => '/usr/sbin/exportfs -ra',
+		subscribe => File["/etc/exports"],
+		refreshonly => true,
+	}
     
-    # create the export directory for $user
+    # finally, create the export directory for $user
     
 	file { "/mnt/shireraid/nfs-${user}":
 		ensure => "directory",
