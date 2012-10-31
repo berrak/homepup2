@@ -7,6 +7,7 @@
 class puppet_nfs4srv::config ( $user ='' ) {
 
     include puppet_nfs4srv::params
+	include puppet_nfs4srv::install
 
     if $user == '' {
     
