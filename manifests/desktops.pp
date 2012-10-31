@@ -86,7 +86,7 @@ node 'shire.home.tld' inherits basenode {
     puppet_devtools::tools { 'bekr' : }
 	
 	## (test client/server on same host - remove client later)
-    class { 'puppet_nfs4srv' : user => 'bekr' }
+    class { 'puppet_nfs4srv::config' : user => 'bekr' }
 	
 	## use this host for CPAN/perl projects
 	
