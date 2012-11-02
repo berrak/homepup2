@@ -10,9 +10,9 @@ class puppet_raid::config {
        require => Class["puppet_raid::install"],
     }    
     
-    # mount point for the data directory (raid 1)
+    # mount point for the data directory (nfs exports on raid 1)
     
-	file { "/mnt/shireraid":
+	file { "/mnt/exports":
 		ensure => "directory",
 		 owner => 'root',
 		 group => 'root',

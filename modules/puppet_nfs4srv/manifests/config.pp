@@ -33,7 +33,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
     
     # finally, create the export directory for $user
     
-	file { "/mnt/shireraid/nfs-${user}":
+	file { "/mnt/exports/nfs-${user}":
 		ensure => "directory",
 		 owner => $user,
 		 group => $user,
