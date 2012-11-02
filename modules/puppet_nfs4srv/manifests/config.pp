@@ -14,6 +14,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
         fail("FAIL: Missing the user ($user) parameter")
     }
 
+    $myexport0 = $::puppet_nfs4srv::params::export0
     $myexport1 = $::puppet_nfs4srv::params::export1
 
     file { '/etc/exports':
