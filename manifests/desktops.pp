@@ -36,10 +36,7 @@ node 'mordor.home.tld' inherits basenode {
 	
 	puppet_git::config { 'bekr': codehost => 'mordor' }
 	
-    user_bashrc::config { 'dakr' : }
-    puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
-
-
+	
 	## application bundles
 	
     admin_bndl::install { 'guiadminapps' : }
