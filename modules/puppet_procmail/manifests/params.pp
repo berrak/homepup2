@@ -16,6 +16,7 @@ class puppet_procmail::params {
     # (capatilized) to match the folders names in recipes.rc.
     # Do not include the mail server host here. Local mails
     # is routed by default to top .INBOX by 'procmail'.
+    # Note: update also the recipie template!
     
     $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR', 'ASGARD', 'SHIRE' ]
 
