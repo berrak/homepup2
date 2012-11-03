@@ -1,0 +1,37 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+
+# / was on /dev/sda6 during installation
+UUID=9e61ced5-45f6-452c-b499-14c64da621bf /               ext4    defaults,errors=remount-ro 0       1
+
+# /boot was on /dev/sda1 during installation
+UUID=96f85287-f927-4188-94c7-1ee3dd029d95 /boot           ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /home was on /dev/sda7 during installation
+UUID=a1a23b84-995a-4df9-bef4-022c4fc76fd4 /home           ext4    defaults,nosuid,nodev        0       2
+
+# /srv was on /dev/sda13 during installation
+UUID=e0490639-639d-4643-9698-c3ae8c7dadf1 /srv            ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /tmp was on /dev/sda8 during installation
+UUID=50de7ad0-298a-4dad-b836-5019b1f8df4c /tmp            ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /var was on /dev/sda9 during installation
+UUID=9444740d-5efd-4ba4-a0d1-5b8cb2d4b3d8 /var            ext4    defaults,nosuid        0       2
+
+# /var/log was on /dev/sda10 during installation
+UUID=5b6a0fad-737e-4ab8-ae40-552d8f338903 /var/log        ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /var/log/audit was on /dev/sda11 during installation
+UUID=c357752b-d48c-41a4-8c9b-6892525ce6bb /var/log/audit  ext4    defaults,nosuid,nodev,noexec        0       2
+
+# /var/www was on /dev/sda12 during installation
+UUID=7c13d0a2-cb5e-4ccf-ad61-b7a9cdff3ac1 /var/www        ext4    defaults,nosuid,nodev,noexec        0       2
+
+/dev/mapper/sda5_crypt none            swap    sw              0       0
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
