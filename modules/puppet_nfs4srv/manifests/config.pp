@@ -38,7 +38,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		ensure => "directory",
 		 owner => $user,
 		 group => $user,
-         mode => '0640',
+         mode => '0750',
 	}
 	
 	# and (only on the server) link the local user directory 'nfs-$user' to this mnt-point

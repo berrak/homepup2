@@ -32,6 +32,10 @@ node 'mordor.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
+	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
+    class { 'puppet_nfs4client::config' : user => 'bekr' }
+	
+	
     ## use this host for CPAN/perl projects
 	
 	puppet_git::config { 'bekr': codehost => 'mordor' }
@@ -82,7 +86,7 @@ node 'shire.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
-	## (test client/server on same host - remove client later)
+	## this (desktop-) host exports some 'home' sub-directories for user 'bekr'
     class { 'puppet_nfs4srv::config' : user => 'bekr' }
 	
 	## use this host for CPAN/perl projects

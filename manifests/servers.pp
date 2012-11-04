@@ -22,8 +22,13 @@ node 'carbon.home.tld' inherits basenode {
 	
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	
+	## users
+	
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
+	
+	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
+    class { 'puppet_nfs4client::config' : user => 'bekr' }	
 	
     ## use this host for puppet projects
 	
