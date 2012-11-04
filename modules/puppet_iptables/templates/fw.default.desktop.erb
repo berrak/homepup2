@@ -102,7 +102,7 @@ $IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -j ACCEPT
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
 
 # ntp time information (udp) from our internal LAN NTP server
-$IPTABLES -A INPUT -p udp -s $NETHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -s $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # puppet master talks to clients on this port
 $IPTABLES -A INPUT -p tcp -s $PUPPETHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
@@ -168,7 +168,7 @@ $IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 143 -m state --state 
 $IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 993 -m state --state NEW -j ACCEPT
 
 # ntp udp is stateless but iptables keeps track of udp 'states'
-$IPTABLES -A OUTPUT -p udp -d $SMTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # talk to the puppet master server on this port
 $IPTABLES -A OUTPUT -p tcp -d $PUPPETHOSTADDR -m tcp --dport 8140 -m state --state NEW -j ACCEPT
