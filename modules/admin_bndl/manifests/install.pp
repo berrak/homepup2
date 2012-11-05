@@ -68,8 +68,15 @@ define admin_bndl::install {
 			# parted: partition table manipulator
 			# wodim: command line CD/DVD writing tool
 			# genisoimage: creates ISO-9660 CD-ROM filesystem images
+			# ethtool: display or change Ethernet device settings
+			# chkconfig: system tool to enable or disable system services
+			# sysv-rc-conf: SysV init runlevel configuration tool for the terminal
+			
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
+                ensure => installed }
+			
+			package  { [ "ethtool", "chkconfig", "sysv-rc-conf" ] :
                 ensure => installed }
 			
 			
