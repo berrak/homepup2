@@ -38,3 +38,6 @@ UUID=b44b7666-584a-4f84-8802-fe371f1d8315 /var/www        ext4    defaults,nosui
 
 /dev/mapper/sda5_crypt none            swap    sw           0       0
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+
+# bind mount the local user 'bekr' to nfs exports for sharing
+/exports/nfs/bekr    /home/bekr/nfs    none    defaults,nosuid,nodev,noexec     0    0

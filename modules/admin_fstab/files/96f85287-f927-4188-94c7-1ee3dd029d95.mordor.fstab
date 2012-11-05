@@ -42,4 +42,4 @@ UUID=7c13d0a2-cb5e-4ccf-ad61-b7a9cdff3ac1 /var/www        ext4    defaults,nosui
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
 
 # mount our NFSv4 share from 'shire' to local user 'bekr'
-192.168.0.10:/bekr  /home/bekr/nfs  nfs  nfsvers=4,nolock,rsize=8192,wsize=8192,intr,clientaddr=192.168.0.10  0   0
+192.168.0.10:/bekr  /home/bekr/nfs  nfs  nfsvers=4,rsize=8192,wsize=8192,intr,clientaddr=192.168.0.10  0   0
