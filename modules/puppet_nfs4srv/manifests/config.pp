@@ -56,7 +56,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		  owner => $user,
 		  group => $user,
            mode => '0755',
-		require => File["/exports/nfs],
+		require => File["/exports/nfs"],
 	}
 
     # the UID/GID mapping daemon configuration
