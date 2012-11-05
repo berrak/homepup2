@@ -20,7 +20,7 @@ class puppet_nfs4client::config ( $user ='' ) {
 		ensure => "directory",
 		 owner => $user,
 		 group => $user,
-         mode => '0750',
+         mode => '0755',
 	}
 	
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
@@ -29,7 +29,6 @@ class puppet_nfs4client::config ( $user ='' ) {
          source =>  "puppet:///module/puppet_nfs4client/nfs-common",  
           owner => 'root',
           group => 'root',
-        require => Class["puppet_nfs4client::install"],
     }
 	
 	$mydomain = $::hostname
@@ -38,7 +37,6 @@ class puppet_nfs4client::config ( $user ='' ) {
         content =>  template( 'puppet_nfs4client/idmapd.conf.erb' ),  
           owner => 'root',
           group => 'root',
-        require => Class["puppet_nfs4client::install"],
     }	
 
 }

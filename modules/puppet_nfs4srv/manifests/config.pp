@@ -20,7 +20,6 @@ class puppet_nfs4srv::config ( $user ='' ) {
         content =>  template( 'puppet_nfs4srv/exports.erb' ),  
           owner => 'root',
           group => 'root',
-        require => Class["puppet_nfs4srv::install"],
     }
 	
 	$mydomain = $::hostname
@@ -29,7 +28,6 @@ class puppet_nfs4srv::config ( $user ='' ) {
         content =>  template( 'puppet_nfs4srv/idmapd.conf.erb' ),  
           owner => 'root',
           group => 'root',
-        require => Class["puppet_nfs4srv::install"],
     }	
 	
 	# if 'exports' is updated, refresh nfs server
@@ -46,7 +44,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		ensure => "directory",
 		 owner => $user,
 		 group => $user,
-         mode => '0750',
+         mode => '0755',
 	}
 	
 	# and (only on the server) link the local user directory 'nfs-$user' to this mnt-point
@@ -62,7 +60,6 @@ class puppet_nfs4srv::config ( $user ='' ) {
          source =>  "puppet:///module/puppet_nfs4srv/nfs-common",  
           owner => 'root',
           group => 'root',
-        require => Class["puppet_nfs4srv::install"],
     }
 	
 	# nfs-kernel-server configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
@@ -71,7 +68,6 @@ class puppet_nfs4srv::config ( $user ='' ) {
          source =>  "puppet:///module/puppet_nfs4srv/nfs-kernel-server",  
           owner => 'root',
           group => 'root',
-        require => Class["puppet_nfs4srv::install"],
     }
 
 }
