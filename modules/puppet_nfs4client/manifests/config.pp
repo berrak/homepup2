@@ -26,7 +26,7 @@ class puppet_nfs4client::config ( $user ='' ) {
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
 	
     file { '/etc/default/nfs-common':
-         source =>  "puppet:///module/puppet_nfs4client/nfs-common",  
+         source =>  "puppet:///modules/puppet_nfs4client/nfs-common",  
           owner => 'root',
           group => 'root',
     }

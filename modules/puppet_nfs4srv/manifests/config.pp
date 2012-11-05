@@ -57,7 +57,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
 	
     file { '/etc/default/nfs-common':
-         source =>  "puppet:///module/puppet_nfs4srv/nfs-common",  
+         source =>  "puppet:///modules/puppet_nfs4srv/nfs-common",  
           owner => 'root',
           group => 'root',
     }
@@ -65,7 +65,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 	# nfs-kernel-server configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
 
     file { '/etc/default/nfs-kernel-server':
-         source =>  "puppet:///module/puppet_nfs4srv/nfs-kernel-server",  
+         source =>  "puppet:///modules/puppet_nfs4srv/nfs-kernel-server",  
           owner => 'root',
           group => 'root',
     }
