@@ -52,6 +52,8 @@ class puppet_nfs4srv::config ( $user ='' ) {
     file { "/home/${user}/nfs-${user}":
 		ensure => link,
 		target => "/mnt/exports/nfs-${user}",
+		 owner => $user,
+		 group => $user,
 	}
 	
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
