@@ -38,7 +38,16 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		refreshonly => true,
 	}
     
-    # finally, create the export directory for $user
+    # finally, create $user directory (export via 'mount --bind' in fstab)
+    
+	file { "/home/$user/nfs-${user}":
+		ensure => "directory",
+		 owner => $user,
+		 group => $user,
+         mode => '0755',
+	}	
+	
+    # finally, create the 'root' of exports for $user
     
 	file { "/mnt/exports/nfs-${user}":
 		ensure => "directory",
