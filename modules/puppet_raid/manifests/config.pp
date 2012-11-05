@@ -12,7 +12,7 @@ class puppet_raid::config {
     
     # mount point for the data directory (nfs exports on raid 1)
     
-	file { "/mnt/exports":
+	file { "/exports":
 		ensure => "directory",
 		 owner => 'root',
 		 group => 'root',
