@@ -38,7 +38,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		refreshonly => true,
 	}
     
-    # finally, create $user directory (export via 'mount --bind' in fstab)
+    # create local $user directory (export via 'mount --bind' in fstab)
     
 	file { "/home/$user/nfs-${user}":
 		ensure => "directory",
@@ -47,7 +47,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
          mode => '0755',
 	}	
 	
-    # finally, create the 'root' of exports for $user
+    # create the 'root' of exports for internal net $user
     
 	file { "/mnt/exports/nfs-${user}":
 		ensure => "directory",
@@ -56,12 +56,6 @@ class puppet_nfs4srv::config ( $user ='' ) {
          mode => '0755',
 	}
 	
-	# and (only on the server) link the local user directory 'nfs-$user' to this mnt-point
-	
-    file { "/home/${user}/nfs-${user}":
-		ensure => link,
-		target => "/mnt/exports/nfs-${user}",
-	}
 	
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
 	
