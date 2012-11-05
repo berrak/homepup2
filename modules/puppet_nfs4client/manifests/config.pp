@@ -31,7 +31,7 @@ class puppet_nfs4client::config ( $user ='' ) {
           group => 'root',
     }
 	
-	$mydomain = $::hostname
+	$mydomain = $::domain
 	
     file { '/etc/idmapd.conf':
         content =>  template( 'puppet_nfs4client/idmapd.conf.erb' ),  
