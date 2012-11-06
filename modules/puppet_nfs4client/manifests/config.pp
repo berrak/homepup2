@@ -21,7 +21,7 @@ class puppet_nfs4client::config ( $user ='' ) {
 		ensure => "directory",
 		 owner => $user,
 		 group => $user,
-          mode => '0750',
+          mode => '0755',
 	}
 	
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
