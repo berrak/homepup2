@@ -136,6 +136,49 @@ node 'valhall.sec.home.tld' inherits basenode {
 
 }
 
+
+##########################################################
+## (WARP) - Fileserver: Will 'warp' move to sec.home.tld
+##########################################################
+node 'warp.home.tld' inherits basenode {
+
+    include puppet_agent
+	
+	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    class { admin_fstab::config : fstabhost => 'warp' }
+
+    # assumes that all host lives in the same domain, otherwise specify it as a parameter
+    class { admin_hosts::config :
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon', puppetserver_domain => 'home.tld',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor', gateway_domain => 'home.tld',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan', smtp_domain => 'home.tld' }
+    
+	## network and default services
+	
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
+	
+    class { puppet_iptables::config : role => 'default.server', inet => '192.168.0.0/24' }
+	
+	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	
+	## security related
+	
+    include puppet_tiger
+	include admin_hardening
+    
+	## additional users other than root
+	
+    user_bashrc::config { 'bekr' : }
+	
+	## mail for all users
+	
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }			
+    puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }			
+
+}
+
 ###############################
 ## eof
 ###############################
