@@ -301,7 +301,7 @@ DISABLE_TESTS="suspscan hidden_procs deleted_files packet_cap_apps apps"
 # NOTE: If the hash function is changed then you MUST run rkhunter with
 # the '--propupd' option to rebuild the file properties database.
 #
-HASH_FUNC=sha1sum
+HASH_FUNC=md5sum
 
 #
 # The HASH_FLD_IDX option specifies which field from the HASH_FUNC
@@ -340,7 +340,7 @@ HASH_FUNC=sha1sum
 # NONE is the default for Debian as well, as running --propupd takes
 # about 4 times longer when it's set to DPKG
 #
-#PKGMGR=NONE
+PKGMGR=DPKG
 
 #
 # It is possible that a file which is part of a package may be modified

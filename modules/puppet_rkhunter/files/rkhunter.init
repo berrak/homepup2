@@ -33,7 +33,7 @@ read answer
 case "$answer" in
 
         [Yy])
-            /usr/bin/rkhunter --propupd
+            /usr/bin/rkhunter --propupd --pkgmgr DPKG
             ;;
 
         [Nn])
