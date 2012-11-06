@@ -62,7 +62,7 @@ node default inherits basenode {
 
 
     # following two classes assumes a single interface host in 192.168.0.0/24 and eth0.
-	class { puppet_iptables::config : role => 'default.desktop' }
+	class { puppet_iptables::config : role => 'default.server' }
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 
     user_bashrc::config { 'bekr' : }
