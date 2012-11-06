@@ -4,6 +4,9 @@
 ## Usage:
 ##     class { puppet_nfs4srv: user => 'bekr' }
 ##
+## Limitations: Only works single user (i.e. call this only once).
+## Todo: Create define to process list of users.
+##
 class puppet_nfs4srv::config ( $user ='' ) {
 
     include puppet_nfs4srv::params
@@ -16,6 +19,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
     }
 
     $myexport0 = $::puppet_nfs4srv::params::export0
+	$myexport1 = $::puppet_nfs4srv::params::export1
 
     file { '/etc/exports':
         content =>  template( 'puppet_nfs4srv/exports.erb' ),  
@@ -31,18 +35,18 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		refreshonly => true,
 	}
     
-    # create local $user directory (will mirror this to $user exports nfs directory)
+    # create local $user directory (will 'bind mount' content to $user exports nfs directory)
     
 	file { "/home/$user/nfs":
 		ensure => "directory",
 		 owner => $user,
 		 group => $user,
-         mode => '0750',
+          mode => '0755',
 	}	
 	
     # create the 'root' directory of all exports
 	
-	file { "/exports/nfs":
+	file { "/exports/usernfs4":
 		 ensure => "directory",
 		  owner => 'root',
 		  group => 'root',
@@ -51,12 +55,12 @@ class puppet_nfs4srv::config ( $user ='' ) {
 	
     # create the exports directory for internal nfs $user
 	
-	file { "/exports/nfs/$user":
+	file { "/exports/usernfs4/$user":
 		 ensure => "directory",
 		  owner => $user,
 		  group => $user,
            mode => '0755',
-		require => File["/exports/nfs"],
+		require => File["/exports/usernfs4"],
 	}
 
     # the UID/GID mapping daemon configuration
