@@ -5,6 +5,6 @@
 ##
 class admin_hardening {
 
-    include admin_hardening::shutdown
+    include admin_hardening::shutdown, admin_hardening::noroothistory
 
 }

@@ -13,6 +13,7 @@ node 'gondor.home.tld' inherits basenode {
 	
     include puppet_tripwire
 	include puppet_tiger
+    include admin_hardening
 		
 	# run tripwire check at noon and mailto root
     admin_cron::install { 'tripwire' :
@@ -21,8 +22,6 @@ node 'gondor.home.tld' inherits basenode {
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
-	
-	admin_server::nohistory{ 'gondor' :}
 		
     # load gateway firewall script
     class { puppet_iptables::config : role => 'gateway', hostnm => 'gondor' }
@@ -47,6 +46,9 @@ node 'gondor.home.tld' inherits basenode {
 node 'asgard.home.tld' inherits basenode {
 
     include puppet_agent
+    
+	include puppet_tiger
+    include admin_hardening
 	
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
@@ -57,7 +59,7 @@ node 'asgard.home.tld' inherits basenode {
 	
 	# realtek nic firmware driver
     admin_bndl::install { 'nonfree' : }
-    admin_server::nohistory{ 'gondor' :}
+
 	# needs accurate time (always)
     class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
     # Note: requires a copy of hosts 'fstab' file saved at puppetmaster.

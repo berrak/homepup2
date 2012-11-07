@@ -4,6 +4,9 @@
 node 'mordor.home.tld' inherits basenode {
 
     include puppet_agent
+	
+    include puppet_tiger
+    include admin_hardening
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
@@ -58,6 +61,9 @@ node 'shire.home.tld' inherits basenode {
 
     include puppet_agent
 	include puppet_raid
+
+    include puppet_tiger
+    include admin_hardening
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
