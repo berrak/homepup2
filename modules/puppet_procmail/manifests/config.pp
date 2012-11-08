@@ -67,11 +67,11 @@ class puppet_procmail::config {
         # helper script to create Maildir structure 'on-the-fly'
         # used sometimes in procmail pipe recepies.
         
-        file {"/root/bin/procmail.createmaildir":      
+        file {"/usr/local/bin/procmail.createmaildir":      
              source => "puppet:///modules/puppet_procmail/procmail.createmaildir",
               owner => 'root',
-              group => 'mail',
-               mode => '0750', 
+              group => 'staff',
+               mode => '0644', 
             require => Class["puppet_procmail::install"],
         }    
         
