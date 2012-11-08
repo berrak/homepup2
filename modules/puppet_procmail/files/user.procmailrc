@@ -11,6 +11,7 @@
 ###########################################
 PATH=/usr/bin:$PATH
 SHELL=/bin/sh
+USER=bekr
 
 MAILDIR=$HOME/Maildir
 
