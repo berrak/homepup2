@@ -77,7 +77,7 @@ FULLFOLDERPATH="$CURRENTFOLDER/$NEWFOLDER"
 echo "Starting the process create Maildir structure" | $LOGGER -p local0.debug -t $0
 
 if [ ! -d $FULLFOLDERPATH ] ; then
-    $MKDIR $FULLFOLDERPATH
+    $MKDIR -p $FULLFOLDERPATH
     if [ $? -ne 0 ] ; then
         echo "Could not create directory ($FULLFOLDERPATH). Aborting!" | $LOGGER -p local0.debug -t $0
         exit 1
@@ -105,13 +105,13 @@ else
     # Create the three Maildir subfolders
     
     if  [ ! -d $FULLFOLDERPATH/new ] ; then   
-        $MKDIR $FULLFOLDERPATH/new
+        $MKDIR -p $FULLFOLDERPATH/new
     fi
     if  [ ! -d $FULLFOLDERPATH/tmp ] ; then
-        $MKDIR $FULLFOLDERPATH/tmp
+        $MKDIR -p $FULLFOLDERPATH/tmp
     fi
     if  [ ! -d $FULLFOLDERPATH/cur ] ; then
-        $MKDIR $FULLFOLDERPATH/cur
+        $MKDIR -p $FULLFOLDERPATH/cur
     fi
     
     if [ $? -ne 0 ] ; then
