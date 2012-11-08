@@ -70,7 +70,7 @@ class puppet_procmail::config {
         file {"/root/bin/procmail.createmaildir":      
              source => "puppet:///modules/puppet_procmail/procmail.createmaildir",
               owner => 'root',
-              group => 'root',
+              group => 'mail',
                mode => '0700', 
             require => Class["puppet_procmail::install"],
         }    
