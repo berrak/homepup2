@@ -10,10 +10,10 @@
 # Create a Maildir structure in current directory. Usullly this
 # is ~/Maildir. Thus 'cd ~/Maildir' and then run script with the
 # name of the new 'mail folder' as first argument. The directories
-# 'tmp','cur' and 'new' are created and owner ship is set to $USER.
+# 'tmp','cur' and 'new' are created and owner ship is set to 'bekr'.
 #
 # Console usage:   'cd ~/Maildir'
-#                  'procmail.createmaildir .INBOX.SPAM'
+#                  'procmail.createmaildir .INBOX.SPAM bekr'
 #
 # When used in a procmail recepie its essentiell that the root
 # of the user mail directory is set in '/etc/procmailrc' like so:
@@ -25,7 +25,7 @@
 #
 # :0 B
 # * spam
-# | /usr/local/bin/procmail.createmaildir .INBOX.SPAM
+# | /usr/local/bin/procmail.createmaildir .INBOX.SPAM bekr
 #
 # Which will create the structure:
 #
@@ -66,12 +66,13 @@ CURRENTFOLDER=`$PWD`
 ## Real program starts here
 
 # test that we have the new root directory argument for Maildir structure
-if [ $# -ne 1 ];then
-    echo "Missing first directory argument. Aborting!" | $LOGGER -p local0.debug -t $0
+if [ $# -ne 2 ];then
+    echo "Missing directory and user argument. Aborting!" | $LOGGER -p local0.debug -t $0
     exit 1
 fi
 
 NEWFOLDER=$1
+ADMUSER=$2
 FULLFOLDERPATH="$CURRENTFOLDER/$NEWFOLDER"
 
 echo "Starting the process create Maildir structure" | $LOGGER -p local0.debug -t $0
@@ -85,9 +86,9 @@ if [ ! -d $FULLFOLDERPATH ] ; then
 fi
 
 # If we can't work with the new directory abort
-$CHOWN $USER:$USER $FULLFOLDERPATH
+$CHOWN $ADMUSER:$ADMUSER $FULLFOLDERPATH
 if [ $? -ne 0 ] ; then
-    echo "Could not chown of directory ($FULLFOLDERPATH). Aborting!" | $LOGGER -p local0.debug -t $0
+    echo "Could not chown ($ADMUSER) of directory ($FULLFOLDERPATH). Aborting!" | $LOGGER -p local0.debug -t $0
     exit 1
 fi
 
@@ -98,7 +99,7 @@ if [ $? -ne 0 ] ; then
     exit 1
 else
     echo "Done with directory ($FULLFOLDERPATH)" | $LOGGER -p local0.debug -t $0
-    echo "Changed directory ($NEWFOLDER) ownership to user ($USER:$USER)" | $LOGGER -p local0.debug -t $0
+    echo "Changed directory ($NEWFOLDER) ownership to user ($ADMUSER:$ADMUSER)" | $LOGGER -p local0.debug -t $0
     
     maildirfailed=""
     
@@ -119,9 +120,9 @@ else
         maildirfailed="Fail"
     fi
     
-    $CHOWN $USER:$USER $FULLFOLDERPATH/new $FULLFOLDERPATH/tmp $FULLFOLDERPATH/cur
+    $CHOWN $ADMUSER:$ADMUSER $FULLFOLDERPATH/new $FULLFOLDERPATH/tmp $FULLFOLDERPATH/cur
     if [ $? -ne 0 ] ; then
-        echo "Warning: Could not change user ($USER) for tmp,cur,new to ($FULLFOLDERPATH)!" | $LOGGER -p local0.debug -t $0
+        echo "Warning: Could not change user ($ADMUSER) for tmp,cur,new to ($FULLFOLDERPATH)!" | $LOGGER -p local0.debug -t $0
         maildirfailed="Fail"
     fi
 

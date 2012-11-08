@@ -35,7 +35,7 @@ BLOCKFOLDER=".INBOX.__BLOCKED__/$BLDATE"
 
 :0 Wic
 * ? /usr/bin/test ! -d $BLOCKFOLDER
-| $MAILDIRCREATE $BLOCKFOLDER
+| $MAILDIRCREATE $BLOCKFOLDER bekr
 
 # chkrootkit filter (false positive/unimportant) for less inbox cluttering mails
 :0 B
