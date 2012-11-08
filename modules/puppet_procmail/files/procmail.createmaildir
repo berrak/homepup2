@@ -1,0 +1,113 @@
+#!/bin/sh
+#
+# /root/bin/procmail.createmaildir
+#
+# Create a Maildir structure below argument ($1) i.e.
+# 'tmp','cur' and 'new' and chmod/chown as local user.
+#
+# Purpose: possible recepie use in procmail actions
+#
+# Assumes that the mailfolder is named ~/Maildir
+# Program is quiet, writes only progress to syslog (debug).
+#
+# Console usage:   'procmail.createmaildir .INBOX.SPAM'
+# which will create the structure:
+#
+#        ~/Maildir/.INBOX.SPAM/
+#                                 /new
+#                                 /tmp
+#                                 /cur
+#
+# Yes, this is a simple but lengthy bash script (with all error checks).
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+MKDIR=/bin/mkdir
+PWD=/bin/pwd
+CHMOD=/bin/chmod
+CHOWN=/bin/chown
+
+CURRENTFOLDER=`$PWD`
+
+## Real program starts here
+
+# test that we have the new root directory argument for Maildir structure
+if [ $# -ne 1 ];then
+    echo "Missing first directory argument. Aborting!" | /usr/bin/logger -p local0.debug -t $0
+    exit 1
+fi
+
+NEWFOLDER=$1
+FULLFOLDERPATH="$CURRENTFOLDER/Maildir/$NEWFOLDER"
+
+if [ ! -d $FULLFOLDERPATH ] ; then
+    $MKDIR $FULLFOLDERPATH
+fi
+
+$CHOWN $USER:$USER $FULLFOLDERPATH
+$CHMOD "0750" $FULLFOLDERPATH
+
+# If we can't work with the new directory abort
+if [ $? -ne 0 ] ; then
+    echo "Could not create/change ($FULLFOLDERPATH). Aborting!" | /usr/bin/logger -p local0.debug -t $0
+else
+    echo "Done with directory ($FULLFOLDERPATH)" | /usr/bin/logger -p local0.debug -t $0
+    echo "Changed directory ($NEWFOLDER) ownership to user ($USER:$USER)" | /usr/bin/logger -p local0.debug -t $0
+    
+    maildirfailed=""
+    
+    # Create the three Maildir subfolders
+    
+    if  [ ! -d $FULLFOLDERPATH/new ] ; then   
+        $MKDIR $FULLFOLDERPATH/new
+    fi
+    if  [ ! -d $FULLFOLDERPATH/tmp ] ; then
+        $MKDIR $FULLFOLDERPATH/tmp
+    fi
+    if  [ ! -d $FULLFOLDERPATH/cur ] ; then
+        $MKDIR $FULLFOLDERPATH/cur
+    fi
+    
+    if [ $? -ne 0 ] ; then
+        echo "Warning: Could not create tmp,cur,new below ($FULLFOLDERPATH)!" | /usr/bin/logger -p local0.debug -t $0
+        maildirfailed="Fail"
+    fi
+    
+    $CHOWN $USER:$USER $FULLFOLDERPATH/new $FULLFOLDERPATH/tmp $FULLFOLDERPATH/cur
+    if [ $? -ne 0 ] ; then
+        echo "Warning: Could not change user ($USER) for tmp,cur,new to ($FULLFOLDERPATH)!" | /usr/bin/logger -p local0.debug -t $0
+        maildirfailed="Fail"
+    fi
+
+    $CHMOD "0750" $FULLFOLDERPATH/new $FULLFOLDERPATH/tmp $FULLFOLDERPATH/cur
+    if [ $? -ne 0 ] ; then
+        echo "Warning: Could not set mode for tmp,cur,new for ($FULLFOLDERPATH)!" | /usr/bin/logger -p local0.debug -t $0
+        maildirfailed="Fail"
+    fi
+
+    # everything was created ok
+    if [ -z "$maildirfailed" ] ; then
+        echo "Success: Maildirectory structure created below ($FULLFOLDERPATH)" | /usr/bin/logger -p local0.debug -t $0
+    fi
+
+fi
+
+exit 0
+

@@ -44,7 +44,7 @@ class puppet_procmail::config {
     
     }
     
-    # install the global and local user resource files on the mail server only
+    # install global, local user resource files and Maildir on mail server only
 
     if $::hostname == $::puppet_procmail::params::mailserver_hostname {
 
@@ -62,7 +62,18 @@ class puppet_procmail::config {
               owner => 'root',
               group => 'root',
             require => Class["puppet_procmail::install"],
-        }       
+        }
+        
+        # helper script to create Maildir structure 'on-the-fly'
+        # used sometimes in procmail pipe recepies.
+        
+        file {"/root/bin/procmail.createmaildir":      
+             source => "puppet:///modules/puppet_procmail/procmail.createmaildir",
+              owner => 'root',
+              group => 'root',
+               mode => '0700', 
+            require => Class["puppet_procmail::install"],
+        }    
         
         
         # For each mail user, install a ~/.procmailrc for their recipes
