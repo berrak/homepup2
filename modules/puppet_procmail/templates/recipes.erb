@@ -29,30 +29,25 @@
 # Todo: use of template variables and get all host names automatically
 
 # Send all unimportant, false positives mails to its own bucket
-MAILDIRCREATE=/usr/local/bin/procmail.createmaildir
 BLDATE=`/bin/date +20%y-%m`
 BLOCKFOLDER=".INBOX.__BLOCKED__/$BLDATE"
-
-:0 Wic
-* ? /usr/bin/test ! -d $BLOCKFOLDER
-| $MAILDIRCREATE $BLOCKFOLDER bekr
 
 # chkrootkit filter (false positive/unimportant) for less inbox cluttering mails
 :0 B
 * bash_history
-$BLOCKFOLDER
+$BLOCKFOLDER/
 
 # rkhunter filter (false positive/unimportant) for less inbox cluttering mails
 :0
 * Subject:.*rkhunter
 * Subject:.*Weekly database update$
-$BLOCKFOLDER
+$BLOCKFOLDER/
 
 # tripwire filter (no violations found, i.e. V:0) for less inbox cluttering mails
 :0
 * Subject:.*TWReport
 * Subject:.*( V:0 )
-$BLOCKFOLDER
+$BLOCKFOLDER/
 
 # Our normal host inbox folders follows
 
