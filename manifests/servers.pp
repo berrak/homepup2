@@ -2,9 +2,6 @@
 ## (CARBON) puppet master server
 #########################################
 node 'carbon.home.tld' inherits basenode {
-
-    # handles both server and agent automatically
-    include puppetize
 	
 	include puppet_tiger
     include admin_hardening
@@ -57,8 +54,6 @@ node 'carbon.home.tld' inherits basenode {
 ########################################
 node 'rohan.home.tld' inherits basenode {
 
-    include puppet_agent
-
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
         puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
@@ -103,8 +98,6 @@ node 'rohan.home.tld' inherits basenode {
 ##########################################################
 node 'valhall.sec.home.tld' inherits basenode {
 
-    include puppet_agent
-
     # if this host is not in the same domain as servers, specify it as a parameter
     class { admin_hosts::config :
         puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon', puppetserver_domain => 'home.tld',
@@ -142,8 +135,6 @@ node 'valhall.sec.home.tld' inherits basenode {
 ## (WARP) - Fileserver: Will 'warp' move to sec.home.tld
 ##########################################################
 node 'warp.home.tld' inherits basenode {
-
-    include puppet_agent
 	
 	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'warp' }

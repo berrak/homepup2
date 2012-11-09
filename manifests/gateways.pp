@@ -2,8 +2,6 @@
 ## (GONDOR) gateway host/lan ntp server
 #########################################
 node 'gondor.home.tld' inherits basenode {
-
-	include puppet_agent
 	
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
@@ -44,8 +42,6 @@ node 'gondor.home.tld' inherits basenode {
 ### (ASGARD) gateway (between home.tld and sec.home.tld) host
 ###################################################################
 node 'asgard.home.tld' inherits basenode {
-
-    include puppet_agent
     
 	include puppet_tiger
     include admin_hardening

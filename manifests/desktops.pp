@@ -2,8 +2,6 @@
 ## (MORDOR) developer host (laptop)
 #########################################
 node 'mordor.home.tld' inherits basenode {
-
-    include puppet
 	
     include puppet_tiger
     include admin_hardening
@@ -59,7 +57,6 @@ node 'mordor.home.tld' inherits basenode {
 #########################################
 node 'shire.home.tld' inherits basenode {
 
-    include puppet_agent
 	include puppet_raid
 
     include puppet_tiger

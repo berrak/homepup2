@@ -3,6 +3,9 @@
 #########################################
 node basenode {
 	
+	# this installs management of puppet itself 
+	include puppetize
+	
 	include puppet_utils
 	include virtual_accounts
 	
@@ -51,8 +54,6 @@ node basenode {
 ## (DEFAULT) for any new nodes - intially
 #########################################
 node default inherits basenode {
-
-    include puppet_agent
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
