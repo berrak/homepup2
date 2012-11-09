@@ -18,6 +18,6 @@ class puppet_procmail::params {
     # is routed by default to top .INBOX by 'procmail'.
     # Note: update also the recipie template!
     
-    $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR', 'ASGARD', 'SHIRE', 'WARP' ]
+    $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR', 'ASGARD', 'SHIRE', 'WARP', '2012__BLOCKED__' ]
 
 }

@@ -7,7 +7,7 @@ class puppet_procmail::config {
 
     define install_user_procmailrc () {
     
-            if $name == $::puppet_procmail::params::rootmailuser {
+        if $name == $::puppet_procmail::params::rootmailuser {
         
             file {"/home/${name}/.procmailrc":      
                 source => "puppet:///modules/puppet_procmail/admin.procmailrc",
