@@ -39,7 +39,7 @@ NETPRN_HP3015_ADDR="192.168.0.30"
 MDNSMULTICASTADDR="224.0.0.251"
 
 ## Log options
-LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"
+LOGOPT="LOG --log-level emerg --log-ip-options --log-tcp-options"
 
 ## Prevent excessive logging
 RLIMIT="-m limit --limit 3/s --limit-burst 8"

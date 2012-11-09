@@ -50,7 +50,7 @@ SMTPHOSTADDR="192.168.0.11"
 NETPRN_HP3015_ADDR="192.168.0.30"
 
 ## Log options
-LOGOPT="LOG --log-level debug --log-ip-options --log-tcp-options"
+LOGOPT="LOG --log-level emerg --log-ip-options --log-tcp-options"
 
 ## Prevent excessive logging
 RLIMIT="-m limit --limit 3/s --limit-burst 8"
@@ -95,6 +95,8 @@ $IPTABLES -A broadcast-drop -j RETURN
 $IPTABLES -N blacklist-log-n-drop
 $IPTABLES -A blacklist-log-n-drop -s $NETPRN_HP3015_ADDR -j $LOGOPT $RLIMIT --log-prefix "BLACKLIST HOST DROP "
 $IPTABLES -A blacklist-log-n-drop -s $NETPRN_HP3015_ADDR -j DROP
+$IPTABLES -A blacklist-log-n-drop -s $SMTPHOSTADDR -j $LOGOPT $RLIMIT --log-prefix "BLACKLIST HOST DROP "
+$IPTABLES -A blacklist-log-n-drop -s $SMTPHOSTADDR -j DROP
 $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 
