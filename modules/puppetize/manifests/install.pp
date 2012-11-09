@@ -37,7 +37,7 @@ class puppetize::install {
 	
         package { "puppetmaster" :
             ensure => present,
-			notify => Class["puppetize::service],
+			notify => Class["puppetize::service"],
 		}
 		
         # create a sub directory 'files' for Debian preseed files
@@ -49,5 +49,6 @@ class puppetize::install {
         }
 		
 	}
+
 
 }
