@@ -3,7 +3,7 @@
 #########################################
 node 'mordor.home.tld' inherits basenode {
 
-    include puppet_agent
+    include puppet
 	
     include puppet_tiger
     include admin_hardening
