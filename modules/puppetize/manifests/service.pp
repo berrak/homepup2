@@ -25,7 +25,7 @@ class puppetize::service {
               name => "puppet",
             enable => false,
         hasrestart => true,
-            ensure => restart,
+            ensure => start,
     }
     
 }
