@@ -35,7 +35,7 @@ class puppet::install {
 	
 	if $::hostname == $::puppet::params::mypuppetserver_hostname {
 	
-        package { [ "puppetmaster", "facter" ] :
+        package { "puppetmaster" :
             ensure => present,
 			notify => Service["puppet"],
 		}
