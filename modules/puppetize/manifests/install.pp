@@ -1,9 +1,9 @@
 ##
 ## Manage Puppet
 ##
-class puppet::install {
+class puppetize::install {
   
-    include puppet::params
+    include puppetize::params
   
     # Debian defaults to install puppet-common which
     # depends on facter - but just to show both.
@@ -17,14 +17,14 @@ class puppet::install {
 	# install some utilities
 	
 	file { "/root/bin/puppet.exec":
-		source => "puppet:///modules/puppet/puppet.exec",
+		source => "puppet:///modules/puppetize/puppet.exec",
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0700',
 	}
 	
 	file { "/root/bin/puppet.simulate":
-		source => "puppet:///modules/puppet/puppet.simulate",
+		source => "puppet:///modules/puppetize/puppet.simulate",
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0700',
@@ -33,11 +33,11 @@ class puppet::install {
   
 	# For puppet server
 	
-	if $::hostname == $::puppet::params::mypuppetserver_hostname {
+	if $::hostname == $::puppetize::params::mypuppetserver_hostname {
 	
         package { "puppetmaster" :
             ensure => present,
-			notify => Class["puppet::service],
+			notify => Class["puppetize::service],
 		}
 		
         # create a sub directory 'files' for Debian preseed files

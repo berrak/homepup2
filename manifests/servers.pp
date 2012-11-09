@@ -4,7 +4,7 @@
 node 'carbon.home.tld' inherits basenode {
 
     # handles both server and agent automatically
-    include puppet
+    include puppetize
 	
 	include puppet_tiger
     include admin_hardening

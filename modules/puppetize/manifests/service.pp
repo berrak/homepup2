@@ -1,19 +1,19 @@
 ##
 ## Puppet service.
 ##
-class puppet::service {
+class puppetize::service {
 
-    include puppet::params
+    include puppetize::params
 
 	# For puppet server only
 	
-	if $::hostname == $::puppet::params::mypuppetserver_hostname {
+	if $::hostname == $::puppetize::params::mypuppetserver_hostname {
 
         service { "puppetmaster":
             enable => true,
             hasrestart => true,
             ensure => running,
-            require => Class["puppet::install"],
+            require => Class["puppetize::install"],
         }
     
     } 
