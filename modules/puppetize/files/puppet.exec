@@ -10,9 +10,10 @@
 #
 # Run aptitude update before to ensure pacakges are up-to-date
 #
-echo "First: updating Debian package information. - Please wait."
+echo "$0: Updating Debian package information. - Please wait."
+echo
 /usr/bin/aptitude update
 #
-echo "Ok. Starting puppet run:"
+echo "$0: Starting puppet run:"
 /usr/bin/puppet agent --no-daemonize --verbose --onetime
 
