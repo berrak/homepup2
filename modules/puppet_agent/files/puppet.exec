@@ -11,5 +11,6 @@
 # Run aptitude update before to ensure pacakges are up-to-date
 #
 /usr/bin/aptitude update
+#
 /usr/bin/puppet agent --no-daemonize --verbose --onetime
 
