@@ -37,7 +37,7 @@ class puppet::install {
 	
         package { "puppetmaster" :
             ensure => present,
-			notify => Service["puppet"],
+			notify => Class["puppet::service],
 		}
 		
         # create a sub directory 'files' for Debian preseed files
@@ -46,12 +46,6 @@ class puppet::install {
             ensure => directory,
              owner => 'root',
              group => 'root',
-        }
-		
-        service { "puppet":
-                enable => false,
-            hasrestart => true,
-                ensure => stopped,
         }
 		
 	}
