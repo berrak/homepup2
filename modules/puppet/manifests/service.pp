@@ -18,21 +18,14 @@ class puppet::service {
     
     } 
     
-    # reload puppet agent configuration but ensure its not running
+    # reload puppet agent. Debian default (/etc/default/puppet)
+    # ensures its not running. If this is not required change that file.
     
-    service { "restart_puppet_agent":
+    service { "reload_puppet_agent":
               name => "puppet",
             enable => false,
         hasrestart => true,
             ensure => restart,
-    }
-    
-    service { "stop_puppet_agent":
-              name => "puppet",
-            enable => false,
-        hasrestart => true,
-            ensure => stopped,
-            require => Service["restart_puppet_agent"],
     }
     
 }
