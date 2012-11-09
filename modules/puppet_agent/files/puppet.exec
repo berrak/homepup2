@@ -8,5 +8,8 @@
 #       --verbose adds extra log mesages to daemon.log
 #	--onetime cause agent to run only once and the exits
 #
+# Run aptitude update before to ensure pacakges are up-to-date
+#
+/usr/bin/aptitude update
 /usr/bin/puppet agent --no-daemonize --verbose --onetime
 
