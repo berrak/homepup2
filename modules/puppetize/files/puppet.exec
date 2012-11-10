@@ -11,7 +11,7 @@
 #
 # Run aptitude update before to ensure packages are up-to-date
 # unless we add 'something' as $1, then we skip this.
-if [ $? -ne 0 ] ; then
+if [ ! -z $1 ] ; then
     echo "$0: Updating Debian package information. - Please wait."
     /usr/bin/aptitude update
 else
