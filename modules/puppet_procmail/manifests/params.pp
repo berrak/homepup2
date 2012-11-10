@@ -18,6 +18,6 @@ class puppet_procmail::params {
     # is routed by default to top .INBOX by 'procmail'.
     # Note: update also the recipie template!
     
-    $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR', 'ASGARD', 'SHIRE', 'WARP', '2012__BLOCKED__', '2013__BLOCKED__', '2014__BLOCKED__',  '2015__BLOCKED__', '2016__BLOCKED__', '2017__BLOCKED__', '2018__BLOCKED__', '2019__BLOCKED__', '2020__BLOCKED__', '2021__BLOCKED__','2022__BLOCKED__', '2023__BLOCKED__', '2024__BLOCKED__',  '2025__BLOCKED__', '2026__BLOCKED__', '2027__BLOCKED__', '2028__BLOCKED__', '2029__BLOCKED__', '2030__BLOCKED__', '2031__BLOCKED__', '2032__BLOCKED__' ]
+    $hostsubscriptionfolders = [ 'GONDOR', 'CARBON', 'VALHALL', 'MORDOR', 'ASGARD', 'SHIRE', 'WARP', '2012__LOCKCHECK__' , '2012__BLOCKED__', '2013__BLOCKED__', '2014__BLOCKED__',  '2015__BLOCKED__', '2016__BLOCKED__', '2017__BLOCKED__', '2018__BLOCKED__', '2019__BLOCKED__', '2020__BLOCKED__', '2021__BLOCKED__','2022__BLOCKED__', '2023__BLOCKED__', '2024__BLOCKED__',  '2025__BLOCKED__', '2026__BLOCKED__', '2027__BLOCKED__', '2028__BLOCKED__', '2029__BLOCKED__', '2030__BLOCKED__', '2031__BLOCKED__', '2032__BLOCKED__' ]
 
 }
