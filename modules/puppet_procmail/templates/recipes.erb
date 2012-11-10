@@ -29,7 +29,7 @@
 # Todo: use of template variables and get all host names automatically
 #
 # Year is automatic here. subscriptions is ok, i.e. hard coded until 2033;-)
-MYYEAR=`date +20%y`
+MYYEAR=`date +%Y`
 
 # chkrootkit filter (false positive/unimportant) for less inbox cluttering mails
 :0 B
@@ -48,10 +48,20 @@ MYYEAR=`date +20%y`
 * Subject:.*( V:0 )
 .INBOX.${MYYEAR}__BLOCKED__/
 
-# logcheck mail folder from our central loghost
+# logcheck central loghost (host intrusion attempts)
 :0
-* Subject:.*Logcheck
-.INBOX.${MYYEAR}__LOGCHECK__/
+* Subject:.*( Logcheck Intrusion Hacking Attempt )
+.INBOX.${MYYEAR}__INTRUSION_ATTEMPTS__/
+
+# logcheck central loghost (security violations)
+:0
+* Subject:.*( Logcheck Security Violations )
+.INBOX.${MYYEAR}__SECURITY_VIOLATIONS__/
+
+# logcheck central loghost (sytem events)
+:0
+* Subject:.*( Logcheck System Events )
+.INBOX.${MYYEAR}__SYSTEM_EVENTS__/
 
 
 ##########################################
