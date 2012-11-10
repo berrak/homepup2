@@ -50,17 +50,17 @@ MYYEAR=`date +%Y`
 
 # logcheck central loghost (host intrusion attempts)
 :0
-* Subject:.*( Logcheck Intrusion Hacking Attempt )
+* Subject:.*Logcheck Intrusion Hacking Attempt$
 .INBOX.${MYYEAR}__INTRUSION_ATTEMPTS__/
 
 # logcheck central loghost (security violations)
 :0
-* Subject:.*( Logcheck Security Violations )
+* Subject:.*Logcheck Security Violations$
 .INBOX.${MYYEAR}__SECURITY_VIOLATIONS__/
 
 # logcheck central loghost (sytem events)
 :0
-* Subject:.*( Logcheck System Events )
+* Subject:.*Logcheck System Events$
 .INBOX.${MYYEAR}__SYSTEM_EVENTS__/
 
 
