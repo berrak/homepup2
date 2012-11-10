@@ -12,10 +12,10 @@
 # Run aptitude update before to ensure packages are up-to-date
 # unless we add 'something' as $1, then we skip this.
 if [ ! -z $1 ] ; then
-    echo "$0: Updating Debian package information. - Please wait."
+    echo "$0: Updating Debian package information - Please wait."
     /usr/bin/aptitude update
 else
-    echo "$0: Skipping update of Debian packages."
+    echo "$0: Skipping update of Debian packages. Place any character after command to run update."
 fi
 
 # run puppet agent
