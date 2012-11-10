@@ -21,5 +21,13 @@ class puppet_logwatch::config {
 		  group => 'root',
 		require => Package["logwatch"],
 	}
-
+	
+	# in case default /tmp directory is changed, create /var/cache/logwatch
+	
+    file { "/var/cache/logwatch":
+		 ensure => "directory",
+		  owner => 'root',
+	 	  group => 'root',
+	}	
+	
 }
