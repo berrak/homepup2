@@ -8,11 +8,17 @@
 #       --verbose adds extra log mesages to daemon.log
 #	--onetime cause agent to run only once and the exits
 #
-# Run aptitude update before to ensure pacakges are up-to-date
 #
-echo "$0: Updating Debian package information. - Please wait."
-/usr/bin/aptitude update
-#
+# Run aptitude update before to ensure packages are up-to-date
+# unless we add 'something' as $1, then we skip this.
+if [ $? -ne 0 ] ; then
+    echo "$0: Updating Debian package information. - Please wait."
+    /usr/bin/aptitude update
+else
+    echo "$0: Skipping update of Debian packages."
+fi
+
+# run puppet agent
 echo "$0: Starting puppet run:"
 /usr/bin/puppet agent --no-daemonize --verbose --onetime
 
