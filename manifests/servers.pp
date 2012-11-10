@@ -158,6 +158,10 @@ node 'warp.home.tld' inherits basenode {
 	
     include puppet_tiger
 	include admin_hardening
+	
+	## central loghost 
+	
+	include puppet_logcheck
     
 	## additional users other than root
 	
