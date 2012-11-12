@@ -11,4 +11,11 @@ class admin_rsyslog::config {
         notify => Class["admin_rsyslog::service"],
     }
     
+    file { '/root/bin/rsyslog.logtest':
+        owner => 'root',
+        group => 'root',
+        source => "puppet:///modules/admin_rsyslog/rsyslog.logtest",
+        require => Class["admin_rsyslog::install"],
+    }  
+    
 }
