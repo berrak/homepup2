@@ -1,15 +1,16 @@
 #!/bin/bash
 #
-# /root/bin/rsyslog.logtest
+# /root/bin/rsyslog.test
 #
 # This script simply iterates through all rsyslog facilities and
 # priorities sending a test message to each combination.
 #
-# Console usage: # rsyslog.logtest
+# Console usage: # rsyslog.test
 #
 # Limitations: This script is based the logger command which is
 # not able to send messages to kern (this is a user process).
-# Thus skipping facility 'kern' in script.
+# Thus skipping facility 'kern' in script. Neither is facility
+# authpriv available via logger. See man logger(1).
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
@@ -40,7 +41,7 @@ PID=$$
 
 # see rsyslog.conf(5), logger(1) and syslog(3) documentation
 PRIORITIES='emerg alert crit err warning notice info debug'
-FACILITIES='auth authpriv cron daemon ftp local0 local1 local2 local3 local4 local5 local6 local7 lpr mail news syslog user uucp'
+FACILITIES='auth cron daemon ftp local0 local1 local2 local3 local4 local5 local6 local7 lpr mail news syslog user uucp'
 
 # Set VERBOSE mode - set to 0 to be quiet and 1 to be verbose
 VERBOSE=1
@@ -69,8 +70,8 @@ fi
 debug_echo "$PROG: Verbosity level $VERBOSE. To be less verbose set VERBOSE to 0."
 
 # start with some information
-echo "$PROG: This script simply iterates through all rsyslog facilities (except kern)"
-echo "and priorities sending a test message to each combination. Examine the log"
+echo "$PROG: This script simply iterates through all rsyslog facilities (except kern"
+echo "and authpriv) and priorities sending a test message to each combination."
 echo "files (with e.g. cat <log file> | grep PID) to see which message ended up where."
 echo -n "$PROG: Continue? [y/n] "
 read answer
@@ -89,7 +90,7 @@ case "$answer" in
             
             echo
             echo "$PROG: All done, please examine the log files with: cat <log file> | grep $PID."
-            echo "$PROG: Note that $PROG can't send kern messages since this is a shell user process."
+            echo "$PROG: Note that $PROG can't send authpriv and kern messages since this is a user process."
             echo         
             
             ;;

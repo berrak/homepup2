@@ -7,8 +7,7 @@
 #			For more information see
 #			/usr/share/doc/rsyslog-doc/html/rsyslog_conf.html
 #
-# TODO: 1. Change to erb-template, different for loghost and normal hosts.
-# TODO: 2. rsyslog template for identifying which host message come from.
+# TODO: rsyslog template for identifying which host message come from.
 
 
 #################
@@ -20,8 +19,8 @@ $ModLoad imklog   # provides kernel logging support
 #$ModLoad immark  # provides --MARK-- message capability
 
 # provides TCP syslog reception (enable at central loghost)
-#$ModLoad imtcp
-#$InputTCPServerRun 514
+<%= srvloadtcp %>
+<%= srvport %>
 
 ###########################
 #### GLOBAL DIRECTIVES ####
@@ -60,7 +59,7 @@ $IncludeConfig /etc/rsyslog.d/*.conf
 # Essential security logs (keep local and send to loghost)
 ##########################
 *.*;auth,authpriv.none;kern.emerg     -/var/log/syslog
-*.*                                    @@192.168.0.83
+<%= sendtohost %>
 
 # Local logs kept on host
 ##########################
