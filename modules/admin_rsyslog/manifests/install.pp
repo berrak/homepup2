@@ -3,8 +3,21 @@
 #
 class admin_rsyslog::install {
 
-    package { 'rsyslog' :
+    package { 'rsyslog':
         ensure => installed,
+    }
+    
+    package { 'rsyslog-doc' :
+         ensure => installed,
+        require => Package["rsyslog"],
+    }
+    
+    
+    # TLS for rsyslog
+    
+    package { 'rsyslog-gnutls' :
+         ensure => installed,
+        require => Package["rsyslog"],
     }
     
 }
