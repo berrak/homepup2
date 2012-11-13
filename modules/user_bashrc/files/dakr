@@ -4,8 +4,8 @@
 # $HOME/.bashrc.d/dakr: Local user (dakr) .bashrc 
 # snippet customization. This file is sourced from .bashrc 
 
-# set umask for user privacy
-umask 027
+# set umask
+umask 022
 
 # You may uncomment the following lines if you want `ls' to be colorized:
 export LS_OPTIONS='--color=auto'
