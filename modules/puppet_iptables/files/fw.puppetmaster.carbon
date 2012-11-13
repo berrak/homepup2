@@ -33,6 +33,7 @@ NET_INT="192.168.0.0/24"
 IF_INT=eth0
 
 NTPHOSTADDR="192.168.0.1"
+FILESERVERADDR="192.168.0.83"
 
 # Printers for desktops
 NETPRN_HP3015_ADDR="192.168.0.30"
@@ -161,6 +162,9 @@ $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state N
 
 # imap clients use this port to contact the imap mail server
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
+
+# allow rsyslog out to internal file server (i.e. log server)
+$IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # imaps secure clients (internal users) access their mailboxes to this mail server on this port
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT

@@ -34,5 +34,10 @@ class puppet_iptables::params {
     
     $smtphostaddr = '192.168.0.11'
     
+    
+    # file server (incl log host)
+    #------------------------------
+    $fileserveraddr = '192.168.0.83'
+    
 
 }

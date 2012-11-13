@@ -39,11 +39,12 @@ IF_EXT=eth1
 GWHOSTADDR="192.168.0.1"
 GWHOSTEXTADDR="192.168.1.254"
 
-# Special hosts (NTP, smtp and Puppet server) which needs forwarding
+# Special hosts (NTP, smtp, file server and Puppet server) which needs forwarding
 
 NTPHOSTADDR="192.168.0.1"
 PUPPETHOSTADDR="192.168.0.24"
 SMTPHOSTADDR="192.168.0.11"
+FILESERVERADDR="192.168.0.83"
 
 # Printers
 
@@ -240,6 +241,9 @@ $IPTABLES -A OUTPUT -p tcp -d $PUPPETHOSTADDR -m tcp --dport 8140 -m state --sta
 
 # allow to broadcast the time service to  to internal net
 $IPTABLES -A OUTPUT -p udp -d $NET_INT -m udp --dport 123 -m state --state NEW -j ACCEPT
+
+# allow rsyslog out to internal file server (i.e. log server)
+$IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # allow only 'echo-request' ping initiated from this fwhost to internal net
 $IPTABLES -A OUTPUT -p icmp --icmp-type echo-request -d $NET_INT -j ACCEPT

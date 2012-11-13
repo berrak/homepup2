@@ -4,7 +4,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
-# Iptables rules for a dedicated postfix/imap server (rohan)
+# Iptables rules for a dedicated file server (warp)
 #
 # Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -33,7 +33,6 @@ NET_INT="192.168.0.0/24"
 IF_INT=eth0
 
 NTPHOSTADDR="192.168.0.1"
-FILESERVERADDR="192.168.0.83"
 
 ## Log options
 LOGOPT="LOG --log-level emerg --log-ip-options --log-tcp-options"
@@ -96,6 +95,9 @@ $IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW -j
 
 # imap clients (internal users) access their mailboxes to this mail server on this port
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
+
+# allow rsyslog (internal hosts) to send logs to this log host on this port
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # imaps secure clients (internal users) access their mailboxes to this mail server on this port
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT
@@ -168,9 +170,6 @@ $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25 -m state --state NEW -j
 
 # allow ntp time to internal net ntp server
 $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
-
-# allow rsyslog out to internal file server (i.e. log server)
-$IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # talk to the puppet master server on this port
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8140 -m state --state NEW -j ACCEPT

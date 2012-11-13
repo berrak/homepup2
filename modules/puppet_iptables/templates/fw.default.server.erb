@@ -32,12 +32,13 @@ IPTSAVEFILE=/root/bin/IPTABLES.FW
 NET_INT="<%= net_int %>"
 IF_INT=<%= if_int %>
 
-# Special hosts (NTP,smtp and Puppet server)
+# Special hosts (NTP,smtp,file server and Puppet server)
 # which may not be in the same domain as the host.
 
 NTPHOSTADDR="<%= ntphostaddr %>"
 PUPPETHOSTADDR="<%= puppetserveraddr %>"
 SMTPHOSTADDR="<%= smtphostaddr %>"
+FILESERVERADDR="<%= fileserveraddr %>"
 
 ## Log options
 LOGOPT="LOG --log-level emerg --log-ip-options --log-tcp-options"
@@ -152,6 +153,9 @@ $IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 25 -m state --state N
 
 # ntp udp is stateless but iptables keeps track of udp 'states'
 $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
+
+# allow rsyslog out to internal file server (i.e. log server)
+$IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # talk to the puppet master server on this port
 $IPTABLES -A OUTPUT -p tcp -d $PUPPETHOSTADDR -m tcp --dport 8140 -m state --state NEW -j ACCEPT

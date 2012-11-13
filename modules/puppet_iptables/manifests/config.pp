@@ -22,7 +22,7 @@ class puppet_iptables::config ( $role,
 
     include puppet_iptables
 
-    if ! ( $role in [ 'default.desktop', 'default.server', 'mailserver', 'gateway', 'puppetmaster' ]) {
+    if ! ( $role in [ 'default.desktop', 'default.server', 'mailserver', 'gateway', 'puppetmaster', 'fileserver' ]) {
 	
 		fail("FAIL: Unknown role parameter ($role).")
 	
@@ -52,6 +52,7 @@ class puppet_iptables::config ( $role,
     $netprn_hp3015_addr = $::puppet_iptables::params::netprn_hp3015_addr
     $puppetserveraddr = $::puppet_iptables::params::puppetserveraddr
 	$smtphostaddr = $::puppet_iptables::params::smtphostaddr
+	$fileserveraddr = $::puppet_iptables::params::fileserveraddr
 
 	## facter	
 		
