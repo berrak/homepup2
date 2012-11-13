@@ -35,7 +35,7 @@ class admin_rsyslog::config {
 
         include admin_rsyslog::params
     
-        $sendtohost = $::admin_rsyslog::params::sendtologhost
+        # $sendtohost = $::admin_rsyslog::params::sendtologhost
         
         file { '/etc/rsyslog.conf':
             content => template('/admin_rsyslog/rsyslog.conf.erb'),

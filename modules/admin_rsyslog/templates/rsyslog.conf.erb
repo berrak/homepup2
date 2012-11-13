@@ -14,7 +14,6 @@
 
 $ModLoad imuxsock # provides support for local system logging
 $ModLoad imklog   # provides kernel logging support
-#$ModLoad immark  # provides --MARK-- message capability
 
 # provides TCP syslog reception (enable at central loghost)
 
@@ -56,7 +55,7 @@ $IncludeConfig /etc/rsyslog.d/*.conf
 # Essential security logs (keep local and send to loghost)
 ##########################
 *.*;auth,authpriv.none;kern.!emerg     -/var/log/syslog
-<%= sendtohost %>
+
 
 # Local logs kept on host
 ##########################
