@@ -12,7 +12,7 @@ class admin_rsyslog::config {
         $srvremotepath = $::admin_rsyslog::params::logsrvremotepath
         
         file { '/etc/rsyslog.conf':
-            content => template( '/admin_rsyslog/rsyslog.conf.loghost.erb' ),
+            content => template('/admin_rsyslog/rsyslog.conf.loghost.erb'),
               owner => 'root',
               group => 'root',
             require => Class["admin_rsyslog::install"],
@@ -34,7 +34,7 @@ class admin_rsyslog::config {
         $sendtohost = $::admin_rsyslog::params::sendtologhost
         
         file { '/etc/rsyslog.conf':
-            content => template( '/admin_rsyslog/rsyslog.conf.erb' ),
+            content => template('/admin_rsyslog/rsyslog.conf.erb'),
               owner => 'root',
               group => 'root',
             require => Class["admin_rsyslog::install"],
