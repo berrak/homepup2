@@ -3,18 +3,16 @@
 #
 class admin_rsyslog::config {
 
-
+    include admin_rsyslog::params
     
     if $::hostname == $::admin_rsyslog::params::myloghost {
      
         include admin_rsyslog::params
      
-        $srvloadtcp = $::admin_rsyslog::params::logsrvloadtcp
-        $srvport = $::admin_rsyslog::params::logsrvportinput
         $srvremotepath = $::admin_rsyslog::params::logsrvremotepath
         
         file { '/etc/rsyslog.conf':
-            content => template('/admin_rsyslog/rsyslog.conf.loghost.erb'),
+             source => "puppet:///modules/admin_rsyslog/rsyslog.loghost.conf",
               owner => 'root',
               group => 'root',
             require => Class["admin_rsyslog::install"],
@@ -23,7 +21,7 @@ class admin_rsyslog::config {
         
         # create a directory for all remote logs
         
-        file { $srvremotepath :
+        file { '/var/log/remotelogs' :
             ensure => directory,
         	 owner => 'root',
 	 	     group => 'adm',
@@ -32,13 +30,9 @@ class admin_rsyslog::config {
         
     
     } else {
-
-        include admin_rsyslog::params
     
-        # $sendtohost = $::admin_rsyslog::params::sendtologhost
-        
         file { '/etc/rsyslog.conf':
-            content => template('/admin_rsyslog/rsyslog.conf.erb'),
+             source => "puppet:///modules/admin_rsyslog/rsyslog.conf",
               owner => 'root',
               group => 'root',
             require => Class["admin_rsyslog::install"],
