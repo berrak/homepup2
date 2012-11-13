@@ -3,9 +3,11 @@
 #
 class admin_rsyslog::config {
 
-    include admin_rsyslog::params
+
     
     if $::hostname == $::admin_rsyslog::params::myloghost {
+     
+        include admin_rsyslog::params
      
         $srvloadtcp = $::admin_rsyslog::params::logsrvloadtcp
         $srvport = $::admin_rsyslog::params::logsrvportinput
@@ -30,6 +32,8 @@ class admin_rsyslog::config {
         
     
     } else {
+
+        include admin_rsyslog::params
     
         $sendtohost = $::admin_rsyslog::params::sendtologhost
         
