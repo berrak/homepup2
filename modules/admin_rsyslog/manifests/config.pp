@@ -24,7 +24,7 @@ class admin_rsyslog::config {
         file { '/var/log/remotelogs' :
             ensure => directory,
         	 owner => 'root',
-	 	     group => 'adm',
+	 	     group => 'root',
 		      mode => '0755',
         }
         
