@@ -71,16 +71,17 @@ define admin_bndl::install {
 			# ethtool: display or change Ethernet device settings
 			# chkconfig: system tool to enable or disable system services
 			# sysv-rc-conf: SysV init runlevel configuration tool for the terminal
+			# debsums: verification of installed package files with MD5sums
 			
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
                 ensure => installed }
 			
-			package  { [ "ethtool", "chkconfig", "sysv-rc-conf" ] :
+			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums" ] :
                 ensure => installed }
 			
 			
-			# custom bash script to format usb flash drive to ext2
+			# custom bash script to format usb flash drive to ext3
 			file { "/root/bin/format.flash" :
 					source => "puppet:///modules/admin_bndl/format.flash",
 					 owner => 'root',
