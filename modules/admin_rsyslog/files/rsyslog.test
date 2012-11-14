@@ -67,12 +67,10 @@ if [[ $EUID -ne 0 ]] ;then
    exit 0
 fi
 
-debug_echo "$PROG: Verbosity level $VERBOSE. To be less verbose set VERBOSE to 0."
-
 # start with some information
 echo "$PROG: This script simply iterates through all rsyslog facilities (except kern"
-echo "and authpriv) and priorities sending a test message to each combination."
-echo "files (with e.g. cat <log file> | grep PID) to see which message ended up where."
+echo "and authpriv) and priorities sending a test message to each combination. Examine"
+echo "files with e.g. cat <log file> | grep PID to see which message ended up where."
 echo -n "$PROG: Continue? [y/n] "
 read answer
 
@@ -90,7 +88,7 @@ case "$answer" in
             
             echo
             echo "$PROG: All done, please examine the log files with: cat <log file> | grep $PID."
-            echo "$PROG: Note that $PROG can't send authpriv and kern messages since this is a user process."
+            echo "$PROG: Note $PROG (logger) does not support authpriv and kern messages is not user process."
             echo         
             
             ;;
