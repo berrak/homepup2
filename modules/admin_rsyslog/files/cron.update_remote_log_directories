@@ -56,6 +56,10 @@ function debug_echo()
 ## Variables 
 ##############################################################
 
+REMOTEDIRECTORIESPATH="/var/log/remotelogs"
+LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
+RSYSLOGROTATECONFIG="/etc/logrotate.d/remotersyslog"
+
 DEBUG=0
 LOGCHECK="logcheck"
 
@@ -66,19 +70,6 @@ LOGCHECK="logcheck"
 if [[ $EUID -ne 0 ]] ;then
     echo "$PROG: This script must be run as root. Aborting." 
     exit 0
-fi
-
-if [ $DEBUG ] ; then
-    debug_echo ""
-    debug_echo "$PROG: Script is running in test mode. To disable, set DEBUG to 0."
-    
-    REMOTEDIRECTORIESPATH="$HOME/bash-work/remotelogs"
-    LOGCHECKCFGPATH="$HOME/bash-work/logcheck.logfiles"
-    RSYSLOGROTATECONFIG="$HOME/bash-work/remotersyslog"
-else    
-   REMOTEDIRECTORIESPATH="/var/log/remotelogs"
-   LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
-   RSYSLOGROTATECONFIG="/etc/logrotate.d/remotersyslog"
 fi
 
 cd $REMOTEDIRECTORIESPATH
@@ -107,8 +98,7 @@ do
     
     for logfile in *
     do
-        # debug_echo "Found file: ($mydir) $logfile"
-        
+   
         logcheckfn=`$ECHO $logfile | $SED -n '/\.log$/p'`
         
         ##
