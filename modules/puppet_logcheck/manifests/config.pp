@@ -14,18 +14,6 @@ class puppet_logcheck::config {
                    mode => '0640',
                 require => Class["puppet_logcheck::install"],
             }
-        
-        
-            # list of logfiles to check
-        
-            file { '/etc/logcheck/logcheck.logfiles':
-                 source => "puppet:///modules/puppet_logcheck/logcheck.logfiles",
-                  owner => 'root',
-                  group => 'logcheck',
-                   mode => '0640',
-                require => Class["puppet_logcheck::install"],
-            }
-            
             
             # email header text (if enabled in configuration)
         
@@ -36,7 +24,6 @@ class puppet_logcheck::config {
                   mode => '0640',
                 require => Class["puppet_logcheck::install"],
             }
-        
         
         }
         
