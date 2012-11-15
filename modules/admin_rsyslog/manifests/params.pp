@@ -8,4 +8,8 @@ class admin_rsyslog::params {
 
     $myloghost = 'warp'
     
+    # all logfiles that rsyslog writes (local or remote) here will be checked
+    
+    $logcheckfilespath = '/var/log/logcheck'
+    
 }

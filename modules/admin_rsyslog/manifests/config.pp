@@ -37,12 +37,12 @@ class admin_rsyslog::config {
               owner => 'root',
               group => 'root',
                mode => '0700',
-            require => File[$logcheckfilepath],
+            require => File["$logcheckfilepath"],
         }             
         
         # create a directory for all logs (local and remote) that we want logcheck to scan
         
-        file { $logcheckfilepath :
+        file { "$logcheckfilepath" :
             ensure => directory,
         	 owner => 'root',
 	 	     group => 'root',
