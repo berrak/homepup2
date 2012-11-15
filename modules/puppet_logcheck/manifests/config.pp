@@ -15,6 +15,16 @@ class puppet_logcheck::config {
                 require => Class["puppet_logcheck::install"],
             }
             
+            # crontab entry - every hour by debian, but here less often
+            
+            file { '/etc/cron.d/logcheck':
+                 source => "puppet:///modules/puppet_logcheck/logcheck",  
+                  owner => 'root',
+                  group => 'root',
+                  mode => '0640',
+                require => Class["puppet_logcheck::install"],
+            }      
+            
             # email header text (if enabled in configuration)
         
             file { '/etc/logcheck/header.txt':
