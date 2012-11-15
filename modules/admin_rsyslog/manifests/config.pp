@@ -17,7 +17,27 @@ class admin_rsyslog::config {
               group => 'root',
             require => Class["admin_rsyslog::install"],
              notify => Class["admin_rsyslog::service"],
-        }        
+        }
+        
+        
+        # make sure that cron update any new host and their remote log files
+        file { '/etc/cron.daily/remotelogupdate':
+             source => "puppet:///modules/admin_rsyslog/remotelogupdate",
+              owner => 'root',
+              group => 'root',
+               mode => '0755',
+            require => File["/root/bin/cron.update_remote_log_directories"],
+        }       
+        
+        # this script add logs to logcheck to scan, and make sure files get rotated
+        
+        file { '/root/bin/cron.update_remote_log_directories':
+             source => "puppet:///modules/admin_rsyslog/cron.update_remote_log_directories",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => File["/var/log/remotelogs"],
+        }             
         
         # create a directory for all remote logs
         
@@ -26,6 +46,7 @@ class admin_rsyslog::config {
         	 owner => 'root',
 	 	     group => 'root',
 		      mode => '0755',
+           require => Class["admin_rsyslog::install"],              
         }
         
     

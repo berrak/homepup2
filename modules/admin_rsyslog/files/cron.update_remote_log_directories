@@ -1,0 +1,177 @@
+#!/bin/bash
+#
+# /root/bin/cron.update_remote_log_directories
+#
+# Purpose: executed from cron to update any automatically 
+# added folders (remote hosts) at the log host. This adds:
+# 1. log rotate entry in /etc/logrotate.d
+# 2. added log files names to scan for logcheck, if installed
+#
+# Console usage: # cron.update_remote_log_directories
+#
+# Assumes that script only is executed on the log host
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+WHICH=/usr/bin/which
+TOUCH=/usr/bin/touch
+CAT=/bin/cat
+ECHO=/bin/echo
+LOGGER=/usr/bin/logger
+GREP=/bin/grep
+HOSTNAME=/bin/hostname
+SED=/bin/sed
+BASENAME=/usr/bin/basename
+PROG=`$BASENAME "$0"`
+
+##############################################################
+## Functions
+##############################################################
+function debug_echo()
+{
+    # Display message if $DEBUG >= 1
+    if [ "$DEBUG" -ge 1 ]; then
+	    $ECHO "$1" 1>&2
+    fi
+}
+
+##############################################################
+## Variables 
+##############################################################
+
+DEBUG=0
+LOGCHECK="logcheck"
+
+##############################################################
+## Program starts here
+##############################################################
+
+if [[ $EUID -ne 0 ]] ;then
+    echo "$PROG: This script must be run as root. Aborting." 
+    exit 0
+fi
+
+if [ $DEBUG ] ; then
+    debug_echo ""
+    debug_echo "$PROG: Script is running in test mode. To disable, set DEBUG to 0."
+    
+    REMOTEDIRECTORIESPATH="$HOME/bash-work/remotelogs"
+    LOGCHECKCFGPATH="$HOME/bash-work/logcheck.logfiles"
+    RSYSLOGROTATECONFIG="$HOME/bash-work/remotersyslog"
+else    
+   REMOTEDIRECTORIESPATH="/var/log/remotelogs"
+   LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
+   RSYSLOGROTATECONFIG="/etc/logrotate.d/remotersyslog"
+fi
+
+cd $REMOTEDIRECTORIESPATH
+if [ $? -ne 0 ] ; then
+    echo "Could not change to directory ($REMOTEDIRECTORIESPATH). Aborting!" | $LOGGER -p local0.debug -t $PROG
+    exit 1
+fi
+
+# this is the assumption that this is only executed on the log host
+if [ ! -f $RSYSLOGROTATECONFIG ]; then
+    $TOUCH $RSYSLOGROTATECONFIG
+fi
+
+
+for mydir in *
+do
+    # this is the host directories
+    debug_echo "In directory: $mydir"
+    
+    # for each base file in that directory
+    cd $mydir
+    if [ $? -ne 0 ] ; then
+        echo "Could not change to directory ($mydir). Aborting!" | $LOGGER -p local0.debug -t $PROG
+        exit 1
+    fi
+    
+    for logfile in *
+    do
+        # debug_echo "Found file: ($mydir) $logfile"
+        
+        logcheckfn=`$ECHO $logfile | $SED -n '/\.log$/p'`
+        
+        ##
+        ## test if logcheck is installed on this host and
+        ## if so update the list for which files to scan
+        ##
+        
+        $WHICH $LOGCHECK
+        if [ $? -eq 0 ] ; then
+            
+            # for each log file path, add to logcheck files (if not already there)
+            # use only log file names that is not rotated or compressed
+            # i.e. a file name which does ends with only '.log'
+            
+            if [ ! -z $logcheckfn ] ; then
+                debug_echo "PROCESS THIS FILE FOR LOGCHECK: ($mydir) $logcheckfn"
+                
+                filepresent=`$GREP -Fx $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn $LOGCHECKCFGPATH`
+                
+                # if file is not already there, append it to the logcheck file
+                if [ -z $filepresent ] ; then
+                    $ECHO $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn >> $LOGCHECKCFGPATH 
+                fi
+                
+            fi
+            
+        else
+            debug_echo "Log check package is not installed ($HOSTNAME --fqdn). Skipping"
+            echo "Log check package is not installed ($HOSTNAME -fqdn). Skipping" | $LOGGER -p local0.debug -t $PROG
+        fi
+        
+        ##
+        ## For each file log file we need to log rotate these.
+        ## Add logrotate instruction in /etc/logrotate.d
+        ##
+        
+        if [ ! -z $logcheckfn ] ; then
+        
+            filerotate=`$GREP -Fx $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn $RSYSLOGROTATECONFIG`
+        
+            # if file is not already there, append rotate instructions for that log file
+            if [ -z $filerotate ] ; then
+            $ECHO "$REMOTEDIRECTORIESPATH/$mydir/$logcheckfn {" >> $RSYSLOGROTATECONFIG
+            (             
+$CAT <<-EOF
+  rotate 12
+  monthly
+  compress
+  missingok
+  notifempty
+}
+EOF
+) >> $RSYSLOGROTATECONFIG
+            
+            fi
+        
+        fi
+        
+    done
+    
+    # Done with all files in this directory. Now up one directory and continue with next.
+    cd ..
+    
+done
+
+# eof
