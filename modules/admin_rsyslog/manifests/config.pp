@@ -8,8 +8,9 @@ class admin_rsyslog::config {
     if $::hostname == $::admin_rsyslog::params::myloghost {
      
         include admin_rsyslog::params
-     
-        $srvremotepath = $::admin_rsyslog::params::logsrvremotepath
+         
+        # where logfiles are saved for logcheck scans
+        $logcheckfilepath = $::admin_rsyslog::params::logcheckfilespath
         
         file { '/etc/rsyslog.conf':
              source => "puppet:///modules/admin_rsyslog/rsyslog.loghost.conf",
@@ -36,12 +37,12 @@ class admin_rsyslog::config {
               owner => 'root',
               group => 'root',
                mode => '0700',
-            require => File["/var/log/remotelogs"],
+            require => File[$logcheckfilepath],
         }             
         
-        # create a directory for all remote logs
+        # create a directory for all logs (local and remote) that we want logcheck to scan
         
-        file { '/var/log/remotelogs' :
+        file { $logcheckfilepath :
             ensure => directory,
         	 owner => 'root',
 	 	     group => 'root',
