@@ -51,16 +51,16 @@ $IncludeConfig /etc/rsyslog.d/*.conf
 ###############
 #### Templates
 ###############
-$template PerHostSyslog,"/var/log/remotelogs/%HOSTNAME%/syslog.log"
-$template PerHostIptables,"/var/log/remotelogs/%HOSTNAME%/iptables.log"
-$template PerHostAuth,"/var/log/remotelogs/%HOSTNAME%/auth.log"
+$template PerHostSyslog,"<%= logcheckfilepath %>/%HOSTNAME%/syslog.log"
+$template PerHostAuth,"<%= logcheckfilepath %>/%HOSTNAME%/auth.log"
+$template PerHostIptables,"<%= logcheckfilepath %>/%HOSTNAME%/iptables.log"
 
 ###############
 #### RULES ####
 ###############
 
 #
-# Sort some remote rsyslog messages
+# remote rsyslog (logcheck scan for security)
 ######################################
 if $fromhost-ip != '127.0.0.1' and \
 ( $syslogfacility-text == 'kern' and $syslogseverity-text == 'emerg' ) \
@@ -75,16 +75,17 @@ then -?PerHostAuth
 if $fromhost-ip != '127.0.0.1' then -?PerHostSyslog
 & ~
 
-# Local logs
-##########################
-*.*;auth,authpriv.none;kern.!emerg      -/var/log/syslog
+# Local rsyslogs (logcheck scan for security)
+######################################
+*.*;auth,authpriv.none;kern.!emerg      -<%= logcheckfilepath %>/<%= myloghost %>/syslog.log
 
-auth,authpriv.*		                    /var/log/auth.log
+auth,authpriv.*		                    <%= logcheckfilepath %>/<%= myloghost %>/auth.log
 
 # we set iptables to log to priority 'emerg'
-kern.emerg                              /var/log/iptables.log
+kern.emerg                              <%= logcheckfilepath %>/<%= myloghost %>/iptables.log
 
 # Other local standard facilities
+######################################
 daemon.*			                    -/var/log/daemon.log
 kern.!=emerg		                    -/var/log/kern.log
 cron.*				                    -/var/log/cron.log
@@ -93,24 +94,25 @@ mail.*				                    -/var/log/mail.log
 
 
 #
-# Logging for the mail system.  Split it up so that
-# it is easy to write scripts to parse these files.
-#
+# Logging for the mail system.
+######################################
 mail.info			                    -/var/log/mail.info
 mail.warn       	                    -/var/log/mail.warn
 mail.err			                    /var/log/mail.err
 
 #
 # Sort out debug and the three lower priorities (i.e. info,notice,warning)
-#
+######################################
 *.=debug;auth,authpriv,mail.none	                             -/var/log/debug
 *.=info;*.=notice;*.=warn;auth,authpriv,cron,mail,daemon.none	 -/var/log/messages
 
+#
 # Console messages (all four lowest priorities)
+######################################
 *.=debug;*.=info;*.=notice;*.=warn;auth,authpriv,cron,mail.none	|/dev/xconsole
 
 #
 # All unused facilities to one log file.
-#
+######################################
 lpr,news,uucp,local0,local1,local2,local3,local4,local5,local6,local7.*  -/var/log/unused.log
 

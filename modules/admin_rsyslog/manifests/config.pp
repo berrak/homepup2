@@ -5,7 +5,9 @@ class admin_rsyslog::config {
 
     include admin_rsyslog::params
     
-    if $::hostname == $::admin_rsyslog::params::myloghost {
+    $myloghost = $::admin_rsyslog::params::myloghost
+    
+    if $::hostname == $myloghost {
      
         include admin_rsyslog::params
          
@@ -13,9 +15,10 @@ class admin_rsyslog::config {
         $logcheckfilepath = $::admin_rsyslog::params::logcheckfilespath
         
         file { '/etc/rsyslog.conf':
-             source => "puppet:///modules/admin_rsyslog/rsyslog.loghost.conf",
-              owner => 'root',
-              group => 'root',
+            ensure  => present,
+            content => template("admin_rsyslog/rsyslog.loghost.conf.erb"),            
+            owner   => 'root',
+            group   => 'root',
             require => Class["admin_rsyslog::install"],
              notify => Class["admin_rsyslog::service"],
         }
