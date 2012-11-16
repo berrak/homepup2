@@ -55,17 +55,16 @@ function debug_echo()
 ##############################################################
 ## Variables 
 ##############################################################
-
-REMOTEDIRECTORIESPATH="/var/log/remotelogs"
-LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
-RSYSLOGROTATECONFIG="/etc/logrotate.d/remotersyslog"
-
 # enable debug statements (debug_echo)
 DEBUG=0
 # rsyslog debian package name
 LOGCHECK="logcheck"
 # file name of syslog file to be rotated (special)
 SYSLOGFN="syslog.log"
+
+REMOTEDIRECTORIESPATH="/var/log/$LOGCHECK"
+LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
+RSYSLOGROTATECONFIG="/etc/logrotate.d/remotersyslog"
 
 ##############################################################
 ## Program starts here
