@@ -149,7 +149,10 @@ do
                 # write the opening rotate line (i.e. the log file name)
                 $ECHO "$REMOTEDIRECTORIESPATH/$mydir/$logcheckfn" >> $RSYSLOGROTATECONFIG
             
-                if [ "$filerotate" = "$SYSLOGFN" ] ; then
+                syslogfn=`$ECHO $filerotate | $SED -n '/syslog\.log$/p'`
+            
+                # if file name is 'syslog.log' add special rotate instructions
+                if [ ! -z $syslogfn ] ; then
                     (             
 $CAT <<-EOF
 {
