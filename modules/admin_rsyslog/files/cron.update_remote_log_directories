@@ -152,7 +152,7 @@ do
                 syslogfn=`$ECHO $filerotate | $SED -n '/syslog\.log$/p'`
             
                 # if file name is 'syslog.log' add special rotate instructions
-                if [ ! -z $syslogfn ] ; then
+                if [ -z $syslogfn ] ; then
                     (             
 $CAT <<-EOF
 {
