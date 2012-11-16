@@ -53,6 +53,18 @@ class admin_rsyslog::config {
            require => Class["admin_rsyslog::install"],              
         }
         
+        # write some notes to admin where we put syslog(.log) when using logcheck
+        
+        file { '/var/log/syslogforadmin.README':
+             source => "puppet:///modules/admin_rsyslog/syslogforadmin.README",
+              owner => 'root',
+              group => 'root',
+               mode => '0640',
+           require => Class["admin_rsyslog::install"],    
+        }  
+        
+        
+        
     
     } else {
     

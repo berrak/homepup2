@@ -1,0 +1,28 @@
+#
+# /var/log/syslogforadmin.README
+#
+###############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILOL BE WIPED OUT. #
+###############################################################
+#
+# This is some memory notes to the local system admin.
+#
+# When rsyslog is installed on the a log host. All security logs
+# are written to a sub directory '/var/log/logcheck/<host name>/'
+# This is done also for the loghost itself. See /etc/rsyslog.conf.
+#
+# The original 'syslog' file is no longer used.
+# '/var/log/syslog' will not change or grow and can be left as is.
+#
+# The working syslog file in use is 'syslog.log' for both local
+# and any remote system (that use the log host).
+#
+# Reason for this is that a cron script will daily scan if new remote
+# hosts (sending log files) have been added. The script will auto-
+# matically update logcheck (if installed) to scan for files in
+# '/etc/logcheck/logcheck.logfiles'. In addition it will ensure  
+# log rotation of all log files in /var/log/logcheck/<host name>/*.log
+#
+# Log rotation instructions is saved in /etc/logrotate.d/remotersyslog.
+#
+## EOF

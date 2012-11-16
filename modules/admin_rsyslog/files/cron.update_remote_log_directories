@@ -60,8 +60,12 @@ REMOTEDIRECTORIESPATH="/var/log/remotelogs"
 LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
 RSYSLOGROTATECONFIG="/etc/logrotate.d/remotersyslog"
 
+# enable debug statements (debug_echo)
 DEBUG=0
+# rsyslog debian package name
 LOGCHECK="logcheck"
+# file name of syslog file to be rotated (special)
+SYSLOGFN="syslog.log"
 
 ##############################################################
 ## Program starts here
@@ -126,12 +130,13 @@ do
             fi
             
         else
-            debug_echo "Log check package is not installed ($HOSTNAME --fqdn). Skipping"
+            debug_echo "Logcheck package is not installed on ($HOSTNAME --fqdn). Skipping"
             echo "Log check package is not installed ($HOSTNAME -fqdn). Skipping" | $LOGGER -p local0.debug -t $PROG
         fi
         
         ##
         ## For each file log file we need to log rotate these.
+        ## The sylog file itself requires diffrent rotate instruction by default.
         ## Add logrotate instruction in /etc/logrotate.d
         ##
         
@@ -141,9 +146,30 @@ do
         
             # if file is not already there, append rotate instructions for that log file
             if [ -z $filerotate ] ; then
-            $ECHO "$REMOTEDIRECTORIESPATH/$mydir/$logcheckfn {" >> $RSYSLOGROTATECONFIG
-            (             
+            
+                # write the opening rotate line (i.e. the log file name)
+                $ECHO "$REMOTEDIRECTORIESPATH/$mydir/$logcheckfn" >> $RSYSLOGROTATECONFIG
+            
+                if [ "$filerotate" = "$SYSLOGFN" ] ; then
+                    (             
 $CAT <<-EOF
+{
+	rotate 4
+	weekly
+	missingok
+	notifempty
+	delaycompress
+	compress
+	postrotate
+		invoke-rc.d rsyslog rotate > /dev/null
+	endscript
+}
+EOF
+                    ) >> $RSYSLOGROTATECONFIG
+                else
+                    (
+$CAT <<-EOF
+{
   rotate 12
   monthly
   compress
@@ -151,7 +177,8 @@ $CAT <<-EOF
   notifempty
 }
 EOF
-) >> $RSYSLOGROTATECONFIG
+                    ) >> $RSYSLOGROTATECONFIG 
+                fi
             
             fi
         
