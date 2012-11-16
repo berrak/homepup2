@@ -37,7 +37,7 @@ class puppet_iptables::params {
     
     # file server (incl log host)
     #------------------------------
-    $fileserveraddr = '192.168.0.83'
+    $fileserveraddr = '192.168.2.83'
     
 
 }

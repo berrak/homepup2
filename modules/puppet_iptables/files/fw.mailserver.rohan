@@ -33,7 +33,7 @@ NET_INT="192.168.0.0/24"
 IF_INT=eth0
 
 NTPHOSTADDR="192.168.0.1"
-FILESERVERADDR="192.168.0.83"
+FILESERVERADDR="192.168.2.83"
 
 ## Log options
 LOGOPT="LOG --log-level emerg --log-ip-options --log-tcp-options"
