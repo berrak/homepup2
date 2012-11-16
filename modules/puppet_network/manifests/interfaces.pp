@@ -38,6 +38,19 @@ class puppet_network::interfaces ( $interfaces = '1',
     
         fail("FAIL: Sorry, broadcast net parameter can't be empty for single interfaces.")
     }
+     
+    # to reach the sub domain 'sec.home.tld' we need to add a static route frome 'home.tld'
+    
+    if $broadcastnet == $::puppet_network::params::mysubdomain_net {
+    
+        $addroute_eth0 = ''
+        $removeroute_eth0 = ''
+        
+    } else {
+    
+        $addroute_eth0 = $::puppet_network::params::addroute_eth0
+        $removeroute_eth0 = $::puppet_network::params::removeroute_eth0  
+    }
                         
     if ( $interfaces == '1' ) {
         
