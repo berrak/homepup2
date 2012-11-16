@@ -9,6 +9,7 @@ class puppet_logwatch::config {
 
     file { '/etc/cron.daily/00logwatch' :
         content =>  template( 'puppet_logwatch/00logwatch.erb' ),
+		 ensure => present,
           owner => 'root',
           group => 'root',
            mode => '0755',
