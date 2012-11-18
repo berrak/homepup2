@@ -145,7 +145,7 @@ node 'warp.sec.home.tld' inherits basenode {
         puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon', puppetserver_domain => 'home.tld',
         gateway_ip => '192.168.0.1', gateway_hostname => 'gondor', gateway_domain => 'home.tld',
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan', smtp_domain => 'home.tld',
-		gateway_security_ip = '192.168.2.1', gateway_security_hostname = 'asgard', gateway_security_domain = 'sec.home.tld'}
+		gateway_security_ip => '192.168.2.1', gateway_security_hostname => 'asgard', gateway_security_domain => 'sec.home.tld' }
     
 	## network and default services
 	
