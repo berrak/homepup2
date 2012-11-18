@@ -32,7 +32,7 @@ class admin_hosts::config (
     if $gateway_domain == '' {
         $mygateway_domain = $::domain
     } else {
-        $mygateway_domain = $mygateway_domain
+        $mygateway_domain = $gateway_domain
 	}
 	
     # smtp server may live in same domain as the actual host
