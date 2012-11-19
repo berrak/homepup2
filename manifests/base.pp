@@ -23,9 +23,6 @@ node basenode {
     # this creates daily (07:15, crontab:daily) mailto to root unless on
 	include puppet_logwatch
 	
-	# this creates daily (07:15, see crontab:daily) mailto if warnings unless
-    include puppet_rkhunter
-	
 	# this creates daily (07:15, see crontab:daily) mailto if warnings unless 	
 	include puppet_chkrootkit
 	
