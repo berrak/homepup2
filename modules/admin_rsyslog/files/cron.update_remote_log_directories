@@ -156,8 +156,8 @@ do
                     (             
 $CAT <<-EOF
 {
-	rotate 4
-	weekly
+	rotate 10
+	size 100M
 	missingok
 	notifempty
 	delaycompress
@@ -172,8 +172,8 @@ EOF
                     (
 $CAT <<-EOF
 {
-  rotate 12
-  monthly
+  rotate 10
+  size 100M
   compress
   missingok
   notifempty
