@@ -208,12 +208,15 @@ $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
 ## ALLOW INBOUND TRAFFIC
 ## ======================
 
-#----------------------------------------------------------------------------
-## External inbound traffic (from external net --> internal net i.e. sec.tld)
-#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
+## External inbound traffic (from external net --> internal net (sec.tld) or special host
+#----------------------------------------------------------------------------------------
 
 # allow established and related traffic ext to internal net
 $IPTABLES -A FORWARD -i $IF_EXT -o $IF_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# allow rsyslog (tcp/514) pass through to our log host
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # drop spoof packages
 $IPTABLES -A FORWARD -i $IF_EXT -s $NET_INT -o $IF_INT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF EXT2INT "
