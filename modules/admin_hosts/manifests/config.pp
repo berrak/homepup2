@@ -4,7 +4,8 @@
 ##
 class admin_hosts::config (
           $puppetserver_ip = '',     $puppetserver_hostname = '',     $puppetserver_domain = '',
-               $gateway_ip = '',          $gateway_hostname = '',          $gateway_domain = '',			 
+               $gateway_ip = '',          $gateway_hostname = '',          $gateway_domain = '',
+        $gateway_subdomain ='',
                   $smtp_ip = '',             $smtp_hostname = '',             $smtp_domain = '',
       $gateway_security_ip = '', $gateway_security_hostname = '', $gateway_security_domain = '',						
 ) {
