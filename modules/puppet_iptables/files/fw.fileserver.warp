@@ -32,6 +32,8 @@ IPTSAVEFILE=/root/bin/IPTABLES.FW
 NET_INT="192.168.2.0/24"
 IF_INT=eth0
 
+NET_EXT="192.168.0.0/24"
+
 # Special hosts (NTP, smtp, and puppet server)
 NTPHOSTADDR="192.168.0.1"
 SMTPHOSTADDR="192.168.0.11"
@@ -99,7 +101,7 @@ $IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW -j
 # imap clients (internal users) access their mailboxes to this mail server on this port
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 143 -m state --state NEW -j ACCEPT
 
-# allow rsyslog (internal hosts) to send logs to this log host on this port
+# allow rsyslog (internal hosts i.e. in subdomain sec.home.tld) to send logs
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # imaps secure clients (internal users) access their mailboxes to this mail server on this port
@@ -129,7 +131,11 @@ $IPTABLES -A INPUT -p all ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j 
 # do not not allow broadcasts from any other non-local addresses
 $IPTABLES -t filter -A INPUT ! -s $NET_INT -j broadcast-drop
 
+#########################################################################################
 ## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
+#########################################################################################
+# allow rsyslog (hosts in domain 'home.tld') to send logs to this log host on this port
+$IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 #---------------------------------------------------------------------------
 # CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
