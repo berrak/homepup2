@@ -156,7 +156,7 @@ do
                     (             
 $CAT <<-EOF
 {
-	rotate 10
+	rotate 5
 	size 100M
 	missingok
 	notifempty
@@ -173,7 +173,7 @@ EOF
 $CAT <<-EOF
 {
   rotate 10
-  size 100M
+  size 50M
   compress
   missingok
   notifempty
