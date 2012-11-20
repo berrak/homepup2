@@ -13,7 +13,7 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 # m h dom mon dow user command
 0 * * * *  root   cd / && run-parts --report /etc/cron.hourly
-0 7 * * * root   cd / && run-parts --report /etc/cron.daily
-30 6 * * 7 root   cd / && run-parts --report /etc/cron.weekly
-45 6 1 * * root   cd / && run-parts --report /etc/cron.monthly
+0 19 * * * root   cd / && run-parts --report /etc/cron.daily
+30 19 * * 7 root   cd / && run-parts --report /etc/cron.weekly
+45 19 1 * * root   cd / && run-parts --report /etc/cron.monthly
 #
