@@ -1,10 +1,8 @@
 ##
-## Hardening a host. Each subclass corresponds to
-## script in tiger, i.e. ::system <--> check_system
-## otherwise hardening is done in ::cis
+## Hardening a host which can not be related to a package. 
 ##
 class admin_hardening {
 
-    include admin_hardening::shutdown, admin_hardening::noroothistory
+    include admin_hardening::shutdown
 
 }
