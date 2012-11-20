@@ -10,6 +10,6 @@
 ##############################################################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-45 11 * * *       logcheck    if [ -x /usr/sbin/logwatch ]; then nice -n10 /usr/sbin/logwatch; fi
+20 12 * * *   root   if [ -x /usr/sbin/logwatch ]; then /usr/sbin/logwatch; fi
 
 # EOF
