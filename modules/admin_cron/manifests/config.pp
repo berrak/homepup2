@@ -9,17 +9,15 @@ class admin_cron::config {
         ensure => installed,
     }
     
-    # Install anacron if laptop
+    # Hardening: Depend only on one 'cron' (i.e. remove 'anacron')
     
-    if $::type == 'Notebook' {
+	package { 'anacron' :
+		 ensure => purged,
+		require => Package["cron"],
+	}
+
     
-        package { 'anacron' :
-             ensure => installed,
-            require => Package["cron"],
-        }
-    }
-    
-    # restrict who can use cron to only root
+    # Hardening: restrict who can use cron to only 'root'
     
     file { "/root/bin/cron.restrict":
          source => "puppet:///modules/admin_cron/cron.restrict",
