@@ -5,4 +5,5 @@
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
-/usr/sbin/logwatch --mailto <%= mailtorecepient %>
+# This is NON-executable file that prevents maintainer changes
+# or run-parts to execute a daily cron job (is now run cron.d)

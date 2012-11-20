@@ -20,7 +20,6 @@ node basenode {
 	# apt runs Cron Daemon (07:15-07:45, crontab:daily) to download upgradable pkg's
     include admin_aptconf
 	
-    # this creates daily (07:15, crontab:daily) mailto to root unless on
 	include puppet_logwatch
 	
 	# this creates daily (07:15, see crontab:daily) mailto if warnings unless 	

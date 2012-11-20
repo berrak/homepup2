@@ -1,0 +1,15 @@
+#
+# /etc/cron.d/logwatch: crontab entries for the logwatch package
+#
+# Local Admin Note: this replace the maintainers usage in
+# 'cron.daily' for better control and reliability. MAILTO is not
+# required to set since its default and defined in config. file.
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+45 11 * * *       logcheck    if [ -x /usr/sbin/logwatch ]; then nice -n10 /usr/sbin/logwatch; fi
+
+# EOF
