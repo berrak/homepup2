@@ -32,15 +32,9 @@
 MYYEAR=`date +%Y`
 
 # chkrootkit filter (false positive/unimportant) for less inbox cluttering mails
-:0 B
-* bash_history
-.INBOX.${MYYEAR}__BLOCKED__/
-
-# rkhunter filter (false positive/unimportant) for less inbox cluttering mails
-:0
-* Subject:.*rkhunter
-* Subject:.*Weekly database update$
-.INBOX.${MYYEAR}__BLOCKED__/
+#:0 B
+#* bash_history
+#.INBOX.${MYYEAR}__BLOCKED__/
 
 # tripwire filter (no violations found, i.e. V:0) for less inbox cluttering mails
 :0
