@@ -18,8 +18,6 @@ class admin_aptconf {
 	# put all other sources in the sources.list.d directory. The source list	
 	# snippets is disabled during cron unattended upgrade security runs.
 	
-	
-	
 	### repo file snippets
 
 	file { "/etc/apt/sources.list.d/main.list":
@@ -90,7 +88,7 @@ class admin_aptconf {
 	}
 	
 	
-	## Always use aptitude safe-upgrade, and call tripwire if it exists
+	## This scrip use aptitude safe-upgrade, and call tripwire if it exists
 
 		file { "/root/bin/upgrade":
 			source => "puppet:///modules/admin_aptconf/upgrade.sh",
@@ -109,4 +107,13 @@ class admin_aptconf {
 			  mode => '0700',
 		}	
 
+    ## Set up a cron job for this, 4 times per week.
+	
+		file { "/etc/cron.d/upgradesecurity":
+			source => "puppet:///modules/admin_aptconf/upgradesecurity",
+			 owner => 'root',
+			 group => 'root',
+			  mode => '0644',
+		}	
+	
 }

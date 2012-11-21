@@ -1,0 +1,13 @@
+#
+# /etc/cron.d/upgradesecurity: crontab entries for
+# the script 'upgrade.security'. Script willdownload
+# debian security updates and apply them with aptitude.
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+0 18 7,14,21,28 * *   root   test -x /root/bin/upgrade.security && /bin/bin/upgrade.security
+
+# EOF

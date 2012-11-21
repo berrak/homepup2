@@ -21,12 +21,7 @@ node basenode {
 	
 	# this creates daily (07:15, see crontab:daily) mailto if warnings unless 	
 	include puppet_chkrootkit
-	
-	# cron/apt will upgrade 'security' 4 times per month (will mail root about this)
-    admin_cron::install { 'security' :
-	                       command => '/root/bin/upgrade.security',
-	                          monthday=> '7,14,21,28', hour => '18', minute => '0' }
-			
+				
     include admin_pinpuppet2_7
 
     admin_bndl::install { 'securityapps' : }
