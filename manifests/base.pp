@@ -18,8 +18,6 @@ node basenode {
 	include admin_cron
     include admin_aptconf
 	include puppet_logwatch
-	
-	# this creates daily (07:15, see crontab:daily) mailto if warnings unless 	
 	include puppet_chkrootkit
 				
     include admin_pinpuppet2_7

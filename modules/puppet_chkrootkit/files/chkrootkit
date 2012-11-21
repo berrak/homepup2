@@ -1,15 +1,14 @@
 #
-# /etc/cron.d/logwatch: crontab entries for the logwatch package
+# /etc/cron.d/chkrootkit: crontab entries for the chkrootkit package
 #
 # Local Admin Note: this replace the maintainers usage in
-# 'cron.daily' for better control and reliability. MAILTO is not
-# required to set since its default and defined in config. file.
+# 'cron.daily' for better control and reliability.
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
-30 19 * * *  root  test -x /usr/sbin/logwatch && /usr/sbin/logwatch
+MAILTO=root
+30 18 * * *  root  test -x /root/bin/chkrootkit.sh && /root/bin/chkrootkit.sh
 
 # EOF
