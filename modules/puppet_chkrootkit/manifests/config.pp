@@ -12,7 +12,7 @@ class puppet_chkrootkit::config {
     
     # Original maintainer start script (from cron.daily) to /root/bin
     
-    file { "/bin/root/chkrootkit.sh":
+    file { "/root/bin/chkrootkit.sh":
          source => "puppet:///modules/puppet_chkrootkit/chkrootkit.sh",
           owner => 'root',
           group => 'root',
