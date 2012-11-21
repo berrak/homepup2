@@ -16,20 +16,16 @@ node basenode {
 	include admin_logrotate
 	
 	include admin_cron
-	
-	# apt runs Cron Daemon (07:15-07:45, crontab:daily) to download upgradable pkg's
     include admin_aptconf
-	
 	include puppet_logwatch
 	
 	# this creates daily (07:15, see crontab:daily) mailto if warnings unless 	
 	include puppet_chkrootkit
 	
-	# cron/apt will upgrade 'security' once a day (will mail root about this)
-
+	# cron/apt will upgrade 'security' 4 times per month (will mail root about this)
     admin_cron::install { 'security' :
 	                       command => '/root/bin/upgrade.security',
-	                          hour => '10', minute => '0' }
+	                          monthday=> '7,14,21,28', hour => '18', minute => '0' }
 			
     include admin_pinpuppet2_7
 
