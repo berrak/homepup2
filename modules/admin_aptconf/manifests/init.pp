@@ -64,16 +64,6 @@ class admin_aptconf {
 		  mode => '0644',
 
 	}	
-
-	## Configures daily updates/downloads but do NOT auto upgrade (i.e. do not
-	## use the debian package unattended-upgrades. Use my 'upgrade.security'
-	
-	file { "/etc/apt/apt.conf.d/02periodic":
-		source => "puppet:///modules/admin_aptconf/02periodic",
-		 owner => 'root',
-		 group => 'root',
-		  mode => '0644',
-	}
 	
 	## Some hosts (standard for servers) have /tmp partition mounted 'noexec'
 	## Apt may need 'exec' /tmp during install. This remount /tmp for apt. 
