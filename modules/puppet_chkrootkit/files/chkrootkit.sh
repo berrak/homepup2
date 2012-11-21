@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# /root/bin/chkrootkit
+# /root/bin/chkrootkit.sh
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
