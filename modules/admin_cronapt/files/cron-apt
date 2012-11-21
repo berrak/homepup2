@@ -1,0 +1,12 @@
+#
+# /etc/cron.d/cron-apt
+#
+# Regular cron jobs for the cron-apt package
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Every night at 4 o'clock.
+0 4	* * *	root	test -x /usr/sbin/cron-apt && /usr/sbin/cron-apt
+
