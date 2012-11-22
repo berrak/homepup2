@@ -100,14 +100,14 @@ class admin_aptconf {
 	## Always use this script for unattended security updates. This script
 	## will only read 'sources.list' and not any snippets in /sources.list.d
 
-		file { "/root/bin/upgrade.security":
-			source => "puppet:///modules/admin_aptconf/upgrade.security.sh",
+		file { "/root/jobs/cron.upgradesecurity":
+			source => "puppet:///modules/admin_aptconf/cron.upgradesecurity",
 			 owner => 'root',
 			 group => 'root',
 			  mode => '0700',
 		}	
 
-    ## Set up a cron job for this, 4 times per week.
+    ## Set up a cron job for this, 4 times per month.
 	
 		file { "/etc/cron.d/upgradesecurity":
 			source => "puppet:///modules/admin_aptconf/upgradesecurity",

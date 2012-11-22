@@ -1,12 +1,12 @@
 #!/bin/sh
 #
-# /root/bin/upgrade.security
+# /root/jobs/cron.upgradesecurity
 #
 ###############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
 ###############################################################
 #
-# Runs script for security updates (unattended).
+# Runs (from cron.d) script for security updates (unattended).
 #
 # Requires script 'upgrade' (which runs tripwire if available)
 # and use aptitude, but in principle could be apt-get as well.
