@@ -9,7 +9,7 @@
 ##############################################################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=root
-30 18 * * *  root  test -x /root/jobs/cron.update_remote_log_directories && /bin/sh /root/jobs/cron.update_remote_log_directories
+30 18 * * *  root  test -x /root/jobs/cron.update_remote_log_directories && /bin/bash /root/jobs/cron.update_remote_log_directories
 
 # EOF
 
