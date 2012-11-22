@@ -4,26 +4,60 @@
 ##############################################################
 # DO NOT EDIT. MANAGED BY PUPPET. CHANGES WILL BE WIPED OUT. #
 ##############################################################
+#
+# Run options
+#
+
 APTCOMMAND="/usr/bin/aptitude"
-SYSLOGON="upgrade"
-RUNSLEEP=60
+RUNSLEEP=120
+OPTIONS=""
+
+
+#
+# Mail options
+#
+
 MAILTO="root"
-DEBUG="always"
+MAILON="always"
 DIFFONCHANGES=prepend
-REFRAINFILE="/etc/cron-apt/refrain"
-MINTMPDIRSIZE=10
+XHEADER1="cron-apt: aptitude upgrade"
+
+
+#
+# Config path options
+#
+
 ACTIONDIR="/etc/cron-apt/action.d"
 ACTIONCONFDIR="/etc/cron-apt/config.d"
+
+MAILONMSGSDIR="/etc/cron-apt/mailonmsgs"
 MAILMSGDIR="/etc/cron-apt/mailmsg.d"
+
 SYSLOGMSGDIR="/etc/cron-apt/syslogmsg.d"
+SYSLOGONMSGSDIR="/etc/cron-apt/syslogonmsgs"
+
 ERRORMSGDIR="/etc/cron-apt/errormsg.d"
 LOGMSGDIR="/etc/cron-apt/logmsg.d"
-MAILONMSGSDIR="/etc/cron-apt/mailonmsgs"
-SYSLOGONMSGSDIR="/etc/cron-apt/syslogonmsgs"
-NOLOCKWARN="nowarn"
+
+
+#
+# cron-apt log options
+#
+
+SYSLOGON="upgrade"
+DEBUG="always"
 ERROR="/var/log/cron-apt/error"
 TEMP="/var/log/cron-apt/temp"
 LOG="/var/log/cron-apt/log"
 MAIL="/var/log/cron-apt/mail"
+
+
+#
+# Misc options
+#
+
+REFRAINFILE="/etc/cron-apt/refrain"
+MINTMPDIRSIZE=10
+NOLOCKWARN="nowarn"
 EXITON="error"
 UMASK_APT="022"
