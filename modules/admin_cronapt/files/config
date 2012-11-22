@@ -20,7 +20,6 @@ OPTIONS=""
 MAILTO="root"
 MAILON="always"
 DIFFONCHANGES=prepend
-XHEADER1="cron-apt: aptitude upgrade"
 
 
 #
