@@ -8,7 +8,7 @@ class admin_cronapt::config {
          source => "puppet:///modules/admin_cronapt/config",
           owner => 'root',
           group => 'root',
-           mode => '0640',
+           mode => '0644',
         require => Package["cron-apt"],
     }
     

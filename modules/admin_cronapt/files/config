@@ -5,10 +5,9 @@
 # DO NOT EDIT. MANAGED BY PUPPET. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 APTCOMMAND="/usr/bin/aptitude"
-OPTIONS="-o quiet=1"
 SYSLOGON="upgrade"
 RUNSLEEP=60
-MAILTO="root@home.tld"
+MAILTO="root"
 DEBUG="always"
 DIFFONCHANGES=prepend
 REFRAINFILE="/etc/cron-apt/refrain"
