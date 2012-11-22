@@ -6,13 +6,13 @@
 ##############################################################
   
 # The command used to execute all actions. By default apt-get is used and
-# this is also the recommended command to use. For more information see
-# above. apt-get is default. Alternative settings can be:
+# this is also the recommended command to use. apt-get is default.
+# Alternative settings can be:
 # APTCOMMAND=/usr/bin/aptitude
 # APTCOMMAND=/usr/bin/apt-file
 
 
-APTCOMMAND=""
+APTCOMMAND="/usr/bin/aptitude"
 
 
 # General apt options that will be passed to all APTCOMMAND calls.
@@ -64,7 +64,7 @@ SYSLOGON="upgrade"
 # Default is 3600 seconds which means one hour.
 
 
-RUNSLEEP=600
+RUNSLEEP=120
 
 
 # Do not run the command, if there is an error in the previous run (default).
@@ -152,7 +152,7 @@ XHEADER1="Wheezy aptitude safe-upgrade"
 # export APT_CONFIG=/etc/apt/cron.apt.paths
 
 
-APT_CONFIG=/etc/apt/cron.apt.paths
+# APT_CONFIG="/etc/apt/cron.apt.paths"
 
 
 # A path is needed for cron-apt to work. The default PATH is as written

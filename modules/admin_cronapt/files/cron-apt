@@ -6,7 +6,7 @@
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
-#
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 # Every night at 4 o'clock.
-0 4	* * *	root	test -x /usr/sbin/cron-apt && /usr/sbin/cron-apt
+38 5	* * *	root	test -x /usr/sbin/cron-apt && /usr/sbin/cron-apt
 
