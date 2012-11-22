@@ -3,6 +3,9 @@
 ##
 class puppet_chkrootkit::config {
 
+    # use a dummy place holder file for configuration and
+    # and move the real configurations (options) to a cron script
+
     file { "/etc/chkrootkit.conf":
          source => "puppet:///modules/puppet_chkrootkit/chkrootkit.conf",
           owner => 'root',
@@ -10,10 +13,10 @@ class puppet_chkrootkit::config {
         require => Package["chkrootkit"],
     }
     
-    # Original maintainer start script (from cron.daily) to /root/bin
+    # local admin new start script to /root/jobs
     
-    file { "/root/bin/chkrootkit.sh":
-         source => "puppet:///modules/puppet_chkrootkit/chkrootkit.sh",
+    file { "/root/jobs/cron.runchkrootkit":
+         source => "puppet:///modules/puppet_chkrootkit/cron.runchkrootkit",
           owner => 'root',
           group => 'root',
            mode => '0700',

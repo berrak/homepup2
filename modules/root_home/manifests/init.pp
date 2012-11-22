@@ -26,6 +26,14 @@ class root_home {
 		mode => '0700',
 	}
 	
+	# create a jobs subdirectory directory only for local admins cron scripts
+	file { "/root/jobs":
+		ensure => "directory",
+		owner => 'root',
+		group => 'root',
+		mode => '0700',
+	}
+	
 	# set up manual (cli) mount point for usb flash memory on /media/usb0
 	
     file { "/media/usb0":

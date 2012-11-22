@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# /root/jobs/cron.runchkrootkit
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+
+CHKROOTKIT="/usr/sbin/chkrootkit"
+
+EXCL_OPTIONS="\
+/usr/lib/pymodules/python2.6/.path \
+/usr/lib/pymodules/python2.7/.path \
+/usr/lib/icedove/.autoreg \
+/usr/lib/jvm/.java-1.6.0-openjdk-i386.jinfo"
+
+if [ -x $CHKROOTKIT ]; then
+    $CHKROOTKIT -q -e $EXCL_OPTIONS
+fi
