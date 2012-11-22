@@ -31,7 +31,7 @@ class admin_rsyslog::config {
               owner => 'root',
               group => 'root',
                mode => '0644',
-            require => File["/root/bin/cron.update_remote_log_directories"],
+            require => File["/root/jobs/cron.update_remote_log_directories"],
         }       
         
         # this script add logs to logcheck to scan, and make sure files get rotated
