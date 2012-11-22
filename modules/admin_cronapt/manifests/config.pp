@@ -13,7 +13,7 @@ class admin_cronapt::config {
     }
     
     file { "/etc/cron-apt/action.d/0-update":
-         source => "puppet:///modules/admin_cronapt/config",
+         source => "puppet:///modules/admin_cronapt/0-update",
           owner => 'root',
           group => 'root',
            mode => '0644',
@@ -21,7 +21,7 @@ class admin_cronapt::config {
     }  
     
     file { "/etc/cron-apt/action.d/3-download":
-         source => "puppet:///modules/admin_cronapt/config",
+         source => "puppet:///modules/admin_cronapt/3-download",
           owner => 'root',
           group => 'root',
            mode => '0644',
