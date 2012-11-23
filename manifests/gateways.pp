@@ -13,10 +13,10 @@ node 'gondor.home.tld' inherits basenode {
 	include puppet_tiger
     include admin_hardening
 		
-	# run tripwire check at noon and mailto root
+	# run tripwire checks and have tripwire mail to root (but not cron daemon)
     admin_cron::install { 'tripwire' :
-	                       command => '/root/bin/tripwire.check',
-	                          hour => '12', minute => '0' }		  				  
+	                       command => '/root/bin/tripwire.check > /dev/null 2>&1',
+	                          hour => '10', minute => '7' }		  				  
 	
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'gondor' }
