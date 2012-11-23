@@ -66,5 +66,14 @@ class puppet_tripwire::config {
            mode => '0644',        
     }
 
+    # run all shell (cron) job scripts from dedicated directory
+
+    file { '/root/jobs/cron.runtripwire' :
+         source =>  "puppet:///modules/puppet_tripwire/cron.runtripwire",
+          owner => 'root',
+          group => 'root',
+           mode => '0700',        
+    }
+	
 
 }

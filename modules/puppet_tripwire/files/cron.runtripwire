@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# /root/jobs/cron.runtripwire
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+
+TRIPWIRE="/root/bin/tripwire.check"
+
+if [ -x $TRIPWIRE ]; then
+    $TRIPWIRE
+fi
