@@ -55,6 +55,16 @@ class puppet_tripwire::config {
 		      mode => '0640',			 
 	    }
 	}
+	
+	# put a dummy placeholder in cron.daily, TW is run 
+	# from a usual crontab entry (see gateways.pp)
+	
+    file { '/etc/cron.daily/tripwire' :
+         source =>  "puppet:///modules/puppet_tripwire/tripwire.dummy",
+          owner => 'root',
+          group => 'root',
+           mode => '0644',        
+    }
 
 
 }
