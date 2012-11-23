@@ -14,5 +14,10 @@ class puppet_postfix::params {
     
     $my_subdomain_one = 'sec.home.tld'
 
+    # ensure that local root aliases are forwarded to lan mail server
+    # always specify domain where the mail server is located (don't use facter)
+    
+    $mymail_server_domain = 'home.tld'
+
 
 }

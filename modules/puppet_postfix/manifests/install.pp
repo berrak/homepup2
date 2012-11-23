@@ -75,6 +75,11 @@ define puppet_postfix::install(
     # Allow our internal sub domain (this is not for the main 'home.tld')
     
     $mysubdomain1 = $::puppet_postfix::params::my_subdomain_one
+    
+    # ensure local root goes to mail server regardless which domain host is in
+    
+    $mymailserverdomain = $::puppet_postfix::params::mymail_server_domain
+    
 
     if $no_lan_outbound_mail == 'true' {
 
