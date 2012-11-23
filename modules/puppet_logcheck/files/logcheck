@@ -3,7 +3,10 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=root
 
-@reboot                  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -R; fi
-30 0,6,12,18 * * *       logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck; fi
+@reboot             logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -R; fi
+
+45 0,6,12,18 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -L /etc/logcheck/logcheck.syslog ; fi
+50 0,6,12,18 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -L /etc/logcheck/logcheck.auth ; fi
+55 0,6,12,18 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -L /etc/logcheck/logcheck.iptables ; fi
 
 # EOF

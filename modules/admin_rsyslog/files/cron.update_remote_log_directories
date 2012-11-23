@@ -63,6 +63,8 @@ DEBUG=0
 LOGCHECK="logcheck"
 # file name of syslog file to be rotated (special)
 SYSLOGFN="syslog.log"
+# name of logfiles (to build logcheck file list based on facility)
+LOGFILELIST='syslog iptables auth'
 
 REMOTEDIRECTORIESPATH="/var/log/$LOGCHECK"
 LOGCHECKCFGPATH="/etc/logcheck/logcheck.logfiles"
@@ -106,10 +108,10 @@ do
    
         logcheckfn=`$ECHO $logfile | $SED -n '/\.log$/p'`
         
-        ##
-        ## test if logcheck is installed on this host and
-        ## if so update the list for which files to scan
-        ##
+        ####################################################
+        ## test if logcheck is installed on this host and  #
+        ## if so update the list for which files to scan.  #
+        ####################################################
         
         $WHICH $LOGCHECK > /dev/null
         if [ $? -eq 0 ] ; then
@@ -138,13 +140,25 @@ do
         if [ -f $LOGCHECKCFGPATH ]; then
             $CHOWN root:logcheck $LOGCHECKCFGPATH
             $CHMOD 0640 $LOGCHECKCFGPATH
+            
+            # Create an alternative logfiles list based on type of log file
+            # combined for each host, then refer from cron which to check.
+            
+            for facility in $LOGFILELIST
+            do
+                $CAT $LOGCHECKCFGPATH | $GREP $facility > /etc/logcheck/logcheck.${facility}
+                $CHOWN root:logcheck /etc/logcheck/logcheck.${facility}
+                $CHMOD 0640 /etc/logcheck/logcheck.${facility}
+            done
+            
         fi
         
-        ##
-        ## For each file log file we need to log rotate these.
-        ## The sylog file itself requires diffrent rotate instruction by default.
-        ## Add logrotate instruction in /etc/logrotate.d
-        ##
+        
+        ###############################################################
+        ## For each file log file we need to log rotate these.        #
+        ## The sylog file itself requires diffrent rotate instruction #
+        ## by default. Add logrotate instruction in /etc/logrotate.d  # 
+        ###############################################################
         
         if [ ! -z $logcheckfn ] ; then
         
