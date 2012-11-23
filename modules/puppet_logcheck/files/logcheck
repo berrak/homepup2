@@ -1,12 +1,12 @@
 # /etc/cron.d/logcheck: crontab entries for the logcheck package
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-MAILTO=root
+MAILTO=root@home.tld
 
 @reboot             logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -R; fi
 
-45 0,6,12,18 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -L /etc/logcheck/logcheck.syslog ; fi
-50 0,6,12,18 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -L /etc/logcheck/logcheck.auth ; fi
-55 0,6,12,18 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -L /etc/logcheck/logcheck.iptables ; fi
+0 6,9,18,21 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.syslog" ; fi
+5 6,9,18,21 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.auth" ; fi
+10 6,9,18,21 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.iptables" ; fi
 
 # EOF
