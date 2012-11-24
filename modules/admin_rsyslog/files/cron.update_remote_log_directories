@@ -144,9 +144,14 @@ do
             if [ ! -z $logcheckfn ] ; then
                 debug_echo "PROCESS THIS FILE FOR LOGCHECK: ($mydir) $logcheckfn"
                 
-                filepresent=`$GREP -Fx $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn $FILENAMELIST`
+                # write out one 'list file' with just one logfile item
+                $ECHO $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn > /etc/logcheck/logcheck.logfiles.${mydir}.${logcheckfn}
+                $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.${mydir}.${logcheckfn}
+                $CHMOD 0640 /etc/logcheck/logcheck.logfiles.${mydir}.${logcheckfn}              
                 
-                # if file is not already there, append it to the logcheck file
+                # if this log file is not already there, append it to the logcheck 'all files' list
+                
+                filepresent=`$GREP -Fx $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn $FILENAMELIST`
                 if [ -z $filepresent ] ; then
                     $ECHO $REMOTEDIRECTORIESPATH/$mydir/$logcheckfn >> $FILENAMELIST 
                 fi
