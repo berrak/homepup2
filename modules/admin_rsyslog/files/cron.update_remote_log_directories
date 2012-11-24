@@ -11,6 +11,8 @@
 #
 # Assumes that script only is executed on the log host
 #
+# Todo: automatically also update cron.d entries
+#
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
@@ -170,13 +172,13 @@ do
             $CHMOD 0640 $FILENAMELIST
             
             # Create an alternative logfiles list based on type of log file
-            # combined for each host, then refer from cron which to check.
+            # combined for each host, then optionally refer this list from cron.d
             
             for facility in $LOGFILELIST
             do
-                $CAT $FILENAMELIST | $GREP $facility > /etc/logcheck/logcheck.logfiles.${facility}
-                $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.${facility}
-                $CHMOD 0640 /etc/logcheck/logcheck.logfiles.${facility}
+                $CAT $FILENAMELIST | $GREP $facility > /etc/logcheck/logcheck.logfiles.${facility}.log
+                $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.${facility}.log
+                $CHMOD 0640 /etc/logcheck/logcheck.logfiles.${facility}.log
             done
             
         fi

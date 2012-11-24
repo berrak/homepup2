@@ -5,8 +5,28 @@ MAILTO=root@home.tld
 
 @reboot             logcheck    if [ -x /usr/sbin/logcheck ]; then nice -n10 /usr/sbin/logcheck -R; fi
 
-0 6,9,18,21 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.syslog" ; fi
-5 6,9,18,21 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.auth" ; fi
-10 6,9,18,21 * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.iptables" ; fi
+0 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.asgard.syslog.log" ; fi
+0 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.asgard.auth.log" ; fi
+0 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.asgard.iptables.log" ; fi
+
+1 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.carbon.syslog.log" ; fi
+1 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.carbon.auth.log" ; fi
+1 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.carbon.iptables.log" ; fi
+
+2 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.gondor.syslog.log" ; fi
+2 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.gondor.auth.log" ; fi
+2 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.gondor.iptables.log" ; fi
+
+3 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.mordor.syslog.log" ; fi
+3 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.mordor.auth.log" ; fi
+3 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.mordor.iptables.log" ; fi
+
+4 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.rohan.syslog.log" ; fi
+4 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.rohan.auth.log" ; fi
+4 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.rohan.iptables.log" ; fi
+
+5 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.shire.syslog.log" ; fi
+5 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.shire.auth.log" ; fi
+5 * * * *  logcheck    if [ -x /usr/sbin/logcheck ]; then /usr/sbin/logcheck -L "/etc/logcheck/logcheck.logfiles.shire.iptables.log" ; fi
 
 # EOF
