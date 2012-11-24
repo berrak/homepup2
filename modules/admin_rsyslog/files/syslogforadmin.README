@@ -5,23 +5,24 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILOL BE WIPED OUT. #
 ###############################################################
 #
-# This is some memory notes to the local system admin.
+# Mmory notes to the local system admin for log host.
 #
-# When rsyslog is installed on the a log host. All security logs
-# are written to a sub directory '/var/log/logcheck/<host name>/'
-# This is done also for the loghost itself. See /etc/rsyslog.conf.
+# When rsyslog is installed on a remote host. All security logs are
+# sent and written to sub directory '/var/log/REMOTELOGS/<host name>/'
 #
-# The original 'syslog' file is no longer used.
-# '/var/log/syslog' will not change or grow and can be left as is.
+# A script (cron.update_remote_log_directories) will automatically
+# update logcheck (if installed) to scan the directories and list
+# all remote logfiles in '/etc/logcheck/logcheck.logfiles'.
 #
-# The working syslog file in use is 'syslog.log' for both local
-# and any remote system (that use the log host).
+# The script will also save additional list of files in the same
+# logcheck directory as 'logcheck.logfiles.<logfile>' (which groups
+# all host with one kind of files in a list) or the file list
+# 'logcheck.logfiles.<remotehost>.<logfile>' which detail out it 
+# individually. All of these can be used on in 'cron.d' with logcheck
+# option -L (i.e. read alternative list file than logcheck.logfiles) 
 #
-# Reason for this is that a cron script will daily scan if new remote
-# hosts (sending log files) have been added. The script will auto-
-# matically update logcheck (if installed) to scan for files in
-# '/etc/logcheck/logcheck.logfiles'. In addition it will ensure  
-# log rotation of all log files in /var/log/logcheck/<host name>/*.log
+# This script will also ensure log rotation of all remote log files
+# below /var/log/REMOTELOGS/<host name>/*.log
 #
 # Log rotation instructions is saved in /etc/logrotate.d/remotersyslog.
 #
