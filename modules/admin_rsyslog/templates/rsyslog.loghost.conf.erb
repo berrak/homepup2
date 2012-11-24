@@ -75,14 +75,14 @@ then -?PerHostAuth
 if $fromhost-ip != '127.0.0.1' then -?PerHostSyslog
 & ~
 
-# Local rsyslogs (logcheck scan for security)
+# Local hosts rsyslogs
 ######################################
-*.*;auth,authpriv.none;kern.!emerg      -<%= logcheckfilepath %>/<%= myloghost %>/syslog.log
+*.*;auth,authpriv.none;kern.!emerg      -/var/log/syslog
 
-auth,authpriv.*		                    <%= logcheckfilepath %>/<%= myloghost %>/auth.log
+auth,authpriv.*		                    /var/log/auth.log
 
 # we set iptables to log to priority 'emerg'
-kern.emerg                              <%= logcheckfilepath %>/<%= myloghost %>/iptables.log
+kern.emerg                              /var/log/iptables.log
 
 # Other local standard facilities
 ######################################
