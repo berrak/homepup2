@@ -15,7 +15,7 @@ alias mv='mv -i'
 
 alias cls='clear'
 
-PATH=$PATH:/root/bin
+PATH=$PATH:/root/bin;/root/jobs
 
 function backup() {
 	newname=$1.`date +%Y%m%d.%H%M.UTC.bak`;
