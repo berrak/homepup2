@@ -104,11 +104,17 @@ fi
 if [ -f $FILENAMELIST ]; then
     $RM $FILENAMELIST
     
-    # add the log host local logs to scan with logcheck
+    # add local logs for log host to scan with logcheck (if default logcheck.logfiles is used)
     for logfn in $INCLLOCALLOGLIST
     do
         $TOUCH $FILENAMELIST
         $ECHO "/var/log/$logfn" >> $FILENAMELIST
+        
+        # also add log the host with one log file per 'list'
+        $ECHO "/var/log/$logfn" > /etc/logcheck/logcheck.logfiles.${HOSTNAME}.${logfn}
+        $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.${HOSTNAME}.${logfn}
+        $CHMOD 0640 /etc/logcheck/logcheck.logfiles.${HOSTNAME}.${logfn}
+        
     done 
 fi
 
