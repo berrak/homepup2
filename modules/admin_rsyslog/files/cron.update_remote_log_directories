@@ -169,9 +169,9 @@ do
             
             for facility in $LOGFILELIST
             do
-                $CAT $FILENAMELIST | $GREP $facility > /etc/logcheck/logcheck.${facility}
-                $CHOWN root:logcheck /etc/logcheck/logcheck.${facility}
-                $CHMOD 0640 /etc/logcheck/logcheck.${facility}
+                $CAT $FILENAMELIST | $GREP $facility > /etc/logcheck/logcheck.logfiles.${facility}
+                $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.${facility}
+                $CHMOD 0640 /etc/logcheck/logcheck.logfiles.${facility}
             done
             
         fi
@@ -205,7 +205,7 @@ $CAT <<-EOF
 }
 EOF
                 ) >> $FILENAMEROTATION 
-                fi
+                
             
             fi
         
