@@ -1,0 +1,23 @@
+#
+# /etc/rsyncd.conf
+#
+#############################################################
+# MANAGE BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+#############################################################
+#
+# Configuration for backup server using rsync
+#
+log file = /var/log/rsyncd.log
+pid file = /var/run/rsyncd.pid
+transfer logging = yes
+read only = no
+uid = root
+gid = root
+list = yes
+auth users = <%= authusers %>
+secrets file = <%= securefile %>
+
+[<%= backupfromhost %>-<%= debdistribution %>]
+comment = Backup of data files from desktop users NFS share
+path = /srv/backup/<%= backupfromhost %>/<%= debdistribution %>
+hosts allow = <%= hostallowip %>

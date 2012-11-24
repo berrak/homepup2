@@ -160,6 +160,10 @@ node 'warp.sec.home.tld' inherits basenode {
     include puppet_tiger
 	include admin_hardening
 	
+	## backup server
+	
+	include puppet_rsync
+	
 	## central loghost 
 	
 	include puppet_logcheck
