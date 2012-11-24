@@ -111,9 +111,10 @@ if [ -f $FILENAMELIST ]; then
         $ECHO "/var/log/$logfn" >> $FILENAMELIST
         
         # also add log the host with one log file per 'list'
-        $ECHO "/var/log/$logfn" > /etc/logcheck/logcheck.logfiles.${HOSTNAME}.${logfn}
-        $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.${HOSTNAME}.${logfn}
-        $CHMOD 0640 /etc/logcheck/logcheck.logfiles.${HOSTNAME}.${logfn}
+        $TOUCH /etc/logcheck/logcheck.logfiles.warp.$logfn        
+        $ECHO "/var/log/$logfn" > /etc/logcheck/logcheck.logfiles.warp.$logfn
+        $CHOWN root:logcheck /etc/logcheck/logcheck.logfiles.warp.$logfn
+        $CHMOD 0640 /etc/logcheck/logcheck.logfiles.warp.$logfn
         
     done 
 fi
