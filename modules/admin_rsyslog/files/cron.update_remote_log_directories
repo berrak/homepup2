@@ -134,7 +134,7 @@ do
         ## if so update the list for which files to scan.  #
         ####################################################
         
-        $WHICH $LOGCHECK > /dev/null
+        $WHICH logcheck > /dev/null
         if [ $? -eq 0 ] ; then
             
             # for each log file path, add to logcheck files (if not already there)
