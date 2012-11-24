@@ -10,6 +10,6 @@
 ##############################################################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-30 19 * * *  root  test -x /usr/sbin/logwatch && /usr/sbin/logwatch
+0 19 * * *  root  test -x /usr/sbin/logwatch && /usr/sbin/logwatch
 
 # EOF

@@ -8,6 +8,6 @@
 ##############################################################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-0 18 7,14,22,28 * *   root   test -x /root/jobs/cron.upgradesecurity && /bin/bash /root/jobs/cron.upgradesecurity
+0 18 * * *   root   test -x /root/jobs/cron.upgradesecurity && /bin/bash /root/jobs/cron.upgradesecurity
 
 # EOF
