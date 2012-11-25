@@ -37,7 +37,7 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-# internal 'sec.tld' net
+# internal 'sec.home.tld' net
 NET_INT="192.168.2.0/24"
 IF_INT=eth0
 
@@ -124,9 +124,9 @@ $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 ## ALLOW OUTBOUND TRAFFIC
 ## =======================
 
-#----------------------------------------------------------------
-## Internal outbound traffic (from internal net --> external net)
-#----------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+## Internal outbound traffic (from internal net ('sec.home.tld')--> external net i.e. home.tld)
+#--------------------------------------------------------------------------------------------
 
 # allow established and related traffic pass
 $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -209,7 +209,7 @@ $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
 ## ======================
 
 #----------------------------------------------------------------------------------------
-## External inbound traffic (from external net --> internal net (sec.tld) or special host
+## External inbound traffic (from external net --> internal net (sec.home.tld) or special host
 #----------------------------------------------------------------------------------------
 
 # allow established and related traffic ext to internal net
@@ -217,6 +217,9 @@ $IPTABLES -A FORWARD -i $IF_EXT -o $IF_INT -m state --state ESTABLISHED,RELATED 
 
 # allow rsyslog (tcp/514) pass through to our log host
 $IPTABLES -A FORWARD -i $IF_EXT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
+
+# allow rsync (tcp/873) pass through to our rsync backup host
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -d $FILESERVERADDR -m tcp --dport 873 -m state --state NEW -j ACCEPT
 
 # drop spoof packages
 $IPTABLES -A FORWARD -i $IF_EXT -s $NET_INT -o $IF_INT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF EXT2INT "
