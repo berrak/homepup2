@@ -1,67 +1,32 @@
 #!/bin/bash
 #
-###################|####################|####################|###################
+# /usr/local/bin/rsync-backup
 #
-#    Script name: 'rsync-backup
-#    Suggested script location: '/usr/local/bin'
+###############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
+###############################################################
 #
-#    Function: Script does backup to a backup server with rsync 
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
-#    Pre-requisites: 
-#      - rsync server (daemon) runing on the remote 'backup server'
-#      - excludes file with direcrories not to backup
-#      - user/password file to access remote rsync server
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    This program is free software; you can redistribute it and/ or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation; either version 2 of the License, or (at your option) 
-#    any later version. 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#    This program is distributed in the hope that it will be useful but 
-#    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-#    or exiFITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
-#    for more details.
-#
-#    Usage: Launch with cron (on servers) or for desktops automatically when 
-#           user have done login with GUI.
-#
-#           sudo 'rsync-backup hardy'
-#
-#    Revisions:
-#
-#    2008, July 24 Initial version                              .... ver 0.10
-#          July 28, Version without backing up NFS
-#          file share from clients                              .... ver 0.20
-#          July 29, Initial root backup /, fix bug in cli usage
-#                   for the excludes file command               .... ver 0.21
-#          July 30, added argument to script to tell which
-#                   Linux code release, e.g. hardy or gutsy.
-#                   Saves versions on different directories     .... ver 0.22 
-#          July 31, added ClearOldIncremental() and all 
-#                   options including 'numeric-ids'             .... ver 0.23
-#          Aug 1,   Fix exit code from rsync. Removed options
-#                   incremental backup (--backup etc). Add '-W' .... ver 0.24
-#          Aug 4,   First released version.                     .... ver 0.25
-#          Aug 5,   Backup directories by command line, change 
-#                   to avoid slow backup at login. Backup only what's
-#                   wanted exclude evrything else. Cli to avoid having
-#                   multiple version if this script. 
-#                   Can not be in a function.                   .... ver 0.30
-#     2009-Aug 9    Add check that first argument expected at
-#                   CLI is the linux release code               .... ver 0.31 
-#
-#   
-#        (Note also update the version variable below in script)
-#
-###################|####################|####################|###############
-
 ###################|####################|####################|###############
 #  Editable variables
 ###################|####################|####################|###############
         
 #### What is the IP address of the backup server?
-BSERVER="192.168.0.7"  
+BSERVER="192.168.2.83"  
 #### Alternatively use the host name of the backup server?
 # BSERVER="asgard"
 
@@ -72,11 +37,11 @@ NFSSHAREPATH="/home/bekr/nfs"
 REMOUNTNFSCOMMAND="-t nfs 192.168.0.10:/home/bekr/nfs /home/bekr/nfs"
 
 #### What path to the list of exclude files?
-EXCLUDES="/usr/local/etc/rsync-backup.excludes"
+EXCLUDES="/usr/local/bin/rsync-backup.excludes"
 
 #### Where is the pwd file with the user:password to the rsync server daemon?
 # this file contains 'user_name' and the 'password' itself, with ':' between 
-RSYNCPWDPATH="/usr/local/etc/rsync-server.pwd"
+RSYNCPWDPATH="/root/rsyncd.pwd"
 
 #### Some help to debug this script (skip real file transfer)? [yes / no ]
 # DEBUGCODE="yes"
@@ -107,8 +72,7 @@ LOGGER=logger
 ###################|####################|####################|###############
 
 PROGNAME=$(basename $0)
-VERSION="0.31"
-PROMPT="[$PROGNAME $VERSION]"
+PROMPT="[$PROGNAME]"
 
 ###################|####################|####################|###############
 # Functions            

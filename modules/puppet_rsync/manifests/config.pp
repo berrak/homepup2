@@ -97,7 +97,27 @@ class puppet_rsync::config {
         }                
         
     } else {
-    
+   
+        # rsync client: backup script 
+        
+        file { '/usr/local/bin/rsync-backup' :
+             source => "puppet:///modules/puppet_rsync/rsync-backup",    
+              owner => 'root',
+              group => 'staff',
+               mode => '0755',
+            require => Class["puppet_rsync::install"],
+        }        
+        
+        # rsync client: exclude file to the script        
+        
+        file { "/usr/local/bin/rsync-backup.excludes" :
+             source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
+              owner => 'root',
+              group => 'staff',
+               mode => '0644',
+            require => Class["puppet_rsync::install"],
+        }      
+        
         # rsync client: create our global athorization file (change password!)
         
         file { $securefile :
@@ -106,17 +126,7 @@ class puppet_rsync::config {
               group => 'root',
                mode => '0600',
             require => Class["puppet_rsync::install"],
-        }
-        
-        file { "/usr/local/bin/rsync-backup.excludes" :
-             source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
-              owner => 'root',
-              group => 'root',
-               mode => '0644',
-            require => Class["puppet_rsync::install"],
-        }      
-        
-        
+        } 
         
     
     }
