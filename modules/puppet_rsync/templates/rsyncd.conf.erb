@@ -16,6 +16,9 @@ uid = root
 gid = root
 list = yes
 
+# Below provides only weak authentication, root
+# can use 'user' name and bypass password.
+# Unprivileged users can not bypass this though.
 auth users = <%= authusers %>
 secrets file = <%= securefile %>
 

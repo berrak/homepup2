@@ -9,14 +9,11 @@ class puppet_rsync::service {
     
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
-        service { 'rsync':
-            hasstatus => true,
-               ensure => running,
-               enable => true,
-              require => Class["puppet_rsync::install"],
+        exec { "restart_rsync_daemon":
+                command => "/bin/bash /etc/init.d/rsync restart",
+              subscribe => File["/etc/rsyncd.conf"],
+            refreshonly => true,
         }
-        
-        
  
     }
     
