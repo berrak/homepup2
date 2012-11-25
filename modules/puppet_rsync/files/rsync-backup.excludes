@@ -1,0 +1,29 @@
+#
+# /usr/local/bin
+# 
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+
+### rsync exclude file
+
+### exclude dynamic content (add also cache)
+
+- /tmp/**
+- /proc/**
+- /var/**
+- **/*cache*
+- **/*Cache*
+
+### exclude network content (backup at source)
+
+- /media/**
+- /mnt/**
+
+### exclude system and lib files (gives a lot of rsync ERRORs or backup time)
+
+- /sys/**
+- /dev/**
+- /lib/**
+
+

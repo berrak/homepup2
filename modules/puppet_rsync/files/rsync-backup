@@ -1,0 +1,322 @@
+#!/bin/bash
+#
+###################|####################|####################|###################
+#
+#    Script name: 'rsync-backup
+#    Suggested script location: '/usr/local/bin'
+#
+#    Function: Script does backup to a backup server with rsync 
+#
+#    Pre-requisites: 
+#      - rsync server (daemon) runing on the remote 'backup server'
+#      - excludes file with direcrories not to backup
+#      - user/password file to access remote rsync server
+#
+#
+#    This program is free software; you can redistribute it and/ or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation; either version 2 of the License, or (at your option) 
+#    any later version. 
+#
+#    This program is distributed in the hope that it will be useful but 
+#    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+#    or exiFITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+#    for more details.
+#
+#    Usage: Launch with cron (on servers) or for desktops automatically when 
+#           user have done login with GUI.
+#
+#           sudo 'rsync-backup hardy'
+#
+#    Revisions:
+#
+#    2008, July 24 Initial version                              .... ver 0.10
+#          July 28, Version without backing up NFS
+#          file share from clients                              .... ver 0.20
+#          July 29, Initial root backup /, fix bug in cli usage
+#                   for the excludes file command               .... ver 0.21
+#          July 30, added argument to script to tell which
+#                   Linux code release, e.g. hardy or gutsy.
+#                   Saves versions on different directories     .... ver 0.22 
+#          July 31, added ClearOldIncremental() and all 
+#                   options including 'numeric-ids'             .... ver 0.23
+#          Aug 1,   Fix exit code from rsync. Removed options
+#                   incremental backup (--backup etc). Add '-W' .... ver 0.24
+#          Aug 4,   First released version.                     .... ver 0.25
+#          Aug 5,   Backup directories by command line, change 
+#                   to avoid slow backup at login. Backup only what's
+#                   wanted exclude evrything else. Cli to avoid having
+#                   multiple version if this script. 
+#                   Can not be in a function.                   .... ver 0.30
+#     2009-Aug 9    Add check that first argument expected at
+#                   CLI is the linux release code               .... ver 0.31 
+#
+#   
+#        (Note also update the version variable below in script)
+#
+###################|####################|####################|###############
+
+###################|####################|####################|###############
+#  Editable variables
+###################|####################|####################|###############
+        
+#### What is the IP address of the backup server?
+BSERVER="192.168.0.7"  
+#### Alternatively use the host name of the backup server?
+# BSERVER="asgard"
+
+#### What is the mount point (in fstab) for the NFS share from the file server?
+NFSSHAREPATH="/home/bekr/nfs"
+
+#### What is the command line for the mount command?
+REMOUNTNFSCOMMAND="-t nfs 192.168.0.10:/home/bekr/nfs /home/bekr/nfs"
+
+#### What path to the list of exclude files?
+EXCLUDES="/usr/local/etc/rsync-backup.excludes"
+
+#### Where is the pwd file with the user:password to the rsync server daemon?
+# this file contains 'user_name' and the 'password' itself, with ':' between 
+RSYNCPWDPATH="/usr/local/etc/rsync-server.pwd"
+
+#### Some help to debug this script (skip real file transfer)? [yes / no ]
+# DEBUGCODE="yes"
+DEBUGCODE="no" 
+
+#### Redirected output of rsync file list (only used when $DEBUGCODE="yes")
+TEMP="/usr/local/bin/stdout-filelist"
+
+###################|####################|####################|###############
+# Binaries or scripts used
+###################|####################|####################|###############
+
+CAT=/bin/cat
+CP=/bin/cp
+ECHO=/bin/echo
+MKDIR=/bin/mkdir
+MOUNT=/bin/mount
+UMOUNT=/bin/umount
+RM=/bin/rm
+RMDIR=/bin/rmdir
+GREP=/bin/grep
+
+RSYNC=/usr/bin/rsync
+LOGGER=logger
+
+###################|####################|####################|###############
+# No editing below this
+###################|####################|####################|###############
+
+PROGNAME=$(basename $0)
+VERSION="0.31"
+PROMPT="[$PROGNAME $VERSION]"
+
+###################|####################|####################|###############
+# Functions            
+###################|####################|####################|###############
+
+function ServerAuthentication()
+{
+    if ! [ -e "$RSYNCPWDPATH" ] ; then
+        $ECHO $PROMPT "Error: Missing file at \"$RSYNCPWDPATH\""
+        exit 1
+    else    
+       # -- Read in rsync server user and pwd from pwd file
+       #    with root permission 600
+
+        user_name=$($CAT $RSYNCPWDPATH | awk 'BEGIN{FS=":"}{print $1}')
+        user_pwd=$($CAT $RSYNCPWDPATH | awk 'BEGIN{FS=":"}{print $2}')
+        
+        export RSYNC_PASSWORD=$user_pwd
+    fi 
+
+    return 0
+}
+
+
+function BuildRsyncOptions()
+{
+
+# -- Check existance of the excludes files list file
+
+    if ! [ -e "$EXCLUDES" ] ; then
+    $ECHO $PROMPT "Error: Could not find excludes file at \"$EXCLUDES\""
+    exit 1
+    fi 
+    
+# -- Build the options string (see end of file for summary why use)
+
+    if [ "$DEBUGCODE" = "yes" ] ; then
+       OPTS="-vhaHW --dry-run --progress --exclude-from=$EXCLUDES --stats \
+--delete --delete-excluded"
+       $ECHO "----------- rsync simulation started ------------"
+       $ECHO $PROMPT "Options to rsync: $OPTS"
+    else
+       OPTS="-vhaHW --progress --exclude-from=$EXCLUDES --stats \
+--delete --delete-excluded"
+    fi
+
+
+    return 0
+}
+
+function SetRsyncArguments()
+{
+    host_label=$(hostname)
+    rsync_module="$host_label-$release"
+
+    rsync_argument="$OPTS $bd $user_name@$BSERVER::$rsync_module/"
+
+    return 0
+}
+
+function DisplayDebugInfo()
+{
+    if [ "$DEBUGCODE" = "yes" ] ; then
+        $ECHO $PROMPT "Host:\"$host_label\" Release: \"$release\""
+        $ECHO $PROMPT "User:\"$user_name\" Password:\"$user_pwd\""
+        
+        $ECHO $PROMPT "Arguments to rsync: $rsync_argument"
+        $ECHO $PROMPT "Please wait...building file list"
+    fi
+
+    return 0
+}
+
+###################|####################|####################|###############
+# Program starts here
+###################|####################|####################|###############
+
+clear
+
+# -- Test if right number of parameters is passed, Ubuntu/Linux code name
+# -- and a list of directories tom be rsync'd...
+# -- Note: this test ($#) can not be in a function -- arg count is always 0!
+
+if ! [ "$#" -gt 1 ] ; then
+
+   $ECHO $PROMPT "Missing arguments passed to script!"
+   $ECHO $PROMPT "First arg is the linux release, followed by the directory list"
+        
+   # -- Read the (ubuntu) release code name from the actual system
+
+   get_release=$(lsb_release -c | $GREP Codename | awk 'BEGIN{FS=" "}{print $2}')
+   $ECHO $PROMT "System tells that this is release \"$get_release\""
+   exit 1
+else
+
+   get_release=$(lsb_release -c | $GREP Codename | awk 'BEGIN{FS=" "}{print $2}')
+   release=$1
+
+   if [ "$release" != "$get_release" ] ; then 
+      $ECHO $PROMPT "Warning: Expected Linux release code name as first argument!"
+      $ECHO $PROMPT "System tells that this is release \"$get_release\""
+      $ECHO $PROMPT "Is \"$release\" the name of the distribution release?"
+   fi
+
+   BDIR=""
+   for arg in $* ;    # This exapansion can not be in function for some reason
+      do
+         if ! [ "$arg" = "$1" ] ; then
+            LONGDIR="$arg $LONGDIR" 
+         fi
+      done
+
+   # Strip off the trailing whitespace
+
+   LEN=${#LONGDIR}
+   let "LEN=$LEN-1"
+
+   BDIR=${LONGDIR:0:LEN}
+
+fi
+
+
+# -- Test if script run as root
+
+if [ "$UID" -ne 0 ]; then
+    $ECHO $PROMPT "Run script as root or with sudo."
+    exit 1
+fi
+
+# -- Build the command line options
+
+BuildRsyncOptions
+
+# -- Set up access to rsync server
+
+ServerAuthentication
+
+# -- Do not backup the NFS file share on each client...unmount it.
+
+$UMOUNT -l $NFSSHAREPATH
+if [ "$?" -ne 0 ]; then
+    $ECHO $PROMPT "WARNING Failed to unmount the file server NFS share."
+    $LOGGER "(rsync could not unmount the NFS share. Exit code $?)"
+fi
+
+# -- The actual rsync file transfer to the rsync backup server
+# -- Each backup directory given on the command line is backed up
+
+for bd in $BDIR ; do
+
+    # -- Build the remaining string for the rsync command
+
+    SetRsyncArguments
+
+    DisplayDebugInfo
+
+    rsync_argument="$OPTS $bd $user_name@$BSERVER::$rsync_module/"
+
+    if [ "$DEBUGCODE" = "yes" ] ; then
+        $RSYNC  $rsync_argument >> $TEMP.$$
+        $ECHO $PROMPT "Info: Sending rsync $bd output to debug file: $TEMP.$$"
+        $ECHO "------------ rsync simulation done ($bd)--------------"
+    else
+        $RSYNC  $rsync_argument      # The actual call to rsync
+    fi
+
+    rsync_exit_code=$?
+    $LOGGER "(rsync backup completed with exit code $rsync_exit_code for $bd)" 
+
+    if [ "$rsync_exit_code" -ne 0 ]; then
+        $ECHO $PROMPT "WARNING rsync did not exit properly for $bd - see syslog"
+    else
+        $LOGGER "(rsync backup done successfully for $bd)" 
+    fi
+
+done
+
+# -- Remount the NFS file share again after backup
+
+$MOUNT $REMOUNTNFSCOMMAND
+if [ "$?" -ne 0 ]; then
+    $ECHO $PROMPT "WARNING Failed to re-mount NFS share after rsync"
+    $LOGGER "(rsync post NFS remount failed with exit code $?)" 
+    exit 1
+fi
+
+exit 0
+
+###################|####################|####################|###############
+# Everything below this is ignored
+###################|####################|####################|###############
+
+#############################################################################
+#
+# rsync options ($OPTS): Comments
+#
+#############################################################################
+#
+# -a : archive:
+# -v : verbose:
+# -H : hardlinks:
+# -h : human-readable:
+# -W : whole-file copy:
+#
+# --progress: 
+# --exclude-from=
+# --stats:
+# --delete:
+# --delete-excluded:
+#
+##############################################################################

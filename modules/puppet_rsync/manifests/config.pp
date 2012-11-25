@@ -5,6 +5,8 @@ class puppet_rsync::config {
 
     include puppet_rsync::params
     
+    $securefile = $::puppet_rsync::params::secretsfile
+    
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
         # create /srv/backup directory only for root's eyes
@@ -53,7 +55,6 @@ class puppet_rsync::config {
         
         # configuration for rsync with 'some' security 
         
-        $securefile = $::puppet_rsync::params::secretsfile
         $hostallowip = $::puppet_rsync::params::hostallowip
         
         file { '/etc/rsyncd.conf':
@@ -65,7 +66,7 @@ class puppet_rsync::config {
              notify => Class["puppet_rsync::service"],
         }    
     
-        # create our athorization file (!! change passwd to more secure !!)
+        # rsync server: create our rsync athorization file (change password!)
         
         file { $securefile :
              source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
@@ -95,6 +96,29 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }                
         
+    } else {
+    
+        # rsync client: create our global athorization file (change password!)
+        
+        file { $securefile :
+             source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
+              owner => 'root',
+              group => 'root',
+               mode => '0600',
+            require => Class["puppet_rsync::install"],
+        }
+        
+        file { "/usr/local/bin/rsync-backup.excludes" :
+             source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
+              owner => 'root',
+              group => 'root',
+               mode => '0644',
+            require => Class["puppet_rsync::install"],
+        }      
+        
+        
+        
+    
     }
 
 }
