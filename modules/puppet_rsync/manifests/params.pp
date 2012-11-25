@@ -11,14 +11,12 @@ class puppet_rsync::params {
     
     # configuration for server
     
-    $authuserlist = 'bekr'
+    $authuser1 = 'bekr'
     $secretsfile = '/root/rsyncd.pwd'
     $hostallowip = '192.168.0.10' 
     
     # client server and distribution in use
     
     $nfs_host_for_rsync = 'shire'
-    $deb_rsync_distribution = 'wheezy'
-
-
+    
 }

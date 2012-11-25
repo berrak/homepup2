@@ -13,34 +13,32 @@ class puppet_rsync::config {
              ensure => "directory",
               owner => 'root',
               group => 'root',
-               mode => '0755',
+               mode => '0700',
             require => Class["puppet_rsync::install"],
-        }
+        }  
         
         # host is 'shire' and is the NFS data share for all desktop hosts
         
         $backupfromhost = $::puppet_rsync::params::nfs_host_for_rsync
+        $authuser1 = $::puppet_rsync::params::authuser1
         
         file { "/srv/backup/${backupfromhost}":
              ensure => "directory",
               owner => 'root',
               group => 'root',
-               mode => '0755',
+               mode => '0700',
             require => File["/srv/backup"],
         }
         
-        # distribution is 'wheezy'
+        file { "/srv/backup/${backupfromhost}/${authuser1}":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => File["/srv/backup/${backupfromhost}"],
+        }      
         
-        $debdistribution = $::puppet_rsync::params::deb_rsync_distribution
-        
-        exec { "make_backup_directory_${backupfromhost}":
-            command => "/bin/mkdir -p /srv/backup/${backupfromhost}/${debdistribution}",
-            subscribe => File["/srv/backup/${backupfromhost}"],
-            refreshonly => true,
-        }
-        
-        # default options for 'rsyncd' (at server)
-        
+        # default options for 'rsyncd' (at server, none is required at client)
         $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
         
         file { '/etc/default/rsync':
@@ -53,10 +51,9 @@ class puppet_rsync::config {
         }
         
         
-        # configuration for rsync
+        # configuration for rsync with 'some' security 
         
         $securefile = $::puppet_rsync::params::secretsfile
-        $authusers = $::puppet_rsync::params::authuserlist
         $hostallowip = $::puppet_rsync::params::hostallowip
         
         file { '/etc/rsyncd.conf':
@@ -87,6 +84,16 @@ class puppet_rsync::config {
                mode => '0644',
             require => Class["puppet_rsync::install"],
         }
+        
+        # create a local (warp) rsync directory for various tests
+        
+        file { "/srv/localrsync":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => Class["puppet_rsync::install"],
+        }                
         
     }
 

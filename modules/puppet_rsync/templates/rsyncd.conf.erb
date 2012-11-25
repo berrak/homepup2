@@ -19,15 +19,15 @@ list = yes
 # Below provides only weak authentication, root
 # can use 'user' name and bypass password.
 # Unprivileged users can not bypass this though.
-auth users = <%= authusers %>
+auth users = <%= authuser1 %>
 secrets file = <%= securefile %>
 
-[<%= backupfromhost %>-<%= debdistribution %>]
+[<%= backupfromhost %>-<%= authuser1 %>]
 comment = Backup of data files from desktop users NFS share
-path = /srv/backup/<%= backupfromhost %>/<%= debdistribution %>
+path = /srv/backup/<%= backupfromhost %>/<%= authuser1 %>
 hosts allow = <%= hostallowip %>
 
-[warp-wheezy]
+[warp-bekr]
 comment = Test of local access with rsync
 path = /srv/localrsync
 hosts allow = 192.168.2.83
