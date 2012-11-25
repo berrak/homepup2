@@ -5,6 +5,8 @@ class puppet_rsync::service {
 
     include puppet_rsync::params
     
+    # only run the rsync daemon on the server
+    
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
         service { 'rsync':
@@ -18,6 +20,4 @@ class puppet_rsync::service {
  
     }
     
-
-
 }

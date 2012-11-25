@@ -61,6 +61,10 @@ node 'shire.home.tld' inherits basenode {
 
     include puppet_tiger
     include admin_hardening
+	
+	# this host acts as 'NFS data server' for all desktup hosts and needs backup (rsync)
+	
+	include puppet_rsync
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
