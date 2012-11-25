@@ -175,6 +175,9 @@ $IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 143 -m state --state 
 # allow rsyslog out to internal file server (i.e. log server)
 $IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
+# allow rsync out to internal file server (i.e. rsync server)
+$IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 873 -m state --state NEW -j ACCEPT
+
 # allow imaps out to internal mail server
 $IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 993 -m state --state NEW -j ACCEPT
 

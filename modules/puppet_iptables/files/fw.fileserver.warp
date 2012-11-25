@@ -104,6 +104,9 @@ $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 143 -m state --state NEW -j
 # allow rsyslog (internal hosts i.e. in subdomain sec.home.tld) to send logs
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
+# allow rsync (internal hosts i.e. in subdomain sec.home.tld) to send rsync backups
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 873 -m state --state NEW -j ACCEPT
+
 # imaps secure clients (internal users) access their mailboxes to this mail server on this port
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT
 
@@ -134,8 +137,12 @@ $IPTABLES -t filter -A INPUT ! -s $NET_INT -j broadcast-drop
 #########################################################################################
 ## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
 #########################################################################################
+
 # allow rsyslog (hosts in domain 'home.tld') to send logs to this log host on this port
 $IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 514 -m state --state NEW -j ACCEPT
+
+# allow rsync (hosts in domain 'home.tld') to send backups to this rsync host on this port
+$IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 873 -m state --state NEW -j ACCEPT
 
 #---------------------------------------------------------------------------
 # CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
