@@ -13,7 +13,7 @@ class puppet_rsync::config {
              ensure => "directory",
               owner => 'root',
               group => 'root',
-               mode => '0700',
+               mode => '0755',
             require => Class["puppet_rsync::install"],
         }
         
@@ -25,7 +25,7 @@ class puppet_rsync::config {
              ensure => "directory",
               owner => 'root',
               group => 'root',
-               mode => '0700',
+               mode => '0755',
             require => File["/srv/backup"],
         }
         
@@ -63,7 +63,7 @@ class puppet_rsync::config {
             content =>  template('puppet_rsync/rsyncd.conf.erb'),
               owner => 'root',
               group => 'root',
-               mode => '0600',
+               mode => '0640',
             require => Class["puppet_rsync::install"],
              notify => Class["puppet_rsync::service"],
         }    
