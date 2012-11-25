@@ -5,15 +5,17 @@
 # MANAGE BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 #############################################################
 #
-# Configuration for backup server using rsync
+# Configuration for backup server using rsync.
+#
+# Note: don't specify pid since it's handled by init.d
 #
 log file = /var/log/rsyncd.log
-pid file = /var/run/rsyncd.pid
 transfer logging = yes
 read only = no
 uid = root
 gid = root
 list = yes
+
 auth users = <%= authusers %>
 secrets file = <%= securefile %>
 
