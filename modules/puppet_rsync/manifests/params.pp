@@ -13,7 +13,7 @@ class puppet_rsync::params {
     
     $authuserlist = 'bekr'
     $secretsfile = '/root/rsyncd.pwd'
-    $hostallowip = '192.168.0.10/24' 
+    $hostallowip = '192.168.0.10' 
     
     # client server and distribution in use
     

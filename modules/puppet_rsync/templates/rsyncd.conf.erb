@@ -24,3 +24,8 @@ comment = Backup of data files from desktop users NFS share
 path = /srv/backup/<%= backupfromhost %>/<%= debdistribution %>
 hosts allow = <%= hostallowip %>
 
+[warp-wheezy]
+comment = Test of local access with rsync
+path = /srv/localrsync
+hosts allow = 192.168.2.83
+
