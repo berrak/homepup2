@@ -1,0 +1,14 @@
+#
+# /etc/cron.d/rsyncshire
+#
+# create a cron backup job for the desktop host
+# that acts as the desktops central repository
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+30 17 * * *  root  test -x /usr/bin/rsync && /usr/bin/rsync -avhWC --progress --stats /exports/usernfs4/bekr  bekr@192.168.2.83::shire-bekr
+
+# EOF

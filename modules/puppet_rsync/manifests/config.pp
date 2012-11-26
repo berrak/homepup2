@@ -98,7 +98,7 @@ class puppet_rsync::config {
         
     } else {
    
-        # rsync client: backup script 
+        # rsync client: backup script for unprivileged users
         
         file { '/usr/local/bin/rsync-backup' :
              source => "puppet:///modules/puppet_rsync/rsync-backup",    
@@ -108,7 +108,7 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }        
         
-        # rsync client: exclude file to the script        
+        # rsync client: exclude file to the script for unprivileged users        
         
         file { "/usr/local/bin/rsync-backup.excludes" :
              source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
@@ -118,7 +118,7 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }      
         
-        # rsync client: create our global athorization file (change password!)
+        # rsync client: create client host athorization file for unprivileged users
         
         file { $securefile :
              source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
@@ -126,7 +126,22 @@ class puppet_rsync::config {
               group => 'root',
                mode => '0600',
             require => Class["puppet_rsync::install"],
-        } 
+        }
+        
+        # create a root cron backup job for the desktop host that acts as the 
+        # desktops central repository and rsync that with remote rsync server.
+        
+        if $::hostname == $::puppet_rsync::params::nfs_host_for_rsync {
+        
+            file { '/etc/cron.d/rsyncshire' :
+                 source =>  "puppet:///modules/puppet_rsync/rsyncshire",
+                  owner => 'root',
+                  group => 'root',
+                   mode => '0644',
+                require => Class["puppet_rsync::install"],       
+            }
+        
+        }
         
     
     }
