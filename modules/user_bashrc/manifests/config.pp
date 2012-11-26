@@ -12,6 +12,14 @@ define user_bashrc::config {
 		
     if ( $name in ["bekr", "dakr"] ) {
 		
+		# create a bin sub directory for the user
+		
+        file { "/home/${name}/bin":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+	    }		
+		
         # ensure that a local .bashrc sub directory for our snippets exist 
     
         file { "/home/${name}/.bashrc.d":
