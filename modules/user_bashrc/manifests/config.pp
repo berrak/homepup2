@@ -54,6 +54,16 @@ define user_bashrc::config {
 	      subscribe => File["/home/${name}/.bashrc.d/${name}"],
 	    refreshonly => true,
 		}
+		
+		# manage the .profile file for each user (automatic backup at login)
+		
+	    file { "/home/${name}/.profile":
+			source => "puppet:///modules/user_bashrc/profile",
+			 owner => "${name}",
+			 group => "${name}",
+			  mode => '0644',
+		   require => File["/home/${name}"],
+	   	}	
 	
 	} else {
 		
