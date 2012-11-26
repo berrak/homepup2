@@ -7,8 +7,9 @@
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
+EXCLUDES="/usr/local/bin/rsync-backup.excludes"
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=root
-30 17 * * *  root  test -x /usr/bin/rsync && /usr/bin/rsync -avhWC --progress --stats /exports/usernfs4/bekr  bekr@192.168.2.83::shire-bekr
+30 17 * * *  root  test -x /usr/bin/rsync && /usr/bin/rsync -avhWC --progress --stats --exclude-from=$EXCLUDES /exports/usernfs4/bekr  bekr@192.168.2.83::shire-bekr
 
 # EOF
