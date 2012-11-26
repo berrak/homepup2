@@ -127,15 +127,6 @@ class puppet_rsync::config {
                mode => '0600',
             require => Class["puppet_rsync::install"],
         }
-        
-        # rsync client: create script to be run at user login
-        # $home is our custom facter variable for environment $HOME.
-
-        file { "$home/bin/rbackup" :
-             source => "puppet:///modules/puppet_rsync/rbackup",    
-               mode => '0755',
-            require => Class["puppet_rsync::install"],
-        }   
      
         # create a root cron backup job for the desktop host that acts as the 
         # desktops central repository and rsync that with remote rsync server.

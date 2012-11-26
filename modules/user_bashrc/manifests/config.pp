@@ -62,7 +62,19 @@ define user_bashrc::config {
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
-	   	}	
+	   	}
+		
+		# rsync client: create script to be run at user login
+	    # only runs if rsync is installed otherwise no action.
+
+        file { "/home/${name}/bin/rbackup" :
+             source => "puppet:///modules/user_bashrc/rbackup",
+			  owner => "${name}",
+			  group => "${name}",
+               mode => '0750',
+        } 
+	
+	
 	
 	} else {
 		

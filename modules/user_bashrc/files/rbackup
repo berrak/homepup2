@@ -3,6 +3,7 @@
 # /$HOME/bin/rbackup
 #
 # Script that list user sub directories to backup with rsync
+# If rsync is installed script just exit without any action.
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
