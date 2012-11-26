@@ -62,7 +62,6 @@ define user_bashrc::config {
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
-		   require => File["/home/${name}"],
 	   	}	
 	
 	} else {
