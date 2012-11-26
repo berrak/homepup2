@@ -128,6 +128,15 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }
         
+        # rsync client: create script to be run at user login
+
+     
+     
+     
+     
+     
+     
+        
         # create a root cron backup job for the desktop host that acts as the 
         # desktops central repository and rsync that with remote rsync server.
         
