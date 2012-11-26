@@ -72,12 +72,13 @@ define admin_bndl::install {
 			# chkconfig: system tool to enable or disable system services
 			# sysv-rc-conf: SysV init runlevel configuration tool for the terminal
 			# debsums: verification of installed package files with MD5sums
+			# bash-doc: documentation and examples for bash. 
 			
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage" ] :
                 ensure => installed }
 			
-			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums" ] :
+			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc" ] :
                 ensure => installed }
 			
 			
