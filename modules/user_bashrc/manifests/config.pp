@@ -54,27 +54,7 @@ define user_bashrc::config {
 	      subscribe => File["/home/${name}/.bashrc.d/${name}"],
 	    refreshonly => true,
 		}
-		
-		# manage the .profile file for each user (automatic backup at login)
-		
-	    file { "/home/${name}/.profile":
-			source => "puppet:///modules/user_bashrc/profile",
-			 owner => "${name}",
-			 group => "${name}",
-			  mode => '0644',
-	   	}
-		
-		# rsync client: create script to be run at user login
-	    # only runs if rsync is installed otherwise no action.
 
-        file { "/home/${name}/bin/rbackup" :
-             source => "puppet:///modules/user_bashrc/rbackup",
-			  owner => "${name}",
-			  group => "${name}",
-               mode => '0750',
-        } 
-	
-	
 	
 	} else {
 		
