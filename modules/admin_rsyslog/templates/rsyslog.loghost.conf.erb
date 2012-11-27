@@ -107,9 +107,9 @@ mail.err			                    /var/log/mail.err
 *.=info;*.=notice;*.=warn;auth,authpriv,cron,mail,daemon.none	 -/var/log/messages
 
 #
-# Console messages (all four lowest priorities)
+# Console messages (all three lowest priorities above debug)
 ######################################
-*.=debug;*.=info;*.=notice;*.=warn;auth,authpriv,cron,mail.none	|/dev/xconsole
+*.=info;*.=notice;*.=warn;auth,authpriv,cron,mail.none	|/dev/xconsole
 
 #
 # All unused facilities to one log file.
