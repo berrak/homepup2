@@ -5,25 +5,52 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 #
+# Requirements: Debian package rsync (aptitude install rsync)
+#
+# Script is sourced by '/usr/local/bin/rsync.backup' if installed
+# and executed when a user login with lightdm (GUI login).
+# See: /etc/lightdm/lightdm.conf were above script is referred.
+#
 # Usage:
 # Automatically backup listed directories to server at every login
 # Content will be backed up to warp:/srv/backup/<hostname>/bekr/home
 #
 # Notes:
 #     Use a space separated list of full paths to directory to backup.
-#     If using a trailing slash only files in that directory will be
-#     backed up (i.e. no sub directory will be created below /home.
 #
-#     Note also that directories are backed up recursive by default.
+#     Note also that directories are backed up recursively by default.
 #
-#     This is NOT normally what you want since all files messes up
-#     at the backup root /home and you would backup everything below
-#     (home/bekr (inclusive the nfs share). 
+#     Path with a trailing slash will backup files direct in that di-
+#     rectory (i.e. no sub directory will be created below /home)
+#
+#     This is NOT normally what you want since:
+#     1) all files ends up in the backup root ('/home)'
+#     2) this will backup everything (also /bekr/nfs share). 
 #
 #     Todo: Use of user exclude that prevents e.g. nfs to be included.
 #
-#     Below directories starts at /home/bekr (i.e. $HOME)
+#     Full paths should be given like /home/bekr (i.e. $HOME)
 
-BACKUP_DIRECTORIES="$HOME/TASKPLANNING $HOME/nyhetsbrevkrig'
+#------------------------------------------------------------
+# List of sub directories to backup. $HOME/ will backup
+# (recursive) everything in your home directory. Note slash. 
+#------------------------------------------------------------
+
+BACKUP_DIRECTORIES="$HOME/TASKPLANNING $HOME/nyhetsbrevkrig"
+# BACKUP_DIRECTORIES="$HOME/"
+
+#------------------------------------------------------------
+# Password for this user repository. Make this file mode 600!
+# Must match what is in the remote server password file.
+#------------------------------------------------------------
+
+MYPASSWORD="pass"
 
 
+#------------------------------------------------------------
+# Exclude subdirectories/filters (TODO)
+#------------------------------------------------------------
+#
+#
+#
+#

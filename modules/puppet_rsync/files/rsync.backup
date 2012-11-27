@@ -24,11 +24,34 @@
 BACKUPHOST_IP="192.168.2.83"
 HOSTNM=`hostname`
 RSYNC=/usr/bin/rsync
-TARGET="${USER}@${BACKUPHOST_IP}::${HOSTNM}-home"
+TARGET="${USER}@{BACKUPHOST_IP}::${HOSTNM}-home"
 LOGGER=/usr/bin/logger
 MYDATE=`date +%H:%M:%S`
 USERBACKUPFILE="$HOME/bin/$USER.backup"
-# export RSYNC_PASSWORD=pass
+export RSYNC_PASSWORD=pass
+
+###############################
+#
+###############################
+# Automatically backup listed directories to server at every login
+# Content will be backed up to warp:/srv/backup/<hostname>/bekr/home
+#
+# Notes:
+#     Use a space separated list of full paths to directory to backup.
+#     If using a trailing slash only files in that directory will be
+#     backed up (i.e. no sub directory will be created below /home.
+#
+#     Note also that directories are backed up recursive by default.
+#
+#     This is NOT normally what you want since all files messes up
+#     at the backup root /home and you would backup everything below
+#     (home/bekr (inclusive the nfs share). 
+#
+#     Todo: Use of user exclude that prevents e.g. nfs to be included.
+#
+#     Below directories starts at /home/bekr (i.e. $HOME)
+
+BACKUP_DIRECTORIES="$HOME/TASKPLANNING $HOME/nyhetsbrevkrig"
 
 ###############################
 # MAIN PROGRAM 

@@ -20,13 +20,13 @@ define user_bashrc::config {
 		     group => "${name}",
 	    }		
 		
-		# add the default backup (rsync) configuration
+		# default backup (rsync) configuration. Contains rsync password.
 		
 	    file { "/home/${name}/bin/${name}.backup":
 			source => "puppet:///modules/user_bashrc/${name}.backup",
 			 owner => "${name}",
 			 group => "${name}",
-			  mode => '0644',
+			  mode => '0600',
 		   require => File["/home/${name}/bin"],
 	   	}	
 		

@@ -64,8 +64,6 @@ class puppet_rsync::config {
         }            
         
         
-        
-        
         # default options for 'rsyncd' (at server, none is required at client)
         $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
         
@@ -92,7 +90,7 @@ class puppet_rsync::config {
              notify => Class["puppet_rsync::service"],
         }    
     
-        # rsync server: create our rsync athorization file (change password!)
+        # rsync server: create our site rsync athorization file (change password!)
         
         file { "$securefile" :
              source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
@@ -125,16 +123,20 @@ class puppet_rsync::config {
     } else {
    
         # rsync client: backup script for unprivileged users
+        # This also require that <user>.backup exists in user the
+        # ~/bin sub directory (is installed by default for all users)
         
-        file { '/root/bin/rsync.backup' :
+        file { '/usr/local/bin/rsync.backup' :
              source => "puppet:///modules/puppet_rsync/rsync.backup",    
               owner => 'root',
-              group => 'root',
-               mode => '0700',
+              group => 'staff',
+               mode => '0750',
             require => Class["puppet_rsync::install"],
         }        
         
-        # rsync client: exclude file to the script for unprivileged users        
+        # rsync client: exclude file to the script for unprivileged users
+        # This is for the root cron job which lookup the passwd here.
+
         
         file { "/root/bin/rsync-backup.excludes" :
              source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
@@ -144,7 +146,8 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }      
         
-        # rsync client: create client host athorization file for unprivileged users
+        # rsync client: create client host athorization file.
+        # This is for the root cron job which lookup the passwd here.
         
         file { "$securefile" :
              source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    

@@ -9,7 +9,7 @@ class puppet_rsync::params {
     $rsync_server_address = '192.168.2.83'
     
     
-    # configuration for server
+    # configuration for server (and client also $secretsfile)
     
     $authuser1 = 'bekr'
     $secretsfile = '/root/rsyncd.pwd'
