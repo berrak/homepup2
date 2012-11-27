@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# /usr/local/bin/rsync-backup
+# /root/bin/rsync-backup
 #
 ###############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
@@ -27,8 +27,8 @@
         
 #### What is the IP address of the backup server?
 BSERVER="192.168.2.83"  
-#### Alternatively use the host name of the backup server?
-# BSERVER="asgard"
+#### Alternatively use the host name of the backup server (if DNS or host entry)
+# BSERVER="warp"
 
 #### What is the mount point (in fstab) for the NFS share from the file server?
 NFSSHAREPATH="/home/bekr/nfs"
@@ -146,6 +146,56 @@ function DisplayDebugInfo()
     return 0
 }
 
+RSYNC=/usr/bin/rsync
+TARGET="$USER@192.168.2.83::home-${USER}"
+LOGGER=/usr/bin/logger
+ECHO=/bin/echo
+MYDATE=`date +%H:%M:%S`
+export RSYNC_PASSWORD=pass
+
+
+###############################
+# MAIN PROGRAM 
+###############################
+
+# Ensure we have network connection and rsync server is operational
+
+# This is run at lightdm session start (i.e user login).
+# This the user environament is set like $HOME and $USER
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ###################|####################|####################|###############
 # Program starts here
 ###################|####################|####################|###############
@@ -261,26 +311,4 @@ fi
 
 exit 0
 
-###################|####################|####################|###############
-# Everything below this is ignored
-###################|####################|####################|###############
 
-#############################################################################
-#
-# rsync options ($OPTS): Comments
-#
-#############################################################################
-#
-# -a : archive:
-# -v : verbose:
-# -H : hardlinks:
-# -h : human-readable:
-# -W : whole-file copy:
-#
-# --progress: 
-# --exclude-from=
-# --stats:
-# --delete:
-# --delete-excluded:
-#
-##############################################################################

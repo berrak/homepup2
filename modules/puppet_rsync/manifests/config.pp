@@ -32,6 +32,8 @@ class puppet_rsync::config {
             require => File["/srv/backup"],
         }
         
+        # main backup directory for authuser1
+        
         file { "/srv/backup/${backupfromhost}/${authuser1}":
              ensure => "directory",
               owner => 'root',
@@ -39,6 +41,30 @@ class puppet_rsync::config {
                mode => '0700',
             require => File["/srv/backup/${backupfromhost}"],
         }      
+        
+        # directory for other individual home and sub directories (not nfs) 
+        
+        file { "/srv/backup/${backupfromhost}/${authuser1}/nfs":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => File["/srv/backup/${backupfromhost}/${authuser1}"],
+        }               
+        
+        
+        # directory for other individual home and sub directories (not nfs) 
+        
+        file { "/srv/backup/${backupfromhost}/${authuser1}/home":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => File["/srv/backup/${backupfromhost}/${authuser1}"],
+        }            
+        
+        
+        
         
         # default options for 'rsyncd' (at server, none is required at client)
         $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
@@ -100,21 +126,21 @@ class puppet_rsync::config {
    
         # rsync client: backup script for unprivileged users
         
-        file { '/usr/local/bin/rsync-backup' :
-             source => "puppet:///modules/puppet_rsync/rsync-backup",    
+        file { '/root/bin/rsync.backup' :
+             source => "puppet:///modules/puppet_rsync/rsync.backup",    
               owner => 'root',
-              group => 'staff',
-               mode => '0755',
+              group => 'root',
+               mode => '0700',
             require => Class["puppet_rsync::install"],
         }        
         
         # rsync client: exclude file to the script for unprivileged users        
         
-        file { "/usr/local/bin/rsync-backup.excludes" :
+        file { "/root/bin/rsync-backup.excludes" :
              source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
               owner => 'root',
-              group => 'staff',
-               mode => '0644',
+              group => 'root',
+               mode => '0600',
             require => Class["puppet_rsync::install"],
         }      
         

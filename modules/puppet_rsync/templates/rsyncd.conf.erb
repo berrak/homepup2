@@ -22,12 +22,17 @@ list = yes
 auth users = <%= authuser1 %>
 secrets file = <%= securefile %>
 
-[<%= backupfromhost %>-<%= authuser1 %>]
-comment = Backup of data files from desktop user1 
-path = /srv/backup/<%= backupfromhost %>/<%= authuser1 %>
+[<%= backupfromhost %>-nfs]
+comment = Backup of data files from desktop authuser1 NFS share
+path = /srv/backup/<%= backupfromhost %>/<%= authuser1 %>/nfs
 hosts allow = <%= hostallowip %>
 
-[warp-bekr]
+[<%= backupfromhost %>-home]
+comment = Backup of data files from desktop user1 other home directories
+path = /srv/backup/<%= backupfromhost %>/<%= authuser1 %>/home
+hosts allow = <%= hostallowip %>
+
+[warp-local]
 comment = Test of local access or backup with rsync
 path = /srv/localrsync
 hosts allow = 192.168.2.83
