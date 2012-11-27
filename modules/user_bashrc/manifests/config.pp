@@ -26,7 +26,7 @@ define user_bashrc::config {
 			source => "puppet:///modules/user_bashrc/${name}.backup",
 			 owner => "${name}",
 			 group => "${name}",
-			  mode => '0644',
+			  mode => '0600',
 		   require => File["/home/${name}/bin"],
 	   	}	
 		

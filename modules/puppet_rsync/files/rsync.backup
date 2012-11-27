@@ -39,8 +39,6 @@ if [ -r "$USERBACKUPFILE" ]; then
    .  "$USERBACKUPFILE"
 fi
 
-$LOGGER -p local0.debug "$0: Before call to rsync ($MYPASSWORD). User ($USER) in ($HOME)."
-
 # Ensure we have network connection and that the rsync
 # server is operational. Supress the returned file list.
 export RSYNC_PASSWORD="$MYPASSWORD"

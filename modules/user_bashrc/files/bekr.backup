@@ -33,10 +33,12 @@
 
 #------------------------------------------------------------
 # List of sub directories to backup. $HOME/ will backup
-# (recursive) everything in your home directory. Note slash. 
+# (recursive) everything in your home directory. Note slash.
+# In other words if you like to have the last directory as a
+# sub directory at target - leave the slash out in your path.
 #------------------------------------------------------------
 
-BACKUP_DIRECTORIES="$HOME/TASKPLANNING $HOME/nyhetsbrevkrig"
+BACKUP_DIRECTORIES="$HOME/Desktop"
 # BACKUP_DIRECTORIES="$HOME/"
 
 #------------------------------------------------------------
