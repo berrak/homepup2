@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# /root/bin/rsync-backup
+# /root/bin/rsync.backup
 #
 ###############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
@@ -21,10 +21,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+BACKUPHOST_IP="192.168.2.83"
+HOSTNM=`hostname`
 RSYNC=/usr/bin/rsync
-TARGET="${USER}@192.168.2.83::shire-home"
+TARGET="${USER}@${BACKUPHOST_IP}::${HOSTNM}-home"
 LOGGER=/usr/bin/logger
 MYDATE=`date +%H:%M:%S`
+USERBACKUPFILE="$HOME/bin/$USER.backup"
 # export RSYNC_PASSWORD=pass
 
 ###############################
@@ -40,8 +43,20 @@ $RSYNC --password-file=/root/rsyncd.pwd $TARGET > /dev/null
 remotesuccess=$?
 
 if [ "$remotesuccess" -ne 0 ]; then
-    $LOGGER -p local0.debug "$0: $MYDATE Remote rsync daemon returned error code ($remotesuccess) at login! User ($USER) in ($HOME)."
+    $LOGGER -p local0.debug "$0: $MYDATE Error Remote rsync returned ($remotesuccess) at login! User ($USER) in ($HOME)."
     # RSYNC_PASSWORD=
     exit 1
+else
+    $LOGGER -p local0.debug "$0: $MYDATE Success Remote rsync initiated at login! Read user backupfile ($USERBACKUPFILE)."
 fi
+
+# read the user default backup configuration file with a white space separated list of directories to backup
+if [ -r "$USERBACKUPFILE" ]; then
+  . "$USERBACKUPFILE"
+else
+    $LOGGER -p local0.debug "$0: $MYDATE Error Can't read user backupfile ($USERBACKUPFILE)."
+    exit 1
+fi
+
+$LOGGER -p local0.debug "$0: $MYDATE User backupfile directories ($BACKUP_DIRECTORIES)."
 
