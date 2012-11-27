@@ -68,7 +68,7 @@ class puppet_rsync::config {
     
         # rsync server: create our rsync athorization file (change password!)
         
-        file { $securefile :
+        file { "$securefile" :
              source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
               owner => 'root',
               group => 'root',
@@ -120,7 +120,7 @@ class puppet_rsync::config {
         
         # rsync client: create client host athorization file for unprivileged users
         
-        file { $securefile :
+        file { "$securefile" :
              source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
               owner => 'root',
               group => 'root',
