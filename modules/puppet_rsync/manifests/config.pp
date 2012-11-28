@@ -68,7 +68,7 @@ class puppet_rsync::config {
         # create server directories for each desktop host/user that use rsync for backup
         
         srv_create_hostdirectory { "shire": username => 'bekr'}
-        srv_create_hostdirectory { "mordor": username => 'dakr'}
+        srv_create_hostdirectory { "mordor": username => 'bekr'}
             
         
         # default options for 'rsyncd'
