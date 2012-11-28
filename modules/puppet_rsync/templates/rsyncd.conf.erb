@@ -25,19 +25,19 @@ secrets file = <%= securefile %>
 [shire-nfs]
 comment = Backup of exported (NFS) data files from desktop user bekr
 path = /srv/backup/shire/bekr/nfs
-hosts allow = 192.268.0.10
+hosts allow = 192.168.0.10
 
 [shire-home]
 comment = Backup of shire data files from desktop user bekr
 path = /srv/backup/shire/bekr/home
-hosts allow = 192.268.0.10
+hosts allow = 192.168.0.10
 
 [mordor-home]
 comment = Backup of mordor data files from desktop user bekr
 path = /srv/backup/mordor/bekr/home
-hosts allow = 192.268.0.100
+hosts allow = 192.168.0.100
 
-[warp-local]
+[warp-home]
 comment = Test of local access or backup with rsync
 path = /srv/localrsync
 hosts allow = 192.168.2.83

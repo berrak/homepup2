@@ -51,7 +51,18 @@ class puppet_rsync::config {
 
         
     }
+
+    # simple rsync test scrip for the rsync server and clients
     
+    file { '/root/bin/rsync.selftest':
+        content =>  template('puppet_rsync/rsync.selftest.erb'),
+          owner => 'root',
+          group => 'root',
+           mode => '0700',
+        require => Class["puppet_rsync::install"],
+    }
+
+
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
         # create /srv/backup directory only for root's eyes

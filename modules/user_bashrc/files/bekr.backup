@@ -28,8 +28,6 @@
 #     2) this will backup everything (/bekr/nfs share but
 #        the default exclude prevents that). 
 #
-#     Todo: Use of user exclude that prevents e.g. nfs to be included.
-#
 #     Full paths should be given like /home/bekr (i.e. $HOME)
 
 #------------------------------------------------------------
@@ -37,17 +35,18 @@
 # (recursive) everything in your home directory. Note slash.
 # In other words if you like to have the last directory as a
 # sub directory at target - leave the slash out in your path.
+# /Desktop can be used as a small test case.
 #------------------------------------------------------------
 
-# RSYNC_BACKUP_DIRECTORIES="$HOME/Desktop"
-RSYNC_BACKUP_DIRECTORIES="$HOME/"
+# MY_SRC_DIRECTORIES="$HOME/Desktop"
+MY_SRC_DIRECTORIES="$HOME/"
 
 #------------------------------------------------------------
 # Password for this user repository. Make this file mode 600!
 # Must match what is in the remote server password file.
 #------------------------------------------------------------
 
-RSYNC_USER_PASSWORD="pass"
+MY_PASSWORD="pass"
 
 
 #------------------------------------------------------------
@@ -56,5 +55,5 @@ RSYNC_USER_PASSWORD="pass"
 # prevent private keys to get lost. *cache* is temporary files.
 #------------------------------------------------------------
 #
-RSYNC_DEFAULT_EXCLUDE="--exclude=nfs/"
-RSYNC_USER_EXCLUDES="--exclude=?ssh/ **/*cache* **/*Cache*"
+MY_DEFAULT_EXCLUDES="--exclude=nfs/"
+MY_EXCLUDES="--exclude=?ssh/ **/*cache* **/*Cache*"

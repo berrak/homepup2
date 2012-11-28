@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# /root/bin/rsync.selftest
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Use as quick test of communication with the rsync daemon.
+#
+HOSTNAME=`hostname`
+PROG=$(basename $0)
+LOGGER=/usr/bin/logger
+RSYNC=/usr/bin/rsync
+ECHO=/bin/echo
+
+###############################
+# MAIN PROGRAM
+###############################
+
+if [[ $EUID -ne 0 ]] ;then
+   $ECHO "$PROG: This script must be run as root" 
+   exit 0
+fi
+
+$ECHO -n "Please enter the remote rsync user: "
+read rsyncuser
+
+if [ -z "$rsyncuser" ]; then
+    $ECHO "Did not get any answer - aborting now."
+    exit 1
+else
+
+    $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home
+    returncode=$?
+    
+    if [ "$returncode" -ne 0 ]; then
+        $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home)."
+        $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home)"
+    else
+        $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home)."
+        $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home)."
+    fi
+
+fi
+exit 0
