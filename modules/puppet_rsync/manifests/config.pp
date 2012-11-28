@@ -130,7 +130,7 @@ class puppet_rsync::config {
              source => "puppet:///modules/puppet_rsync/rsync.backup",    
               owner => 'root',
               group => 'staff',
-               mode => '0750',
+               mode => '0700',
             require => Class["puppet_rsync::install"],
         }        
         
