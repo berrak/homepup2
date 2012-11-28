@@ -20,12 +20,13 @@
 #
 #     Note also that directories are backed up recursively by default.
 #
-#     Path with a trailing slash will backup files direct in that di-
-#     rectory (i.e. no sub directory will be created below /home)
+#     Path with a trailing slash will backup files direct in that
+#     directory (i.e. no sub directory will be created below /home)
 #
 #     This is NOT normally what you want since:
 #     1) all files ends up in the backup root ('/home)'
-#     2) this will backup everything (also /bekr/nfs share). 
+#     2) this will backup everything (/bekr/nfs share but
+#        the default exclude prevents that). 
 #
 #     Todo: Use of user exclude that prevents e.g. nfs to be included.
 #
@@ -38,21 +39,22 @@
 # sub directory at target - leave the slash out in your path.
 #------------------------------------------------------------
 
-BACKUP_DIRECTORIES="$HOME/Desktop"
-# BACKUP_DIRECTORIES="$HOME/"
+# RSYNC_BACKUP_DIRECTORIES="$HOME/Desktop"
+RSYNC_BACKUP_DIRECTORIES="$HOME/"
 
 #------------------------------------------------------------
 # Password for this user repository. Make this file mode 600!
 # Must match what is in the remote server password file.
 #------------------------------------------------------------
 
-MYPASSWORD="pass"
+RSYNC_USER_PASSWORD="pass"
 
 
 #------------------------------------------------------------
-# Exclude subdirectories/filters (TODO)
+# Exclude subdirectories/filters. $HOME/nfs is excluded since
+# since its backed up by cron job. '.ssh' is excluded to
+# prevent private keys to get lost. *cache* is temporary files.
 #------------------------------------------------------------
 #
-#
-#
-#
+RSYNC_DEFAULT_EXCLUDE="--exclude=nfs/"
+RSYNC_USER_EXCLUDES="--exclude=?ssh/ **/*cache* **/*Cache*"
