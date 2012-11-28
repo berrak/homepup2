@@ -140,7 +140,15 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }        
         
-     
+        # modified 'lightdm.conf' which will launch 'rsync.backup' at GUI-login 
+
+        file { '/etc/lightdm/lightdm.conf' :
+                 source =>  "puppet:///modules/puppet_rsync/lightdm.conf",
+                  owner => 'root',
+                  group => 'root',
+                   mode => '0644',
+                require => Class["puppet_rsync::install"],    
+        }       
         
         # create a root cron backup job for the desktop host that acts as the 
         # desktops central repository and rsync that with remote rsync server.
