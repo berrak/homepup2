@@ -9,13 +9,18 @@ class puppet_rsync::params {
     $rsync_server_address = '192.168.2.83'
     
     
-    # configuration for server (and client also $secretsfile)
+    # configuration for server (for client also the $secretsfile, only
+    # required for cron job and the desktop that acts as the NFS share)
     
     $authuser1 = 'bekr'
     $secretsfile = '/root/rsyncd.pwd'
+    
+    # only these hosts are allowed to connect to backup (rsync) server
+    
     $hostallowip = '192.168.0.10' 
     
-    # client server and distribution in use
+    
+    # client which share NFS to fellows desktops
     
     $nfs_host_for_rsync = 'shire'
     

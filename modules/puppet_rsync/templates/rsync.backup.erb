@@ -51,6 +51,12 @@ USERBACKUPFILE="$HOME/bin/${USER}.backup"
 # This scripts is run at lightdm session start (i.e user
 # login). User environment is set like $HOME and $USER.
 
+# Don't run this for 'root' (single '=' works for dash also)
+if [ "$USER" = "root" ]
+    $LOGGER -p local0.debug "$0: Error! Root is not allowed in backup script! User ($USER) in ($HOME)."
+    exit
+fi
+
 # Source the user configuration file
 if [ -r "$USERBACKUPFILE" ]; then
    .  "$USERBACKUPFILE"
@@ -59,19 +65,19 @@ fi
 # Ensure we have network connection and that the rsync
 # server is operational. Supress the returned file list.
 export RSYNC_PASSWORD="$MYPASSWORD"
-$RSYNC $USER@192.168.2.83::shire-home  > /dev/null
+$RSYNC $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home  > /dev/null
 remotesuccess=$?
 
 if [ "$remotesuccess" -ne 0 ]; then
     $LOGGER -p local0.debug "$0: Error! rsync returned ($remotesuccess) at login! User ($USER) in ($HOME)."
 else
-    $LOGGER -p local0.debug "$0: Success! Remote rsync initiated at login! Found directory list ($BACKUP_DIRECTORIES)."
-    $RSYNC $OPTIONS $BACKUP_DIRECTORIES $USER@192.168.2.83::shire-home
+    $LOGGER -p local0.debug "$0: Success! Remote rsync initiated at ($USER) login! Found directory list ($BACKUP_DIRECTORIES)."
+    $RSYNC $OPTIONS $BACKUP_DIRECTORIES $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home
     remotesuccess=$?
     if [ "$remotesuccess" -ne 0 ]; then
-        $LOGGER -p local0.debug "$0: Error! rsync returned ($remotesuccess). Failed to backup ($BACKUP_DIRECTORIES)."
+        $LOGGER -p local0.debug "$0: Error! rsync returned ($remotesuccess). Failed to backup ($BACKUP_DIRECTORIES) for ($USER)."
     else
-        $LOGGER -p local0.debug "$0: Success! Backup directories($BACKUP_DIRECTORIES)."
+        $LOGGER -p local0.debug "$0: Success! Backup directories ($BACKUP_DIRECTORIES) for ($USER)."
     fi
 fi
 # empty the environment

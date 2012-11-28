@@ -5,7 +5,9 @@ class puppet_rsync::config {
 
     include puppet_rsync::params
     
+    $myhost = $::hostname
     $securefile = $::puppet_rsync::params::secretsfile
+    $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
     
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
@@ -64,8 +66,7 @@ class puppet_rsync::config {
         }            
         
         
-        # default options for 'rsyncd' (at server, none is required at client)
-        $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
+        # default options for 'rsyncd'
         
         file { '/etc/default/rsync':
             content =>  template('puppet_rsync/rsync.erb'),
@@ -122,41 +123,20 @@ class puppet_rsync::config {
         
     } else {
    
-        # rsync client: backup script for unprivileged users
-        # This also require that <user>.backup exists in user the
-        # ~/bin sub directory (is installed by default for all users)
+        # rsync client: backup script for unprivileged users. This
+        # also requires that <user>.backup exists in user the
+        # ~/bin sub directory (installed for GUI (lightdm) users)
         
         file { '/usr/local/bin/rsync.backup' :
-             source => "puppet:///modules/puppet_rsync/rsync.backup",    
+            content =>  template('puppet_rsync/rsyncd.backup.erb'),
               owner => 'root',
               group => 'staff',
                mode => '0700',
             require => Class["puppet_rsync::install"],
         }        
         
-        # rsync client: exclude file to the script for unprivileged users
-        # This is for the root cron job which lookup the passwd here.
-
-        
-        file { "/root/bin/rsync-backup.excludes" :
-             source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
-              owner => 'root',
-              group => 'root',
-               mode => '0600',
-            require => Class["puppet_rsync::install"],
-        }      
-        
-        # rsync client: create client host athorization file.
-        # This is for the root cron job which lookup the passwd here.
-        
-        file { "$securefile" :
-             source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
-              owner => 'root',
-              group => 'root',
-               mode => '0600',
-            require => Class["puppet_rsync::install"],
-        }
      
+        
         # create a root cron backup job for the desktop host that acts as the 
         # desktops central repository and rsync that with remote rsync server.
         
@@ -169,7 +149,27 @@ class puppet_rsync::config {
                    mode => '0644',
                 require => Class["puppet_rsync::install"],       
             }
-        
+            
+            # root cron job which lookup the exclude list here.
+
+            file { "/root/bin/rsync-backup.excludes" :
+                 source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
+                  owner => 'root',
+                  group => 'root',
+                   mode => '0600',
+                require => Class["puppet_rsync::install"],
+            } 
+            
+            # root cron job which lookup the passwd here.
+            
+            file { "$securefile" :
+                 source => "puppet:///modules/puppet_rsync/rsyncd.pwd",    
+                  owner => 'root',
+                  group => 'root',
+                   mode => '0600',
+                require => Class["puppet_rsync::install"],
+            }
+            
         }
         
     
