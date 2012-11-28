@@ -19,18 +19,23 @@ list = yes
 # Below provides only weak authentication, root
 # can use 'user' name and bypass password.
 # Unprivileged users can not bypass this though.
-auth users = <%= authuser1 %>
+auth users = bekr
 secrets file = <%= securefile %>
 
-[<%= backupfromhost %>-nfs]
-comment = Backup of data files from desktop authuser1 NFS share
-path = /srv/backup/<%= backupfromhost %>/<%= authuser1 %>/nfs
-hosts allow = <%= hostallowip %>
+[shire-nfs]
+comment = Backup of exported (NFS) data files from desktop user bekr
+path = /srv/backup/shire/bekr/nfs
+hosts allow = 192.268.0.10
 
-[<%= backupfromhost %>-home]
-comment = Backup of data files from desktop user1 other home directories
-path = /srv/backup/<%= backupfromhost %>/<%= authuser1 %>/home
-hosts allow = <%= hostallowip %>
+[shire-home]
+comment = Backup of shire data files from desktop user bekr
+path = /srv/backup/shire/bekr/home
+hosts allow = 192.268.0.10
+
+[mordor-home]
+comment = Backup of mordor data files from desktop user bekr
+path = /srv/backup/mordor/bekr/home
+hosts allow = 192.268.0.100
 
 [warp-local]
 comment = Test of local access or backup with rsync

@@ -12,20 +12,17 @@ class puppet_rsync::params {
     # configuration for server (for client also the $secretsfile, only
     # required for cron job and the desktop that acts as the NFS share)
     
-    $authuser1 = 'bekr'
     $secretsfile = '/root/rsyncd.pwd'
     
-    # only these hosts are allowed to connect to backup (rsync) server
     
-    $hostallowip = '192.168.0.10' 
-    
-    
-    # client list of (desktops) hosts (names) which will use rsync to backup user data
+    # client list of (desktops) and users who will use rsync to backup user data
     
     $hostlist_for_rsync = [ 'shire', 'mordor' ]
+    $userlist_for_rsync = [ 'bekr', 'dakr' ]
     
-    #############################################
-    # remove this stanza when above works
+    
+    # user/host that requires a special sub directory at the backup server
     $nfs_host_for_rsync = 'shire'
+    $nfs_user_for_rsync = 'bekr'
     
 }
