@@ -128,7 +128,7 @@ class puppet_rsync::config {
         # ~/bin sub directory (installed for GUI (lightdm) users)
         
         file { '/usr/local/bin/rsync.backup' :
-            content =>  template('puppet_rsync/rsyncd.backup.erb'),
+            content =>  template('puppet_rsync/rsync.backup.erb'),
               owner => 'root',
               group => 'staff',
                mode => '0700',
