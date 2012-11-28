@@ -9,6 +9,17 @@ class puppet_rsync::config {
     $securefile = $::puppet_rsync::params::secretsfile
     $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
     
+    define srv_create_hostdirectory() {
+    
+        file { "/srv/backup/$name":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => File["/srv/backup"],
+        }
+    }
+    
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
         # create /srv/backup directory only for root's eyes
@@ -21,18 +32,16 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }  
         
-        # host is 'shire' and is the NFS data share for all desktop hosts
+        # create directories for each desktop host that use rsync for backup
+        
+        $hostlist = $::puppet_rsync::params::hostlist_for_rsync
+        srv_create_hostdirectory { $hostlist: }
+        
+        
+        # old code below
         
         $backupfromhost = $::puppet_rsync::params::nfs_host_for_rsync
         $authuser1 = $::puppet_rsync::params::authuser1
-        
-        file { "/srv/backup/${backupfromhost}":
-             ensure => "directory",
-              owner => 'root',
-              group => 'root',
-               mode => '0700',
-            require => File["/srv/backup"],
-        }
         
         # main backup directory for authuser1
         
@@ -64,6 +73,7 @@ class puppet_rsync::config {
                mode => '0700',
             require => File["/srv/backup/${backupfromhost}/${authuser1}"],
         }            
+        
         
         
         # default options for 'rsyncd'

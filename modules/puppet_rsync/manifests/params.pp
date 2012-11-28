@@ -20,8 +20,12 @@ class puppet_rsync::params {
     $hostallowip = '192.168.0.10' 
     
     
-    # client which share NFS to fellows desktops
+    # client list of (desktops) hosts (names) which will use rsync to backup user data
     
+    $hostlist_for_rsync = [ 'shire', 'mordor' ]
+    
+    #############################################
+    # remove this stanza when above works
     $nfs_host_for_rsync = 'shire'
     
 }
