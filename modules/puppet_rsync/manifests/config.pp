@@ -9,7 +9,7 @@ class puppet_rsync::config {
     $securefile = $::puppet_rsync::params::secretsfile
     $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
     
-    define srv_create_hostdirectory() {
+    define srv_create_hostdirectory( $username='' ) {
     
         file { "/srv/backup/$name":
              ensure => "directory",
@@ -19,9 +19,36 @@ class puppet_rsync::config {
             require => File["/srv/backup"],
         }
         
-        $userlist = $::puppet_rsync::params::userlist_for_rsync
+        file { "/srv/backup/${name}/${username}":
+         ensure => "directory",
+          owner => 'root',
+          group => 'root',
+           mode => '0700',
+        require => File["/srv/backup/${name}"],
+        }      
+
+        file { "/srv/backup/${name}/${username}/home":
+             ensure => "directory",
+              owner => 'root',
+              group => 'root',
+               mode => '0700',
+            require => File["/srv/backup/${name}/${username}"],
+        }
+    
+        # special case - if host and user exports NFS then we need backup sub directory for nfs on server
         
-        puppet_rsync::homedirs { $userlist: hostdir => $name }
+        if ( $name == $::puppet_rsync::params::nfs_host_for_rsync ) and ( $username == $::puppet_rsync::params::nfs_user_for_rsync ) {
+        
+            file { "/srv/backup/${name}/${username}/nfs":
+                ensure => "directory",
+                 owner => 'root',
+                 group => 'root',
+                  mode => '0700',
+               require => File["/srv/backup/${name}/${username}"],
+            }
+        
+        }
+
         
     }
     
@@ -38,10 +65,10 @@ class puppet_rsync::config {
         }  
         
         
-        # create directories for each desktop host that use rsync for backup
+        # create server directories for each desktop host/user that use rsync for backup
         
-        $hostlist = $::puppet_rsync::params::hostlist_for_rsync
-        srv_create_hostdirectory { $hostlist: }
+        srv_create_hostdirectory { "shire": username => 'bekr'}
+        srv_create_hostdirectory { "mordor": username => 'dakr'}
             
         
         # default options for 'rsyncd'

@@ -15,13 +15,8 @@ class puppet_rsync::params {
     $secretsfile = '/root/rsyncd.pwd'
     
     
-    # client list of (desktops) and users who will use rsync to backup user data
-    
-    $hostlist_for_rsync = [ 'shire', 'mordor' ]
-    $userlist_for_rsync = [ 'bekr', 'dakr' ]
-    
-    
     # user/host that requires a special sub directory at the backup server
+    
     $nfs_host_for_rsync = 'shire'
     $nfs_user_for_rsync = 'bekr'
     
