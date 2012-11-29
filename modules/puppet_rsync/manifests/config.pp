@@ -69,6 +69,8 @@ class puppet_rsync::config {
     }
 
 
+    ## tasks for rsync server only
+
     if $::hostname == $::puppet_rsync::params::rsync_server_hostname {
     
         # create /srv/backup directory only for root's eyes
@@ -92,7 +94,11 @@ class puppet_rsync::config {
         srv_create_userfilestructure { "shire_dakr": hostname => 'shire', myuser => 'dakr'}
         
         srv_create_userfilestructure { "mordor_bekr": hostname => 'mordor', myuser => 'bekr'}
-            
+        
+        
+        # this is mostly for local tests on the server itself
+        
+        srv_create_userfilestructure { "mordor_bekr": hostname => 'warp', myuser => 'bekr'}    
         
         # default options for 'rsyncd'
         
@@ -150,6 +156,8 @@ class puppet_rsync::config {
         }                
         
     } else {
+   
+        ## Tasks for clients
    
         # rsync client: backup script for unprivileged users. This
         # also requires that <user>.backup exists in user the
