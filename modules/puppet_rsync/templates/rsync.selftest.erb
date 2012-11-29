@@ -69,11 +69,13 @@ else
                 
                 remotesuccess=$?
                 if [ "$remotesuccess" -ne 0 ]; then
-                    $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
+                    $ECHO
+                    $ECHO "$0: ERROR: rsync returned ($returncode) after file transfer to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) after file transfer to (${HOSTNAME}-home-${rsyncuser})"
                 else
-                    $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-                    $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $ECHO
+                    $ECHO "$0: Remote rsync successfully transferred files to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: Remote rsync successfully transferred files to ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
                 fi
                 
                 ;;
