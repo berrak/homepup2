@@ -6,7 +6,7 @@
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 #
-# Use as quick test of communication with the rsync daemon.
+# Use as quick test rsync daemon.
 #
 HOSTNAME=`hostname`
 PROG=$(basename $0)
@@ -23,7 +23,7 @@ if [[ $EUID -ne 0 ]] ;then
    exit 0
 fi
 
-$ECHO -n "Please enter the remote rsync user: "
+$ECHO -n "Please enter the remote RSYNC USER: "
 read rsyncuser
 
 if [ -z "$rsyncuser" ]; then
@@ -31,16 +31,59 @@ if [ -z "$rsyncuser" ]; then
     exit 1
 else
 
-    $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
-    returncode=$?
+    # start with some information
     
-    if [ "$returncode" -ne 0 ]; then
-        $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-        $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
-    else
-        $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-        $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-    fi
+    echo "This script will test the connection to the rsync server by listing the"
+    echo "remote files , or it will rsync all files in user home directory to the server."
+    echo -n "Enter \"test\" or \"sync\" [t/s] "
+    read answer
+    
+    case "$answer" in
+            [Tt])
+                
+                $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
+                returncode=$?
+                
+                if [ "$returncode" -ne 0 ]; then
+                    $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
+                else
+                    $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                fi
+                
+                ;;
+    
+            [Ss])
+            
+                MY_OPTIONS_FILE="/home/${rsyncuser}/bin/${rsyncuser}.backup"
+                OPTIONS="-avhWC --progress --stats"
+                IPSRVADDR="<%= rsyncsrvaddress %>"
+                
+                # Source the user configuration file
+                if [ -r "$MY_OPTIONS_FILE" ]; then
+                   .  "$MY_OPTIONS_FILE"
+                fi
+                
+                $RSYNC $OPTIONS $MY_DEFAULT_EXCLUDES $MY_EXCLUDES $MY_SRC_DIRECTORIES ${rsyncuser}@${IPSRVADDR}::${HOSTNAME}-home-${rsyncuser}
+                
+                remotesuccess=$?
+                if [ "$remotesuccess" -ne 0 ]; then
+                    $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
+                else
+                    $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                fi
+                
+                ;;
+                
+            *)
+              echo "Did not get any answer - aborting."
+              exit 0
+              ;;
+                
+    esac
 
 fi
 exit 0
