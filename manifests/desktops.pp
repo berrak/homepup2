@@ -90,7 +90,11 @@ node 'shire.home.tld' inherits basenode {
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
 	
     user_bashrc::config { 'bekr' : }
+    user_bashrc::config { 'dakr' : }
+	
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
+    puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
+	
     puppet_devtools::tools { 'bekr' : }
 	
 	## this (desktop-) host exports some 'home' sub-directories for user 'bekr'

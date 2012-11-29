@@ -68,14 +68,14 @@ fi
 # Ensure we have network connection and that the rsync
 # server is operational. Supress the returned file list.
 export RSYNC_PASSWORD="$MY_PASSWORD"
-$RSYNC $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home  > /dev/null
+$RSYNC $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home-$USER  > /dev/null
 remotesuccess=$?
 
 if [ "$remotesuccess" -ne 0 ]; then
     $LOGGER -p local0.debug "$0: ERROR: rsync returned ($remotesuccess) at login! User ($USER) in ($HOME)."
 else
     $LOGGER -p local0.debug "$0: Remote rsync initiated at ($USER) login! Found directory list ($MY_SRC_DIRECTORIES)."
-    $RSYNC $OPTIONS $MY_DEFAULT_EXCLUDES $MY_EXCLUDES $MY_SRC_DIRECTORIES $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home
+    $RSYNC $OPTIONS $MY_DEFAULT_EXCLUDES $MY_EXCLUDES $MY_SRC_DIRECTORIES $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home-$USER
     remotesuccess=$?
     if [ "$remotesuccess" -ne 0 ]; then
         $LOGGER -p local0.debug "$0: ERROR: rsync returned ($remotesuccess). Failed to backup ($MY_SRC_DIRECTORIES) for ($USER)."

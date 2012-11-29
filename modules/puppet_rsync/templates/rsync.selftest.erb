@@ -31,15 +31,15 @@ if [ -z "$rsyncuser" ]; then
     exit 1
 else
 
-    $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home
+    $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
     returncode=$?
     
     if [ "$returncode" -ne 0 ]; then
-        $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home)."
-        $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home)"
+        $ECHO "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+        $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) at login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
     else
-        $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home)."
-        $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home)."
+        $ECHO "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+        $LOGGER -p local0.debug "$0: Remote rsync successfully initiated for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
     fi
 
 fi
