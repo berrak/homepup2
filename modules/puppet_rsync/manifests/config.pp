@@ -86,6 +86,7 @@ class puppet_rsync::config {
         # create server directories for each desktop host/user that use rsync for backup
         
         $client_hostnames_list = $::puppet_rsync::params::clienthostlist
+        
         srv_create_hostbackupdirectory { $client_hostnames_list: }
         
         # create the directory structure below each host for each user
@@ -94,8 +95,7 @@ class puppet_rsync::config {
         srv_create_userfilestructure { "shire_dakr": hostname => 'shire', myuser => 'dakr'}
         
         srv_create_userfilestructure { "mordor_bekr": hostname => 'mordor', myuser => 'bekr'}
-        
-        
+
         # this is mostly for local tests on the server itself
         
         srv_create_userfilestructure { "warp_bekr": hostname => 'warp', myuser => 'bekr'}    
