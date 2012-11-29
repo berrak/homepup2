@@ -60,8 +60,8 @@ class puppet_rsync::config {
 
     # simple rsync test scrip for the rsync server and clients
     
-    file { '/root/bin/rsync.selftest':
-        content =>  template('puppet_rsync/rsync.selftest.erb'),
+    file { '/root/bin/rsync.test':
+        content =>  template('puppet_rsync/rsync.test.erb'),
           owner => 'root',
           group => 'root',
            mode => '0700',
@@ -144,16 +144,7 @@ class puppet_rsync::config {
                mode => '0644',
             require => Class["puppet_rsync::install"],
         }
-        
-        # create a local (warp) rsync directory for various tests
-        
-        file { "/srv/localrsync":
-             ensure => "directory",
-              owner => 'root',
-              group => 'root',
-               mode => '0700',
-            require => Class["puppet_rsync::install"],
-        }                
+          
         
     } else {
    
