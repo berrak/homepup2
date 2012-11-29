@@ -1,0 +1,59 @@
+#
+# /home/bekr/bin/dakr.backup
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Requirements: Debian package rsync (aptitude install rsync)
+#
+# Script is sourced by '/usr/local/bin/rsync.backup' if installed
+# and executed when a user login with lightdm (GUI login).
+# See: /etc/lightdm/lightdm.conf were above script is referred.
+#
+# Usage:
+# Automatically backup listed directories to server at every login
+# Content will be backed up to warp:/srv/backup/<hostname>/bekr/home
+#
+# Notes:
+#     Use a space separated list of full paths to directory to backup.
+#
+#     Note also that directories are backed up recursively by default.
+#
+#     Path with a trailing slash will backup files direct in that
+#     directory (i.e. no sub directory will be created below /home)
+#
+#     This is NOT normally what you want since:
+#     1) all files ends up in the backup root ('/home)'
+#     2) this will backup everything (/bekr/nfs share but
+#        the default exclude prevents that). 
+#
+#     Full paths should be given like /home/bekr (i.e. $HOME)
+
+#------------------------------------------------------------
+# List of sub directories to backup. $HOME/ will backup
+# (recursive) everything in your home directory. Note slash.
+# In other words if you like to have the last directory as a
+# sub directory at target - leave the slash out in your path.
+# /Desktop can be used as a small test case.
+#------------------------------------------------------------
+
+# MY_SRC_DIRECTORIES="$HOME/Desktop"
+MY_SRC_DIRECTORIES="$HOME/"
+
+#------------------------------------------------------------
+# Password for this user repository. Make this file mode 600!
+# Must match what is in the remote server password file.
+#------------------------------------------------------------
+
+MY_PASSWORD="pass"
+
+
+#------------------------------------------------------------
+# Exclude subdirectories/filters. $HOME/nfs is excluded since
+# since its backed up by cron job. '.ssh' is excluded to
+# prevent private keys to get lost. *cache* is temporary files.
+#------------------------------------------------------------
+#
+MY_DEFAULT_EXCLUDES="--exclude=nfs/"
+MY_EXCLUDES="--exclude=?ssh/ **/*cache* **/*Cache*"
