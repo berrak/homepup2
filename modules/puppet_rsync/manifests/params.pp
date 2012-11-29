@@ -16,8 +16,12 @@ class puppet_rsync::params {
     
     
     # user/host that requires a special sub directory at the backup server
-    
+      
     $nfs_host_for_rsync = 'shire'
     $nfs_user_for_rsync = 'bekr'
+    
+    # list of client hosts that backup with rsync
+    
+    $clienthostlist = [ 'shire', 'mordor' ]
     
 }

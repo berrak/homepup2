@@ -9,22 +9,28 @@ class puppet_rsync::config {
     $securefile = $::puppet_rsync::params::secretsfile
     $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
     
-    define srv_create_hostdirectory( $myuser='', $hostname='' ) {
     
-        file { "/srv/backup/$hostname":
+    define srv_create_hostbackupdirectory() {
+    
+        file { "/srv/backup/$name":
              ensure => "directory",
               owner => 'root',
               group => 'root',
                mode => '0700',
             require => File["/srv/backup"],
         }
-        
+    
+    }
+    
+    
+    define srv_create_userfilestructure ( $myuser='', $hostname='' ) {
+    
         file { "/srv/backup/${hostname}/${myuser}":
          ensure => "directory",
           owner => 'root',
           group => 'root',
            mode => '0700',
-        require => File["/srv/backup/${myuser}"],
+        require => File["/srv/backup/${hostname}"],
         }      
 
         file { "/srv/backup/${hostname}/${myuser}/home":
@@ -75,13 +81,17 @@ class puppet_rsync::config {
             require => Class["puppet_rsync::install"],
         }  
         
-        
         # create server directories for each desktop host/user that use rsync for backup
         
-        srv_create_hostdirectory { "shire_bekr": hostname => 'shire', myuser => 'bekr'}
-        srv_create_hostdirectory { "shire_dakr": hostname => 'shire', myuser => 'dakr'}
+        $client_hostnames_list = $::puppet_rsync::params::clienthostlist
+        srv_create_hostbackupdirectory { $client_hostnames_list: }
         
-        srv_create_hostdirectory { "mordor_bekr": hostname => 'mordor', myuser => 'bekr'}
+        # create the directory structure below each host for each user
+        
+        srv_create_userfilestructure { "shire_bekr": hostname => 'shire', myuser => 'bekr'}
+        srv_create_userfilestructure { "shire_dakr": hostname => 'shire', myuser => 'dakr'}
+        
+        srv_create_userfilestructure { "mordor_bekr": hostname => 'mordor', myuser => 'bekr'}
             
         
         # default options for 'rsyncd'
