@@ -9,9 +9,9 @@ class puppet_rsync::config {
     $securefile = $::puppet_rsync::params::secretsfile
     $rsyncsrvaddress = $::puppet_rsync::params::rsync_server_address
     
-    define srv_create_hostdirectory( $username='' ) {
+    define srv_create_hostdirectory( $myuser='', $hostname='' ) {
     
-        file { "/srv/backup/$name":
+        file { "/srv/backup/$hostname":
              ensure => "directory",
               owner => 'root',
               group => 'root',
@@ -19,32 +19,32 @@ class puppet_rsync::config {
             require => File["/srv/backup"],
         }
         
-        file { "/srv/backup/${name}/${username}":
+        file { "/srv/backup/${hostname}/${myuser}":
          ensure => "directory",
           owner => 'root',
           group => 'root',
            mode => '0700',
-        require => File["/srv/backup/${name}"],
+        require => File["/srv/backup/${myuser}"],
         }      
 
-        file { "/srv/backup/${name}/${username}/home":
+        file { "/srv/backup/${hostname}/${myuser}/home":
              ensure => "directory",
               owner => 'root',
               group => 'root',
                mode => '0700',
-            require => File["/srv/backup/${name}/${username}"],
+            require => File["/srv/backup/${hostname}/${myuser}"],
         }
     
         # special case - if host and user exports NFS then we need backup sub directory for nfs on server
         
-        if ( $name == $::puppet_rsync::params::nfs_host_for_rsync ) and ( $username == $::puppet_rsync::params::nfs_user_for_rsync ) {
+        if ( $hostname == $::puppet_rsync::params::nfs_host_for_rsync ) and ( $myuser == $::puppet_rsync::params::nfs_user_for_rsync ) {
         
-            file { "/srv/backup/${name}/${username}/nfs":
+            file { "/srv/backup/${hostname}/${myuser}/nfs":
                 ensure => "directory",
                  owner => 'root',
                  group => 'root',
                   mode => '0700',
-               require => File["/srv/backup/${name}/${username}"],
+               require => File["/srv/backup/${hostname}/${myuser}"],
             }
         
         }
@@ -78,10 +78,10 @@ class puppet_rsync::config {
         
         # create server directories for each desktop host/user that use rsync for backup
         
-        srv_create_hostdirectory { "shire": username => 'bekr'}
-        srv_create_hostdirectory { "shire": username => 'dakr'}
+        srv_create_hostdirectory { "shire_bekr": hostname => 'shire', myuser => 'bekr'}
+        srv_create_hostdirectory { "shire_dakr": hostname => 'shire', myuser => 'dakr'}
         
-        srv_create_hostdirectory { "mordor": username => 'bekr'}
+        srv_create_hostdirectory { "mordor_bekr": hostname => 'mordor', myuser => 'bekr'}
             
         
         # default options for 'rsyncd'
