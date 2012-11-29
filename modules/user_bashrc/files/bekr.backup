@@ -28,7 +28,7 @@
 #     2) this will backup everything (/bekr/nfs share but
 #        the default exclude prevents that). 
 #
-#     Full paths should be given like /home/bekr (i.e. $HOME)
+#     Full paths should be given (i.e. $HOME)
 
 #------------------------------------------------------------
 # List of sub directories to backup. $HOME/ will backup
@@ -38,8 +38,8 @@
 # /Desktop can be used as a small test case.
 #------------------------------------------------------------
 
-# MY_SRC_DIRECTORIES="$HOME/Desktop"
-MY_SRC_DIRECTORIES="$HOME/"
+# MY_SRC_DIRECTORIES="/home/bekr/Desktop"
+MY_SRC_DIRECTORIES="/home/bekr/"
 
 #------------------------------------------------------------
 # Password for this user repository. Make this file mode 600!
