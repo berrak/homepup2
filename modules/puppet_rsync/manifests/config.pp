@@ -98,7 +98,7 @@ class puppet_rsync::config {
         
         # this is mostly for local tests on the server itself
         
-        srv_create_userfilestructure { "mordor_bekr": hostname => 'warp', myuser => 'bekr'}    
+        srv_create_userfilestructure { "warp_bekr": hostname => 'warp', myuser => 'bekr'}    
         
         # default options for 'rsyncd'
         
