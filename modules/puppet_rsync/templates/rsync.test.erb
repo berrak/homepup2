@@ -65,6 +65,10 @@ else
                 # Source the user configuration file
                 if [ -r "$OPTIONS_FILE" ]; then
                    .  "$OPTIONS_FILE"
+                else
+                    $ECHO "$0: ERROR: rsync could not find user ($rsyncuser) optionfile ($OPTIONS_FILE) for (${HOSTNAME}-home-${rsyncuser}) - aborting!"
+                    $LOGGER -p local0.debug "$0: ERROR: rsync could not find user ($rsyncuser) optionfile ($OPTIONS_FILE) for (${HOSTNAME}-home-${rsyncuser}) - aborting!"
+                    exit 0
                 fi
                 
                 $RSYNC $OPTIONS $DEFAULT_EXCLUDES $USER_EXCLUDES $SRC_DIRECTORIES ${rsyncuser}@${IPSRVADDR}::${HOSTNAME}-home-${rsyncuser}
