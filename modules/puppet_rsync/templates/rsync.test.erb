@@ -56,16 +56,18 @@ else
     
             [Ss])
             
-                MY_OPTIONS_FILE="/home/${rsyncuser}/bin/${rsyncuser}.backup"
+                OPTIONS_FILE="/home/${rsyncuser}/bin/${rsyncuser}.backup"
                 OPTIONS="-avhWC --progress --stats"
                 IPSRVADDR="<%= rsyncsrvaddress %>"
+                SRC_DIRECTORIES=/home/${rsyncuser}/
+                DEFAULT_EXCLUDES="--exclude=nfs/"
                 
                 # Source the user configuration file
-                if [ -r "$MY_OPTIONS_FILE" ]; then
-                   .  "$MY_OPTIONS_FILE"
+                if [ -r "$OPTIONS_FILE" ]; then
+                   .  "$OPTIONS_FILE"
                 fi
                 
-                $RSYNC $OPTIONS $MY_DEFAULT_EXCLUDES $MY_EXCLUDES $MY_SRC_DIRECTORIES ${rsyncuser}@${IPSRVADDR}::${HOSTNAME}-home-${rsyncuser}
+                $RSYNC $OPTIONS $DEFAULT_EXCLUDES $USER_EXCLUDES $SRC_DIRECTORIES ${rsyncuser}@${IPSRVADDR}::${HOSTNAME}-home-${rsyncuser}
                 
                 remotesuccess=$?
                 if [ "$remotesuccess" -ne 0 ]; then

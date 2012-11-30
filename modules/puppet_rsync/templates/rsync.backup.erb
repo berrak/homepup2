@@ -45,7 +45,9 @@ LOGGER=/usr/bin/logger
 RSYNC=/usr/bin/rsync
 OPTIONS="-aqWC"
 
-MY_OPTIONS_FILE="$HOME/bin/${USER}.backup"
+OPTIONS_FILE="$HOME/bin/${USER}.backup"
+DEFAULT_EXCLUDES="--exclude=nfs/"
+SRC_DIRECTORIES=$HOME/
 
 ###############################
 # MAIN PROGRAM
@@ -61,13 +63,13 @@ if [ "$USER" = "root" ]; then
 fi
 
 # Source the user configuration file
-if [ -r "$MY_OPTIONS_FILE" ]; then
-   .  "$MY_OPTIONS_FILE"
+if [ -r "$OPTIONS_FILE" ]; then
+   .  "$OPTIONS_FILE"
 fi
 
 # Ensure we have network connection and that the rsync
 # server is operational. Supress the returned file list.
-export RSYNC_PASSWORD="$MY_PASSWORD"
+export RSYNC_PASSWORD="$USER_PASSWORD"
 $RSYNC $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home-$USER  > /dev/null
 remotesuccess=$?
 
@@ -75,7 +77,7 @@ if [ "$remotesuccess" -ne 0 ]; then
     $LOGGER -p local0.debug "$0: ERROR: rsync returned ($remotesuccess) at login! User ($USER) in ($HOME)."
 else
     $LOGGER -p local0.debug "$0: Remote rsync initiated at ($USER) login! Found directory list ($MY_SRC_DIRECTORIES)."
-    $RSYNC $OPTIONS $MY_DEFAULT_EXCLUDES $MY_EXCLUDES $MY_SRC_DIRECTORIES $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home-$USER
+    $RSYNC $OPTIONS $DEFAULT_EXCLUDES $USER_EXCLUDES $SRC_DIRECTORIES $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home-$USER
     remotesuccess=$?
     if [ "$remotesuccess" -ne 0 ]; then
         $LOGGER -p local0.debug "$0: ERROR: rsync returned ($remotesuccess). Failed to backup ($MY_SRC_DIRECTORIES) for ($USER)."
