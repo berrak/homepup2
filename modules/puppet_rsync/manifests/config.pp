@@ -35,8 +35,8 @@ class puppet_rsync::config {
 
         file { "/srv/backup/${hostname}/${myuser}/home":
              ensure => "directory",
-              owner => 'root',
-              group => 'root',
+              owner => $myuser,
+              group => $myuser,
                mode => '0700',
             require => File["/srv/backup/${hostname}/${myuser}"],
         }
@@ -47,8 +47,8 @@ class puppet_rsync::config {
         
             file { "/srv/backup/${hostname}/${myuser}/nfs":
                 ensure => "directory",
-                 owner => 'root',
-                 group => 'root',
+                 owner => $myuser,
+                 group => $myuser,
                   mode => '0700',
                require => File["/srv/backup/${hostname}/${myuser}"],
             }
