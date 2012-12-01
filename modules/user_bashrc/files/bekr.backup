@@ -37,4 +37,4 @@ USER_PASSWORD="pass"
 #------------------------------------------------------------
 #
 
-USER_EXCLUDES="--exclude=?ssh/ **/*cache* **/*Cache*"
+USER_EXCLUDES=""

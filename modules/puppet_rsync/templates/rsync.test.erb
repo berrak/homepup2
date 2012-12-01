@@ -35,18 +35,18 @@ else
     
     echo "This script will test the connection to the rsync server by listing the"
     echo "remote files , or it will rsync all files in user home directory to the server."
-    echo -n "Enter \"test\" or \"sync\" [t/s] "
+    echo -n "Enter \"list\" or \"sync\" [t/s] "
     read answer
     
     case "$answer" in
-            [Tt])
-                returncode=-1
-                $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
-                returncode=$?
+            [Ll])
                 
-                if [ "$returncode" -ne 0 ]; then
-                    $ECHO "$0: ERROR: rsync returned ($returncode) when login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) when login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
+                $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
+                exitcode=$?
+                
+                if [ $exitcode -ne 0 ]; then
+                    $ECHO "$0: ERROR: rsync returned ($exitcode) when login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($exitcode) when login for user ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})"
                 else
                     $ECHO "$0: Successful remote file listing for user ($rsyncuser) from (${HOSTNAME}-home-${rsyncuser})."
                     $LOGGER -p local0.debug "$0: Successful remote file listing for user ($rsyncuser) from (${HOSTNAME}-home-${rsyncuser})."
@@ -64,20 +64,16 @@ else
                 
                 # Source the user configuration file
                 if [ -r "$OPTIONS_FILE" ]; then
-                   .  "$OPTIONS_FILE"
+                   source "$OPTIONS_FILE"
                 else
                     $ECHO "$0: ERROR: rsync could not find user ($rsyncuser) optionfile ($OPTIONS_FILE) for (${HOSTNAME}-home-${rsyncuser}) - aborting!"
                     $LOGGER -p local0.debug "$0: ERROR: rsync could not find user ($rsyncuser) optionfile ($OPTIONS_FILE) for (${HOSTNAME}-home-${rsyncuser}) - aborting!"
                     exit 0
                 fi
-                remotesuccess=-1
+                
                 $RSYNC $OPTIONS $DEFAULT_EXCLUDES $USER_EXCLUDES $SRC_DIRECTORIES ${rsyncuser}@${IPSRVADDR}::${HOSTNAME}-home-${rsyncuser}
-                remotesuccess=$?
-                if [ "$remotesuccess" -ne 0 ]; then
-                    $ECHO
-                    $ECHO "$0: ERROR: rsync returned ($returncode) after file transfer to (${HOSTNAME}-home-${rsyncuser})."
-                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($returncode) after file transfer to (${HOSTNAME}-home-${rsyncuser})"
-                else
+                exitcode=$?
+                if [ $exitcode -eq 0 ]; then
                     $ECHO
                     $ECHO "$0: Successful transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
                     $LOGGER -p local0.debug "$0: Successful transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
