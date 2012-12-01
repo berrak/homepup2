@@ -1,5 +1,5 @@
 #
-# /home/bekr/bin/bekr.backup
+# /home/dakr/bin/dakr.backup
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
@@ -37,4 +37,4 @@ USER_PASSWORD="pass"
 #------------------------------------------------------------
 #
 
-USER_EXCLUDES=""
+USER_EXCLUDES="--exclude=Cache --exclude=*Cache/ --exclude=.cache/"

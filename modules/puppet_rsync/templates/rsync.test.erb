@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-# /root/bin/rsync.selftest
+# /root/bin/rsync.test
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
 #
-# Use as quick test rsync daemon.
+# Use as for various quick tests to rsync daemon.
 #
 HOSTNAME=`hostname`
 PROG=$(basename $0)
@@ -33,12 +33,30 @@ else
 
     # start with some information
     
-    echo "This script will test the connection to the rsync server by listing the"
-    echo "remote files , or it will rsync all files in user home directory to the server."
-    echo -n "Enter \"list\" or \"sync\" [t/s] "
+    echo "This script will test the connection to the rsync server by:"
+    echo "listing the remote files (l) , show available modules (m) or"
+    echo "will do a dry-run (rsync) of all files in user home directory."
+    echo -n "Enter \"modules\", \"list\" or \"sync\" [m/l/s] "
     read answer
     
     case "$answer" in
+    
+            [Mm])
+    
+                $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::
+                exitcode=$?
+                
+                if [ $exitcode -ne 0 ]; then
+                    $ECHO "$0: ERROR: rsync returned ($exitcode) when showing modules for user ($rsyncuser)."
+                    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($exitcode) when showing modules for user ($rsyncuser)."
+                else
+                    $ECHO "$0: Successful module listing for user ($rsyncuser)."
+                    $LOGGER -p local0.debug "$0: Successful module listing for user ($rsyncuser)."
+                fi
+                
+                ;;   
+    
+    
             [Ll])
                 
                 $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
@@ -57,7 +75,7 @@ else
             [Ss])
             
                 OPTIONS_FILE="/home/${rsyncuser}/bin/${rsyncuser}.backup"
-                OPTIONS="-avhWC --progress --stats"
+                OPTIONS="-avhWC --progress --stats --dry-run"
                 IPSRVADDR="<%= rsyncsrvaddress %>"
                 SRC_DIRECTORIES=/home/${rsyncuser}/
                 DEFAULT_EXCLUDES="--exclude=nfs/"
@@ -75,8 +93,8 @@ else
                 exitcode=$?
                 if [ $exitcode -eq 0 ]; then
                     $ECHO
-                    $ECHO "$0: Successful transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-                    $LOGGER -p local0.debug "$0: Successful transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $ECHO "$0: Successful dry-run transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: Successful dry-run transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
                 fi
                 
                 ;;

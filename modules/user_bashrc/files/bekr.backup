@@ -33,8 +33,8 @@ USER_PASSWORD="pass"
 #------------------------------------------------------------
 # Exclude subdirectories/filters.
 # '.ssh' is excluded to prevent private keys to get lost.
-# Suitable excludes are *cache* etc sinced its temporary files.
+# Suitable excludes are 'cache' etc sinced its temporary files.
 #------------------------------------------------------------
 #
 
-USER_EXCLUDES=""
+USER_EXCLUDES="--exclude=Cache --exclude=*Cache/ --exclude=.cache/"
