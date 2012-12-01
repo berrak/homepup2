@@ -11,7 +11,13 @@
 #
 log file = /var/log/rsyncd.log
 transfer logging = yes
+
+# 'no' = clients are allowed to upload files (user automatic backup)
 read only = no
+
+# prevent any user showing file lists and download files
+write only = true
+
 uid = root
 gid = root
 list = yes
