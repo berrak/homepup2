@@ -16,34 +16,35 @@ uid = root
 gid = root
 list = yes
 
-# Below provides only weak authentication, root
-# can use 'user' name and bypass password.
-# Unprivileged users can not bypass this though.
-auth users = bekr dakr
 secrets file = <%= securefile %>
 
 [shire-nfs-bekr]
-comment = Backup of exported (NFS) data files from desktop user bekr
+auth users = bekr
+comment = Backup of exported (NFS) data files from desktop user Bertil
 path = /srv/backup/shire/bekr/nfs
 hosts allow = 192.168.0.10
 
 [shire-home-bekr]
-comment = Backup of shire data files from desktop user bekr
+auth users = bekr
+comment = Backup of shire data files from desktop user Bertil
 path = /srv/backup/shire/bekr/home
 hosts allow = 192.168.0.10
 
 [shire-home-dakr]
-comment = Backup of shire data files from desktop user bekr
+auth users = dakr
+comment = Backup of shire data files from desktop user David
 path = /srv/backup/shire/dakr/home
 hosts allow = 192.168.0.10
 
 [mordor-home-bekr]
-comment = Backup of mordor data files from desktop user bekr
+auth users = bekr
+comment = Backup of mordor data files from desktop user Bertil
 path = /srv/backup/mordor/bekr/home
 hosts allow = 192.168.0.100
 
 [warp-home-bekr]
-comment = Test of local access or backup with rsync
+auth users = bekr
+comment = Test of local daemon access or backup with rsync
 path = /srv/backup/warp/bekr/home
 hosts allow = 192.168.2.83
 
