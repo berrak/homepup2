@@ -5,6 +5,7 @@ node 'mordor.home.tld' inherits basenode {
 	
     include puppet_tiger
     include admin_hardening
+    include puppet_rsync
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
