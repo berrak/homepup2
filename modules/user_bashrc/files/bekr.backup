@@ -28,7 +28,7 @@
 # Must match what is in the remote server password file.
 #------------------------------------------------------------
 
-USER_PASSWORD="pass"
+USER_PASSWORD="bekr"
 
 #------------------------------------------------------------
 # Exclude subdirectories/filters.
