@@ -34,8 +34,11 @@ else
     # start with some information
     
     echo "This script will test the connection to the rsync daemon by:"
-    echo "listing the remote files (l) , show available modules (m) or"
-    echo "will do a dry-run (rsync) of all files in user home directory."
+    echo
+    echo "l: list remote files in user home directory."
+    echo "m: show available modules managed by daemon.".
+    echo "d: do a dry-run (rsync) of all files in user home directory."
+    echo "s: rsync with daemon of all files in user home directory."    
     echo
     echo "Note: If daemon is set to 'write only = true' no list is shown."
     echo
@@ -44,7 +47,7 @@ else
     
     case "$answer" in
     
-            [Mm])
+            [m])
     
                 $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::
                 exitcode=$?
@@ -60,7 +63,7 @@ else
                 ;;   
     
     
-            [Ll])
+            [l])
                 
                 $RSYNC $rsyncuser@<%= rsyncsrvaddress %>::${HOSTNAME}-home-${rsyncuser}
                 exitcode=$?
@@ -75,10 +78,16 @@ else
                 
                 ;;
     
-            [Ss])
+            [ds])
             
+                if [ $answer = 'd' ]; then
+                    OPTIONS="-avhWC --progress --stats --dry-run"                
+                else
+                    OPTIONS="-avhWC --progress --stats"
+                fi
+                
                 OPTIONS_FILE="/home/${rsyncuser}/bin/${rsyncuser}.backup"
-                OPTIONS="-avhWC --progress --stats --dry-run"
+
                 IPSRVADDR="<%= rsyncsrvaddress %>"
                 SRC_DIRECTORIES=/home/${rsyncuser}/
                 DEFAULT_EXCLUDES="--exclude=nfs/"
@@ -103,7 +112,7 @@ else
                 ;;
                 
             *)
-              echo "Did not get any answer - aborting."
+              echo "Unrecognized option ($answer) or did not get any answer - aborting."
               exit 0
               ;;
                 
