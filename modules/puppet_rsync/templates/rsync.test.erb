@@ -36,13 +36,13 @@ else
     echo "This script will test the connection to the rsync daemon by:"
     echo
     echo "l: list remote files in user home directory."
-    echo "m: show available modules managed by daemon.".
+    echo "m: show available modules managed by daemon."
     echo "d: do a dry-run (rsync) of all files in user home directory."
     echo "s: rsync with daemon of all files in user home directory."    
     echo
     echo "Note: If daemon is set to 'write only = true' no list is shown."
     echo
-    echo -n "Enter \"modules\", \"list\" or \"sync\" [m/l/s] "
+    echo -n "Enter \"modules\", \"list\" or \"sync\" [l/m/d/s] "
     read answer
     
     case "$answer" in
@@ -105,8 +105,8 @@ else
                 exitcode=$?
                 if [ $exitcode -eq 0 ]; then
                     $ECHO
-                    $ECHO "$0: Successful dry-run transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
-                    $LOGGER -p local0.debug "$0: Successful dry-run transfer of files for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $ECHO "$0: Successful run for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
+                    $LOGGER -p local0.debug "$0: Successful run for ($rsyncuser) to (${HOSTNAME}-home-${rsyncuser})."
                 fi
                 
                 ;;
