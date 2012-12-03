@@ -185,16 +185,6 @@ class puppet_rsync::config {
                 require => Class["puppet_rsync::install"],       
             }
             
-            # root cron job which lookup the exclude list here.
-
-            file { "/root/bin/rsync-backup.excludes" :
-                 source => "puppet:///modules/puppet_rsync/rsync-backup.excludes",    
-                  owner => 'root',
-                  group => 'root',
-                   mode => '0600',
-                require => Class["puppet_rsync::install"],
-            } 
-            
             # root cron job which lookup the passwd here.
             
             file { "$securefile" :

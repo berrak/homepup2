@@ -7,10 +7,10 @@
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
-EXCLUDES="/root/bin/rsync-backup.excludes"
+EXCLUDES="--exclude=Cache --exclude=cache --exclude=*Cache/ --exclude=.cache/"
 SECFILE="/root/rsyncd.pwd"
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=root
-30 17 * * *  root  test -x /usr/bin/rsync && /usr/bin/rsync -avhWC --progress --stats --exclude-from=$EXCLUDES --password-file=$SECFILE /exports/usernfs4/bekr  bekr@192.168.2.83::shire-nfs
+30 17 * * *  root  test -x /usr/bin/rsync && /usr/bin/rsync -avhWC --progress --stats $EXCLUDES --password-file=$SECFILE /exports/usernfs4/bekr  bekr@192.168.2.83::shire-nfs
 
 # EOF
