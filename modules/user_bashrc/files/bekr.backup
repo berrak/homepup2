@@ -16,8 +16,8 @@
 # Content is backed up to warp:/srv/backup/<hostname>/<user>/home
 #
 # Notes:
-#     Subdirectory ~/nfs is not backed up by default
-#     (if it exists) since its backed up by cron job.
+#     Subdirectory ~/nfs is excluded by default (if it exists)
+#     since its backed up by the cron 'rsync.backup' script.
 #
 #     Directories are backed up recursively by default.
 #
@@ -31,10 +31,10 @@
 USER_PASSWORD="bekr"
 
 #------------------------------------------------------------
-# Exclude subdirectories/filters.
-# '.ssh' is excluded to prevent private keys to get lost.
-# Suitable excludes are 'cache' etc sinced its temporary files.
+# Consider following subdirectories/filters for your needs.
+# Excluded private keys (.ssh) to be copied.
+# Exclude all kinds of 'cache' files/directories.
 #------------------------------------------------------------
 #
 
-USER_EXCLUDES="--exclude=Cache --exclude=cache --exclude=*Cache/ --exclude=.cache/"
+USER_EXCLUDES="--exclude=Cache --exclude=cache --exclude=*Cache/ --exclude=.cache/ --exclude=.ssh/"

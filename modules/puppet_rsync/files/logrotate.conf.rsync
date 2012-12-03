@@ -1,6 +1,6 @@
 /var/log/rsyncd.log {
 	weekly
-	rotate 99
+	rotate 10
 	missingok
 	notifempty
 	compress

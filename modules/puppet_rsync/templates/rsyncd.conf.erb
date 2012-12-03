@@ -12,10 +12,10 @@
 log file = /var/log/rsyncd.log
 transfer logging = yes
 
-# 'no' = clients are allowed to upload files (user automatic backup)
+# 'no' i.e. we want clients to upload files (cron push data from clients)
 read only = no
 
-# prevent any user showing file lists and download files
+# prevents any user showing existing files on server and download these
 write only = true
 
 uid = root
@@ -36,12 +36,6 @@ comment = Backup of shire data files from desktop user Bertil
 path = /srv/backup/shire/bekr/home
 hosts allow = 192.168.0.10
 
-[shire-home-dakr]
-auth users = dakr
-comment = Backup of shire data files from desktop user David
-path = /srv/backup/shire/dakr/home
-hosts allow = 192.168.0.10
-
 [mordor-home-bekr]
 auth users = bekr
 comment = Backup of mordor data files from desktop user Bertil
@@ -54,3 +48,8 @@ comment = Test of local daemon access or backup with rsync
 path = /srv/backup/warp/bekr/home
 hosts allow = 192.168.2.83
 
+[shire-home-dakr]
+auth users = dakr
+comment = Backup of shire data files from desktop user David
+path = /srv/backup/shire/dakr/home
+hosts allow = 192.168.0.10
