@@ -35,6 +35,6 @@ function backup() {
 }
 
 # source in other snippets
-if [ -f ~/.bashrc.d/perl ] ; then
-	source ~/.bashrc.d/perl
+if [ -f ~/bashrc.d/perl ] ; then
+	source ~/bashrc.d/perl
 fi
