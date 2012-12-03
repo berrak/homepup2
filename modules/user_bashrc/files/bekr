@@ -33,3 +33,8 @@ function backup() {
 	echo "Backed up $1 to $newname."; 
 	cp -p $newname $1;
 }
+
+# source in other snippets
+if [ -f ~/.bashrc.d/perl ] ; then
+	source ~/.bashrc.d/perl
+fi
