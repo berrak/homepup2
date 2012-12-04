@@ -5,6 +5,10 @@ node 'carbon.home.tld' inherits basenode {
 	
 	include puppet_tiger
     include admin_hardening
+	
+	# add a ssh-client (which host is the server is defined in params)
+	
+    include puppet_ssh
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
@@ -103,6 +107,10 @@ node 'valhall.home.tld' inherits basenode {
         puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
         gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+		
+	# add ssh-server (which host is the server is defined in params)
+	
+    include puppet_ssh
     
 	## network and default services
 	
