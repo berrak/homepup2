@@ -91,6 +91,9 @@ $IPTABLES -A INPUT -p icmp --icmp-type echo-request -s $NET_INT -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -j ACCEPT
 
+# ssh clients from our internal net to our (test) ssh server
+$IPTABLES -A INPUT -p udp -s $PUPPETHOSTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # ntp time information (udp) from our internal LAN NTP server
 $IPTABLES -A INPUT -p udp -s $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
