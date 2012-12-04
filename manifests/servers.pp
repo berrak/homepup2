@@ -94,29 +94,24 @@ node 'rohan.home.tld' inherits basenode {
 }
 
 ##########################################################
-## (VALHALL TEST SERVER) - NOTE IN SUBDOMAIN: sec.home.tld
+## (VALHALL TEST SERVER) - local test server
 ##########################################################
-node 'valhall.sec.home.tld' inherits basenode {
+node 'valhall.home.tld' inherits basenode {
 
-    # if this host is not in the same domain as servers, specify it as a parameter
+    # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
-        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon', puppetserver_domain => 'home.tld',
-        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor', gateway_domain => 'home.tld',
-        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan', smtp_domain => 'home.tld' }
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
     
 	## network and default services
 	
-    class { puppet_network::interfaces : broadcastnet => '192.168.2.0', defaultgateway => '192.168.2.1' }
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 	
-    class { puppet_iptables::config : role => 'default.server', inet => '192.168.2.0/24' }
+    class { puppet_iptables::config : role => 'default.server', inet => '192.168.0.0/24' }
 	
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
-	
-	## security related
-	
-    include puppet_tiger
-	include admin_hardening
-    
+	    
 	## additional users other than root
 	
     user_bashrc::config { 'bekr' : }
@@ -132,7 +127,7 @@ node 'valhall.sec.home.tld' inherits basenode {
 
 
 ##########################################################
-## (WARP) - Fileserver: Will 'warp' move to sec.home.tld
+## (WARP) - Fileserver: In sub domain: sec.home.tld
 ##########################################################
 node 'warp.sec.home.tld' inherits basenode {
 	
