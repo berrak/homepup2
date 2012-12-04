@@ -7,7 +7,7 @@ class puppet_ssh::service {
     
     if $::hostname == $::puppet_ssh::params::sshserverhostname {
 
-		service { "sshd":
+		service { "ssh":
 			
 				ensure => running,
 			 hasstatus => true,
