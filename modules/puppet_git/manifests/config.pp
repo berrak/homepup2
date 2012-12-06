@@ -22,7 +22,6 @@ define puppet_git::config ( $codehost = '' ) {
 
             $mygitname = $::puppet_git::params::gitname_puppet
             $mygitemail = $::puppet_git::params::gitemail_puppet
-            $mygiteditor_nano = $::puppet_git::params::giteditor
         
         }
         
@@ -31,7 +30,6 @@ define puppet_git::config ( $codehost = '' ) {
 
             $mygitname = $::puppet_git::params::gitname_cpan
             $mygitemail = $::puppet_git::params::gitemail_cpan
-            $mygiteditor = $::puppet_git::params::giteditor_nano
         
         }
 
@@ -40,7 +38,6 @@ define puppet_git::config ( $codehost = '' ) {
 
             $mygitname = $::puppet_git::params::gitname_local
             $mygitemail = $::puppet_git::params::gitemail_local
-            $mygiteditor = $::puppet_git::params::giteditor_nano
         
         }
 
@@ -50,7 +47,9 @@ define puppet_git::config ( $codehost = '' ) {
         
         }
     
-    } 
+    }
+    
+    $mygiteditor = $::puppet_git::params::giteditor_nano
     
     file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_git/gitconfig.erb' ),
