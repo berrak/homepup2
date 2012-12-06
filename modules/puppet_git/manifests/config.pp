@@ -43,6 +43,14 @@ define puppet_git::config ( $codehost = '' ) {
         
         }
 
+        $::puppet_git::params::git_serverlist: {
+
+            $mygitname = $::puppet_git::params::gitname_local
+            $mygitemail = $::puppet_git::params::gitemail_local
+            $mygiteditor = $::puppet_git::params::giteditor
+        
+        }
+
         default: {
         
             fail("FAIL: No coding host name ($codehost) given as parameter.")

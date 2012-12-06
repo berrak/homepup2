@@ -102,15 +102,17 @@ node 'rohan.home.tld' inherits basenode {
 ##########################################################
 node 'valhall.home.tld' inherits basenode {
 
-    # assumes that all host lives in the same domain, otherwise specify it as a parameter
+    ## assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
         puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
         gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
 		
-	# add ssh-server (which host is the server is defined in params)
-	
+	## add ssh-server (which host is the server is defined in params)
     include puppet_ssh
+	
+    ## this is our local git repository
+	puppet_git::config { 'bekr': codehost => 'valhall' }
     
 	## network and default services
 	
@@ -121,11 +123,9 @@ node 'valhall.home.tld' inherits basenode {
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	    
 	## additional users other than root
-	
     user_bashrc::config { 'bekr' : }
 	
 	## mail for all users
-	
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }			
