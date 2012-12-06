@@ -17,10 +17,6 @@ class puppet_git::params {
     
     # favorite git editor (incl path)
     
-    $giteditor = '/bin/nano'
-    
-    # gitservers
-    
-    $git_serverlist = [ 'valhall', 'warp' ]
+    $giteditor_nano = '/bin/nano'
     
 }

@@ -20,34 +20,27 @@ define puppet_git::config ( $codehost = '' ) {
 
         'carbon': {
 
-            if $myhost != $codehost {
-                fail("FAIL: Given host name ($codehost) does not match actual host: ($myhost).")
-            }
-
             $mygitname = $::puppet_git::params::gitname_puppet
             $mygitemail = $::puppet_git::params::gitemail_puppet
-            $mygiteditor = $::puppet_git::params::giteditor
+            $mygiteditor_nano = $::puppet_git::params::giteditor
         
         }
         
         'mordor',
         'shire' : {
 
-            if $myhost != $codehost {
-                fail("FAIL: Given host name ($codehost) does not match actual host: ($myhost).")
-            }
-
             $mygitname = $::puppet_git::params::gitname_cpan
             $mygitemail = $::puppet_git::params::gitemail_cpan
-            $mygiteditor = $::puppet_git::params::giteditor
+            $mygiteditor = $::puppet_git::params::giteditor_nano
         
         }
 
-        $::puppet_git::params::git_serverlist: {
+        'valhall',
+        'warp' : {
 
             $mygitname = $::puppet_git::params::gitname_local
             $mygitemail = $::puppet_git::params::gitemail_local
-            $mygiteditor = $::puppet_git::params::giteditor
+            $mygiteditor = $::puppet_git::params::giteditor_nano
         
         }
 

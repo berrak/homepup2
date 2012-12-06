@@ -11,20 +11,14 @@ class puppet_git::install {
     # only install gitk viewer in GUI desktops
     case $::hostname {
     
-        $::puppet_git::params::git_serverlist: {
-        
-            notice("Skipping install of graphical gitk on git server.")
-        
-        }
-
-        default: {
+        'carbon',
+        'mordor',
+        'shire' : {
         
             package { "gitk":
                 ensure => installed,
                 require => Package["git"],
             }
-
-        }
     
     }
     
