@@ -5,10 +5,10 @@ class puppet_git::install {
 
     include puppet_git::params
 
-    package { "git":
-        ensure => installed }
+    package { "git": ensure => installed }
     
     # only install gitk viewer in GUI desktops
+    
     case $::hostname {
     
         'carbon',
@@ -19,7 +19,8 @@ class puppet_git::install {
                 ensure => installed,
                 require => Package["git"],
             }
-    
+        }
+        
     }
-    
+
 }
