@@ -113,6 +113,8 @@ node 'valhall.home.tld' inherits basenode {
 	
     ## this is our local git repository and user 'git1'
 	puppet_git::config { 'git1': codehost => 'valhall' }
+
+    include users::git1
     
 	## network and default services
 	
