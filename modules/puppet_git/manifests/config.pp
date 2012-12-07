@@ -3,6 +3,23 @@
 ## Different host machines are used for diffrent coding
 ## projects (carbon: puppet, mordor: perl) with github.
 ##
+## Note: On the git sever the user 'git1', 'git2' etc must exist and
+##       have user keys in the '~/.ssh/authorized_keys' file. Keys
+##       should not have a password (it's not used anyway) but
+##       the git1 user (unix) password is used for authorization.
+##       Keys is only used for authentication and encryption.
+##
+##       If not user 'git1' is pre-set up by admin manually this git
+##       server install will fail, with missing '/home/git1' - errors.
+##
+##       Create the git1 user with:
+##                       adduser git1
+##                       --> enter unix password at prompt.
+##
+##       Usage of alternative shell like git-shell complicates the
+##       creation of the repository (but may be changed later).
+##      
+##
 ## Sample use:
 ##
 ##     puppet_git::config { 'bekr' : codehost => 'mordor' }
@@ -57,5 +74,19 @@ define puppet_git::config ( $codehost = '' ) {
             group => $name,
           require => Package["git"],
     }
+    
+    file { "/home/${name}/.ssh":
+		ensure => "directory",
+		 owner => $name,
+		 group => $name,
+		  mode => '0700',
+	}
+    
+    
+    
+    
+    
+    
+    
         
 }
