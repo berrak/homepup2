@@ -7,7 +7,6 @@ node basenode {
 	include puppetize
 	
 	include puppet_utils
-	include virtual_accounts
 	
     include root_home
     include root_bashrc
