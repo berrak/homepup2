@@ -11,8 +11,8 @@ class puppet_git::params {
     $gitname_cpan = 'bkron'
     $gitemail_cpan = 'bkron@cpan.org'
     
-    $gitname_local = 'bekr'
-    $gitemail_local = 'bekr@home.tld'
+    $gitname_server = 'git'
+    $gitemail_server = 'git@home.tld'
     
     
     # favorite git editor (incl path)

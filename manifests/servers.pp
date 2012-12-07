@@ -111,8 +111,8 @@ node 'valhall.home.tld' inherits basenode {
 	## add ssh-server (which host is the server is defined in params)
     include puppet_ssh
 	
-    ## this is our local git repository
-	puppet_git::config { 'bekr': codehost => 'valhall' }
+    ## this is our local git repository and user 'git'
+	puppet_git::config { 'git': codehost => 'valhall' }
     
 	## network and default services
 	

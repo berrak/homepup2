@@ -36,8 +36,8 @@ define puppet_git::config ( $codehost = '' ) {
         'valhall',
         'warp' : {
 
-            $mygitname = $::puppet_git::params::gitname_local
-            $mygitemail = $::puppet_git::params::gitemail_local
+            $mygitname = $::puppet_git::params::gitname_server
+            $mygitemail = $::puppet_git::params::gitemail_server
         
         }
 
