@@ -51,7 +51,7 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	}
 	
 	exec { "Initilize_git_depot_${name}":
-	         cwd => /srv/${gitgrp}/${projectname},
+	         cwd => "/srv/${gitgrp}/${projectname}",
 	        command => "/usr/bin/git init --bare",
 	      subscribe => Exec["Create_project_${name}"],
 	    refreshonly => true,
