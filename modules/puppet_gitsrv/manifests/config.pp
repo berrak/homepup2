@@ -25,5 +25,15 @@ define puppet_gitsrv::config ( $projectname = '' ) {
             group => $name,
           require => Package["git"],
     }
+	
+	
+	# create the git depot for the developers in group '$name'
+	file { "/srv/${name}":
+		ensure => "directory",
+		 owner => 'root',
+		 group => $name,
+		  mode => '0750',
+	}
+	
     
 }

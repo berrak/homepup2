@@ -5,8 +5,8 @@ class puppet_gitsrv::params {
 
     # git server email and name
     
-    $gitname = 'git'
-    $gitemail = 'git@home.tld'
+    $gitname = 'gitdepot'
+    $gitemail = 'root@home.tld'
     
     # favorite git editor (incl path)
     
