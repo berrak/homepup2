@@ -113,9 +113,9 @@ node 'valhall.home.tld' inherits basenode {
 	
     ## this is our server git depot for git developer group 1 (git1)
 	
-    puppet_gitsrv::config { 'git1': projectname => 'project1'}
-	puppet_gitsrv::config { 'git2': projectname => 'project1'}
-    puppet_gitsrv::config { 'git2': projectname => 'project2'}
+    puppet_gitsrv::config { 'git1_project1': gitgrp => 'git1', projectname => 'project1'}
+	puppet_gitsrv::config { 'git2_project1': gitgrp => 'git2',projectname => 'project1'}
+    puppet_gitsrv::config { 'git2_project2': gitgrp => 'git2',projectname => 'project2'}
 
     
 	## network and default services
