@@ -111,7 +111,7 @@ node 'valhall.home.tld' inherits basenode {
 	## add ssh-server (which host is the server is defined in params)
     include puppet_ssh
 	
-    ## this is our server git depot for git developer group 1 (git1)
+    ## git project depot for various git developer groups
 	
     puppet_gitsrv::config { 'git1_project1': gitgrp => 'git1', projectname => 'project1'}
 	puppet_gitsrv::config { 'git2_project1': gitgrp => 'git2',projectname => 'project1'}
