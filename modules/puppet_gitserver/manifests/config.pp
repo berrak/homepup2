@@ -46,8 +46,7 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	
 	exec { "Create_project_${name}":
 	        command => "/bin/mkdir /srv/${gitgrp}/${projectname}",
-	      subscribe => Exec["Create_depot_${name}"],
-	    refreshonly => true,
+	    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}/${projectname}",
 	}
 	
 	exec { "Initilize_git_depot_${name}":
