@@ -11,7 +11,7 @@ class puppet_ssh::install {
         
         file { "/root/.ssh":
             ensure => "directory",
-             owner => 'root,
+             owner => 'root',
              group => 'root',
               mode => '0700',
 	    }
