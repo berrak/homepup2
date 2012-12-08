@@ -36,7 +36,7 @@ node 'carbon.home.tld' inherits basenode {
 	
     ## use this host for puppet projects
 	
-    puppet_git::config { 'bekr': codehost => 'carbon' }
+    puppet_gitclient::config { 'bekr': codehost => 'carbon' }
 	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
@@ -111,10 +111,10 @@ node 'valhall.home.tld' inherits basenode {
 	## add ssh-server (which host is the server is defined in params)
     include puppet_ssh
 	
-    ## this is our local git repository and user 'git1'
-	puppet_git::config { 'git1': codehost => 'valhall' }
+    ## this is our server git depot for git developer group 1 (git1)
+	
+	#puppet_gitsrv::config { 'git1': }
 
-    #include user::gitgrp1
     
 	## network and default services
 	

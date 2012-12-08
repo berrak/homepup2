@@ -40,7 +40,7 @@ node 'mordor.home.tld' inherits basenode {
 	
     ## use this host for CPAN/perl projects
 	
-	puppet_git::config { 'bekr': codehost => 'mordor' }
+	puppet_gitclient::config { 'bekr': codehost => 'mordor' }
 	
 	
 	## application bundles
@@ -103,7 +103,7 @@ node 'shire.home.tld' inherits basenode {
 	
 	## use this host for CPAN/perl projects
 	
-	puppet_git::config { 'bekr': codehost => 'shire' }
+	puppet_gitclient::config { 'bekr': codehost => 'shire' }
 
 	## application bundles
 	

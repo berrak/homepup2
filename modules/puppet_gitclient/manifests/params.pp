@@ -1,7 +1,7 @@
 ##
 ## Parameters for global git user template
 ##
-class puppet_git::params {
+class puppet_gitclient::params {
 
     # global email and name
     
@@ -11,8 +11,8 @@ class puppet_git::params {
     $gitname_cpan = 'bkron'
     $gitemail_cpan = 'bkron@cpan.org'
     
-    $gitname_server = 'git'
-    $gitemail_server = 'git@home.tld'
+    # $gitname_server = 'git'
+    # $gitemail_server = 'git@home.tld'
     
     
     # favorite git editor (incl path)
