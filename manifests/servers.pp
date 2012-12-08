@@ -113,7 +113,7 @@ node 'valhall.home.tld' inherits basenode {
 	
     ## this is our server git depot for git developer group 1 (git1)
 	
-	#puppet_gitsrv::config { 'git1': }
+	puppet_gitsrv::config { 'git2': projectname => 'project2'}
 
     
 	## network and default services
