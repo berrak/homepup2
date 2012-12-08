@@ -27,7 +27,7 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	
 	exec { "Create_depot_${name}":
 	   command => "/bin/mkdir /srv/${gitgrp}",
-	    onlyif => "test ! -d /srv/${gitgrp}",
+	    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}",
 	}
 	
 	exec { "Chown_${name}":
