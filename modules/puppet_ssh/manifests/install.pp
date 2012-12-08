@@ -7,7 +7,14 @@ class puppet_ssh::install {
     
     if $::hostname == $::puppet_ssh::params::sshserverhostname {
     
-        package { "openssh-server": ensure => installed }    
+        package { "openssh-server": ensure => installed }
+        
+        file { "/root/.ssh":
+            ensure => "directory",
+             owner => 'root,
+             group => 'root',
+              mode => '0700',
+	    }
     
     } else {
     
