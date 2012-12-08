@@ -30,12 +30,14 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	    onlyif => "test ! -d /srv/${gitgrp}",
 	}
 	
-	exec { "/bin/chown root:${gitgrp} /srv/${gitgrp}":
+	exec { "Chown_${name}":
+	    command => "/bin/chown root:${gitgrp} /srv/${gitgrp}",
 	      subscribe => Exec["Create_depot_${name}"],
 	    refreshonly => true,
 	}
 	
-	exec { "/bin/chmod 0750 /srv/${gitgrp}":
+	exec { "Chmod_${name}":
+	    command => "/bin/chmod 0750 /srv/${gitgrp}",
 	      subscribe => Exec["Create_depot_${name}"],
 	    refreshonly => true,
 	}	
