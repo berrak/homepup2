@@ -40,6 +40,31 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	    command => "/bin/chmod 0750 /srv/${gitgrp}",
 	      subscribe => Exec["Create_depot_${name}"],
 	    refreshonly => true,
-	}	
+	}
+	
+	## create the project (depends on that the git group is created)
+	
+	exec { "Create_project_${name}":
+	        command => "/bin/mkdir /srv/${gitgrp}/${projectname}",
+	      subscribe => Exec["Create_depot_${name}"],
+	    refreshonly => true,
+	}
+	
+	exec { "Initilize_git_depot_${name}":
+	         cwd => /srv/${gitgrp}/${projectname},
+	        command => "/usr/bin/git init --bare",
+	      subscribe => Exec["Create_project_${name}"],
+	    refreshonly => true,
+	}
+	
+	## finally set the ownerships to the new project to the git group
+	
+	exec { "Chown_git_project_${name}":
+	    command => "/bin/chown -R ${gitgrp}:${gitgrp} /srv/${gitgrp}/${projectname}",
+	      subscribe => Exec["Initilize_git_depot_${name}"],
+	    refreshonly => true,
+	}
+	
+	
     
 }
