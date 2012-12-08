@@ -70,6 +70,14 @@ $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 $IPTABLES -A INPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INVALID "
 $IPTABLES -A INPUT -m state --state INVALID -j DROP
 
+#--------------------------------------------------------------------------------------
+## Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
+$IPTABLES -N broadcast-drop
+# $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST DROP "
+$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
+$IPTABLES -A broadcast-drop -j RETURN
+#--------------------------------------------------------------------------------------
+
 
 ## ======================
 ## ALLOW INBOUND TRAFFIC
@@ -100,6 +108,8 @@ $IPTABLES -A INPUT -p udp -s $NTPHOSTADDR -m udp --dport 123 -m state --state NE
 # puppet master talks to clients on this port
 $IPTABLES -A INPUT -p tcp -s $PUPPETHOSTADDR -m tcp --dport 8139 -m state --state NEW -j ACCEPT
 
+# do not not allow broadcasts either, except if allowed (above) from internal net to host
+$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
 
 #-------------------------------------------------------------------------
 # Potential external inbound traffic (from external net --> this host).
@@ -109,6 +119,9 @@ $IPTABLES -A INPUT -p tcp -s $PUPPETHOSTADDR -m tcp --dport 8139 -m state --stat
 #-------------------------------------------------------------------------
 
 $IPTABLES -A INPUT -p all ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# do not not allow broadcasts from external net to host
+$IPTABLES -t filter -A INPUT ! -s $NET_INT -j broadcast-drop
 
 ## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
 
