@@ -1,7 +1,7 @@
 ##
 ## Manage the git depot on the server
 ##
-class puppet_gitsrv::install {
+class puppet_gitserver::install {
 
     package { "git": ensure => installed }
 
