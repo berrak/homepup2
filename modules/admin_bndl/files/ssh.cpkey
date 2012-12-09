@@ -1,0 +1,173 @@
+#!/bin/bash
+#
+# /root/bin/ssh.cpkey
+#
+# Usage:
+#         ssh.cpkey $HOME/.ssh
+#
+#  This script will append the public host key (id_rsa.pub)
+#  to any given local network '~/.ssh/authorized_keys' file.
+#
+#  The remote host must have ssh-server and user must know
+#  the root password of that host (will be asked for twice). 
+#
+#  Expects directory path as first parameter to local identity file.
+#
+#  Assumes that local identity file is named 'id_rsa.pub'. 
+#
+#  Target host IP address is asked for during execution.
+#
+#  Expects to find a helper script '/root/bin/ssh.addkey' at every
+#  remote host that this script will try to add its key to.
+#  This script appends and sets permissions at the target host.
+#  'ssh.addkey' is installed when 'ssh-server' is installed.
+#
+###############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
+###############################################################
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+ECHO=/bin/echo
+SCP=/usr/bin/scp
+SSH=/usr/bin/ssh
+LOGGER=/usr/bin/logger
+PROG=$(basename $0)
+
+# Set VERBOSE mode - set to 1 for verbose log debug messages
+VERBOSE=1
+PUBKEY="id_rsa.pub"
+# this is the helper script that is executed at target host (i.e. ssh $ADDKEY)
+ADDKEY=/root/bin/ssh.addkey
+
+##############################################################
+## Functions
+##############################################################
+function debug_log()
+{
+    # Log message if $VERBOSE >= 1
+    if [ "$VERBOSE" -ge 1 ]; then
+        $LOGGER -p local0.debug "$0: $1"
+    fi
+}
+##############################################################
+## Main code starts here
+##############################################################
+
+if [[ $EUID -ne 0 ]] ;then
+   $ECHO "$PROG: This script must be run as root" 
+   exit 0
+fi
+
+#check that we have path to public identity key
+if [ $# -ne 1 ];then
+    $ECHO "Warning: Missing the directory location for user public ssh key file!"
+    $ECHO "Invoke the script with e.g:"
+    $ECHO "$PROG $HOME/.ssh"
+    $ECHO "Please try again."
+    exit 0
+fi
+
+# does the directory really exists?
+if [ -d "$1" ];then
+
+    cd "$1"
+    if [ $? -ne 0 ] ; then
+        $ECHO "Error: Could not change to directory ($1)."
+        $ECHO "Please try again."
+        exit 0
+    fi
+    
+    if [ ! -f $PUBKEY ];then
+        $ECHO "Missing the key ($PUBKEY). Create the user rsa key with:"
+        $ECHO "ssh-keygen"
+        $ECHO
+        exit 0
+    else
+        
+        # start with some information
+        $ECHO "This script will copy over given public host key ($1/$PUBKEY) to local network host."
+        $ECHO "Host IP is address required to continue. Key will be appended to target host authorized file."
+        $ECHO -n "Continue? [y/n] "
+        read answer
+        
+        case "$answer" in
+                [Yy])
+                    
+                    $ECHO -n "Please enter the remote IP address e.g 192.168.0.1 (or hit enter to abort): "
+                    read ipadress
+                    if [ ! -z "$ipadress" ];then
+                    
+                        # abort if address is not in range of the local network i.e. 192.168.X.X
+                        
+                        case $ipadress in
+                        
+                          192.168.*.*) debug_log "Accepted IP address for local network host ($ipadress)".
+                                       ;;
+                                     
+                                    *) invalid_ip_msg="Given IP address ($ipadress) is not in local network 192.168.X.X/24 - aborting."
+                                       $ECHO $invalid_ip_msg
+                                       debug_log "$invalid_ip_msg"
+                                       exit 1
+                                       ;;
+                        esac
+                    
+                        $ECHO -n "Please enter the remote user name (or hit enter to abort): "
+                        read remoteuser
+                    
+                        if [ ! -z "$remoteuser" ];then
+                    
+                            pre_scp_msg="Doing secure copy of ($1/$PUBKEY) to $remoteuser at host address ($ipadress) for user ($remoteuser)."
+                            $ECHO $pre_scp_msg
+                            debug_log "$pre_scp_msg"
+                            
+                            # always copying any identity files to /root/tmp (always secure)
+                            $SCP $PUBKEY root@${ipadress}:/root/tmp/$remoteuser.$PUBKEY
+                            scp_exitcode=$?
+                            debug_log "scp returned ($scp_exitcode) at exit after scp to root@${ipadress} to user ($remoteuser)"
+                            
+                            # launch the install-to-user-authorization-script on target host
+                            $SSH root@${ipadress} $ADDKEY
+                            ssh_exitcode=$?
+                            debug_log "ssh returned ($ssh_exitcode) at exit after ssh to root@${ipadress} to user ($remoteuser)"
+                            
+                        fi
+                    
+                    fi
+                    
+                    ;;
+        
+                [Nn])
+                    $ECHO "OK, will not continue now."
+                    exit 0
+                    ;;
+                  *)
+                    $ECHO "Did not get any answer - aborting."
+                    exit 0
+                    ;;
+        esac
+
+    fi
+
+else
+    $ECHO "Error: Directory ($1) does not exists!"
+    $ECHO "Invoke the script with e.g:"
+    $ECHO "$PROG $HOME/.ssh"
+    $ECHO "Please try again."
+    exit 0
+
+fi

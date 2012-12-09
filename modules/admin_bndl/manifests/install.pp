@@ -90,7 +90,13 @@ define admin_bndl::install {
 					  mode => '0700',
 			}
 				 
-				 
+			# custom bash script to append ssh identity keys to local network network hosts.
+			file { "/root/bin/ssh.cpkey" :
+					source => "puppet:///modules/admin_bndl/ssh.cpkey",
+					 owner => 'root',
+					 group => 'root',
+					  mode => '0700',
+			}	 
         
         }
         
