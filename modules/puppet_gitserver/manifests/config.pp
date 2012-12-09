@@ -22,6 +22,14 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
         fail("FAIL: No git group name ($gitgrp) given as parameter.")
     }
 	
+	# ensure that the git-user have been created by admin already
+	# i.e. '#adduser --shell /usr/bin/git-shell $gitgrp')
+	
+	exec { "${name}_FAIL_MISSING_GIT_USER_($gitgrp)_ADMIN_USE_ADDUSER_TO_ADD-Aborting_Puppet_Run":
+	   command => "/usr/bin/pkill -TERM puppet",
+	    onlyif => "/usr/bin/test ! -d /home/${gitgrp}",
+	}
+	
 	## create the git depot for the developers
 	## in group '$gitgrp' if not existing.
 	
