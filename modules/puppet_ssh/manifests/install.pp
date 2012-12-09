@@ -22,7 +22,7 @@ class puppet_ssh::install {
         #  its 'id_rsa.pub' file and is therfore automaticall invoked. 
         
         file { "/root/bin/ssh.addkey" :
-                source => "puppet:///modules/admin_bndl/ssh.addkey",
+                source => "puppet:///modules/puppet_ssh/ssh.addkey",
                  owner => 'root',
                  group => 'root',
                   mode => '0700',
