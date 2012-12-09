@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# /root/bin/ssh.addkey
+#
+# Usage (normally invoked remotely by a ssh host):
+#         ssh.cpkey $HOME/.ssh
+#
+#  This script will append the public host key (id_rsa.pub)
+#  to this host and user '~/.ssh/authorized_keys' file.
+#
+#  This is a helper script for '/root/bin/ssh.cpkey' which
+#  will place the key in /root/tmp/<user>.id_rsa.pub.
+# 
+#  This script appends and sets permissions at this host.
+#  'ssh.addkey' is installed when 'ssh-server' is installed.
+#
+###############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT.  #
+###############################################################
+#
+# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+PROG=$(basename $0)
+LOGGER=/usr/bin/logger
+MKDIR=/bin/mkdir
+CAT=/bin/cat
+CHMOD=/bin/chmod
+CHOWN=/bin/chown
+RM=/bin/rm
+
+# Set VERBOSE mode - set to 1 for verbose log debug messages
+VERBOSE=1
+PUBKEY="id_rsa.pub"
+AUTHKEYFILE="authorization_keys"
+
+##############################################################
+## Functions
+##############################################################
+function debug_log()
+{
+    # Log message if $VERBOSE >= 1
+    if [ "$VERBOSE" -ge 1 ]; then
+        $LOGGER -p local0.debug "$0: $1"
+    fi
+}
+
+function remove_pub_identity()
+{
+    for fn in $1.*
+    do
+        debug_log "Removed temporary user ($1) identity file ($fn) after appending operation."                    
+        $RM $fn > /dev/null 2>&1                                   
+    done                        
+}
+
+##############################################################
+## Main code starts here
+##############################################################
+
+if [[ $EUID -ne 0 ]] ;then
+   $ECHO "$PROG: This script must be run as root" 
+   exit 0
+fi
+
+# check that we have the first argument (the user) is the first argument
+if [ $# -ne 1 ];then
+    $ECHO "$PROG appends the user identity key to ~/.ssh/authorized_keys."
+    $ECHO "The key should be found in /root/.ssh and be named <user>.id_rsa.pub"
+    $ECHO
+    $ECHO "Usage:"
+    $ECHO "     $PROG user"
+    $ECHO 
+    $ECHO "Note: $PROG is normally executed by a remote ssh and not invoked directly."
+    debug_log "Missing user ($1) argument to script. Aborting."
+    exit 0
+fi
+
+# target user
+iduser=$1
+
+# if the ~/.ssh directory of target user does not exist, create it.
+if [ ! -d /home/$iduser/.ssh ];then
+    $MKDIR /home/$iduser/.ssh
+fi
+
+# chmod for this directory
+$CHMOD 0700 /home/$iduser/.ssh
+
+# append the content to the user authorization file
+# Note: no check is done that this key already exist (yet)
+
+$CAT /root/.ssh/$iduser.$PUBKEY >> /home/$iduser/.ssh/$AUTHKEYFILE
+debug_log "Appended (/root/.ssh/$iduser.$PUBKEY) to user (/home/$iduser/.ssh/$AUTHKEYFILE)."
+
+# chmod for this file
+$CHMOD 0600 /home/$iduser/.ssh/$AUTHKEYFILE
+
+# change ownership for directory and its content to given target user
+$CHOWN -R $iduser:$iduser /home/$iduser/.ssh
+
+# remove the key after appending
+cd /root/tmp
+remove_pub_identity "$iduser"
+
+exit 0
