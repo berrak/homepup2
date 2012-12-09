@@ -96,7 +96,7 @@ $CHMOD 0700 /home/$iduser/.ssh
 # append the content to the user authorization file
 # Note: no check is done that this key already exist (yet)
 
-$CAT /root/.ssh/$iduser.$PUBKEY >> /home/$iduser/.ssh/$AUTHKEYFILE
+$CAT /root/tmp/$iduser.$PUBKEY >> /home/$iduser/.ssh/$AUTHKEYFILE
 debug_log "Appended (/root/.ssh/$iduser.$PUBKEY) to user (/home/$iduser/.ssh/$AUTHKEYFILE)."
 
 # chmod for this file
