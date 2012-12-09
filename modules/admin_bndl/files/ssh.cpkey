@@ -141,7 +141,7 @@ if [ -d "$1" ];then
                             debug_log "scp returned ($scp_exitcode) at exit after scp to root@${ipadress} to user ($remoteuser)"
                             
                             # launch the install-to-user-authorization-script on target host
-                            $SSH root@${ipadress} $ADDKEY
+                            $SSH root@${ipadress} $ADDKEY $remoteuser
                             ssh_exitcode=$?
                             debug_log "ssh returned ($ssh_exitcode) at exit after ssh to root@${ipadress} to user ($remoteuser)"
                             

@@ -72,19 +72,12 @@ function remove_pub_identity()
 ##############################################################
 
 if [[ $EUID -ne 0 ]] ;then
-   $ECHO "$PROG: This script must be run as root" 
+   debug_log "This script must be run as root" 
    exit 0
 fi
 
 # check that we have the first argument (the user) is the first argument
 if [ $# -ne 1 ];then
-    $ECHO "$PROG appends the user identity key to ~/.ssh/authorized_keys."
-    $ECHO "The key should be found in /root/.ssh and be named <user>.id_rsa.pub"
-    $ECHO
-    $ECHO "Usage:"
-    $ECHO "     $PROG user"
-    $ECHO 
-    $ECHO "Note: $PROG is normally executed by a remote ssh and not invoked directly."
     debug_log "Missing user ($1) argument to script. Aborting."
     exit 0
 fi
