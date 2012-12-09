@@ -34,6 +34,15 @@ class root_home {
 		mode => '0700',
 	}
 	
+	# create a temporary subdirectory directory only for root (e.g copying identity keys)
+	file { "/root/tmp":
+		ensure => "directory",
+		owner => 'root',
+		group => 'root',
+		mode => '0700',
+	}	
+	
+	
 	# set up manual (cli) mount point for usb flash memory on /media/usb0
 	
     file { "/media/usb0":
