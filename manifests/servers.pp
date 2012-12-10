@@ -171,6 +171,12 @@ node 'warp.sec.home.tld' inherits basenode {
     include puppet_tiger
 	include admin_hardening
 	
+	## git repository depot (add project list and 'gitx' access groups)
+	## Note that group e.g. 'git1' must be created manually before access
+	## is possible by admin, with '# adduser --shell /usr/bin/git-shell git1' 
+	
+	puppet_gitserver::config { 'git1_Filter-Heredoc': gitgrp => 'git1',projectname => 'Filter-Heredoc'}
+	
 	## backup server
 	
 	include puppet_rsync
