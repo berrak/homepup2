@@ -64,6 +64,16 @@ define user_bashrc::config {
 	      subscribe => File["/home/${name}/bashrc.d/${name}"],
 	    refreshonly => true,
 		}
+		
+		# perl snippet file, sourced at login
+		
+	    file { "/home/${name}/bashrc.d/perl":
+			source => "puppet:///modules/user_bashrc/perl",
+			 owner => "${name}",
+			 group => "${name}",
+			  mode => '0644',
+		   require => File["/home/${name}/bashrc.d/${name}"],
+	   	}
 
 	
 	} else {
