@@ -53,10 +53,11 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	## create the project directory if not already existing.
 	
 	file { "/srv/${gitgrp}/${projectname}.git":
-		ensure => "directory",
-		owner => $gitgrp,
-		group => $gitgrp,
-		mode => '0750',
+		 ensure => "directory",
+		  owner => $gitgrp,
+		  group => $gitgrp,
+		   mode => '0750',
+		require => Exec["Create_Depot_Group_${name}"],
 	}
 	
 	#exec { "Create_Directory_${name}":
