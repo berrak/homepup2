@@ -54,9 +54,10 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	
 	file { "/srv/${gitgrp}/${projectname}.git":
 		ensure => "directory",
-		owner => 'root',
-		group => 'root',
-		mode => '0700',
+		owner => $gitgrp,
+		group => $gitgrp,
+		mode => '0750',
+	}
 	
 	#exec { "Create_Directory_${name}":
 	#        command => "/bin/mkdir /srv/${gitgrp}/${projectname}.git",
