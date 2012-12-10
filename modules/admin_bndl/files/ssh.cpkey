@@ -69,15 +69,18 @@ function debug_log()
 ##############################################################
 
 if [[ $EUID -ne 0 ]] ;then
-   $ECHO "$PROG: This script must be run as root" 
+   $ECHO "$PROG] This script must be run as root" 
    exit 0
 fi
 
 #check that we have path to public identity key
 if [ $# -ne 1 ];then
-    $ECHO "Warning: Missing the directory location for user public ssh key file!"
-    $ECHO "Invoke the script with e.g:"
-    $ECHO "$PROG $HOME/.ssh"
+    $ECHO "$PROG] Missing directory location parameter where to find user public ssh key file!"
+    $ECHO
+    $ECHO "Usage:"
+    $ECHO
+    $ECHO "$PROG /home/<user>/.ssh"
+    $ECHO
     $ECHO "Please try again."
     exit 0
 fi
@@ -87,13 +90,14 @@ if [ -d "$1" ];then
 
     cd "$1"
     if [ $? -ne 0 ] ; then
-        $ECHO "Error: Could not change to directory ($1)."
+        $ECHO "$PROG] Error: Could not change to directory ($1)."
         $ECHO "Please try again."
         exit 0
     fi
     
     if [ ! -f $PUBKEY ];then
-        $ECHO "Missing the key ($PUBKEY). Create the user rsa key with:"
+        $ECHO "$PROG] Missing the key ($PUBKEY). Create the user rsa key with:"
+        $ECHO
         $ECHO "ssh-keygen"
         $ECHO
         exit 0
@@ -101,8 +105,8 @@ if [ -d "$1" ];then
         
         # start with some information
         $ECHO
-        $ECHO "This script will copy over given public host key ($1/$PUBKEY) to local network host."
-        $ECHO "Host IP is address required to continue. Key will be appended to target host authorized_keys file."
+        $ECHO "$PROG] This script will copy over given public host key ($1/$PUBKEY) to local network host."
+        $ECHO "$PROG] Host IP is address required to continue. Key will be appended to target host authorized_keys file."
         $ECHO
         $ECHO -n "Continue? [y/n] "
         read answer
@@ -110,7 +114,7 @@ if [ -d "$1" ];then
         case "$answer" in
                 [Yy])
                     
-                    $ECHO -n "Please enter the remote IP address e.g 192.168.0.1 (or hit enter to abort): "
+                    $ECHO -n "$PROG] Please enter the remote IP address e.g 192.168.0.1 (or hit enter to abort): "
                     read ipadress
                     if [ ! -z "$ipadress" ];then
                     
@@ -128,7 +132,7 @@ if [ -d "$1" ];then
                                        ;;
                         esac
                     
-                        $ECHO -n "Please enter the remote user name (or hit enter to abort): "
+                        $ECHO -n "$PROG] Please enter the remote user name (or hit enter to abort): "
                         read remoteuser
                     
                         if [ ! -z "$remoteuser" ];then
@@ -142,12 +146,12 @@ if [ -d "$1" ];then
                             scp_exitcode=$?
                             debug_log "scp returned ($scp_exitcode) to root@${ipadress} for user ($remoteuser)"
                             if [ $scp_exitcode -ne 0 ];then
-                                $ECHO "Error: Could not copy file to (root@${ipadress})."
+                                $ECHO "$PROG] Error: Could not copy file to (root@${ipadress})."
                                 $ECHO "Please try again."
                                 exit 0
                             else
-                                $ECHO "Success: Identity file ($PUBKEY) copied to (root@${ipadress})."
-                                $ECHO "Please enter password to append key to ($remoteuser) authorization_keys file."
+                                $ECHO "$PROG] Success: Identity file ($PUBKEY) copied to (root@${ipadress})."
+                                $ECHO "$PROG] Please enter password to append key to ($remoteuser) authorization_keys file."
                             fi
                             
                             # launch the install-to-user-authorization-script on target host
@@ -155,11 +159,11 @@ if [ -d "$1" ];then
                             ssh_exitcode=$?
                             debug_log "ssh returned ($ssh_exitcode) to root@${ipadress} user ($remoteuser)"
                             if [ $ssh_exitcode -ne 0 ];then
-                                $ECHO "Error: Could not append keyfile to user ($remoteuser)"
+                                $ECHO "$PROG] Error: Could not append keyfile to user ($remoteuser)"
                                 $ECHO "Aborting."
                                 exit 0
                             else
-                                $ECHO "Success: Appended key ($PUBKEY) to ($remoteuser) authorization_keys file."
+                                $ECHO "$PROG] Success: Appended key ($PUBKEY) to ($remoteuser) authorization_keys file."
                             fi
                             
                             
@@ -170,11 +174,11 @@ if [ -d "$1" ];then
                     ;;
         
                 [Nn])
-                    $ECHO "OK, will not continue now."
+                    $ECHO "$PROG] OK, will not continue now."
                     exit 0
                     ;;
                   *)
-                    $ECHO "Did not get any answer - aborting."
+                    $ECHO "$PROG] Did not get any answer - aborting."
                     exit 0
                     ;;
         esac
@@ -182,9 +186,11 @@ if [ -d "$1" ];then
     fi
 
 else
-    $ECHO "Error: Directory ($1) does not exists!"
-    $ECHO "Invoke the script with e.g:"
-    $ECHO "$PROG $HOME/.ssh"
+    $ECHO "$PROG] Error: Directory ($1) does not exists!"
+    $ECHO "$PROG] Invoke the script with e.g:"
+    $ECHO
+    $ECHO "$PROG /home/<user>/.ssh"
+    $ECHO
     $ECHO "Please try again."
     exit 0
 
