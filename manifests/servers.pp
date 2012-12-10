@@ -108,7 +108,7 @@ node 'valhall.home.tld' inherits basenode {
         gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
 		
-	## add ssh-server (which host is the server is defined in params)
+	## add ssh-server (but see manifest/install.pp if server is enabled to install)
     include puppet_ssh
 	
     ## git project depot for various git developer groups
@@ -170,7 +170,10 @@ node 'warp.sec.home.tld' inherits basenode {
 	
     include puppet_tiger
 	include admin_hardening
-	
+
+	## add ssh-server (but see manifest/install.pp if server is enabled to install)
+    include puppet_ssh
+
 	## git repository depot (add project list and 'gitx' access groups)
 	## Note that group e.g. 'git1' must be created manually before access
 	## is possible by admin, with '# adduser --shell /usr/bin/git-shell git1' 
