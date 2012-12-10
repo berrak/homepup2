@@ -3,7 +3,8 @@
 # /root/bin/ssh.cpkey
 #
 # Usage:
-#         ssh.cpkey $HOME/.ssh
+#         ssh.cpkey /home/<user>/.ssh
+#         ssh.cpkey /root/.ssh
 #
 #  This script will append the public host key (id_rsa.pub)
 #  to any given local network '~/.ssh/authorized_keys' file.
@@ -80,6 +81,8 @@ if [ $# -ne 1 ];then
     $ECHO "Usage:"
     $ECHO
     $ECHO "$PROG /home/<user>/.ssh"
+    $ECHO "or"
+    $ECHO "$PROG /root/.ssh"
     $ECHO
     $ECHO "Please try again."
     exit 0
@@ -187,9 +190,16 @@ if [ -d "$1" ];then
 
 else
     $ECHO "$PROG] Error: Directory ($1) does not exists!"
-    $ECHO "$PROG] Invoke the script with e.g:"
+    $ECHO
+    $ECHO "Ensure keys and .ssh directory exist. Create these first with:"
+    $ECHO   
+    $ECHO "ssh-keygen"
+    $ECHO
+    $ECHO "and then run:"
     $ECHO
     $ECHO "$PROG /home/<user>/.ssh"
+    $ECHO "or"
+    $ECHO "$PROG /root/.ssh"
     $ECHO
     $ECHO "Please try again."
     exit 0
