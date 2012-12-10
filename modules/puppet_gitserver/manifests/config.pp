@@ -53,12 +53,12 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	## create the project directory if not already existing.
 	
 	exec { "Create_Directory_${name}":
-	        command => "/bin/mkdir /srv/${gitgrp}/${projectname}",
-	    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}/${projectname}",
+	        command => "/bin/mkdir /srv/${gitgrp}/${projectname}.git",
+	    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}/${projectname}.git",
 	}
 	
 	exec { "Initilize_Depot_${name}":
-	         cwd => "/srv/${gitgrp}/${projectname}",
+	         cwd => "/srv/${gitgrp}/${projectname}.git",
 	        command => "/usr/bin/git init --bare",
 	      subscribe => Exec["Create_Directory_${name}"],
 	    refreshonly => true,
@@ -67,7 +67,7 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	## finally set the ownerships to the new project to the git group
 	
 	exec { "Recursive_Chown_${name}":
-	    command => "/bin/chown -R ${gitgrp}:${gitgrp} /srv/${gitgrp}/${projectname}",
+	    command => "/bin/chown -R ${gitgrp}:${gitgrp} /srv/${gitgrp}/${projectname}.git",
 	      subscribe => Exec["Initilize_Depot_${name}"],
 	    refreshonly => true,
 	}
