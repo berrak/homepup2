@@ -147,9 +147,6 @@ $IPTABLES -A FORWARD -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW 
 # allow https pass
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 443 -m state --state NEW,RELATED -j ACCEPT
 
-# all git protocol pass 
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
-
 # drop spoofed packages
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF INT2EXT "
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j DROP
@@ -215,11 +212,17 @@ $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
 # allow established and related traffic ext to internal net
 $IPTABLES -A FORWARD -i $IF_EXT -o $IF_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# allow ssh (tcp/22) pass through to our ssh server host
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # allow rsyslog (tcp/514) pass through to our log host
-$IPTABLES -A FORWARD -i $IF_EXT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # allow rsync (tcp/873) pass through to our rsync backup host
-$IPTABLES -A FORWARD -i $IF_EXT -p tcp -d $FILESERVERADDR -m tcp --dport 873 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 873 -m state --state NEW -j ACCEPT
+
+# allow git (tcp/9418) pass through to our git depot host
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 9418 -m state --state NEW -j ACCEPT
 
 # drop spoof packages
 $IPTABLES -A FORWARD -i $IF_EXT -s $NET_INT -o $IF_INT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF EXT2INT "

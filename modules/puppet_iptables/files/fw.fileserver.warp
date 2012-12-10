@@ -138,11 +138,17 @@ $IPTABLES -t filter -A INPUT ! -s $NET_INT -j broadcast-drop
 ## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
 #########################################################################################
 
+# allow ssh (hosts in domain 'home.tld') to connect remote on this port
+$IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # allow rsyslog (hosts in domain 'home.tld') to send logs to this log host on this port
 $IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # allow rsync (hosts in domain 'home.tld') to send backups to this rsync host on this port
 $IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 873 -m state --state NEW -j ACCEPT
+
+# allow git (hosts in domain 'home.tld') to push/pull on this port
+$IPTABLES -A INPUT -p tcp -s $NET_EXT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
 
 #---------------------------------------------------------------------------
 # CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
@@ -157,7 +163,7 @@ $IPTABLES -A INPUT ! -i lo -j DROP
 ## =======================
 
 #-----------------------------------------------------------
-# Internal outbound traffic (from this host--> external net)
+# Internal outbound traffic (from this host--> any other net)
 #-----------------------------------------------------------
 
 # allow all established and related out to external net
