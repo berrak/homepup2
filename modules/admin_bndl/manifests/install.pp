@@ -114,7 +114,7 @@ define admin_bndl::install {
         
             # tools for the developer
           
-	        package  { [ "build-essential", "anjuta" ]:
+	        package  { [ "build-essential", "perl-doc" ]:
                  ensure => installed }
         
         
