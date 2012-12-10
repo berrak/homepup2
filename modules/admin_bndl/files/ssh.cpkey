@@ -76,7 +76,7 @@ fi
 
 #check that we have path to public identity key
 if [ $# -ne 1 ];then
-    $ECHO "$PROG] Missing directory location parameter where to find user public ssh key file!"
+    $ECHO "$PROG] Missing directory location parameter where to find local user public ssh key file!"
     $ECHO
     $ECHO "Usage:"
     $ECHO
@@ -99,7 +99,7 @@ if [ -d "$1" ];then
     fi
     
     if [ ! -f $PUBKEY ];then
-        $ECHO "$PROG] Missing the key ($PUBKEY). Create the user rsa key with:"
+        $ECHO "$PROG] Missing the key ($PUBKEY). Create the local user rsa key with:"
         $ECHO
         $ECHO "ssh-keygen"
         $ECHO
@@ -108,8 +108,8 @@ if [ -d "$1" ];then
         
         # start with some information
         $ECHO
-        $ECHO "$PROG] This script will copy over given public host key ($1/$PUBKEY) to local network host."
-        $ECHO "$PROG] Host IP is address required to continue. Key will be appended to target host authorized_keys file."
+        $ECHO "$PROG] This script will copy over the public host key ($1/$PUBKEY) to an internal network host."
+        $ECHO "$PROG] Host IP is address required to continue. Key will be appended to target account authorized_keys file."
         $ECHO
         $ECHO -n "Continue? [y/n] "
         read answer
@@ -135,16 +135,16 @@ if [ -d "$1" ];then
                                        ;;
                         esac
                     
-                        $ECHO -n "$PROG] Please enter the remote user name (or hit enter to abort): "
+                        $ECHO -n "$PROG] Please enter the REMOTE UNIX ACCOUNT to append local user key (or hit enter to abort): "
                         read remoteuser
                     
                         if [ ! -z "$remoteuser" ];then
                     
-                            pre_scp_msg="Doing secure copy of ($1/$PUBKEY) to $remoteuser at host address ($ipadress) for user ($remoteuser)."
+                            pre_scp_msg="Doing secure copy of ($1/$PUBKEY) to account ($remoteuser) at host address ($ipadress) for user ($remoteuser)."
                             $ECHO $pre_scp_msg
                             debug_log "$pre_scp_msg"
                             
-                            # always copying any identity files to /root/tmp (always secure)
+                            # initially copy the identity file to /root/tmp (always more secure)
                             $SCP $PUBKEY root@${ipadress}:/root/tmp/$remoteuser.$PUBKEY
                             scp_exitcode=$?
                             debug_log "scp returned ($scp_exitcode) to root@${ipadress} for user ($remoteuser)"
@@ -153,8 +153,8 @@ if [ -d "$1" ];then
                                 $ECHO "Please try again."
                                 exit 0
                             else
-                                $ECHO "$PROG] Success: Identity file ($PUBKEY) copied to (root@${ipadress})."
-                                $ECHO "$PROG] Please enter password to append key to ($remoteuser) authorization_keys file."
+                                $ECHO "$PROG] Success: User identity file ($PUBKEY) copied to remote system (root@${ipadress})."
+                                $ECHO "$PROG] Please enter password again, to append key to ($remoteuser) authorization_keys file."
                             fi
                             
                             # launch the install-to-user-authorization-script on target host
@@ -162,11 +162,11 @@ if [ -d "$1" ];then
                             ssh_exitcode=$?
                             debug_log "ssh returned ($ssh_exitcode) to root@${ipadress} user ($remoteuser)"
                             if [ $ssh_exitcode -ne 0 ];then
-                                $ECHO "$PROG] Error: Could not append keyfile to user ($remoteuser)"
+                                $ECHO "$PROG] Error: Could not append keyfile to remote account ($remoteuser)"
                                 $ECHO "Aborting."
                                 exit 0
                             else
-                                $ECHO "$PROG] Success: Appended key ($PUBKEY) to ($remoteuser) authorization_keys file."
+                                $ECHO "$PROG] Success: Appended local key ($PUBKEY) to unix account ($remoteuser) authorization_keys file."
                             fi
                             
                             
