@@ -213,16 +213,16 @@ $IPTABLES -t filter -A INPUT -i $IF_INT -j broadcast-drop
 $IPTABLES -A FORWARD -i $IF_EXT -o $IF_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # allow ssh (tcp/22) pass through to our ssh server host
-$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_EXT -d $FILESERVERADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow rsyslog (tcp/514) pass through to our log host
-$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_EXT -d $FILESERVERADDR -m tcp --dport 514 -m state --state NEW -j ACCEPT
 
 # allow rsync (tcp/873) pass through to our rsync backup host
-$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 873 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_EXT -d $FILESERVERADDR -m tcp --dport 873 -m state --state NEW -j ACCEPT
 
 # allow git (tcp/9418) pass through to our git depot host
-$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_INT -d $FILESERVERADDR -m tcp --dport 9418 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -i $IF_EXT -p tcp -s $NET_EXT -d $FILESERVERADDR -m tcp --dport 9418 -m state --state NEW -j ACCEPT
 
 # drop spoof packages
 $IPTABLES -A FORWARD -i $IF_EXT -s $NET_INT -o $IF_INT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF EXT2INT "
@@ -234,7 +234,7 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 
 
 #---------------------------------------------------------------
-## External inbound traffic (from external net --> gateway host)
+## External inbound traffic (from external net (home.tld)  --> gateway host)
 #---------------------------------------------------------------
 
 # allow established and related traffic to gateway host
@@ -257,7 +257,7 @@ $IPTABLES -t filter -A INPUT -i $IF_EXT -j broadcast-drop
 
 
 ## ============================================================================
-## ALLOW TRAFFIC - GATEWAY HOST TO INT NET (sec.tld) or SPECIAL HOSTS ADDRESSES
+## ALLOW TRAFFIC - GATEWAY HOST TO INT NET (sec.tld) or "SPECIAL HOSTS ADDRESSES"
 ## ============================================================================
 
 # allow established and related traffic to internal net
