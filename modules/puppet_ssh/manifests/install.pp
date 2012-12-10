@@ -2,8 +2,6 @@
 ## puppet_ssh manage openssh server and clients.
 ##
 class puppet_ssh::install {
-
-    include puppet_ssh::params
     
     if $::hostname in [ 'valhall', 'warp' ] {
     
