@@ -52,15 +52,21 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	
 	## create the project directory if not already existing.
 	
-	exec { "Create_Directory_${name}":
-	        command => "/bin/mkdir /srv/${gitgrp}/${projectname}.git",
-	    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}/${projectname}.git",
-	}
+	file { "/srv/${gitgrp}/${projectname}.git":
+		ensure => "directory",
+		owner => 'root',
+		group => 'root',
+		mode => '0700',
+	
+	#exec { "Create_Directory_${name}":
+	#        command => "/bin/mkdir /srv/${gitgrp}/${projectname}.git",
+	#    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}/${projectname}.git",
+	#}
 	
 	exec { "Initilize_Depot_${name}":
 	         cwd => "/srv/${gitgrp}/${projectname}.git",
 	        command => "/usr/bin/git init --bare",
-	      subscribe => Exec["Create_Directory_${name}"],
+	      subscribe => File["/srv/${gitgrp}/${projectname}.git"],
 	    refreshonly => true,
 	}
 	
