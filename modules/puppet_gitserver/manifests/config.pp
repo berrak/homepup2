@@ -60,11 +60,6 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 		require => Exec["Create_Depot_Group_${name}"],
 	}
 	
-	#exec { "Create_Directory_${name}":
-	#        command => "/bin/mkdir /srv/${gitgrp}/${projectname}.git",
-	#    onlyif => "/usr/bin/test ! -d /srv/${gitgrp}/${projectname}.git",
-	#}
-	
 	exec { "Initilize_Depot_${name}":
 	         cwd => "/srv/${gitgrp}/${projectname}.git",
 	        command => "/usr/bin/git init --bare",
