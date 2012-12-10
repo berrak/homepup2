@@ -5,7 +5,7 @@ class puppet_ssh::install {
 
     include puppet_ssh::params
     
-    if $::hostname == $::puppet_ssh::params::sshserverhostname {
+    if $::hostname in [ 'valhall', 'warp' ] {
     
         package { "openssh-server": ensure => installed }
         

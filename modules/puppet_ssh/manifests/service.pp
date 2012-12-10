@@ -2,11 +2,9 @@
 ## puppet_ssh manage openssh server and clients.
 ##
 class puppet_ssh::service {
-
-    include puppet_ssh::params
     
-    if $::hostname == $::puppet_ssh::params::sshserverhostname {
-
+    if $::hostname in [ 'valhall', 'warp' ] {
+	
 		service { "ssh":
 			
 				ensure => running,
