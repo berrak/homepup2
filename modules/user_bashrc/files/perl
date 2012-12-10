@@ -27,12 +27,13 @@ alias prove-all='prove --lib $PWD/t/*.t $PWD/t/*/*.t $PWD/xt/*t $PWD/xt/*/*.t'
 alias prove-t='prove --lib $PWD/t/*.t $PWD/t/*/*.t'
 alias prove-xt='prove --lib $PWD/xt/*.t $PWD/xt/*/*.t'
 
+
 # Find  Perl module and version (from Stackoverflow)
+
 # useage: modver XML::Simple
 # --> No module found
+
 # useage: modver DBI
 #--> Version 1.607
 
 alias modver="perl -e\"eval qq{use \\\$ARGV[0];\\\\\\\$v=\\\\\\\$\\\${ARGV[0]}::VERSION;};\ print\\\$@?qq{No module found\\n}:\\\$v?qq{Version \\\$v\\n}:qq{Found.\\n};\"\$1"
-
-alias inc='perl -e 'foreach (@INC) { print "$_\n"; }''
