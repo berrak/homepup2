@@ -108,7 +108,7 @@ if [ -d "$1" ];then
         
         # start with some information
         $ECHO
-        $ECHO "$PROG] This script will copy over the public host key ($1/$PUBKEY) to an internal network host."
+        $ECHO "$PROG] This script will copy over the user public host key ($1/$PUBKEY) to an internal network host."
         $ECHO "$PROG] Host IP is address required to continue. Key will be appended to target account authorized_keys file."
         $ECHO
         $ECHO -n "Continue? [y/n] "
@@ -153,7 +153,7 @@ if [ -d "$1" ];then
                                 $ECHO "Please try again."
                                 exit 0
                             else
-                                $ECHO "$PROG] Success: User identity file ($PUBKEY) copied to remote system (root@${ipadress})."
+                                $ECHO "$PROG] Success: User identity file ($1/$PUBKEY) copied to remote system (root@${ipadress})."
                                 $ECHO "$PROG] Please enter password again, to append key to ($remoteuser) authorization_keys file."
                             fi
                             
@@ -166,7 +166,7 @@ if [ -d "$1" ];then
                                 $ECHO "Aborting."
                                 exit 0
                             else
-                                $ECHO "$PROG] Success: Appended local key ($PUBKEY) to unix account ($remoteuser) authorization_keys file."
+                                $ECHO "$PROG] Success: Appended local key ($1/$PUBKEY) to unix account ($remoteuser) authorization_keys file."
                             fi
                             
                             
