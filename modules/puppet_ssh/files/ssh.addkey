@@ -62,7 +62,7 @@ function remove_pub_identity()
 {
     for fn in $1.*
     do
-        debug_log "Removed temporary user ($1) identity file ($fn) after appending operation."                    
+        debug_log "Removed temporary identity file ($fn) after appending operation."                    
         $RM $fn > /dev/null 2>&1                                   
     done                        
 }
@@ -85,7 +85,7 @@ fi
 # target user
 iduser=$1
 
-# if the ~/.ssh directory of target user does not exist, create it.
+# if the ~/.ssh directory does not exist, create it.
 if [ ! -d /home/$iduser/.ssh ];then
     $MKDIR /home/$iduser/.ssh
 fi
@@ -94,10 +94,10 @@ fi
 $CHMOD 0700 /home/$iduser/.ssh
 
 # append the content to the user authorization file
-# Note: no check is done that this key already exist (yet)
+# Note: no check is done that this key already exists (yet)
 
 $CAT /root/tmp/$iduser.$PUBKEY >> /home/$iduser/.ssh/$AUTHKEYFILE
-debug_log "Appended (/root/.ssh/$iduser.$PUBKEY) to user (/home/$iduser/.ssh/$AUTHKEYFILE)."
+debug_log "Appended key ($iduser.$PUBKEY) to user (/home/$iduser/.ssh/$AUTHKEYFILE)."
 
 # chmod for this file
 $CHMOD 0600 /home/$iduser/.ssh/$AUTHKEYFILE

@@ -100,8 +100,10 @@ if [ -d "$1" ];then
     else
         
         # start with some information
+        $ECHO
         $ECHO "This script will copy over given public host key ($1/$PUBKEY) to local network host."
-        $ECHO "Host IP is address required to continue. Key will be appended to target host authorized file."
+        $ECHO "Host IP is address required to continue. Key will be appended to target host authorized_keys file."
+        $ECHO
         $ECHO -n "Continue? [y/n] "
         read answer
         
@@ -138,12 +140,28 @@ if [ -d "$1" ];then
                             # always copying any identity files to /root/tmp (always secure)
                             $SCP $PUBKEY root@${ipadress}:/root/tmp/$remoteuser.$PUBKEY
                             scp_exitcode=$?
-                            debug_log "scp returned ($scp_exitcode) at exit after scp to root@${ipadress} to user ($remoteuser)"
+                            debug_log "scp returned ($scp_exitcode) to root@${ipadress} for user ($remoteuser)"
+                            if [ $scp_exitcode -ne 0 ];then
+                                $ECHO "Error: Could not copy file to (root@${ipadress})."
+                                $ECHO "Please try again."
+                                exit 0
+                            else
+                                $ECHO "Success: Identity file ($PUBKEY) copied to (root@${ipadress})."
+                                $ECHO "Please enter password to append key to ($remoteuser) authorization_keys file."
+                            fi
                             
                             # launch the install-to-user-authorization-script on target host
                             $SSH root@${ipadress} $ADDKEY $remoteuser
                             ssh_exitcode=$?
-                            debug_log "ssh returned ($ssh_exitcode) at exit after ssh to root@${ipadress} to user ($remoteuser)"
+                            debug_log "ssh returned ($ssh_exitcode) to root@${ipadress} user ($remoteuser)"
+                            if [ $ssh_exitcode -ne 0 ];then
+                                $ECHO "Error: Could not append keyfile to user ($remoteuser)"
+                                $ECHO "Aborting."
+                                exit 0
+                            else
+                                $ECHO "Success: Appended key ($PUBKEY) to ($remoteuser) authorization_keys file."
+                            fi
+                            
                             
                         fi
                     
