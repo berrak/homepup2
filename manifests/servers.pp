@@ -176,9 +176,12 @@ node 'warp.sec.home.tld' inherits basenode {
 
 	## git repository depot (add project list and 'gitx' access groups)
 	## Note that group e.g. 'git1' must be created manually before access
-	## is possible by admin, with '# adduser --shell /usr/bin/git-shell git1' 
+	## is possible by admin, with '# adduser --shell /usr/bin/git-shell git1'
+	## Note that the resource, i.e. first parameter below must be unique.
 	
 	puppet_gitserver::config { 'git1_Filter-Heredoc': gitgrp => 'git1',projectname => 'Filter-Heredoc'}
+	puppet_gitserver::config { 'git1_PM-template': gitgrp => 'git1',projectname => 'PM-template'}	
+	
 	
 	## backup server
 	
