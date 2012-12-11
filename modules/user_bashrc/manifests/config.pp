@@ -67,8 +67,8 @@ define user_bashrc::config {
 		
 		# perl snippet file, sourced at login
 		
-	    file { "/home/${name}/bashrc.d/perl":
-			source => "puppet:///modules/user_bashrc/perl",
+	    file { "/home/${name}/bashrc.d/perl.rc":
+			source => "puppet:///modules/user_bashrc/perl.rc",
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
