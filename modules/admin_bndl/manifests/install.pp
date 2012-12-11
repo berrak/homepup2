@@ -113,8 +113,10 @@ define admin_bndl::install {
         developerapps : {
         
             # tools for the developer
+			# perl-doc: use 'perldoc' to read extended module information 
+			# cpanminus: get, unpack, build and install modules from CPAN
           
-	        package  { [ "build-essential", "perl-doc" ]:
+	        package  { [ "build-essential", "perl-doc", "cpanminus" ]:
                  ensure => installed }
         
         
