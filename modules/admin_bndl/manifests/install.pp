@@ -112,11 +112,12 @@ define admin_bndl::install {
         
         developerapps : {
         
-            # tools for the developer
+            # build-essential: various debian tools for the sw developer
 			# perl-doc: use 'perldoc' to read extended module information 
 			# cpanminus: get, unpack, build and install modules from CPAN
+			# libmodule-starter-perl: simple starter kit for Perl modules
           
-	        package  { [ "build-essential", "perl-doc", "cpanminus" ]:
+	        package  { [ "build-essential", "perl-doc", "cpanminus", "libmodule-starter-perl" ]:
                  ensure => installed }
         
         
