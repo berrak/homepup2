@@ -47,7 +47,7 @@ define user_bashrc::config {
 		
 		}
 	
-	    # add the actual customization file to the .bashrc.d snippet directory
+	    # add the actual 'user' customization file to the .bashrc.d snippet directory
 		
 	    file { "/home/${name}/bashrc.d/${name}":
 			source => "puppet:///modules/user_bashrc/${name}",
