@@ -31,7 +31,13 @@ define user_bashrc::config {
 		     owner => "${name}",
 		     group => "${name}",
 	    }			
-				
+
+        file { "/home/${name}/perl-work":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+	    }			
+	
 		
 		## default backup (rsync) configuration. Contains rsync password.
 		
