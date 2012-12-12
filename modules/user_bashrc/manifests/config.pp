@@ -6,13 +6,13 @@
 ##
 define user_bashrc::config {
     
-	include puppet_utils
-	
+	include puppet_utils	
+
     # array of real users...(not root, or system accounts)
 		
     if ( $name in ["bekr", "dakr"] ) {
 		
-		# create a bin sub directory for the user
+		# create a couple of standard sub directories for the user
 		
         file { "/home/${name}/bin":
 		    ensure => "directory",
@@ -20,7 +20,20 @@ define user_bashrc::config {
 		     group => "${name}",
 	    }		
 		
-		# default backup (rsync) configuration. Contains rsync password.
+        file { "/home/${name}/tmp":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+	    }		
+	
+        file { "/home/${name}/bash-work":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+	    }			
+				
+		
+		## default backup (rsync) configuration. Contains rsync password.
 		
 	    file { "/home/${name}/bin/${name}.backup":
 			source => "puppet:///modules/user_bashrc/${name}.backup",
