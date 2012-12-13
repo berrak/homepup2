@@ -43,7 +43,7 @@ define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 	
 	exec { "Chmod_${name}":
 	    command => "/bin/chmod 0750 /srv/${gitgrp}",
-	      subscribe => Exec["Create_Depot_Group_${name}"],
+	      subscribe => Exec["Chown_${name}"],
 	    refreshonly => true,
 	}
 	
