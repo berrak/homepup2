@@ -143,7 +143,7 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 80 -m state --state NEW 
 # allow https out
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW -j ACCEPT
 
-# allow git protocol out
+# allow git protocol out (to GitHub)
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
 
 
@@ -154,8 +154,9 @@ $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 9418 -m state --state NE
 # allow all established and related out to internal net
 $IPTABLES -A OUTPUT -p all -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-## allow ssh to connect to our internal ssh server (git repo)
+## allow ssh to connect to our internal ssh servers (valhall & warp)
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 ## allow smtp to connect to our internal mail (smtp) server
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25 -m state --state NEW -j ACCEPT
