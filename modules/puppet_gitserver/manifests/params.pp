@@ -3,13 +3,15 @@
 ##
 class puppet_gitserver::params {
 
-    # git server email and name
+    # Required system wide setting!
+    # Otherwise git does not accept any
+    # server repositories without it.
     
-    #$gitname = 'gitdepot'
-    #$gitemail = 'root@home.tld'
-    #
-    ## favorite git editor (incl path)
-    #
-    #$giteditor_nano = '/bin/nano'
+    # git depot server email and name
+    
+    $gitname = 'Git Depot'
+    $gitemail = 'root@home.tld'
+    
+
 
 }

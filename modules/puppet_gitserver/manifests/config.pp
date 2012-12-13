@@ -8,9 +8,6 @@
 define puppet_gitserver::config ( $gitgrp ='', $projectname = '' ) {
 
     include puppet_gitserver::install
-	
-	# maybe not required...
-    # include puppet_gitsrv::params
     
     if $projectname == '' {
 
