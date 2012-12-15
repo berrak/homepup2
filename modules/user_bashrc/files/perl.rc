@@ -9,8 +9,12 @@
 
 # For Perl lib and current project
 
-export PERL5LIB=/home/bekr/MYCPANPROJ/Filter-Heredoc/lib:/home/bekr/MYCPANPROJ/App-AptInstall/lib
-#export PERL5LIB=/home/bekr/HP_DL380Install/diskusage/lib:/home/bekr/HP_DL380Install/Debinix-Utils/lib
+#export PERL5LIB=/home/bekr/MYCPANPROJ/Filter-Heredoc/lib
+#export PERL5LIB=/home/bekr/MYCPANPROJ/App-AptInstall/lib
+#export PERL5LIB=/home/bekr/HP_DL380Install/diskusage/lib
+#export PERL5LIB=/home/bekr/HP_DL380Install/Debinix-Utils/lib
+
+export PERL5LIB=/home/bekr/perl-work/Module-Startkit/lib
 
 # For Perl scripts and man pages (not working)
 # export PATH=/home/bekr/PERL/bin:$PATH
