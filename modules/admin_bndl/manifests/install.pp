@@ -117,10 +117,13 @@ define admin_bndl::install {
 			# cpanminus: get, unpack, build and install modules from CPAN
 			# libmodule-starter-pbp-perl: 'Perl-Best-Practices' for Perl modules
 			# diffuse: graphical tool for merging and comparing text files
+			# perltidy: perl script indenter and formatter
           
-	        package  { [ "build-essential", "perl-doc", "cpanminus", "libmodule-starter-pbp-perl", "diffuse" ]:
+	        package  { [ "build-essential", "perl-doc", "cpanminus", "libmodule-starter-pbp-perl" ]:
                  ensure => installed }
         
+	        package  { [ "diffuse", "perltidy" ]:
+                 ensure => installed }
         
         }
         
