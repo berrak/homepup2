@@ -41,3 +41,7 @@ alias prove-xt='prove --lib $PWD/xt/*.t $PWD/xt/*/*.t'
 #--> Version 1.607
 
 alias cpan.module="perl -e\"eval qq{use \\\$ARGV[0];\\\\\\\$v=\\\\\\\$\\\${ARGV[0]}::VERSION;};\ print\\\$@?qq{No module found\\n}:\\\$v?qq{Version \\\$v\\n}:qq{Found.\\n};\"\$1"
+
+# print out perls library path
+alias perl.inc='perl -e "print join(\"\n\", @INC);"'
+
