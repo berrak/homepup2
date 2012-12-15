@@ -182,6 +182,7 @@ node 'warp.sec.home.tld' inherits basenode {
 	puppet_gitserver::config { 'git1_Filter-Heredoc': gitgrp => 'git1',projectname => 'Filter-Heredoc'}
 	puppet_gitserver::config { 'git1_perldisttemplate': gitgrp => 'git1',projectname => 'My-Module'}	
     puppet_gitserver::config { 'git1_depotest': gitgrp => 'git1',projectname => 'Starter-Templates'}
+    puppet_gitserver::config { 'git1_cpan-project2': gitgrp => 'git1',projectname => 'Module-Startkit'}
 	
 	## backup server
 	
