@@ -20,9 +20,9 @@ export PERL5LIB=/home/bekr/perlwork/Module-Starterkit/lib
 # export PATH=/home/bekr/PERL/bin:$PATH
 # export MANPATH=:/home/bekr/PERL/man
 
-# For perl author testing (enable 2nd, comment out first export)
+# For perl author testing (Enable 2nd and Comment out first export stanza)
 # export RELEASE_TESTING=
-# export RELEASE_TESTING=1 
+export RELEASE_TESTING=1 
 
 # Always run with taint check on for public web code
 # export PERL5OPT=-T
