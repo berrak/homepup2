@@ -28,6 +28,11 @@ function backup() {
 	cp -p $newname $1;
 }
 
+# set PATH to include user's bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$PATH:$HOME/bin"
+fi
+
 # source in any other resource snippets in directory
 cd $HOME/bashrc.d
 for rcfile in *.rc
