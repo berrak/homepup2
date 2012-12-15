@@ -26,13 +26,13 @@ define user_bashrc::config {
 		     group => "${name}",
 	    }		
 	
-        file { "/home/${name}/bash-work":
+        file { "/home/${name}/bashwork":
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",
 	    }			
 
-        file { "/home/${name}/perl-work":
+        file { "/home/${name}/perlwork":
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",

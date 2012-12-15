@@ -14,7 +14,7 @@
 #export PERL5LIB=/home/bekr/HP_DL380Install/diskusage/lib
 #export PERL5LIB=/home/bekr/HP_DL380Install/Debinix-Utils/lib
 
-export PERL5LIB=/home/bekr/perl-work/Module-Startkit/lib
+export PERL5LIB=/home/bekr/perlwork/Module-Startkit/lib
 
 # For Perl scripts and man pages (not working)
 # export PATH=/home/bekr/PERL/bin:$PATH
