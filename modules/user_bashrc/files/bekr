@@ -23,7 +23,7 @@ alias cls='clear'
 
 # set PATH to include user's IDE if it exists
 if [ -d "$HOME/Komodo-IDE-6" ] ; then
-    PATH="$PATH:/$HOME/Komodo-IDE-6/bin"
+    PATH="$PATH:$HOME/Komodo-IDE-6/bin"
 fi
 
 
