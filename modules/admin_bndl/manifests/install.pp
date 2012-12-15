@@ -113,17 +113,28 @@ define admin_bndl::install {
         developerapps : {
         
             # build-essential: various debian tools for the sw developer
-			# perl-doc: use 'perldoc' to read extended module information 
-			# cpanminus: get, unpack, build and install modules from CPAN
-			# libmodule-starter-pbp-perl: 'Perl-Best-Practices' for Perl modules
-			# diffuse: graphical tool for merging and comparing text files
-			# perltidy: perl script indenter and formatter
+			# diffuse: GUI tool for merging and comparing text files
           
-	        package  { [ "build-essential", "perl-doc", "cpanminus", "libmodule-starter-pbp-perl" ]:
+	        package  { [ "build-essential", "diffuse", ]:
                  ensure => installed }
         
-	        package  { [ "diffuse", "perltidy" ]:
+		    ## Add some perl tools:
+			# perltidy: perl script indenter and formatter
+			# perl-doc: use 'perldoc' to read extended module information 
+			# cpanminus: get, unpack, build and install modules from CPAN
+
+	        package  { [ "perl-doc", "cpanminus", "perltidy" ]:
                  ensure => installed }
+				 
+			## Add CPAN lib/modules:
+			# libmodule-starter-perl: simple starter kit for perl
+			# libmodule-starter-pbp-perl: 'Perl-Best-Practices' for Perl modules
+			# libtemplate-perl: the Template Toolkit processor
+			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit
+			
+			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl" ]:
+                 ensure => installed }
+			
         
         }
         
