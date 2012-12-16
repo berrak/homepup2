@@ -130,10 +130,14 @@ define admin_bndl::install {
 			# libmodule-starter-perl: simple starter kit for perl
 			# libmodule-starter-pbp-perl: 'Perl-Best-Practices' for Perl modules
 			# libtemplate-perl: the Template Toolkit processor
-			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit
+			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit 
 			
 			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl" ]:
                  ensure => installed }
+			
+			## Add CPAN test related modules:
+			package  { [ "libtest-pod-perl", "libtest-pod-coverage-perl", "libtest-perl-critic-perl", "libperl-critic-perl" ]:
+                ensure => installed }
 			
         
         }
