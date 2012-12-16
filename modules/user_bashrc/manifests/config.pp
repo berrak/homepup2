@@ -93,6 +93,13 @@ define user_bashrc::config {
 			  mode => '0644',
 		   require => File["/home/${name}/bashrc.d/${name}"],
 	   	}
+		
+		# fix bug in lxterminal - useer can't make configuration
+		# persistent (installed configuration set as root ownership)
+		exec { "/home/${name}/.config":
+			command => "/bin/chown -R ${name}:${name} /home/${name}/.config",
+	        refreshonly => true,
+		}
 
 	
 	} else {
