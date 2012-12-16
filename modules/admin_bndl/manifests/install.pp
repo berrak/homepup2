@@ -135,8 +135,8 @@ define admin_bndl::install {
 			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl" ]:
                  ensure => installed }
 			
-			## Add CPAN test related modules:
-			package  { [ "libtest-pod-perl", "libtest-pod-coverage-perl", "libtest-perl-critic-perl", "libperl-critic-perl" ]:
+			## Add CPAN test related modules (and required dependency modules):
+			package  { [ "libtest-pod-perl", "libtest-pod-coverage-perl", "libtest-perl-critic-perl" ]:
                 ensure => installed }
 			
         
