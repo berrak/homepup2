@@ -96,11 +96,19 @@ define user_bashrc::config {
 		
 		# fix bug in lxterminal - useer can't make configuration
 		# persistent (installed configuration set as root ownership)
-		exec { "/home/${name}/.config":
-			command => "/bin/chown -R ${name}:${name} /home/${name}/.config",
+		
+        file { "/home/${name}/.config/lxterminal":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+			  mode => '0755',
+	    }
+			
+		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
+			    command => "/bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
+			  subscribe => File["/home/${name}/.config/lxterminal"],
 	        refreshonly => true,
 		}
-
 	
 	} else {
 		
