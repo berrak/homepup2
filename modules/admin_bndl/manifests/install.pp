@@ -138,8 +138,12 @@ define admin_bndl::install {
 			## Add CPAN test related modules (and required dependency modules):
 			package  { [ "libtest-pod-perl", "libtest-pod-coverage-perl", "libtest-perl-critic-perl", "libtest-checkmanifest-perl" ]:
                 ensure => installed }
-			
-        
+		
+		    ## Add more CPAN test modules
+			package  { [ "libtest-expect-perl", "libtest-carp-perl", "libtest-spelling-perl" ]:
+                ensure => installed }
+      
+	  
         }
         
         default: {}
