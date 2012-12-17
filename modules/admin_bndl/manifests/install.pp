@@ -136,7 +136,7 @@ define admin_bndl::install {
                  ensure => installed }
 			
 			## Add CPAN test related modules (and required dependency modules):
-			package  { [ "libtest-pod-perl", "libtest-pod-coverage-perl", "libtest-perl-critic-perl" ]:
+			package  { [ "libtest-pod-perl", "libtest-pod-coverage-perl", "libtest-perl-critic-perl", "libtest-checkmanifest-perl" ]:
                 ensure => installed }
 			
         
