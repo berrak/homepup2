@@ -16,18 +16,6 @@ export PERL5LIB=/home/bekr/perlwork/Filter-Heredoc/lib
 #export PERL5LIB=/home/bekr/HP_DL380Install/Debinix-Utils/lib
 #export PERL5LIB=/home/bekr/perlwork/Module-Starterkit/lib
 
-# Configure perlcritic config for test script (run_perlcritic)
-
-# SEVERITY NAME   ...is equivalent to...   SEVERITY NUMBER
-# --------------------------------------------------------
-# -severity => 'gentle'                     -severity => 5
-# -severity => 'stern'                      -severity => 4
-# -severity => 'harsh'                      -severity => 3
-# -severity => 'cruel'                      -severity => 2
-# -severity => 'brutal'                     -severity => 1
-
-export PERLCRITIC_SEVERITY_NUMBER=5
-export PAGER=/bin/more
 
 # For Perl scripts and man pages (not working)
 # export PATH=/home/bekr/PERL/bin:$PATH
