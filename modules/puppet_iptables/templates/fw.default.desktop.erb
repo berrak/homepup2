@@ -40,6 +40,11 @@ PUPPETHOSTADDR="<%= puppetserveraddr %>"
 SMTPHOSTADDR="<%= smtphostaddr %>"
 FILESERVERADDR="<%= fileserveraddr %>"
 
+# External special ssh hosts output
+
+GITHUB="207.97.227.239"
+
+
 # Printers
 
 NETPRN_HP3015_ADDR="<%= netprn_hp3015_addr %>"
@@ -166,6 +171,9 @@ $IPTABLES -A OUTPUT -p all -d $NET_INT -m state --state ESTABLISHED,RELATED -j A
 # allow ssh out to internal clients (usually to the test server 'valhall')
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
+# allow ssh pass out to special external addresses (github, ...)
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow git protocol out to various 'internal' servers
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
