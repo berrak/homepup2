@@ -18,6 +18,6 @@ class puppet_gitclient::params {
     # favorite git editor (incl path) and alias for nice log graph
     
     $giteditor_nano = '/bin/nano'
-    $log_graph_alias = 'log --graph --pretty=format:'%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative'
+    $logformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'
     
 }
