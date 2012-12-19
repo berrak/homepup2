@@ -57,6 +57,7 @@ define puppet_gitclient::config ( $codehost = '' ) {
     }
     
     $mygiteditor = $::puppet_gitclient::params::giteditor_nano
+	$mylogalias = $::puppet_gitclient::params::log_graph_alias
     
     file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_gitclient/gitconfig.erb' ),
