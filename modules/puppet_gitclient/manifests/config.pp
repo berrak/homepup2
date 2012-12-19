@@ -71,5 +71,14 @@ define puppet_gitclient::config ( $codehost = '' ) {
 		 group => $name,
 		  mode => '0700',
 	}
+	
+	# user git bashrc snippet
+	
+	file { "/home/${name}/bashrc.d/git.rc" :
+		ensure => present,
+		source => "puppet:///modules/puppet_gitclient/git.rc",
+		 owner => $name,
+		 group => $name,
+	}
     
 }
