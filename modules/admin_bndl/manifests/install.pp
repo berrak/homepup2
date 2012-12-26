@@ -114,8 +114,9 @@ define admin_bndl::install {
         
             # build-essential: various debian tools for the sw developer
 			# diffuse: GUI tool for merging and comparing text files
+			# rubygems1.9.1: tool for deploying ruby gems
           
-	        package  { [ "build-essential", "diffuse", ]:
+	        package  { [ "build-essential", "diffuse", "rubygems1.9.1"]:
                  ensure => installed }
         
 		    ## Add some perl tools:
