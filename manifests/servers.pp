@@ -180,9 +180,9 @@ node 'warp.sec.home.tld' inherits basenode {
 	## Note that the resource, i.e. first parameter below must be unique.
 	
 	puppet_gitserver::config { 'git1_Filter-Heredoc': gitgrp => 'git1',projectname => 'Filter-Heredoc'}
-	puppet_gitserver::config { 'git1_perldisttemplate': gitgrp => 'git1',projectname => 'My-Workflow'}	
-    puppet_gitserver::config { 'git1_depotest': gitgrp => 'git1',projectname => 'Starter-Templates'}
     puppet_gitserver::config { 'git1_cpan-project-msk': gitgrp => 'git1',projectname => 'Module-Starterkit'}
+	
+    puppet_gitserver::config { 'git2_branch-model': gitgrp => 'git2',projectname => 'My-Module'}
 	
 	## backup server
 	
