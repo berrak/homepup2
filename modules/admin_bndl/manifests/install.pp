@@ -39,7 +39,7 @@ define admin_bndl::install {
             # Applications in addition to the default
             # Debian (wheezy) LXDE desktop installation.
             
-            package  { [ "abiword", "evince", "icedove" ] :
+            package  { [ "abiword", "evince", "icedove", "guvcview", "uvcdynctrl" ] :
                 ensure => installed }
         
         }
@@ -115,6 +115,8 @@ define admin_bndl::install {
             # build-essential: various debian tools for the sw developer
 			# diffuse: GUI tool for merging and comparing text files
 			# rubygems1.9.1: tool for deploying ruby gems
+			# python-pip: improved python installer
+			# bluefish: HTML editor
           
 	        package  { [ "build-essential", "diffuse", "rubygems1.9.1"]:
                  ensure => installed }
