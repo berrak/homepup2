@@ -145,6 +145,10 @@ define admin_bndl::install {
 		    ## Add more CPAN test modules
 			package  { [ "libtest-expect-perl", "libtest-carp-perl", "libtest-spelling-perl" ]:
                 ensure => installed }
+				
+			## Add some logging modules
+			package  { [ "liblog-log4perl-perl" ]:
+                ensure => installed }
       
 	  
         }
