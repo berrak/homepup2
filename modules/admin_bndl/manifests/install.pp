@@ -146,8 +146,8 @@ define admin_bndl::install {
 			package  { [ "libtest-expect-perl", "libtest-carp-perl", "libtest-spelling-perl" ]:
                 ensure => installed }
 				
-			## Add some logging modules
-			package  { [ "liblog-log4perl-perl" ]:
+			## Add some logging and other modules
+			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl" ]:
                 ensure => installed }
       
 	  
