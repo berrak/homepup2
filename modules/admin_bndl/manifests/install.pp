@@ -147,7 +147,7 @@ define admin_bndl::install {
                 ensure => installed }
 				
 			## Add some logging and other modules
-			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl" ]:
+			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl" ]:
                 ensure => installed }
       
 	  
