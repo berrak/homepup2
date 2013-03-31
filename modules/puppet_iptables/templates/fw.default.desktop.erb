@@ -6,7 +6,7 @@
 #
 # Generic (only one NIC) iptables rules for e.g. desktop host
 #
-# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+# Copyright (C) (2012-13) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@ FILESERVERADDR="<%= fileserveraddr %>"
 # External special ssh hosts output
 
 GITHUB="207.97.227.239"
+MINECRAFTHOME="192.168.1.12"
+MINECRAFTPUBL="217.70.39.231"
 
 
 # Printers
@@ -153,6 +155,8 @@ $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j
 
 # allow ssh pass out to special external addresses (github, ...)
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow dns (udp/tcp) queries out
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
