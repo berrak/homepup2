@@ -1,6 +1,7 @@
 #
 # Screen resource file (ref: https://bbs.archlinux.org/viewtopic.php?id=55618&p=3)
 #
+startup_message off
 setenv LC_CTYPE en_US.UTF-8
 defutf8 on
 hardcopy_append on
@@ -21,7 +22,7 @@ vbell_msg " *beep* "
 nethack on     # print wackier status messages
 nonblock on    # If a window goes unresponsive, don't block the whole session waiting for it.
 defnonblock 5  # flaky/slow ssh lines
-altscreen on   # restore window contents after using (e.g.) vi
+altscreen on   # restore window contents after using (e.g.) nano
 defmonitor on  # turn monitoring on
 shell -$SHELL  # use the default shell
 defbce on      # erase background with current bg color
