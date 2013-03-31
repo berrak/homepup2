@@ -1,23 +1,56 @@
 #
-# Screen resource file (ref: linux.dsplabs.com.au)
+# Screen resource file (ref: http://linuxepiphany.blogspot.se)
 #
-termcapinfo xterm* ti@:te@
+
+# Statusbar
+hardstatus alwayslastline "%{= KW} Screen(s): %-w%{= wk} %50>%n %t%{-}%+w%< %=%{KW}[%c %M %d %Y ]"
+
+
+# Turn off start message:
 startup_message off
-vbell off
-autodetach on
-altscreen on
-shelltitle "$ |bash"
+
+
+# Set messages timeout to one second:
+msgwait 2
+
+
+# Shell path can be needed on some systems
+#shell /usr/local/bin/bash
+
+
+# Use a 10000-line scrollback buffer
 defscrollback 10000
+
+
+# Activity flash bar
+activity "activity in %n (%t) [%w:%s]~"
+
+
+# Run everything in UTF-8.
 defutf8 on
-nonblock on
 
-hardstatus alwayslastline
-hardstatus string '%{= kw}[ %{= kb}%H%{= kw} ][%= %{= kw}%?%-Lw%?%{= kW}%n*%f %t%?%?%{= kw}%?%
-+Lw%?%?%= ][ %{r}%l%{w} ]%{w}[%{r} %d/%m/%y %C %A %{w}]%{w}'
 
-bind 'q' quit
+defnonblock on
+autodetach on
 
-# syntax: screen -t label order command
-screen -t localhost 0
-screen -t mchome 2 ssh root@192.168.1.12
-screen -t mcpubl 1 ssh root@217.70.39.231
+
+# Use the function keys to switch among windows.
+bindkey -k k1 select 1
+bindkey -k k2 select 2
+bindkey -k k3 select 3
+bindkey -k k4 select 4
+bindkey -k k5 select 5
+bindkey -k k6 select 6
+bindkey -k k7 select 7
+bindkey -k k8 select 8
+bindkey -k k9 select 9
+
+bindkey -k F1 prev
+bindkey -k F2 next
+
+
+# Window numbering starts at 1, not 0.
+bind c screen 1
+bind 0 select 10
+
+
