@@ -10,6 +10,7 @@ class admin_screen::config {
 		 owner => 'root',
 		 group => 'root',
 		  mode => '0640',
+	   require => Package["screen"],
     }
 	
 }
