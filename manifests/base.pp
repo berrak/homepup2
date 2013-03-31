@@ -13,6 +13,7 @@ node basenode {
 	
 	include admin_rsyslog
 	include admin_logrotate
+	include admin_screen
 	
 	include admin_cron
     include admin_aptconf

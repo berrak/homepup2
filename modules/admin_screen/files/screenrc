@@ -1,0 +1,23 @@
+#
+# Screen resource file (ref: linux.dsplabs.com.au)
+#
+termcapinfo xterm* ti@:te@
+startup_message off
+vbell off
+autodetach on
+altscreen on
+shelltitle "$ |bash"
+defscrollback 10000
+defutf8 on
+nonblock on
+
+hardstatus alwayslastline
+hardstatus string '%{= kw}[ %{= kb}%H%{= kw} ][%= %{= kw}%?%-Lw%?%{= kW}%n*%f %t%?%?%{= kw}%?%
++Lw%?%?%= ][ %{r}%l%{w} ]%{w}[%{r} %d/%m/%y %C %A %{w}]%{w}'
+
+bind 'q' quit
+
+# syntax: screen -t label order command
+screen -t localhost 0
+screen -t mchome 2 ssh root@192.168.1.12
+screen -t mcpubl 1 ssh root@217.70.39.231
