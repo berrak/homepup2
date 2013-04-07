@@ -1,5 +1,5 @@
 #!/bin/sh
-# /root/bin/fw.`hostname`
+# /root/bin/fw.puppetmaster.`hostname`
 #############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
