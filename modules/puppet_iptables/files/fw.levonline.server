@@ -1,10 +1,10 @@
 #!/bin/sh
-# /root/bin/fw.minecraft.server
+# /root/bin/fw.levonline.server
 ###################################################################
 #                      MANAGED IN GIT.                            #
 ###################################################################
 #
-# Privat and public iptables rules (in one file) for Minecraft host
+# Rules for public Minecraft host (VPS).
 #
 # Copyright (C) (2012-13) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
@@ -29,39 +29,30 @@ MODPROBE=/sbin/modprobe
 IPTSAVE=/sbin/iptables-save
 IPTSAVEFILE=/root/bin/IPTABLES.FW
 
-NET_INT="192.168.0.0/16"
-IF_INT="eth0"
+# Home network
+DKTRUSTEDNET="90.229.0.0/16"
 
-# Our private and public Minecraft servers
+# multicast mDNS packets
+MDNSMULTICASTADDR="224.0.0.251"
 
-MINECRAFTHOME="192.168.1.12"
-MINECRAFTPUBL="217.70.39.231"
-
-# Address for ssh client to control home and public VPS Minecraft server
-
-INT_SSH_ADR="192.168.1.254"
-EXT_SSH_ADR="90.229.134.193"
-EXT_SSH_NET="90.229.0.0/24"
-
-## Log options
-LOGOPT="LOG --log-level emerg --log-ip-options --log-tcp-options"
+## Log options - i.e. log to file var/log/debug
+LOGOPT="LOG --log-level 7 --log-ip-options --log-tcp-options"
 
 ## Prevent excessive logging
 RLIMIT="-m limit --limit 3/s --limit-burst 8"
 
 ## Load modules
-
 $MODPROBE ip_conntrack
 $MODPROBE ip_conntrack_ftp
 
 ## Flush old rules, old custom rules
-
 $IPTABLES -F
 $IPTABLES -X
 
-## Default policies (at end we change these to drop after setting up all rules)
-
-$IPTABLES -P INPUT ACCEPT
+#---------------------------------------------------------------------
+# Default policies
+#---------------------------------------------------------------------
+$IPTABLES -P INPUT DROP
 $IPTABLES -P OUTPUT ACCEPT
 $IPTABLES -P FORWARD DROP
 
@@ -69,150 +60,50 @@ $IPTABLES -P FORWARD DROP
 $IPTABLES -I INPUT 1 -i lo -j ACCEPT
 $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 
-## Prevent invalid input packages
-$IPTABLES -A INPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INVALID "
-$IPTABLES -A INPUT -m state --state INVALID -j DROP
-
-#--------------------------------------------------------------------------------------
-## Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
-$IPTABLES -N broadcast-drop
-# $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST ACCEPT "
-$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
-$IPTABLES -A broadcast-drop -j RETURN
-#--------------------------------------------------------------------------------------
+##--------------------------------------------------------------------------------------
+### Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
+#$IPTABLES -N broadcast-drop
+## $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST ACCEPT "
+#$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
+#$IPTABLES -A broadcast-drop -j RETURN
+##--------------------------------------------------------------------------------------
 
 ## ======================
 ## ALLOW INBOUND TRAFFIC
 ## ======================
 
-#-----------------------------------------------------------
-# Internal inbound traffic (from internal net --> home host).
-#
-# Destination (-d ) is not required since rules are always
-# used in INPUT chain and thus implicitely gives this host.
-#-----------------------------------------------------------
-
 # allow all established and related in
-$IPTABLES -A INPUT -p all -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A INPUT -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# ssh clients from our internal net (to this internal minecraft server host)
-$IPTABLES -A INPUT -p tcp -s $INT_SSH_ADR -m tcp --dport 22 -m state --state NEW -j ACCEPT
-
-# internal minecraft clients talks to the server on this port
-$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 25565 -m state --state NEW -j ACCEPT
-
-# do not not allow broadcasts in
-$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
-
-#-------------------------------------------------------------------------
-# Potential external inbound traffic (from public net --> VPS host).
-#
-# Destination (-d ) is not required since rules are always
-# used in INPUT chain and thus implicitely gives this host.
-#-------------------------------------------------------------------------
-
-$IPTABLES -A INPUT -p all ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-############################################################################################
-## Note: Dangerous (do not add any '-m state NEW -j ACCEPT' here without a careful pause!)
-############################################################################################
-# ssh clients from home (to our public minecraft VPS host)
-$IPTABLES -A INPUT -p tcp -s $EXT_SSH_ADR -m tcp --dport 22 -m state --state NEW -j ACCEPT
-$IPTABLES -A INPUT -p tcp -s $EXT_SSH_NET -m tcp --dport 22 -m state --state NEW -j ACCEPT
-
-# allow dhcp traffic
-$IPTABLES -A INPUT -p udp ! -s $NET_INT -m udp --dport 68 -m state --state NEW -j ACCEPT
-
-# allow avahi-daemon in
-$IPTABLES -A INPUT -p udp -d $MINECRAFTHOME -m udp --dport 5353 -m state --state NEW -j ACCEPT
+# ssh client access for management
+$IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # public minecraft clients talks to the server on this port
-$IPTABLES -A INPUT -p tcp ! -s $NET_INT -m tcp --dport 25565 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $DKTRUSTEDNET -m tcp --dport 25565 -m state --state NEW -j ACCEPT
+
+# allow DHCP requests
+$IPTABLES -A INPUT -p udp -m udp --dport 67:68 --sport 67:68 -m state --state NEW -j ACCEPT
+
+# allow dns (udp/tcp) queries to our host
+$IPTABLES -A INPUT -p tcp -m tcp --sport 53 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -m udp --sport 53 -m state --state NEW -j ACCEPT
+
+# allow possible multicast mDNS packets
+$IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
+
+# do not not allow broadcasts input from local windows hosts
+#$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
 
 #---------------------------------------------------------------------------
 # CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
 #---------------------------------------------------------------------------
 
+## Prevent invalid input packages
+$IPTABLES -A INPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INVALID "
+$IPTABLES -A INPUT -m state --state INVALID -j DROP
+
 $IPTABLES -A INPUT ! -i lo -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT DEFAULT "
 $IPTABLES -A INPUT ! -i lo -j DROP
-
-
-## =======================
-## ALLOW OUTBOUND TRAFFIC
-## =======================
-
-#-----------------------------------------------------------------------------
-# Internal outbound traffic (from home host --> public net)
-#-----------------------------------------------------------------------------
-
-# allow all established and related out to internal net
-$IPTABLES -A OUTPUT -p all -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# allow dns (udp/tcp) queries out if required
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
-
-# allow web traffic out if required
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 80 -m state --state NEW -j ACCEPT
-
-# allow https out if required
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW -j ACCEPT
-
-#-----------------------------------------------------------------------------
-# Internal outbound traffic (from home minecraft host --> internal net)
-#-----------------------------------------------------------------------------
-
-# allow minecraft protocol out to internal net if required
-$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25565 -m state --state NEW -j ACCEPT
-
-# allow avahi-daemon out
-$IPTABLES -A OUTPUT -p udp -s $MINECRAFTHOME -m udp --dport 5353 -m state --state NEW -j ACCEPT
-
-# do not not allow broadcasts out anywhere
-$IPTABLES -t filter -A OUTPUT -j broadcast-drop
-
-#-----------------------------------------------------------
-# Public outbound traffic (from VPS host--> public net)
-#-----------------------------------------------------------
-
-# allow all established and related out to external net
-$IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# allow dns (udp/tcp) queries out if required
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
-
-# allow dhcp traffic out if required
-$IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 68 -m state --state NEW -j ACCEPT
-
-# allow web traffic in if required http server is set up on VPS host
-#$IPTABLES -A OUTPUT -p tcp ! -s $NET_INT -m tcp --dport 80 -m state --state NEW -j ACCEPT
-
-# allow https in if required https server is set up on VPS host
-#$IPTABLES -A OUTPUT -p tcp ! -s $NET_INT -m tcp --dport 443 -m state --state NEW -j ACCEPT
-
-# allow minecraft protocol out to public if required
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 25565 -m state --state NEW -j ACCEPT
-
-
-#-------------------------------------
-# Prevent invalid output packages out
-#-------------------------------------
-$IPTABLES -A OUTPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT INVALID "
-$IPTABLES -A OUTPUT -m state --state INVALID -j DROP
-
-#---------------------------------------------------------------------
-# CATCH ALL LOG-and-DROP RULES (you may be suprised what ends up here)
-#---------------------------------------------------------------------
-
-$IPTABLES -A OUTPUT ! -o lo -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT DEFAULT "
-$IPTABLES -A OUTPUT ! -o lo -j DROP
-
-#---------------------------------------------------------------------
-# Now set default policies to drop (after we have set up everything)
-#---------------------------------------------------------------------
-$IPTABLES -P INPUT DROP
-$IPTABLES -P OUTPUT DROP
 
 
 #############################
