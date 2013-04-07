@@ -60,13 +60,13 @@ $IPTABLES -P FORWARD DROP
 $IPTABLES -I INPUT 1 -i lo -j ACCEPT
 $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 
-##--------------------------------------------------------------------------------------
-### Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
-#$IPTABLES -N broadcast-drop
-## $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST ACCEPT "
-#$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
-#$IPTABLES -A broadcast-drop -j RETURN
-##--------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------
+## Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
+$IPTABLES -N broadcast-drop
+# $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST ACCEPT "
+$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
+$IPTABLES -A broadcast-drop -j RETURN
+#--------------------------------------------------------------------------------------
 
 ## ======================
 ## ALLOW INBOUND TRAFFIC
@@ -91,8 +91,8 @@ $IPTABLES -A INPUT -p udp -m udp --sport 53 -m state --state NEW -j ACCEPT
 # allow possible multicast mDNS packets
 $IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
 
-# do not not allow broadcasts input from local windows hosts
-#$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
+# do not not allow broadcasts input to fill logs
+$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
 
 #---------------------------------------------------------------------------
 # CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
