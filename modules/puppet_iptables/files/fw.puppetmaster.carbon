@@ -1,12 +1,12 @@
 #!/bin/sh
-# /root/bin/fw.puppetmaster.`hostname`
+# /root/bin/fw.`hostname`
 #############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT #
 #############################################################
 #
 # Iptables rules for a puppet master server and developer desktop (carbon)
 #
-# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+# Copyright (C) (2012-13) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ IF_INT=eth0
 NTPHOSTADDR="192.168.0.1"
 FILESERVERADDR="192.168.2.83"
 INTMINECRAFTADDR="192.168.1.12"
-EXTMINECRAFTADDR="217.70.39.239"
+EXTMINECRAFTADDR="217.70.39.231"
 
 # Printers for desktops
 NETPRN_HP3015_ADDR="192.168.0.30"
