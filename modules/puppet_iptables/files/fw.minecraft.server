@@ -1,0 +1,197 @@
+#!/bin/sh
+# /root/bin/fw.minecraft.server
+###################################################################
+#                      MANAGED IN GIT.                            #
+###################################################################
+#
+# Rules for home Minecraft host (accessed from internal networks only).
+#
+# Copyright (C) (2012-13) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+## Basic data
+
+IPTABLES=/sbin/iptables
+MODPROBE=/sbin/modprobe
+
+IPTSAVE=/sbin/iptables-save
+IPTSAVEFILE=/root/bin/IPTABLES.FW
+
+# note that this cover two internal networks i.e. 192.168.1.X, and 192.168.0.X
+NET_INT="192.168.0.0/16"
+
+# Our local Minecraft server
+MINECRAFTHOME="192.168.1.12"
+
+# multicast mDNS packets from internal printers to this host.
+MDNSMULTICASTADDR="224.0.0.251"
+
+# Address for ssh client to control home and public VPS Minecraft server
+INT_SSH_ADR="192.168.1.254"
+
+## Log options - i.e. log to file var/log/debug
+LOGOPT="LOG --log-level 7 --log-ip-options --log-tcp-options"
+
+## Prevent excessive logging
+RLIMIT="-m limit --limit 3/s --limit-burst 8"
+
+## Load modules
+$MODPROBE ip_conntrack
+$MODPROBE ip_conntrack_ftp
+
+## Flush old rules, old custom rules
+$IPTABLES -F
+$IPTABLES -X
+
+#---------------------------------------------------------------------
+# Default policies
+#---------------------------------------------------------------------
+$IPTABLES -P INPUT DROP
+$IPTABLES -P OUTPUT ACCEPT
+$IPTABLES -P FORWARD DROP
+
+## Free reign to loopback interfaces
+$IPTABLES -I INPUT 1 -i lo -j ACCEPT
+$IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
+
+#--------------------------------------------------------------------------------------
+## Drop broadcast-packages (only log for initial test -- comment out not to fill logs)
+$IPTABLES -N broadcast-drop
+# $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j $LOGOPT $RLIMIT --log-prefix "BROADCAST ACCEPT "
+$IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
+$IPTABLES -A broadcast-drop -j RETURN
+#--------------------------------------------------------------------------------------
+
+## ======================
+## ALLOW INBOUND TRAFFIC
+## ======================
+
+#-----------------------------------------------------------
+# Internal inbound traffic (from internal net --> home host).
+#
+# Destination (-d ) is not required since rules are always
+# used in INPUT chain and thus implicitely gives this host.
+#-----------------------------------------------------------
+
+# allow all established and related in
+$IPTABLES -A INPUT -p all -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# ssh clients from our internal net (to this internal minecraft server host)
+$IPTABLES -A INPUT -p tcp -s $INT_SSH_ADR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
+# internal minecraft clients talks to the server on this port
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 25565 -m state --state NEW -j ACCEPT
+
+# allow DHCP requests (although static host) to avoid flooding logs
+$IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 67:68 --sport 67:68 -m state --state NEW -j ACCEPT
+
+# allow dns (udp/tcp) queries in to our host
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --sport 53 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp -s $NET_INT -m udp --sport 53 -m state --state NEW -j ACCEPT
+
+# multicast mDNS packets from internal printers to this host.
+$IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 5353 -j ACCEPT
+
+# do not not allow broadcasts input from local windows hosts
+$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
+
+#-----------------------------------------------------------
+# External inbound traffic (from public net --> host).
+#
+# Destination (-d ) is not required since rules are always
+# used in INPUT chain and thus implicitely gives this host.
+#-----------------------------------------------------------
+
+# allow all established and related in from public network
+$IPTABLES -A INPUT -p all ! -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# allow dns (udp/tcp) queries in to our host
+$IPTABLES -A INPUT -p tcp ! -s $NET_INT -m tcp --sport 53 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p udp ! -s $NET_INT -m udp --sport 53 -m state --state NEW -j ACCEPT
+
+#---------------------------------------------------------------------------
+# CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
+#---------------------------------------------------------------------------
+
+## Prevent invalid input packages
+$IPTABLES -A INPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT INVALID "
+$IPTABLES -A INPUT -m state --state INVALID -j DROP
+
+$IPTABLES -A INPUT ! -i lo -j $LOGOPT $RLIMIT --log-prefix "DROP INPUT DEFAULT "
+$IPTABLES -A INPUT ! -i lo -j DROP
+
+#
+### =======================
+### ALLOW OUTBOUND TRAFFIC
+### =======================
+#
+##-----------------------------------------------------------------------------
+## Internal outbound traffic (from home host --> public net)
+##-----------------------------------------------------------------------------
+#
+## allow all established and related out to internal net
+#$IPTABLES -A OUTPUT -p all -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#
+## allow dns (udp/tcp) queries out if required
+#$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
+#$IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
+#
+## allow web traffic out if required
+#$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 80 -m state --state NEW -j ACCEPT
+#
+## allow https out if required
+#$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 443 -m state --state NEW -j ACCEPT
+#
+##-----------------------------------------------------------------------------
+## Internal outbound traffic (from home minecraft host --> internal net)
+##-----------------------------------------------------------------------------
+#
+## allow minecraft protocol out to internal net if required
+#$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25565 -m state --state NEW -j ACCEPT
+#
+## allow avahi-daemon out
+#$IPTABLES -A OUTPUT -p udp -s $MINECRAFTHOME -m udp --dport 5353 -m state --state NEW -j ACCEPT
+#
+## do not not allow broadcasts out of internal net
+#$IPTABLES -t filter -A OUTPUT -p tcp ! -d $NET_INT -j broadcast-drop
+#
+##-------------------------------------
+## Prevent invalid output packages out
+##-------------------------------------
+#$IPTABLES -A OUTPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT INVALID "
+#$IPTABLES -A OUTPUT -m state --state INVALID -j DROP
+#
+##---------------------------------------------------------------------
+## CATCH ALL LOG-and-DROP RULES (you may be suprised what ends up here)
+##---------------------------------------------------------------------
+#
+#$IPTABLES -A OUTPUT ! -o lo -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT DEFAULT "
+#$IPTABLES -A OUTPUT ! -o lo -j DROP
+
+#############################
+## SAVE THE FILE
+#############################
+
+$IPTSAVE > $IPTSAVEFILE
+chmod 700 $IPTSAVEFILE
+
+#############################
+## LIST LOADED IPTABLES RULES
+#############################
+
+$IPTABLES -L -v --line-numbers
+
+exit 0
+
