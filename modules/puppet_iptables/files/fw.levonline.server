@@ -35,6 +35,9 @@ DKTRUSTEDNET="90.229.0.0/16"
 # multicast mDNS packets
 MDNSMULTICASTADDR="224.0.0.251"
 
+# multicast intra router communiaction
+IGMPADDR="224.0.0.1"
+
 ## Log options - i.e. log to file var/log/debug
 LOGOPT="LOG --log-level 7 --log-ip-options --log-tcp-options"
 
@@ -90,6 +93,13 @@ $IPTABLES -A INPUT -p udp -m udp --sport 53 -m state --state NEW -j ACCEPT
 
 # allow possible multicast mDNS packets
 $IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
+
+## ==========================
+## DROP OTHER INBOUND TRAFFIC
+## ==========================
+
+# do not allow IGMP to fill logs
+$IPTABLES -A INPUT -p all -d $IGMPADDR -j DROP
 
 # do not not allow broadcasts input to fill logs
 $IPTABLES -t filter -A INPUT -j broadcast-drop
