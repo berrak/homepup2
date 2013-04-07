@@ -34,6 +34,8 @@ IF_INT=eth0
 
 NTPHOSTADDR="192.168.0.1"
 FILESERVERADDR="192.168.2.83"
+INTMINECRAFTADDR="192.168.1.12"
+EXTMINECRAFTADDR="217.70.39.239"
 
 # Printers for desktops
 NETPRN_HP3015_ADDR="192.168.0.30"
@@ -132,6 +134,10 @@ $IPTABLES -A INPUT ! -i lo -j DROP
 
 # allow all established and related out to external net
 $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+## allow ssh out to connect to our minecraft servers (local minecraft & levonline VPS)
+$IPTABLES -A OUTPUT -p tcp -d INTMINECRAFTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -d EXTMINECRAFTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow dns (udp/tcp) queries out
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
