@@ -92,7 +92,7 @@ $IPTABLES -A INPUT -p udp -m udp --sport 53 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
 
 # do not not allow broadcasts input to fill logs
-$IPTABLES -t filter -A INPUT -s $NET_INT -j broadcast-drop
+$IPTABLES -t filter -A INPUT -j broadcast-drop
 
 #---------------------------------------------------------------------------
 # CATCH ALL INPUT LOG-and-DROP RULES (you may be suprised what ends up here)
