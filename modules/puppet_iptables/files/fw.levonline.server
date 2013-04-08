@@ -31,6 +31,8 @@ IPTSAVEFILE=/root/bin/IPTABLES.FW
 
 # Home network
 DKTRUSTEDNET="90.229.0.0/16"
+JHTRUSTEDNET="90.227.0.0/16"
+EKTRUSTEDNET="90.228.0.0/16"
 
 # multicast mDNS packets
 MDNSMULTICASTADDR="224.0.0.251"
@@ -83,6 +85,8 @@ $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # public minecraft clients talks to the server on this port
 $IPTABLES -A INPUT -p tcp -s $DKTRUSTEDNET -m tcp --dport 25565 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $JHTRUSTEDNET -m tcp --dport 25565 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $EKTRUSTEDNET -m tcp --dport 25565 -m state --state NEW -j ACCEPT
 
 # allow DHCP requests
 $IPTABLES -A INPUT -p udp -m udp --dport 67:68 --sport 67:68 -m state --state NEW -j ACCEPT
