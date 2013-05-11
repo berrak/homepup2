@@ -10,7 +10,7 @@ define user_bashrc::config {
 
     # array of real users...(not root, or system accounts)
 		
-    if ( $name in ["bekr", "dakr"] ) {
+    if ( $name in ["bekr", "dakr", "levonline"] ) {
 		
 		# create a couple of standard sub directories for the user
 		

@@ -30,6 +30,9 @@ node 'carbon.home.tld' inherits basenode {
 	
     user_bashrc::config { 'bekr' : }
     puppet_devtools::tools { 'bekr' : }
+    user_bashrc::config { 'levonline' : }
+    puppet_devtools::tools { 'levonline' : }
+	
 	
 	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
     class { 'puppet_nfs4client::config' : user => 'bekr' }	
@@ -37,6 +40,7 @@ node 'carbon.home.tld' inherits basenode {
     ## use this host for puppet projects
 	
     puppet_gitclient::config { 'bekr': codehost => 'carbon' }
+    puppet_gitclient::config { 'levonline': codehost => 'carbon' }
 	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
