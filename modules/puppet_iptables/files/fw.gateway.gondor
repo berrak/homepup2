@@ -52,6 +52,9 @@ GITHUB="207.97.227.239"
 MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
+# Block google adsence, i.e. googlesyndication.com and googleadservices.com
+# if IP address change use '# host -t a <domain>' and '# whois <IP> | grep CIDR'
+GOOGLEADS="173.194.0.0/16"
 
 # Printers
 
@@ -165,6 +168,9 @@ $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j DROP
 $IPTABLES -A FORWARD -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARD INVALID "
 $IPTABLES -A FORWARD -m state --state INVALID -j DROP
 
+# drop all goggle ads
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp -d $GOOGLEADS -j $LOGOPT $RLIMIT --log-prefix "DROP GOOGLE ADS "
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp -d $GOOGLEADS -j DROP
 
 #-----------------------------------------------------------
 ## Internal outbound traffic (from internal net --> fwhost)
