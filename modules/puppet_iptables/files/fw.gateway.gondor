@@ -109,17 +109,29 @@ $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------
-# Reject google ads (only log for initial test -- comment out not to fill logs)
-# Block google ads, i.e. 'googlesyndication.com' and 'googleadservices.com'
-# if IP address change use '# host -t a <domain>' and '# whois <IP> | grep CIDR'
-$IPTABLES -N googleads-log-n-reject
+# Reject google ads, i.e. 'googlesyndication.com' and 'googleadservices.com'
+# if IP address change use '# host -t a <domain>' (and '# whois <IP> | grep CIDR')
+$IPTABLES -N googleads-ads-reject
 # googleadservices.com
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLEADSERV1 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE ADS "
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLEADSERV1 -m tcp --dport 80 -j REJECT
-# googlesyndication.com (also use above address)
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLESYNDIC1 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE SYN "
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLESYNDIC1 -m tcp --dport 80 -j REJECT
-$IPTABLES -A googleads-log-n-reject -j RETURN
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.32.45 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.32.57 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.32.58 -m tcp --dport 80 -j REJECT
+# googlesyndication.com
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.99 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.103 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.104 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.105 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.106 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.147 -m tcp --dport 80 -j REJECT
+
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.99 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.103 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.104 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.105 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.106 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.147 -m tcp --dport 80 -j REJECT
+
+$IPTABLES -A google-ads-reject -j RETURN
 #--------------------------------------------------------------------------------------
 
 ## NAT (source address changed to fwhosts ext. address for all outbound traffic)
@@ -149,7 +161,7 @@ $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATE
 $IPTABLES -A FORWARD -j blacklist-log-n-drop
 
 # Reject google ads requests from internal hosts going out 
-$IPTABLES -A FORWARD -j googleads-log-n-reject
+$IPTABLES -A FORWARD -j google-ads-reject
 
 # allow ssh pass out to special external addresses (github, my minecraft servers, ...)
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
