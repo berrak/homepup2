@@ -52,7 +52,7 @@ GITHUB="207.97.227.239"
 MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
-# Block google adsence, i.e. googlesyndication.com and googleadservices.com
+# Block google adsence, i.e. 'googlesyndication.com' and 'googleadservices.com'
 # if IP address change use '# host -t a <domain>' and '# whois <IP> | grep CIDR'
 GOOGLEADS="173.194.0.0/16"
 
@@ -109,6 +109,13 @@ $IPTABLES -A blacklist-log-n-drop -s $NETPRN_HP3015_ADDR -j DROP
 $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 
+#--------------------------------------------------------------------------------------
+## Drop google ads (only log for initial test -- comment out not to fill logs)
+$IPTABLES -N googleads-log-n-drop
+$IPTABLES -A googleads-log-n-drop -p tcp -s $NET_INT -m tcp -d $GOOGLEADS -j $LOGOPT $RLIMIT --log-prefix "DROP GOOGLE ADS "
+$IPTABLES -A googleads-log-n-drop -p tcp -s $NET_INT -m tcp -d $GOOGLEADS -j DROP
+$IPTABLES -A googleads-log-n-drop -j RETURN
+#--------------------------------------------------------------------------------------
 
 ## NAT (source address changed to fwhosts ext. address for all outbound traffic)
 $IPTABLES -t nat -A POSTROUTING -o $IF_EXT -j MASQUERADE
@@ -133,8 +140,11 @@ $IPTABLES -I OUTPUT 1 -o lo -j ACCEPT
 # allow established and related traffic pass
 $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# block some internal host IP's to pass this firewall 'inside' <---> 'outside' 
+# block some internal hosts IP going out (e.g. Printer)
 $IPTABLES -A FORWARD -j blacklist-log-n-drop
+
+# block google ads requests from internal hosts going out 
+$IPTABLES -A FORWARD -j googleads-log-n-drop
 
 # allow ssh pass out to special external addresses (github, my minecraft servers, ...)
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
@@ -167,10 +177,6 @@ $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j DROP
 # drop not forward any invalid packages
 $IPTABLES -A FORWARD -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARD INVALID "
 $IPTABLES -A FORWARD -m state --state INVALID -j DROP
-
-# drop all goggle ads
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp -d $GOOGLEADS -j $LOGOPT $RLIMIT --log-prefix "DROP GOOGLE ADS "
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp -d $GOOGLEADS -j DROP
 
 #-----------------------------------------------------------
 ## Internal outbound traffic (from internal net --> fwhost)
