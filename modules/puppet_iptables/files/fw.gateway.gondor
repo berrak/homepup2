@@ -52,9 +52,6 @@ GITHUB="207.97.227.239"
 MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
-GOOGLEADSERV1="173.194.0.0/16"
-GOOGLESYNDIC1="74.125.0.0/16"
-
 # Printers
 
 NETPRN_HP3015_ADDR="192.168.0.30"
@@ -111,25 +108,25 @@ $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 # Reject google ads, i.e. 'googlesyndication.com' and 'googleadservices.com'
 # if IP address change use '# host -t a <domain>' (and '# whois <IP> | grep CIDR')
-$IPTABLES -N googleads-ads-reject
+$IPTABLES -N google-ads-reject
 # googleadservices.com
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.32.45 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.32.57 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.32.58 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.32.45/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.32.57/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.32.58/32" -m tcp --dport 80 -j REJECT
 # googlesyndication.com
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.99 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.103 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.104 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.105 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.106 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.71.147 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.71.99/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.71.103/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.71.104/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.71.105/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.71.106/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.71.147/32" -m tcp --dport 80 -j REJECT
 
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.99 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.103 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.104 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.105 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.106 -m tcp --dport 80 -j REJECT
-$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d 173.194.143.147 -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.143.99/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.143.103/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.143.104/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.143.105/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.143.106/32" -m tcp --dport 80 -j REJECT
+$IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.143.147/32" -m tcp --dport 80 -j REJECT
 
 $IPTABLES -A google-ads-reject -j RETURN
 #--------------------------------------------------------------------------------------
