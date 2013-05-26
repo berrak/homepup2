@@ -158,6 +158,9 @@ $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --s
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
+# allow whois out
+$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT
+
 # allow dns (udp/tcp) queries out
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT

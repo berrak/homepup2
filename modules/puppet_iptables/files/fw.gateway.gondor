@@ -138,6 +138,9 @@ $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
+# allow whois queries pass out
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT
+
 # allow DNS queries pass
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 53 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p udp -s $NET_INT -m udp --dport 53 -m state --state NEW -j ACCEPT
