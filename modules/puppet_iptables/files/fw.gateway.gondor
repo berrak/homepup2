@@ -53,8 +53,7 @@ MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
 GOOGLEADSERV1="173.194.0.0/16"
-GOOGLESYNDIC1="173.194.0.0/16"
-GOOGLESYNDIC2="74.125.0.0/16"
+GOOGLESYNDIC1="74.125.0.0/16"
 
 # Printers
 
@@ -110,21 +109,16 @@ $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------
-# Drop google ads (only log for initial test -- comment out not to fill logs)
+# Reject google ads (only log for initial test -- comment out not to fill logs)
 # Block google ads, i.e. 'googlesyndication.com' and 'googleadservices.com'
 # if IP address change use '# host -t a <domain>' and '# whois <IP> | grep CIDR'
 $IPTABLES -N googleads-log-n-reject
 # googleadservices.com
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d GOOGLEADSERV1 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE ADS "
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d GOOGLEADSERV1 -m tcp --dport 80 -j REJECT
-
-# googlesyndication.com
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d GOOGLESYNDIC1 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE ADS "
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d GOOGLESYNDIC1 -m tcp --dport 80 -j REJECT
-
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d GOOGLESYNDIC2 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE ADS "
-$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d GOOGLESYNDIC2 -m tcp --dport 80 -j REJECT
-
+$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLEADSERV1 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE ADS "
+$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLEADSERV1 -m tcp --dport 80 -j REJECT
+# googlesyndication.com (also use above address)
+$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLESYNDIC1 -m tcp --dport 80 -j $LOGOPT $RLIMIT --log-prefix "REJECT GOOGLE SYN "
+$IPTABLES -A googleads-log-n-reject -p tcp -s $NET_INT -d $GOOGLESYNDIC1 -m tcp --dport 80 -j REJECT
 $IPTABLES -A googleads-log-n-reject -j RETURN
 #--------------------------------------------------------------------------------------
 
