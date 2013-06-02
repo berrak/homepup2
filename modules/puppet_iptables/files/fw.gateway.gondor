@@ -108,6 +108,9 @@ $IPTABLES -A blacklist-log-n-drop -j RETURN
 #--------------------------------------------------------------------------------------
 # Reject google ads, i.e. 'googlesyndication.com' and 'googleadservices.com'
 # if IP address change use '# host -t a <domain>' (and '# whois <IP> | grep CIDR')
+#
+# Does also blocks normal google search :-( from time to time. Find another solution.
+#
 $IPTABLES -N google-ads-reject
 # googleadservices.com
 $IPTABLES -A google-ads-reject -p tcp -s $NET_INT -d "173.194.32.45/32" -m tcp --dport 80 -j REJECT
@@ -158,7 +161,7 @@ $IPTABLES -I FORWARD 1 -i $IF_INT -o $IF_EXT -m state --state ESTABLISHED,RELATE
 $IPTABLES -A FORWARD -j blacklist-log-n-drop
 
 # Reject google ads requests from internal hosts going out 
-$IPTABLES -A FORWARD -j google-ads-reject
+# $IPTABLES -A FORWARD -j google-ads-reject
 
 # allow ssh pass out to special external addresses (github, my minecraft servers, ...)
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
