@@ -149,9 +149,17 @@ node 'valhall.home.tld' inherits basenode {
 ## (NAGIOS SERVER)
 ##########################################################
 node 'nagios.home.tld' {
-
+    
+	# required
+    include root_home
+    include root_bashrc
+	
 	# this installs management of puppet itself 
 	include puppetize
+    include puppet_utils
+	
+    ## additional users other than root
+    user_bashrc::config { 'bekr' : }
 }
 
 ##########################################################
