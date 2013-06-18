@@ -148,18 +148,34 @@ node 'valhall.home.tld' inherits basenode {
 ##########################################################
 ## (NAGIOS SERVER)
 ##########################################################
-node 'nagios.home.tld' {
+node 'nagios.home.tld' inherits basenode {
     
-	# required
-    include root_home
-    include root_bashrc
+    ## assumes that all host lives in the same domain, otherwise specify it as a parameter
+    class { admin_hosts::config :
+        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+		
+	## add ssh-server (but see manifest/install.pp if server is enabled to install)
+    include puppet_ssh
 	
-	# this installs management of puppet itself 
-	include puppetize
-    include puppet_utils
+	## network and default services
 	
-    ## additional users other than root
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
+	
+    class { puppet_iptables::config : role => 'default.server', inet => '192.168.0.0/24' }
+	
+	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+	    
+	## additional users other than root
     user_bashrc::config { 'bekr' : }
+	
+	## mail for all users
+    puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
+				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+    puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }			
+    puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }			
+
 }
 
 ##########################################################
