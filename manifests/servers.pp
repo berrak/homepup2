@@ -145,6 +145,14 @@ node 'valhall.home.tld' inherits basenode {
 
 }
 
+##########################################################
+## (NAGIOS SERVER)
+##########################################################
+node 'nagios.home.tld' {
+
+	# this installs management of puppet itself 
+	include puppetize
+}
 
 ##########################################################
 ## (WARP) - Fileserver: In sub domain: sec.home.tld
