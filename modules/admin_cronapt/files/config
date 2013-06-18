@@ -8,7 +8,7 @@
 # Run options
 #
 
-APTCOMMAND="/usr/bin/aptitude"
+APTCOMMAND="/usr/bin/apt-get"
 RUNSLEEP=120
 OPTIONS=""
 

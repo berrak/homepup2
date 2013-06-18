@@ -1,2 +1,1 @@
-autoclean -y
-safe-upgrade -d -y -o APT::Get::Show-Upgraded=true
+upgrade --trivial-only -o APT::Get::Show-Upgraded=true
