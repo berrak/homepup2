@@ -30,7 +30,14 @@ class puppetize::install {
 		  mode => '0700',
 	}
 	
-  
+	# create a sub directory 'files' for Debian preseed files
+	
+	file { "/etc/puppet/files":
+		ensure => directory,
+		 owner => 'root',
+		 group => 'root',
+	}
+	
 	# For puppet server
 	
 	if $::hostname == $::puppetize::params::mypuppetserver_hostname {
@@ -38,15 +45,7 @@ class puppetize::install {
         package { "puppetmaster" :
             ensure => present,
 		}
-		
-        # create a sub directory 'files' for Debian preseed files
-		
-        file { "/etc/puppet/files":
-            ensure => directory,
-             owner => 'root',
-             group => 'root',
-        }
-		
+  		
 	}
 
 
