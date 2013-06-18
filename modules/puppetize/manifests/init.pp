@@ -3,6 +3,7 @@
 ##
 class puppetize {
 
+
     include puppetize::install, puppetize::params, puppetize::config, puppetize::service
 
 }
