@@ -163,7 +163,7 @@ node 'nagios.home.tld' inherits basenode {
 	
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
 	
-    class { puppet_iptables::config : role => 'default.server', inet => '192.168.0.0/24' }
+    # class { puppet_iptables::config : role => 'default.server', inet => '192.168.0.0/24' }
 	
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	    
