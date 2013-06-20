@@ -8,7 +8,7 @@
 #
 define admin_bndl::install {
   
-    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'securityapps', 'nonfree' ]) {
+    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'securityapps', 'nonfree', 'python-markdown' ]) {
         fail("Package bundle parameter ($name) not recognized!")
     }
   
@@ -149,16 +149,18 @@ define admin_bndl::install {
 			## Add some logging and other modules
 			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl" ]:
                 ensure => installed }
-      
+		}
+			
+		python-markdown : {
+				
+			## Add some useful RestructuredText python tools
+            package  { [ "python-docutils", "docutils-doc" ]:
+                ensure => installed }
 	  
         }
         
         default: {}
         
-    
-    
-    
-    
     
     }
 
