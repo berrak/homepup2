@@ -14,30 +14,30 @@ class puppet_iptables::params {
     # time server
     #-------------  
     
-    $ntphostaddr = '192.168.0.1'
+    $ntphostaddr = '192.168.0.1/24'
     
     
     # net printers
     #-------------
     
-    $netprn_hp3015_addr = '192.168.0.30'
+    $netprn_hp3015_addr = '192.168.0.30/24'
 
     
     # puppet server
     #--------------
     
-    $puppetserveraddr = '192.168.0.24'
+    $puppetserveraddr = '192.168.0.24/24'
     
     
     # mail/imap server
     #------------------
     
-    $smtphostaddr = '192.168.0.11'
+    $smtphostaddr = '192.168.0.11/24'
     
     
     # file server (incl log host)
     #------------------------------
-    $fileserveraddr = '192.168.2.83'
+    $fileserveraddr = '192.168.2.83/24'
     
 
 }
