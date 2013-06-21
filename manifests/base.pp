@@ -29,8 +29,6 @@ node basenode {
     admin_bndl::install { 'coresysapps' : }
     admin_bndl::install { 'cliadminapps' : }
 	
-    admin_bndl::install { 'python-markdown' : }
-	
 	# high memory usage during index rebuild - never allow install.
     admin_pkg::blacklist { 'apt-xapian-index' :}
 	

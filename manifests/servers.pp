@@ -46,6 +46,8 @@ node 'carbon.home.tld' inherits basenode {
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
 	
+    admin_bndl::install { 'python-markdown' : }
+	
     include puppet_cups
 	
 	# install local mail reader 
