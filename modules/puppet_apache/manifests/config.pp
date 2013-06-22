@@ -13,7 +13,6 @@ class puppet_apache::config {
         notify => Service["apache2"],
     }
     
-    
     # Configure ports and vhost with facter
     
     $wwwipaddress = $::ipaddress
