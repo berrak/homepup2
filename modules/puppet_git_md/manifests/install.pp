@@ -3,7 +3,7 @@
 ##
 class puppet_git_md::install {
 
-    package { [ "rubygems", "libjson-ruby"] :
+    package { [ "libjson-ruby" ] :
          ensure => installed
     }
     
