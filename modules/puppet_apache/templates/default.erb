@@ -6,9 +6,9 @@
 
 	DocumentRoot /var/www/www.default.tld
 	
-	# Always block file system root access
+	# Always block file system root access in /var/www and higher
 	
-	<Directory />
+	<Directory /var/www>
 		AllowOverride None
 		Options None
 		Order Deny,allow

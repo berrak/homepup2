@@ -3,6 +3,17 @@
 #
 class puppet_apache::config {
 
+    # Global security settings
+    
+    file { '/etc/apache2/conf.d/security':
+         source => "puppet:///modules/puppet_apache/security",    
+          owner => 'root',
+          group => 'root',
+        require => Class["puppet_apache::install"],
+        notify => Service["apache2"],
+    }
+    
+    
     # Configure ports and vhost with facter
     
     $wwwipaddress = $::ipaddress
