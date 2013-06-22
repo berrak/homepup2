@@ -3,7 +3,7 @@
 ##
 define puppet_git_md::config {
 
-    include puppet_git_md
+    include puppet_git_md::install
 	
 	# array of real users...(not root, or system accounts)
 		
