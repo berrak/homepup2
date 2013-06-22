@@ -93,6 +93,9 @@ node 'shire.home.tld' inherits basenode {
     user_bashrc::config { 'bekr' : }
     user_bashrc::config { 'dakr' : }
 	
+	# must came after the user bashrc id defined
+	puppet_git_md::config { 'bekr': }
+	
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	

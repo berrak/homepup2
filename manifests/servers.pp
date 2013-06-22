@@ -29,10 +29,12 @@ node 'carbon.home.tld' inherits basenode {
 	## users
 	
     puppet_devtools::tools { 'bekr' : }
-	
+
     user_bashrc::config { 'bekr' : }
     user_bashrc::config { 'levonline' : }
 	
+    # must came after the user bashrc id defined
+	puppet_git_md::config { 'bekr': }
 	
 	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
     class { 'puppet_nfs4client::config' : user => 'bekr' }	
