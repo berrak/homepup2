@@ -3,7 +3,9 @@
 ##
 define puppet_git_md::config {
 
-    # array of real users...(not root, or system accounts)
+    include puppet_git_md
+	
+	# array of real users...(not root, or system accounts)
 		
     if ( $name in ["bekr"] ) {
     
