@@ -4,8 +4,7 @@
 class puppet_git_md::install {
 
     package { [ "rubygems", "libjson-ruby"] :
-         ensure => installed,
-        require => Class["user_bashrc::config"]
+         ensure => installed
     }
     
 }
