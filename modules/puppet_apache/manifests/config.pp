@@ -12,6 +12,7 @@ class puppet_apache::config {
           owner => 'root',
           group => 'root',       
         require => Class["puppet_apache::install"],
+        notify => Service["apache2"],
     }
     
     # Configure the default vhost (catch all for an unmatched site)
