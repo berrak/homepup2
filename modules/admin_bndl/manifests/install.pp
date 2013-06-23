@@ -114,11 +114,8 @@ define admin_bndl::install {
         
             # build-essential: various debian tools for the sw developer
 			# diffuse: GUI tool for merging and comparing text files
-			# rubygems1.9.1: tool for deploying ruby gems
-			# python-pip: improved python installer
-			# bluefish: HTML editor
           
-	        package  { [ "build-essential", "diffuse", "rubygems1.9.1"]:
+	        package  { [ "build-essential", "diffuse"]:
                  ensure => installed }
         
 		    ## Add some perl tools:
@@ -150,14 +147,7 @@ define admin_bndl::install {
 			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl" ]:
                 ensure => installed }
 		}
-			
-		python-markdown : {
-				
-			## Add some useful RestructuredText python tools
-            package  { [ "python-docutils", "docutils-doc" ]:
-                ensure => installed }
-	  
-        }
+
         
         default: {}
         
