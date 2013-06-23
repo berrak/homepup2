@@ -8,20 +8,53 @@
 	
 	# Always block file system root access in /var/www and higher
 	
-	#<Directory /var/www>
-	#	AllowOverride None
-	#	Options None
-	#	Order Deny,allow
-	#	Deny from all
-	#</Directory>
+	<Directory /var/www>
+		AllowOverride None
+		Options None
+		Order Deny,allow
+		Deny from all
+	</Directory>
 	
 	# Sets access, by default only below /var/www/www.default.tld
 	
 	<Directory /var/www/www.default.tld>
 		AllowOverride None
 		Options None
-		Order Allow,deny
 		Allow from all
+		Order Allow,deny
+
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	
+</VirtualHost>
+
+<VirtualHost 127.0.0.1>
+	ServerAdmin root@localhost
+
+	DocumentRoot /var/www/www.default.tld
+	
+	# Always block file system root access in /var/www and higher
+	
+	<Directory /var/www>
+		AllowOverride None
+		Options None
+		Order Deny,allow
+		Deny from all
+	</Directory>
+	
+	# Sets access, by default only below /var/www/www.default.tld
+	
+	<Directory /var/www/www.default.tld>
+		AllowOverride None
+		Options None
+		Allow from all
+		Order Allow,deny
+
 	</Directory>
 
 	ErrorLog ${APACHE_LOG_DIR}/error.log
