@@ -68,7 +68,7 @@ class puppet_apache::config {
 		mode => '0755',
 	}
     
-    # Default and localhost index file
+    # Default and localhost index file (maintenance and picture) and the favicon
     
     file { '/var/www/www.default.tld/index.html':
          source => "puppet:///modules/puppet_apache/default.index.html",    
@@ -76,5 +76,19 @@ class puppet_apache::config {
           group => 'root',
         require => File["/var/www/www.default.tld"],
     }
+    
+    file { '/var/www/www.default.tld/toolbox.jpg':
+         source => "puppet:///modules/puppet_apache/toolbox.jpg",    
+          owner => 'root',
+          group => 'root',
+        require => File["/var/www/www.default.tld"],
+    }
+    
+    file { '/var/www/www.default.tld/favicon.ico':
+         source => "puppet:///modules/puppet_apache/tux-favicon.ico",    
+          owner => 'root',
+          group => 'root',
+        require => File["/var/www/www.default.tld"],
+    }  
     
 }
