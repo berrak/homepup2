@@ -12,10 +12,6 @@ class puppet_apache::config {
         require => Class["puppet_apache::install"],
         notify => Service["apache2"],
     }
-    
-    # Configure ports and vhost with facter
-    
-    $wwwipaddress = $::ipaddress
 
     file { '/etc/apache2/ports.conf':
         content =>  template('puppet_apache/ports.conf.erb'),
@@ -25,7 +21,9 @@ class puppet_apache::config {
         notify => Service["apache2"],
     }
     
-    # Configure the default vhost (catch all for an unmatched site)
+    ## Configure the default vhost (catch all for an unmatched site)
+    
+    $wwwipaddress = $::ipaddress
     
     file { '/etc/apache2/sites-available/default':
         content =>  template('puppet_apache/default.erb'),
@@ -34,7 +32,7 @@ class puppet_apache::config {
         require => Class["puppet_apache::install"],
     }
 
-    # Enable the default vhost site
+    ## Enable the default vhost site
     
     file { '/etc/apache2/sites-enabled/000-default':
         ensure => 'link',
@@ -42,7 +40,27 @@ class puppet_apache::config {
        require => Class["puppet_apache::install"],
     }
     
-	# Create the directory for the default vhost site
+    ## Configure the localhost vhost (catch all for an unmatched site)
+    
+    $localhostaddress = '127.0.0.1'
+    
+    file { '/etc/apache2/sites-available/localhost':
+        content =>  template('puppet_apache/localhost.erb'),
+          owner => 'root',
+          group => 'root',       
+        require => Class["puppet_apache::install"],
+    }
+
+    ## Enable the localhost vhost site
+    
+    file { '/etc/apache2/sites-enabled/000-localhost':
+        ensure => 'link',
+        target => '/etc/apache2/sites-available/localhost',
+       require => Class["puppet_apache::install"],
+    }
+    
+    
+	# Create the directory for the default and localhost vhost site
     
 	file { "/var/www/www.default.tld":
 		ensure => "directory",
@@ -51,7 +69,7 @@ class puppet_apache::config {
 		mode => '0755',
 	}
     
-    # Default index file
+    # Default and localhost index file
     
     file { '/var/www/www.default.tld/index.html':
          source => "puppet:///modules/puppet_apache/default.index.html",    
