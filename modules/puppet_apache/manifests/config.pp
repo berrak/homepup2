@@ -13,6 +13,9 @@ class puppet_apache::config {
         notify => Service["apache2"],
     }
 
+    $wwwipaddress = $::ipaddress
+    $localhostaddress = '127.0.0.1'
+
     file { '/etc/apache2/ports.conf':
         content =>  template('puppet_apache/ports.conf.erb'),
           owner => 'root',
@@ -22,8 +25,6 @@ class puppet_apache::config {
     }
     
     ## Configure the default vhost (catch all for an unmatched site)
-    
-    $wwwipaddress = $::ipaddress
     
     file { '/etc/apache2/sites-available/default':
         content =>  template('puppet_apache/default.erb'),
@@ -41,8 +42,6 @@ class puppet_apache::config {
     }
     
     ## Configure the localhost vhost (catch all for an unmatched site)
-    
-    $localhostaddress = '127.0.0.1'
     
     file { '/etc/apache2/sites-available/localhost':
         content =>  template('puppet_apache/localhost.erb'),
