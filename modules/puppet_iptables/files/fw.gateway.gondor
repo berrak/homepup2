@@ -163,10 +163,6 @@ $IPTABLES -A FORWARD -j blacklist-log-n-drop
 # Reject google ads requests from internal hosts going out 
 # $IPTABLES -A FORWARD -j google-ads-reject
 
-
-# allow ftp requests pass out (for downloads from some servers...like APC)
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 21 -m state --state NEW -j ACCEPT
-
 # allow ssh pass out to special external addresses (github, my minecraft servers, ...)
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
