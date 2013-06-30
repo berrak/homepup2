@@ -77,12 +77,13 @@ class puppet_apache::config {
         require => File["/var/www/www.default.tld"],
     }
     
-    file { '/var/www/www.default.tld/toolbox.jpg':
-         source => "puppet:///modules/puppet_apache/toolbox.jpg",    
-          owner => 'root',
-          group => 'root',
-        require => File["/var/www/www.default.tld"],
-    }
+    # temporary removed due to un-known/un-trusted source of jpg file (400x305 px)
+    #file { '/var/www/www.default.tld/toolbox.jpg':
+    #     source => "puppet:///modules/puppet_apache/toolbox.jpg",    
+    #      owner => 'root',
+    #      group => 'root',
+    #    require => File["/var/www/www.default.tld"],
+    #}
     
     file { '/var/www/www.default.tld/favicon.ico':
          source => "puppet:///modules/puppet_apache/tux-favicon.ico",    

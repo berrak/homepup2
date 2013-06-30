@@ -58,8 +58,9 @@ node 'carbon.home.tld' inherits basenode {
 	
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
-				
-    include puppet_apache
+		
+	#temporary removed apache from this host			
+    # include puppet_apache
 
 }
 
