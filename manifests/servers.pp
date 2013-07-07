@@ -1,65 +1,63 @@
 #########################################
-## (CARBON) puppet master server
+## (CARBON) puppet client/master host
 #########################################
-node 'carbon.home.tld' inherits basenode {
-	
-	include puppet_tiger
+node 'nodecarbon.home.tld' inherits basenode {
+    
+    include puppet_tiger
     include admin_hardening
-	
-	# add a ssh-client (which host is the server is defined in params)
-	
+    
+    # add a ssh-client (which host is the server is defined in params)
+    
     include puppet_ssh
-
+    
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
-        puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
-        gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
-        smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
-
-	# Note: requires a copy of hosts 'fstab' file at puppetmaster.
+    puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
+    gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
+    smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
+    
+    # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'carbon' }
-		
+        
     # this adds the firewall for puppetmaster.
     class { puppet_iptables::config : role => 'puppetmaster', hostnm => 'carbon' }
-	
+    
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
-	
-	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
-	
-	## users
-	
+    
+    class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
+    
+    ## users
+    
     puppet_devtools::tools { 'bekr' : }
-
+    
     user_bashrc::config { 'bekr' : }
-    user_bashrc::config { 'levonline' : }
-	
-	# must came after the user bashrc id defined (do not use until converted this script  to perl)
-	# puppet_git_md::config { 'bekr': }
-	
-	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
+    
+    # must came after the user bashrc id defined (do not use until converted this ruby script  to perl)
+    ## puppet_git_md::config { 'bekr': }
+    
+    ## enable nfs for user 'bekr' (really just creates the mount point in users' home)
     class { 'puppet_nfs4client::config' : user => 'bekr' }	
-	
+    
     ## use this host for puppet projects
-	
+    
     puppet_gitclient::config { 'bekr': codehost => 'carbon' }
     puppet_gitclient::config { 'levonline': codehost => 'carbon' }
-	
+    
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
-	
-    admin_bndl::install { 'python-markdown' : }
-	
+    
+    
     include puppet_cups
-	
-	# install local mail reader 
-	puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
+    
+    # install local mail reader 
+    puppet_mutt::install { 'bekr' : mailserver_hostname => 'rohan' }
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
-	
+    
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
-				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
-		
-	#temporary removed apache from this host			
+                mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
+        
+    #temporary removed apache from this host			
     # include puppet_apache
 
 }

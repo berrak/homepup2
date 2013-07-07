@@ -21,7 +21,10 @@ class puppetize::config {
 
     $puppetserver = $::puppetize::params::mypuppetserver_fqdn
     $puppetserverhostname = $::puppetize::params::mypuppetserver_hostname
-    $nodename = $::fqdn
+    $clientnodename = $::puppetize::params::mypuppetserverclient_hostname
+    
+    # concatenate the alternate fqdn for the puppet client (client and master on same host)
+    $clientpuppetnodename = ${clientnodename}${.}${::fqdn}
     
     if $::hostname == $::puppetize::params::mypuppetserver_hostname {
     

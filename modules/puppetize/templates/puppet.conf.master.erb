@@ -17,18 +17,16 @@ masterport = 8140
 puppetport = 8139
 
 [master]
-# The 'name' agents should use when connectiong to the puppet server
-# also used as default for 'ca_server' and where to send facts to.
+# The 'node name' of the puppet server (defaults to host fqdn but to be explicit)
 server = <%= puppetserver %>
 
-# The name to use when handling certificates, used in 'ca_name'
+# The 'certificate name' for master (defaults to host fqdn but to be explicit)
 certname = <%= nodename %>
 
 [agent]
-# The server the agent should connect to, and used as
-# default for 'ca_server' and where to send facts to.
+# Where to find the puppet server
 server = <%= puppetserver %>
 
-# The name to use when handling certificates, used in 'ca_name'
-certname = <%= nodename %>
+# The authentication name this client use for puppet master
+certname = <=% clientpuppetnodename %>
 
