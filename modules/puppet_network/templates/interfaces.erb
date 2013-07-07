@@ -4,7 +4,8 @@
 auto lo
 iface lo inet loopback
 
-<%= loadfirewall %>
+# Dont't load it this way - if it fails network fails - that makes it's hard for puppet execution
+# <%= loadfirewall %>
 
 # The primary network interface
 <%= auto0_stanza %>
