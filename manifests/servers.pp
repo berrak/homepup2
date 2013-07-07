@@ -41,7 +41,6 @@ node 'nodecarbon.home.tld' inherits basenode {
     ## use this host for puppet projects
     
     puppet_gitclient::config { 'bekr': codehost => 'carbon' }
-    puppet_gitclient::config { 'levonline': codehost => 'carbon' }
     
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
