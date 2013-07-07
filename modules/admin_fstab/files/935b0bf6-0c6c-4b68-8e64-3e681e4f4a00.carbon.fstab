@@ -1,0 +1,33 @@
+#
+# /etc/fstab: static file system information for 'carbon'.
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>          <options>     <dump>  <pass>
+# / was on /dev/sda6 during installation
+UUID=dd7fe938-6783-4079-ab8e-1f962245c77d /               ext4    errors=remount-ro 0       1
+# /boot was on /dev/sda1 during installation
+UUID=935b0bf6-0c6c-4b68-8e64-3e681e4f4a00 /boot           ext4    nodev,nosuid,noexec 0       2
+# /home was on /dev/sda7 during installation
+UUID=c22f7605-3eb5-4798-85ad-dc2845eea680 /home           ext4    nodev,nosuid    0       2
+# /srv was on /dev/sda13 during installation
+UUID=215b0365-fd6a-43f9-9079-c53c0d812ac0 /srv            ext4    nodev,nosuid,noexec 0       2
+# /tmp was on /dev/sda8 during installation
+UUID=a8f638e6-750d-4f1f-ab18-b5c2954c67ca /tmp            ext4    nodev,nosuid    0       2
+# /var was on /dev/sda9 during installation
+UUID=49503548-d49c-4af1-b4bf-b980bda73de1 /var            ext4    nosuid          0       2
+# /var/log was on /dev/sda10 during installation
+UUID=f75cd7ed-d393-4df8-9b73-83e75eb87cac /var/log        ext4    nodev,nosuid,noexec 0       2
+# /var/log/audit was on /dev/sda11 during installation
+UUID=620659be-79c2-4631-884f-98e46063a273 /var/log/audit  ext4    nodev,nosuid,noexec 0       2
+# /var/www was on /dev/sda12 during installation
+UUID=b3e8ff23-12b2-48d9-a008-12ac4e45968b /var/www        ext4    nodev,nosuid    0       2
+/dev/mapper/sda5_crypt none            swap    sw              0       0
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+
