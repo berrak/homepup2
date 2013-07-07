@@ -7,6 +7,7 @@ class puppetize::params {
     
     $mypuppetserver_hostname = 'carbon'
     
-    $mypuppetserverclient_hostname = 'nodecarbon'
+    # The alternate fqdn for the puppet client (client and master on same host)
+    $mypuppetserverclient_node_fqdn = 'nodecarbon.home.tld'
 
 }
