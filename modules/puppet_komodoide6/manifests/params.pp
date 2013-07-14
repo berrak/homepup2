@@ -13,8 +13,8 @@ class puppet_komodoide6::params {
     $targzfile_i386 = 'Komodo-IDE-6.1.3-66534-linux-libcpp6-x86.tar.gz'
     $targzfile_amd64 = 'Komodo-IDE-6.1.3-66534-linux-libcpp6-x86_64.tar.gz'
     
-    $exec_i386 = 'Komodo-IDE-6-Linux-x86_64-S677BFB4CB44.executable'
-    $exec_amd64 = 'Komodo-IDE-6-Linux-x86-S677BFB4CB44.executable'
+    $exec_amd64 = 'Komodo-IDE-6-Linux-x86_64-S677BFB4CB44.executable'
+    $exec_i386 = 'Komodo-IDE-6-Linux-x86-S677BFB4CB44.executable'
     
 
 }
