@@ -8,7 +8,7 @@ class puppet_komodoide6::params {
     # repositories but copied to the /etc/puppet/files manually.
     
     # The file locations were all Komodo IDE install files are stored.
-    $komodoide6_source_filepath = '/etc/puppet/files/komodo-ide6'
+    $komodoide6_source_filepath = '/etc/puppet/files'
     
     $targzfile_i386 = 'Komodo-IDE-6.1.3-66534-linux-libcpp6-x86.tar.gz'
     $targzfile_amd64 = 'Komodo-IDE-6.1.3-66534-linux-libcpp6-x86_64.tar.gz'

@@ -23,12 +23,6 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
 
 	$mykomdopath = $::puppet_komodoide6::params::komodoide6_source_filepath
 
-	file { "$mykomdopath":
-		ensure => "directory",
-		owner => 'root',
-		group => 'root',
-	}
-
 
     case $hostarch {
 
