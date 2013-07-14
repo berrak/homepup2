@@ -40,6 +40,7 @@ node 'nodecarbon.home.tld' inherits basenode {
     
     ## use this host for puppet projects
     
+    puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
     puppet_gitclient::config { 'bekr': codehost => 'carbon' }
     
     admin_bndl::install { 'guiadminapps' : }

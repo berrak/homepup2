@@ -39,7 +39,7 @@ node 'mordor.home.tld' inherits basenode {
 	
 	
     ## use this host for CPAN/perl projects
-	
+	puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
 	puppet_gitclient::config { 'bekr': codehost => 'mordor' }
 	
 	
@@ -100,7 +100,8 @@ node 'shire.home.tld' inherits basenode {
     # puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	
     puppet_devtools::tools { 'bekr' : }
-	
+	puppet_komodoide6::install { 'bekr' : hostarch => 'amd64' }
+    
 	## this (desktop-) host exports some 'home' sub-directories for user 'bekr'
     class { 'puppet_nfs4srv::config' : user => 'bekr' }
 	
