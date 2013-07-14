@@ -12,8 +12,6 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
 
     include puppet_komodoide6::params
 	
-	$mykomdopath = $::puppet_komodoide6::params::komodoide6_source_filepath
-	
     
     if ! ( $hostarch in [ 'i386', 'amd64' ]) {
 	    fail("FAIL: The given host architecture must be either 'i386' or 'amd64' only.")
@@ -22,6 +20,15 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
     if ! ( $::architecture in [ 'i386', 'amd64' ]) {
 	    fail("FAIL: System does not support architecture, must be either 'i386' or 'amd64' only.")
 	}
+
+	$mykomdopath = $::puppet_komodoide6::params::komodoide6_source_filepath
+
+	file { "$mykomdopath":
+		ensure => "directory",
+		owner => 'root',
+		group => 'root',
+	}
+
 
     case $hostarch {
 
@@ -32,6 +39,7 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
 				 source => "${mykomdopath}/${::puppet_komodoide6::params::targzfile_i386}",
 				  owner => $name,
 				  group => $name,
+				require => File[$mykomdopath],
 			}
 	
 			# The licence installer for Komodo IDE 6.1
@@ -40,6 +48,7 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
 				  owner => $name,
 				  group => $name,
 				   mode => '0755',
+				require => File[$mykomdopath],
 			}
 
         
@@ -53,6 +62,7 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
 				 source => "${mykomdopath}/${::puppet_komodoide6::params::targzfile_amd64}",
 				  owner => $name,
 				  group => $name,
+				require => File[$mykomdopath],
 			}
 	
 			# The licence installer for Komodo IDE 6.1
@@ -61,6 +71,7 @@ define puppet_komodoide6::install ( $hostarch = '' ) {
 				  owner => $name,
 				  group => $name,
 				   mode => '0755',
+				require => File[$mykomdopath],
 			}
 
         
