@@ -58,6 +58,13 @@ define puppet_gitclient::config ( $codehost = '' ) {
     
     $mygiteditor = $::puppet_gitclient::params::giteditor_nano
 	$mylogformat = $::puppet_gitclient::params::logformat
+	
+	# create a subdirectory for local repositories
+	file { "/home/${name}/GIT":
+		ensure => "directory",
+		 owner => $name,
+		 group => $name,
+	}
     
     file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_gitclient/gitconfig.erb' ),
