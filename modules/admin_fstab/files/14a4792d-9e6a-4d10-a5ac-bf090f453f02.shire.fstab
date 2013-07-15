@@ -30,3 +30,6 @@ UUID=a3717a48-f3e9-46ea-94ad-2f5e1290d448 /var/www        ext4    nodev,nosuid,n
 #
 # local raid 1 (mirror for some user data)
 /dev/md0        /exports                                  ext4    nodev,nosuid,noexec 0       2
+#
+# bind mount the local user bekrs' nfs folder for NFS exports (see /etc/exports)
+/exports/usernfs4/bekr    /home/bekr/nfs             none    bind,nosuid,nodev,noexec 0       0
