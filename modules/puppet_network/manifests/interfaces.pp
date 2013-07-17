@@ -21,6 +21,19 @@ class puppet_network::interfaces ( $interfaces = '1',
     
     include puppet_network::kernel, puppet_network::service, puppet_network::params
     
+    
+    # Don't use network-manager - home use only wired and static IP's (configured "manually" with puppet)
+    package { "network-manager-gnome":
+        ensure => purged,
+    }
+    
+    package { "network-manager":
+        ensure => purged,
+        require => Package["network-manager-gnome"],
+    }
+    
+    
+    
     if ! ( $addfirewall in [ 'true', 'false' ]) {
         fail("FAIL: Firewall parameter ($addfirewall) must be 'true' or 'false'.")
     }
