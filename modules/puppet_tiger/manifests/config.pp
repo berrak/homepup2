@@ -5,7 +5,7 @@
 ##     puppet_tiger::config { install_rec_tripwire => 'no' }
 ##     puppet_tiger::config { install_rec_tripwire => 'yes' }
 ##
-class puppet_tiger::config ( install_rec_tripwire = '' ) {
+class puppet_tiger::config ( $install_rec_tripwire = '' ) {
 
 
     if ! ( $install_rec_tripwire in [ "yes", "no" ]) {
