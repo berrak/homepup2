@@ -10,7 +10,7 @@ node 'gondor.home.tld' inherits basenode {
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
 	
     include puppet_tripwire
-	include puppet_tiger
+	puppet_tiger::config { install_rec_tripwire => 'yes' }
     include admin_hardening
 		
 	# run tripwire checks 3 times per day and have tripwire mail to root (but not cron daemon)
@@ -46,7 +46,7 @@ node 'gondor.home.tld' inherits basenode {
 ###################################################################
 node 'asgard.home.tld' inherits basenode {
     
-	include puppet_tiger
+	puppet_tiger::config { install_rec_tripwire => 'no' }
     include admin_hardening
 	
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
