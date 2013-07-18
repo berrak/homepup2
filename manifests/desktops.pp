@@ -102,8 +102,8 @@ node 'shire.home.tld' inherits basenode {
     puppet_devtools::tools { 'bekr' : }
 	puppet_komodoide6::install { 'bekr' : hostarch => 'amd64' }
     
-    # use KVM instead for virtualbox - less trouble
-    # include puppet_virtualbox
+    # this is the latest sun/oracle version of VirtualBox (4.2) - works out of the box :-)
+    include puppet_virtualbox
     
 	## this (desktop-) host exports some 'home' sub-directories for user 'bekr'
     class { 'puppet_nfs4srv::config' : user => 'bekr' }

@@ -1,0 +1,8 @@
+#
+# /etc/apt/sources.list.d/oracle.list
+#
+#############################################################
+# MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
+#############################################################
+
+deb http://download.virtualbox.org/virtualbox/debian wheezy contrib
