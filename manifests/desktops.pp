@@ -3,7 +3,7 @@
 #########################################
 node 'mordor.home.tld' inherits basenode {
 	
-    puppet_tiger::config { install_rec_tripwire => 'no' }
+    class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
     include puppet_rsync
 
@@ -60,7 +60,7 @@ node 'shire.home.tld' inherits basenode {
 
 	include puppet_raid
 
-    puppet_tiger::config { install_rec_tripwire => 'no' }
+    class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
 	
 	# this host acts as 'NFS data server' for all desktup hosts and needs backup (rsync)

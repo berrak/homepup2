@@ -3,7 +3,7 @@
 #########################################
 node 'nodecarbon.home.tld' inherits basenode {
     
-    puppet_tiger::config { install_rec_tripwire => 'no' }
+    class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
     
     # add a ssh-client (which host is the server is defined in params)
@@ -209,7 +209,7 @@ node 'warp.sec.home.tld' inherits basenode {
 	
 	## security related
 	
-    puppet_tiger::config { install_rec_tripwire => 'no' }
+    class { puppet_tiger::config : install_rec_tripwire => 'no' }
 	include admin_hardening
 
 	## add ssh-server (but see manifest/install.pp if server is enabled to install)
