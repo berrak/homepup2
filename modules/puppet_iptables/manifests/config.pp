@@ -53,6 +53,7 @@ class puppet_iptables::config ( $role,
     $puppetserveraddr = $::puppet_iptables::params::puppetserveraddr
 	$smtphostaddr = $::puppet_iptables::params::smtphostaddr
 	$fileserveraddr = $::puppet_iptables::params::fileserveraddr
+    $virtualboxaddr = $::puppet_iptables::params::virtualboxaddr
 
 	## facter	
 		

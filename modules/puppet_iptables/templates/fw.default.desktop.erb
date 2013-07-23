@@ -47,6 +47,10 @@ MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
 
+# VirtualBox internal guests
+VBGUESTADDR="<%= virtualboxaddr %>"
+
+
 # Printers
 
 NETPRN_HP3015_ADDR="<%= netprn_hp3015_addr %>"
@@ -157,6 +161,10 @@ $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
+# allow ssh connction to VirtualBox guests
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $VBGUESTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $VBGUESTADDR -m tcp --dport 2222 -m state --state NEW -j ACCEPT
 
 # allow whois out
 $IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT

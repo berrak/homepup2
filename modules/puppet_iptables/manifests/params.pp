@@ -14,30 +14,35 @@ class puppet_iptables::params {
     # time server
     #-------------  
     
-    $ntphostaddr = '192.168.0.1/24'
+    $ntphostaddr = '192.168.0.1'
     
     
     # net printers
     #-------------
     
-    $netprn_hp3015_addr = '192.168.0.30/24'
+    $netprn_hp3015_addr = '192.168.0.30'
 
     
     # puppet server
     #--------------
     
-    $puppetserveraddr = '192.168.0.24/24'
+    $puppetserveraddr = '192.168.0.24'
     
     
     # mail/imap server
     #------------------
     
-    $smtphostaddr = '192.168.0.11/24'
+    $smtphostaddr = '192.168.0.11'
     
     
     # file server (incl log host)
     #------------------------------
-    $fileserveraddr = '192.168.2.83/24'
+    $fileserveraddr = '192.168.2.83'
     
+    
+    # VirtualBox Guest (default in VB NAT networking)
+    #-----------------------------------------------
+    $virtualboxaddr = '10.0.2.15'    
+
 
 }
