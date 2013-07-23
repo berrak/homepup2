@@ -39,10 +39,6 @@ class puppet_iptables::params {
     #------------------------------
     $fileserveraddr = '192.168.2.83'
     
-    
-    # VirtualBox Guest (default in VB NAT networking)
-    #-----------------------------------------------
-    $virtualboxaddr = '10.0.2.15'    
 
 
 }
