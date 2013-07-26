@@ -21,7 +21,6 @@ class puppet_virtualbox::install {
           owner => 'root',
           group => 'root',
         require => File["/etc/apt/sources.list.d/oracle.list"],
-         notify => Exec["aptitude-update"],
     }  
     
         
@@ -36,7 +35,6 @@ class puppet_virtualbox::install {
     # Run update apt to include Oracle repository - only on "new" virtualbox installs
     exec { "aptitude-update" :
           command => '/usr/bin/aptitude update',
-        subscribe => File["/etc/apt/oracle_vbox.asc"],
           require => Exec["add2apt-oracle-virtual-box-gpg-key"],
     }
     
