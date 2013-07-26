@@ -37,7 +37,15 @@ define user_bashrc::config {
 		     owner => "${name}",
 		     group => "${name}",
 	    }			
-	
+
+        # User virtual box images (on a large data partition)
+		
+        file { "/srv/${name}/myvirtualbox-vms":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+	    }		
+
 		
 		## default backup (rsync) configuration. Contains rsync password.
 		
