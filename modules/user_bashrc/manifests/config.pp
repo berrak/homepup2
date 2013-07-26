@@ -38,9 +38,9 @@ define user_bashrc::config {
 		     group => "${name}",
 	    }			
 
-        # User virtual box images (on a large data partition)
+        # User virtual box images (on a large data partition, /opt or /srv)
 		
-        file { "/srv/${name}-virtualbox-vms":
+        file { "/opt/${name}-virtualbox-vms":
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",
