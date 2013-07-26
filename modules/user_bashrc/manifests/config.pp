@@ -40,7 +40,7 @@ define user_bashrc::config {
 
         # User virtual box images (on a large data partition)
 		
-        file { "/srv/${name}/myvirtualbox-vms":
+        file { "/srv/${name}-virtualbox-vms":
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",
