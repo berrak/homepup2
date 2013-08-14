@@ -15,14 +15,16 @@ class admin_fstab::config ( $fstabhost='' ) {
     $fstab_uuid_sda1 = extlookup( "$fstabhost", "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
     
     if $fstab_uuid_sda1 == 'FSTAB_UNCOPIED_TO_PUPPET_MASTER' {
-        notify{"Disk, sda1-uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
+        notify{"Disk, the lowest partition in this host fstab file, normally sda1, uuid for ($fstabhost) is ($fstab_uuid_sda1)" : }
     }
     
 	# This will ensure we use the correct disk data and not corrupt fstab
 	
 	if $fstab_uuid_sda1 != 'FSTAB_UNCOPIED_TO_PUPPET_MASTER'  {
 		
-        # if UUID from grep does not match on target host, P't will abort run.
+        # If UUID from grep does not match on target host, Puppet will not touch existing fstab.
+		# We always use sda1 unless its occupied by some other operating system (e.g. win32).
+		# If so, use the lowest partition available, e.g. sda5 as identification for fstab file.
         
         exec { "Verifying_disk_UUID_match_fstab_data" :
                 command => "/bin/grep -w '$fstab_uuid_sda1' '/etc/fstab'",
