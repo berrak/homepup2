@@ -10,12 +10,7 @@
 ##
 class admin_fstab {
 
-	
-	file { "/etc/puppet/files/fstab_sda1_uuid.csv" : 
-		  source => "puppet:///modules/admin_fstab/fstab_sda1_uuid.csv",
-		   owner => 'root',
-		   group => 'root',
-		   before => Class["admin_fstab::config"],
-	}
+include admin_fstab::config	
+
 	
 }

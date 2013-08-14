@@ -1,13 +1,19 @@
 ##
 ## Define to copy fstab to host
 ##
+## This class manage the system 'fstab' file. Place a host specific file
+## in the source directory prefixed with output of 'blkid'.+ hostname'+"."+"fstab"
+## like so:
+##      '064b4f90-9c73-49ea-8734-9b62bfd55471.carbon.fstab
+## and a master CSV file ('fstab_sda1_uuid.csv') containing the sda1 disk 
+## UUID like so: 'carbon,"064b4f90-9c73-49ea-8734-9b62bfd55471"' one row for
+## each host name and UUID #.
+##
 ## Sample use:
 ##    class { admin_fstab::config : fstabhost => 'carbon' }
 ##
 class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
-
-    include admin_fstab
-    
+   
 	$server_source = $source ? {
 		'UNSET' => "puppet:///modules/admin_fstab/fstab_sda1_uuid.csv",
 		default => $source,
@@ -19,6 +25,7 @@ class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
 		 source => $server_source,
 		  owner => 'root',
 		  group => 'root',
+		  before => Exec["Verifying_disk_UUID_match_fstab_data"],
 	}
 	
     # Look up the UUID for this hosts sda1 partition (to be sure not doing any bad)
