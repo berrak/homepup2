@@ -109,7 +109,7 @@ node 'dell.home.tld' inherits basenode {
     admin_bndl::install { 'pythonapps' : }
 	
     # Python Lint checker
-    # puppet_pylint::config { 'bekr' : }
+    puppet_pylint::config { 'bekr' : }
     
     include puppet_cups
     
