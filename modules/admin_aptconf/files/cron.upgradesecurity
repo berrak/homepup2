@@ -8,10 +8,7 @@
 #
 # Runs (from cron.d) script for security updates (unattended).
 #
-# Requires script 'upgrade' (which runs tripwire if available)
-# and use aptitude, but in principle could be apt-get as well.
-#
-# Copyright (C) (2012) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
+# Copyright (C) (2012-13) K-B.Kronlund <bkronmailbox-copyright@yahoo.se>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +24,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-UPGRADE="/root/bin/upgrade"
+AUTOSECURITYUPGRADE="/usr/bin/apt-get -q -y -o DPkg::Options::=--force-confold upgrade"
 MV="/bin/mv"
 MKDIR="/bin/mkdir"
 
@@ -53,7 +50,7 @@ movedfiles=$?
 # runs the upgrade with repos that only is in 'sources.list'
 # which is security important and 'safe' to run unattended.
 
-$UPGRADE -y
+$AUTOSECURITYUPGRADE
 
 # move possible source snippets back to its original place
 
