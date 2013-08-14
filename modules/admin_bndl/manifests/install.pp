@@ -8,11 +8,7 @@
 #
 define admin_bndl::install {
   
-    if ! ( $name in [ 'officeapps', 'cliadminapps', 'guiadminapps', 'developerapps', 'coresysapps', 'securityapps', 'nonfree' ]) {
-        fail("Package bundle parameter ($name) not recognized!")
-    }
-  
-  
+
     case $name {
     
         coresysapps : {
@@ -158,10 +154,11 @@ define admin_bndl::install {
                  ensure => installed }
                  
         }
-        
 
         
-        default: {}
+        default: {
+            fail("FAIL: Package bundle parameter ($name) not recognized!")
+        }
         
     
     }
