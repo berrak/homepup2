@@ -40,11 +40,25 @@ define user_bashrc::config {
 
         # User virtual box images (on a large data partition, /opt or /srv)
 		
-        file { "/opt/${name}-virtualbox-vms":
+        file { "/opt/${name}":
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",
 	    }		
+
+        file { "/opt/${name}/virtualbox":
+		     ensure => "directory",
+		      owner => "${name}",
+		      group => "${name}",
+			require => File["/opt/${name}"],
+	    }
+		
+		file { "/opt/${name}/virtualbox/VirtualBox VMs":
+		 ensure => "directory",
+		  owner => "${name}",
+		  group => "${name}",
+		require => File["/opt/${name}/virtualbox"],
+	    }	
 
 		
 		## default backup (rsync) configuration. Contains rsync password.
