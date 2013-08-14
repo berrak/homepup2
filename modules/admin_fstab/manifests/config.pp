@@ -25,7 +25,6 @@ class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
 		 source => $server_source,
 		  owner => 'root',
 		  group => 'root',
-		  before => Exec["Verifying_disk_UUID_match_fstab_data"],
 	}
 	
     # Look up the UUID for this hosts sda1 partition (to be sure not doing any bad)
