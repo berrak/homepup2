@@ -4,13 +4,24 @@
 ## Sample use:
 ##    class { admin_fstab::config : fstabhost => 'carbon' }
 ##
-class admin_fstab::config ( $fstabhost='' ) {
+class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
 
     include admin_fstab
     
+	$server_source = $source ? {
+		'UNSET' => "puppet:///modules/admin_fstab/fstab_sda1_uuid.csv",
+		default => $source,
+	}
+	
+	$serverpath = "/etc/puppet/files/fstab_sda1_uuid.csv"
+
+	file { "$serverpath" : 
+		 source => $server_source,
+		  owner => 'root',
+		  group => 'root',
+	}
+	
     # Look up the UUID for this hosts sda1 partition (to be sure not doing any bad)
-    # Unfortunately have no control when this function will execute, and thus will
-    # not return anything the first P't run. Re-run P't and it works second run.
 
     $fstab_uuid_sda1 = extlookup( "$fstabhost", "FSTAB_UNCOPIED_TO_PUPPET_MASTER" )
     
