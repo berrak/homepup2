@@ -3,19 +3,30 @@
 ##
 class puppet_gitclient::params {
 
-    # global email and name
+    # Global email and names
+    
+    
+    # Puppet management
     
     $gitname_puppet = 'berrak'
     $gitemail_puppet = 'bkronmailbox-git@yahoo.se'
     
+    
+    
+    # Perl development
+    
     $gitname_cpan = 'bkron'
     $gitemail_cpan = 'bkron@cpan.org'
     
-    # $gitname_server = 'git'
-    # $gitemail_server = 'git@home.tld'
     
     
-    # favorite git editor (incl path) and alias for nice log graph
+    # Python development
+    
+    $gitname_debinix = 'debinix'
+    $gitemail_debinix = 'bertil.kronlund@gmail.com'    
+    
+    
+    # Default git editor (incl path) and nice log format
     
     $giteditor_nano = '/bin/nano'
     $logformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'

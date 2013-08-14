@@ -40,13 +40,12 @@ define puppet_gitclient::config ( $codehost = '' ) {
         
         }
 
-        #'valhall',
-        #'warp' : {
-        #
-        #    $mygitname = $::puppet_gitsrv::params::gitname_server
-        #    $mygitemail = $::puppet_gitsrv::params::gitemail_server
-        #
-        #}
+        'dell' : {
+
+            $mygitname = $::puppet_gitclient::params::gitname_debinix
+            $mygitemail = $::puppet_gitclient::params::gitemail_debinix
+        
+        }
 
         default: {
         
