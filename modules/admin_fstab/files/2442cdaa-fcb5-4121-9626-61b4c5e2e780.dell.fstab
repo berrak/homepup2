@@ -1,5 +1,5 @@
 #
-# /etc/fstab: static file system information.
+# /etc/fstab: static file system information for host 'dell'
 #
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
