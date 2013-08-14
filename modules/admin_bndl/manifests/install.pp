@@ -148,6 +148,17 @@ define admin_bndl::install {
 			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl" ]:
                 ensure => installed }
 		}
+        
+        pythonapps : {
+        
+            # pyflakes: passive checker of Python 2 and 3 programs
+			# python-pyside: python bindings/interface to qt4 
+          
+	        package  { [ "python-pyside", "pyflakes"]:
+                 ensure => installed }
+                 
+        }
+        
 
         
         default: {}

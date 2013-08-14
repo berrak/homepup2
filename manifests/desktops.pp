@@ -106,7 +106,11 @@ node 'dell.home.tld' inherits basenode {
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
+    admin_bndl::install { 'pythonapps' : }
 	
+    # Python Lint checker
+    # puppet_pylint::config { 'bekr' : }
+    
     include puppet_cups
     
     # this is the latest sun/oracle version of VirtualBox (4.2) - works out of the box :-)
