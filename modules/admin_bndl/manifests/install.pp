@@ -148,9 +148,10 @@ define admin_bndl::install {
         pythonapps : {
         
             # pyflakes: passive checker of Python 2 and 3 programs
-			# python-pyside: python bindings/interface to qt4 
+			# python-pyside: python bindings/interface to qt4
+            # python-sphinx, sphinx-doc: python documentation generator
           
-	        package  { [ "python-pyside", "pyflakes"]:
+	        package  { [ "python-pyside", "pyflakes", "python-sphinx", "sphinx-doc" ]:
                  ensure => installed }
                  
         }
