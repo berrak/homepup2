@@ -42,7 +42,10 @@ FILESERVERADDR="<%= fileserveraddr %>"
 
 # External special ssh hosts output
 
-GITHUB="207.97.227.239"
+GITHUB1="207.97.227.239"
+GITHUB2="204.232.175.90"
+GITHUBNET="192.30.252.0/22"
+
 MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
@@ -153,7 +156,10 @@ $IPTABLES -A INPUT ! -i lo -j DROP
 $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # allow ssh pass out to special external addresses (github, ...)
-$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB1 -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB2 -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUBNET -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
 

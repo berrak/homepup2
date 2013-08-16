@@ -48,7 +48,11 @@ FILESERVERADDR="192.168.2.83"
 
 # External special ssh hosts which needs forwarding
 
-GITHUB="207.97.227.239"
+GITHUB1="207.97.227.239"
+GITHUB2="204.232.175.90"
+GITHUBNET="192.30.252.0/22"
+
+
 MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
 
@@ -164,7 +168,10 @@ $IPTABLES -A FORWARD -j blacklist-log-n-drop
 # $IPTABLES -A FORWARD -j google-ads-reject
 
 # allow ssh pass out to special external addresses (github, my minecraft servers, ...)
-$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB1 -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUB2 -m tcp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUBNET -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
