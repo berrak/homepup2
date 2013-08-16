@@ -36,7 +36,13 @@ define user_bashrc::config {
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",
-	    }			
+	    }
+		
+	    file { "/home/${name}/pythonwork":
+		    ensure => "directory",
+		     owner => "${name}",
+		     group => "${name}",
+	    }	
 
         # User virtual box images (on a large data partition, /opt or /srv)
 		
@@ -106,10 +112,20 @@ define user_bashrc::config {
 	    refreshonly => true,
 		}
 		
-		# perl snippet file, sourced at login
+		# perl rc file, sourced at login
 		
 	    file { "/home/${name}/bashrc.d/perl.rc":
 			source => "puppet:///modules/user_bashrc/perl.rc",
+			 owner => "${name}",
+			 group => "${name}",
+			  mode => '0644',
+		   require => File["/home/${name}/bashrc.d/${name}"],
+	   	}
+		
+		# python rc file, sourced at login
+		
+		file { "/home/${name}/bashrc.d/python.rc":
+			source => "puppet:///modules/user_bashrc/python.rc",
 			 owner => "${name}",
 			 group => "${name}",
 			  mode => '0644',
