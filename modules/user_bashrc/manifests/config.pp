@@ -160,7 +160,7 @@ define user_bashrc::config {
 		# Fix bug only if display manager 'lightdm' exists (i.e. skip on servers)
 		
 		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
-				 command => "/bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
+				 command => "/usr/bin/test -x /home/${name}/.config/lxterminal/lxterminal.conf && /bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
 				  onlyif => "/bin/ps aux | /bin/grep lightdm",
 				 require => File["/home/${name}/.config/lxterminal"],
 		}
