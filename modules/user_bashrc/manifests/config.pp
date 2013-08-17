@@ -6,6 +6,11 @@
 ##
 define user_bashrc::config {
     
+	
+	## Note: Some files/directory creation is not relevant but is added
+	## anyway, Not ideal but due to that the regular user (here 'bekr')
+	## is also the systems 'admin' user (Todo: create different admin name)
+	
 	include puppet_utils	
 
     # array of real users...(not root, or system accounts)
@@ -132,21 +137,27 @@ define user_bashrc::config {
 		   require => File["/home/${name}/bashrc.d/${name}"],
 	   	}
 		
-		# fix bug in lxterminal - useer can't make configuration
-		# persistent (installed configuration set as root ownership)
+		# fix bug in lxterminal user can't make configuration
+		#  persistent (Debian defaults as root ownership).
+
 		
-        file { "/home/${name}/.config/lxterminal":
-		    ensure => "directory",
-		     owner => "${name}",
-		     group => "${name}",
+		file { "/home/${name}/.config/lxterminal":
+			ensure => "directory",
+			 owner => "${name}",
+			 group => "${name}",
 			  mode => '0755',
-	    }
-			
-		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
-			    command => "/bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
-			  subscribe => File["/home/${name}/.config/lxterminal"],
-	        refreshonly => true,
 		}
+		
+		# Fix bug only if display manager 'lightdm' exists (i.e. skip on servers)
+		
+		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
+				 command => "/bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
+			   subscribe => File["/home/${name}/.config/lxterminal"],
+			 refreshonly => true,
+				  onlyif => "/bin/ps aux | /bin/grep lightdm",
+				 require => File["/home/${name}/.config/lxterminal"],
+		}
+		
 	
 	} else {
 		
