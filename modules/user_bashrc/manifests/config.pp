@@ -155,14 +155,12 @@ define user_bashrc::config {
 			  group => "${name}",
 			   mode => '0755',
 			require => File["/home/${name}/.config"],
-			 notify => Exec["/home/${name}/.config/lxterminal/lxterminal.conf"],
 		}
 		
 		# Fix bug only if display manager 'lightdm' exists (i.e. skip on servers)
 		
 		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
 				 command => "/bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
-			   subscribe => File["/home/${name}/.config/lxterminal"],
 				  onlyif => "/bin/ps aux | /bin/grep lightdm",
 				 require => File["/home/${name}/.config/lxterminal"],
 		}
