@@ -137,15 +137,24 @@ define user_bashrc::config {
 		   require => File["/home/${name}/bashrc.d/${name}"],
 	   	}
 		
-		# fix bug in lxterminal user can't make configuration
-		#  persistent (Debian defaults as root ownership).
 
-		
-		file { "/home/${name}/.config/lxterminal":
+        # Required - for below fix, create main lxde config directory
+
+		file { "/home/${name}/.config":
 			ensure => "directory",
 			 owner => "${name}",
 			 group => "${name}",
-			  mode => '0755',
+		}
+		
+		# fix bug in lxterminal user can't make configuration
+		# persistent (Debian sets defaults as root ownership).
+		
+		file { "/home/${name}/.config/lxterminal":
+			 ensure => "directory",
+			  owner => "${name}",
+			  group => "${name}",
+			   mode => '0755',
+			require => File["/home/${name}/.config"],
 		}
 		
 		# Fix bug only if display manager 'lightdm' exists (i.e. skip on servers)
