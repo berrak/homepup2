@@ -7,5 +7,5 @@
 
 ## updates (once wheezy is released)
 
-# deb http://ftp.debian.org/debian/ wheezy-updates main
-# deb-src http://ftp.debian.org/debian/ wheezy-updates main
+deb http://ftp.debian.org/debian/ wheezy-updates main
+deb-src http://ftp.debian.org/debian/ wheezy-updates main
