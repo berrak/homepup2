@@ -1,14 +1,13 @@
+# /etc/fstab: static file system information.
 #
-# /etc/fstab: static file system information for host 'dell'
-#
-##############################################################
-# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
-##############################################################
 # Use 'blkid' to print the universally unique identifier for a
 # device; this may be used with UUID= as a more robust way to name devices
 # that works even if disks are added and removed. See fstab(5).
 #
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 # / was on /dev/sda5 during installation
-UUID=2442cdaa-fcb5-4121-9626-61b4c5e2e780 /               ext4    errors=remount-ro 0       1
+UUID=3de29279-a895-4ad3-ae9e-8c817e826256 /               ext4    errors=remount-ro 0       1
+# swap was on /dev/sda6 during installation
+UUID=416329bb-e1ed-4274-95f8-87e68c903242 none            swap    sw              0       0
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+/dev/sdb1       /media/usb0     auto    rw,user,noauto  0       0
