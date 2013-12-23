@@ -15,6 +15,7 @@
 ##
 class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
    
+	
 	$server_source = $source ? {
 		'UNSET' => "puppet:///modules/admin_fstab/fstab_sda1_uuid.csv",
 		default => $source,
