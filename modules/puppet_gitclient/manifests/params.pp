@@ -20,7 +20,7 @@ class puppet_gitclient::params {
     
     
     
-    # Python development
+    # COBOL development
     
     $gitname_debinix = 'debinix'
     $gitemail_debinix = 'bertil.kronlund@gmail.com'    

@@ -53,9 +53,9 @@ node 'mordor.home.tld' inherits basenode {
 	
 
 }
-#########################################
-## (DELL) developer host (laptop)
-#########################################
+##########################################
+## (DELL) NEW main developer host (laptop)
+##########################################
 node 'dell.home.tld' inherits basenode {
 	
     class { puppet_tiger::config : install_rec_tripwire => 'no' }
@@ -97,7 +97,7 @@ node 'dell.home.tld' inherits basenode {
     ## maybe do as with virtualbox install, i.e. repository at Dropbox?
 	## puppet_komodoide6::install { 'bekr' : hostarch => 'amd64' }
     
-    ## use this host for Python projects
+    ## use this host for COBOL (or Python) projects
 	puppet_gitclient::config { 'bekr': codehost => 'dell' }
 	
 	
@@ -114,7 +114,7 @@ node 'dell.home.tld' inherits basenode {
     include puppet_cups
     
     # this is the latest sun/oracle version of VirtualBox (4.2) - works out of the box :-)
-    include puppet_virtualbox
+    # include puppet_virtualbox
 	
 
 }

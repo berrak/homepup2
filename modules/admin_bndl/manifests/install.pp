@@ -70,12 +70,13 @@ define admin_bndl::install {
 			# debsums: verification of installed package files with MD5sums
 			# bash-doc: documentation and examples for bash.
             # curl: transfer data with URL syntax
+            # dnsutils: various client programs related to DNS
 			
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage", "curl" ] :
                 ensure => installed }
 			
-			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc" ] :
+			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc", "dnsutils" ] :
                 ensure => installed }
 			
 			
