@@ -156,7 +156,6 @@ define admin_bndl::install {
                  ensure => installed }
                  
         }
-
         
         default: {
             fail("FAIL: Package bundle parameter ($name) not recognized!")

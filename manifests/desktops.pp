@@ -106,8 +106,32 @@ node 'dell.home.tld' inherits basenode {
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
-    admin_bndl::install { 'pythonapps' : }
-	
+
+    
+    
+    ## COBOL tools and SQL
+    
+    # need some some packages from testing for open-cobol-ide
+    vb_add_aptrelease::config { 'testing' : }
+    # this will install from ubuntu PPA repo and from debian testing
+    include vb_opencobolide_ppa
+    
+    # partial install of required debian pacakges for OC-ESQL pre-compiler
+    include vb_ocesql      
+    
+    
+    # PostgreSQL-9.1
+    include vb_postgresql
+    
+    # Can't run these two as root - must be user postgres to connect
+    # vb_postgresql::add_dbuser { 'bekr' : }
+    # vb_postgresql::create_database { 'jensen' : owner => 'bekr' }
+    
+  
+    ## Python 
+     
+    admin_bndl::install { 'pythonapps' : } 
+     
     # Python Lint checker
     puppet_pylint::config { 'bekr' : }
     
