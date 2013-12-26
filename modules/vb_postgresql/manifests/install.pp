@@ -12,5 +12,9 @@ class vb_postgresql::install {
     package { "postgresql-server-dev-9.1" : ensure => installed }
     package { "libecpg-dev"               : ensure => installed }
     
+    # documentation
+    package { "postgresql-doc"            : ensure => installed }
+    package { "postgresql-autodoc"        : ensure => installed }    
+    
 
 }
