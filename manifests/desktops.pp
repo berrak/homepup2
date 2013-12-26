@@ -81,13 +81,15 @@ node 'dell.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
 				mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }		
 	
-	## users
+    ## users customization
+    
+    user_bashrc::config { 'bekr' : }
+    user_bashrc::config { 'jensen' : }    
+    
+	## users (mail)
 	
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
-	
-    user_bashrc::config { 'bekr' : }
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
-    puppet_devtools::tools { 'bekr' : }
 	
 	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
     class { 'puppet_nfs4client::config' : user => 'bekr' }
@@ -107,7 +109,7 @@ node 'dell.home.tld' inherits basenode {
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
 
-    
+    puppet_devtools::tools { 'bekr' : }    
     
     ## COBOL tools and SQL
     
