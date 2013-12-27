@@ -156,6 +156,16 @@ define admin_bndl::install {
                  ensure => installed }
                  
         }
+		
+        eclipseapps : {
+        
+            # eclipse-platform: Eclipse platform 3.8 without development plugins
+			# eclipse-cdt: C/C++ development tools
+          
+	        package  { [ "eclipse-platform", "eclipse-cdt" ]:
+                 ensure => installed }
+                 
+        }		
         
         default: {
             fail("FAIL: Package bundle parameter ($name) not recognized!")

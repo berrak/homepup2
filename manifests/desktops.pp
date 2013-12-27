@@ -108,6 +108,7 @@ node 'dell.home.tld' inherits basenode {
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
     admin_bndl::install { 'developerapps' : }
+    admin_bndl::install { 'eclipseapps' : }	
 
     puppet_devtools::tools { 'bekr' : }    
     
