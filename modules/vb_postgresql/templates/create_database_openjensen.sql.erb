@@ -1,7 +1,7 @@
-CREATE DATABASE <%= databasename %> WITH ENCODING 'UTF8' LC_COLLATE='sv_SE.utf8' LC_CTYPE='sv_SE.utf8' 
+CREATE DATABASE <%= name %> WITH ENCODING 'UTF8' LC_COLLATE='sv_SE.utf8' LC_CTYPE='sv_SE.utf8' 
 OWNER <%= databaseowner %>
 TEMPLATE=template0 ;
 
-CREATE USER <%= databaseowner %> ;
+CREATE USER <%= databaseuser %> ;
 
-GRANT ALL PRIVILEGES ON DATABASE <%= databasename %> TO <%= databaseowner %> ;
+GRANT ALL PRIVILEGES ON DATABASE <%= name %> TO <%= databaseuser %> ;
