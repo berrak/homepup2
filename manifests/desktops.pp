@@ -125,10 +125,11 @@ node 'dell.home.tld' inherits basenode {
     # PostgreSQL-9.1
     include vb_postgresql
     
-    # Can't run these two as root - must be user postgres to connect
-    # vb_postgresql::add_dbuser { 'bekr' : }
-    # vb_postgresql::create_database { 'jensen' : owner => 'bekr' }
-    
+    # vb_postgresql::create_database { 'jensen' : owner => 'bekr' }	
+	
+    # Add user and grant priviliges for user on database
+    vb_postgresql::add_dbuser { 'bekr' : }
+	
   
     ## Python 
      

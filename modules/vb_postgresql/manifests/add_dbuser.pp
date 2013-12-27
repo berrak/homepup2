@@ -11,17 +11,26 @@ define vb_postgresql::add_dbuser {
 		
 	# add one database user
 	
+    file { '/var/lib/postgresql/create_user_${name}.sql':
+         source => "puppet:///modules/vb_postgresql/create_user_${name}.sql",    
+          owner => 'postgres',
+          group => 'postgres',
+		  mode  => '0644',
+        require => Class["vb_postgresql::install"],
+    }	
+	
 	exec { "create_postgres_user":
-		command => "/bin/su - postgres && /usr/bin/createuser $name --createdb --no-superuser --no-password --no-createrole && /bin/sh exit",
-		require => Class["vb_postgresql"],
-		notify => Exec["set_mode_password_file"],
+		command => "/usr/bin/psql -f /var/lib/postgresql/create_user_${name}.sql",
+		user => 'postgres',
+		subscribe => File["/var/lib/postgresql/create_user_${name}.sql"],
+		refreshonly => true,
 	}	
 	
 	# although the user password may not be in use, it should always have mode '0600'
 	
-    exec { "set_mode_password_file" :
-         command => "/bin/chmod 0600 /home/$name/.pgpass",    
-    }
+    #exec { "set_mode_password_file" :
+    #     command => "/bin/chmod 0600 /home/$name/.pgpass",    
+    #}
 	
 	
     

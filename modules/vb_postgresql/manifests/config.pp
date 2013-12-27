@@ -27,5 +27,7 @@ class vb_postgresql::config {
         notify => Service["postgresql"],
     }	
 	
+	
+	
     
 }
