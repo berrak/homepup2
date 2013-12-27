@@ -1,0 +1,13 @@
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# ~/bashrc.d/postgresql.rc
+#
+# Sourced by user bash resource file
+#
+
+# For C developmemnt with ESQL lib and more
+
+export PGDATABASE=openjensen
+export PGUSER=jensen
