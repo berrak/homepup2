@@ -125,13 +125,10 @@ node 'dell.home.tld' inherits basenode {
     # PostgreSQL-9.1
     include vb_postgresql
     
-	# Create the database for the application and uid it will run as
-    vb_postgresql::create_database { 'openjensen' : databaseowner => 'jensen', databaseuser => 'jensen' }	
+	# Create the database for the application owner (databaseowner) and a regular developer user
+    vb_postgresql::create_database { 'openjensen' : databaseowner => 'jensen', databaseuser => 'bekr' }	
 	
-    # Add developer user and grant (all) priviliges for the user on the database openjensen
-    vb_postgresql::add_dbuser { 'openjensen' : databaseuser => 'bekr' }
-	
-  
+
     ## Python 
      
     admin_bndl::install { 'pythonapps' : } 

@@ -1,7 +1,7 @@
 #
 # Manage PostgreSQL-9.1
 #
-# Sample usage: vb_postgresql::create_database { 'openjensen' : databaseowner => 'jensen', databaseuser => 'jensen' }
+# Sample usage: vb_postgresql::create_database { 'openjensen' : databaseowner => 'jensen', databaseuser => 'bekr' }
 #
 #
 define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
@@ -13,7 +13,7 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 	}
 	
 	if $databaseuser == '' {
-		fail("FAIL: Missing the new database user name for the $name PostgreSQL database!")
+		fail("FAIL: Missing the new database regular user name for the $name PostgreSQL database!")
 	}		
 	
 	# add new postgres database and owner
@@ -33,5 +33,30 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 		refreshonly => true,
 		require => File["/var/lib/postgresql/create_database_${name}.sql"],
 	}		
+	
+	# add a regular user
+	
+    file { "/var/lib/postgresql/add_${databaseuser}_to_database.sql":
+		content =>  template( "vb_postgresql/add_${databaseuser}_to_database.sql.erb" ),
+          owner => 'postgres',
+          group => 'postgres',
+		  mode  => '0644',
+        require => [ Class["vb_postgresql::install"], File["/var/lib/postgresql/create_database_${name}.sql"] ],
+    }	
+	
+	exec { "create_postgres_user_${databaseuser}":
+		command => "/usr/bin/psql -f /var/lib/postgresql/add_${databaseuser}_to_database.sql",
+		user => 'postgres',
+		subscribe => File["/var/lib/postgresql/add_${databaseuser}_to_database.sql"],
+		refreshonly => true,
+		require => File["/var/lib/postgresql/add_${databaseuser}_to_database.sql"],
+	}		
+	
+	
+	
+	
+	
+	
+	
 	
 }
