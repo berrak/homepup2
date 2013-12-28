@@ -7,7 +7,12 @@
 # Sourced by user bash resource file
 #
 
-# For C developmemnt with ESQL lib and more
+# For C developmemnt with ECPG lib and more
 
 export PGDATABASE=openjensen
 export PGUSER=jensen
+
+# avoids run-time cannot find share libraries
+# for Cobol developmemnt with OCESQL lib
+
+export LD_LIBRARY_PATH=/usr/local/lib
