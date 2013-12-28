@@ -15,7 +15,7 @@ define admin_bndl::install {
         
             # Non-default core system add-on applications
             
-            package  { [ "firmware-linux-free", "locales-all" ] :
+            package  { [ "firmware-linux-free", "locales-all", "tree" ] :
                 ensure => installed }
         
         }
