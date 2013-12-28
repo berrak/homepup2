@@ -7,12 +7,15 @@
 define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 
     include vb_postgresql
+	include vb_postgresql::params
 
 	if $databaseowner == '' {
 		fail("FAIL: Missing the new database owner name for the $name PostgreSQL database!")
 	}
 			
 	# create database and owner
+	
+	$database_encoding = $::vb_postgresql::params::database_encoding
 	
     file { "/var/lib/postgresql/create_database_${name}.sql":
 		content =>  template( "vb_postgresql/create_database_${name}.sql.erb" ),
