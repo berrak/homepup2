@@ -126,10 +126,11 @@ node 'dell.home.tld' inherits basenode {
     # PostgreSQL-9.1
     include vb_postgresql
     
-	# Create the database for the application owner (databaseowner) and a regular developer user
-    vb_postgresql::create_database { 'openjensen' : databaseowner => 'jensen', databaseuser => 'bekr' }	
+	# Create database for the application and owner (option: 2nd databaseuser)
+    vb_postgresql::create_database { 'openjensen' :
+		databaseowner => 'jensen',
+		databaseuser => '' }	
 	
-
     ## Python 
      
     admin_bndl::install { 'pythonapps' : } 
@@ -139,7 +140,7 @@ node 'dell.home.tld' inherits basenode {
     
     include puppet_cups
     
-    # this is the latest sun/oracle version of VirtualBox (4.2) - works out of the box :-)
+    # this is the latest sun/oracle version of VirtualBox - works out of the box :-)
     # include puppet_virtualbox
 	
 
