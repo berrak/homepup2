@@ -33,7 +33,38 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 		require => File["/var/lib/postgresql/create_database_${name}.sql"],
 	}
 	
-	# add another user. (Note that this user still must be granted access to each
+	
+	
+	# copy over some help sql-scripts to create tables and load data 
+	
+    file { '/var/lib/postgresql/README':
+         source => "puppet:///modules/vb_postgresql/README",    
+          owner => 'postgres',
+          group => 'postgres',
+		  mode  => '0640',
+        require => Class["vb_postgresql::install"],
+    }	
+	
+    file { '/var/lib/postgresql/mk_tbl_tort.sql':
+         source => "puppet:///modules/vb_postgresql/mk_tbl_tort.sql",    
+          owner => 'postgres',
+          group => 'postgres',
+		  mode  => '0640',
+        require => Class["vb_postgresql::install"],
+    }
+	
+    file { '/var/lib/postgresql/insert_tort.sql':
+         source => "puppet:///modules/vb_postgresql/insert_tort.sql",    
+          owner => 'postgres',
+          group => 'postgres',
+		  mode  => '0640',
+        require => Class["vb_postgresql::install"],
+    }		
+	
+	
+	
+	
+	# add (option) another user. (Note that this user still must be granted access to each
 	# table and other database objects before having free acess to owners database)
 
 	if $databaseuser != '' {

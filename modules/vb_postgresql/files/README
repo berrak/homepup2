@@ -1,0 +1,12 @@
+README DEBIAN WHEEZY
+====================
+
+To create and load data run files in /var/lib/postgres
+which is the home for user postgres
+
+psql -d openjensen -U jensen -f mk_tbl_tort.sql
+psql -d openjensen -U jensen -f insert_tort.sql
+
+for all sql files type: mk_tbl_* and insert_*
+
+as user postgres i.e. (# su - postgres)
