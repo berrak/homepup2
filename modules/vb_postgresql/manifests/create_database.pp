@@ -41,7 +41,6 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
          source => "puppet:///modules/vb_postgresql/README",    
           owner => 'postgres',
           group => 'postgres',
-		  mode  => '0640',
         require => Class["vb_postgresql::install"],
     }	
 	
@@ -49,7 +48,6 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
          source => "puppet:///modules/vb_postgresql/mk_tbl_tort.sql",    
           owner => 'postgres',
           group => 'postgres',
-		  mode  => '0640',
         require => Class["vb_postgresql::install"],
     }
 	
@@ -57,7 +55,6 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
          source => "puppet:///modules/vb_postgresql/insert_tort.sql",    
           owner => 'postgres',
           group => 'postgres',
-		  mode  => '0640',
         require => Class["vb_postgresql::install"],
     }		
 	
