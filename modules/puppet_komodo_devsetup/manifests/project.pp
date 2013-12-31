@@ -17,6 +17,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	
     $sourcename = $::puppet_komodo_devsetup::params::sourcename	
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
+    $copybookname = $::puppet_komodo_devsetup::params::copybookname
 
     $builddirectory = $::puppet_komodo_devsetup::params::builddirectory	
 	
