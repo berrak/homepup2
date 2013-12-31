@@ -64,6 +64,13 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		  require => File["/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy"],
 		}
 		
+		file { "/home/${username}/${projectname}/${sourcename}/${copybookname}/${sourcename}_setupenv_${projectname}.cpy":
+		     source => "puppet:///modules/puppet_komodo_devsetup/${sourcename}_setupenv_${projectname}.cpy",
+			  owner => $username,
+			  group => $groupname,
+			require => [ File["/home/${username}/${projectname}/${sourcename}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
+		}			
+		
 		
 	}
 		
@@ -93,6 +100,12 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		  require => File["/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy"],		  
 		}
 		
+		file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/${libraryname}_setupenv_${projectname}.cpy":
+		     source => "puppet:///modules/puppet_komodo_devsetup/${libraryname}_setupenv_${projectname}.cpy",
+			  owner => $username,
+			  group => $groupname,
+			require => [ File["/home/${username}/${projectname}/${libraryname}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
+		}					
 		
 	}
  

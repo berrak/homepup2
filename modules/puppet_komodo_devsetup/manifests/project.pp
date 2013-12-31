@@ -131,4 +131,15 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		require => File["/home/${username}/${projectname}"],
 	}
 	
+	## Install a README
+	
+	file { "/home/${username}/${projectname}/README.komodo":
+		     source => "puppet:///modules/puppet_komodo_devsetup/README.komodo",
+		  owner => $username,
+		  group => $groupname,
+		require => File["/home/${username}/${projectname}"],
+	}	
+	
+	
+	
 }

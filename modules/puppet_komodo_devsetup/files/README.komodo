@@ -1,0 +1,70 @@
+## README
+
+# Setup Komodo 8 for development with COBOL
+
+If the project is name 'openjensen' a directory should already be in place at $HOME/openjensen
+
+Start Komodo.
+
+In Project-> New
+    name the project openjensen.komodoproject
+    
+In Edit->Preferences (EP)
+
+    EP->Editor->Indentation
+        ensure is 4 in all boxes.
+        
+    EP->Languages->Other
+        select Cobol
+        
+    EP->File Associations
+        add *.cbl, *.cob, *.cpy
+        for Language Cobol
+        
+    EP->Syntax Checking
+        select Language Cobol
+        
+    In the Preferences search box: type scrolling
+        unmark [ ] Use the minimap feature
+        
+# Editing and making files
+
+Editing is done with in the traditional indentation format.
+
+To compile a file, go to Tools menu.
+
+    Tools-> Run Command...
+    
+        In the Run box: 'make'
+        and add
+        
+        [x] Add to Toolbox
+        
+To run file 'hello.cgi' after make.
+
+    Tools-> Run Command...
+    
+        In the Run box: './hello.cgi'
+        and add
+        
+        [x] Add to Toolbox
+        
+        
+All this can naturally also be done at command line, in the current directory.
+
+    $ make hello
+    ./hello.cgi
+    
+    
+    
+# Run time environment
+
+For OpenCobol(GnuCobol) Copybook location - in our developer setup:
+
+    COB_LIBRARY_PATH=../lib
+    
+For Ocesql library:
+
+    LD_LIBRARY_PATH=/usr/local/lib  (default source install prefix)
+    
+    
