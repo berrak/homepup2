@@ -112,16 +112,45 @@ node 'dell.home.tld' inherits basenode {
 
     puppet_devtools::tools { 'bekr' : }    
     
-    ## COBOL tools and SQL
+    ## Simple COBOL IDE
     
     # need some some packages from testing for open-cobol-ide
     vb_add_aptrelease::config { 'testing' : }
     # this will install from ubuntu PPA repo and from debian testing
     include vb_opencobolide_ppa
     
-    # partial install of required debian pacakges for OC-ESQL pre-compiler
+    ## COBOL and SQL PostgreSQL development	
+	
+    # partial install of required debian pacakges for OCESQL pre-compiler
     include vb_ocesql      
     
+	# Setup project structure for COBOL development (with Komodo IDE)
+	
+    ## set up COBOL project file structure (no spaces in names)
+    
+    class { puppet_komodo_devsetup::project :
+      projectname => 'openjensen',
+		 username => 'bekr',
+        groupname => 'bekr',
+    }
+    
+	# put makefiles in source development directories
+	
+    puppet_komodo_devsetup::make { 'src' :
+     	projectname => 'openjensen',
+		   username => 'bekr',
+          groupname => 'bekr',
+    }
+    
+    puppet_komodo_devsetup::make { 'lib' :
+     	projectname => 'openjensen',
+		   username => 'bekr',
+          groupname => 'bekr',
+    }
+    
+    # Ensure daily cron backup
+    
+    puppet_komodo_devsetup::backup { 'bekr' : projectname => 'openjensen' }     	
     
     # PostgreSQL-9.1
     include vb_postgresql
@@ -131,7 +160,8 @@ node 'dell.home.tld' inherits basenode {
 		databaseowner => 'jensen',
 		databaseuser => '' }	
 	
-    ## Python 
+	
+    ## Python development
      
     admin_bndl::install { 'pythonapps' : } 
      

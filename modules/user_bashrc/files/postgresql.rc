@@ -7,12 +7,20 @@
 # Sourced by user bash resource file
 #
 
-# For C developmemnt with ECPG lib and more
+# For C development with ECPG lib and more
 
 export PGDATABASE=openjensen
 export PGUSER=jensen
 
-# avoids run-time cannot find share libraries
-# for Cobol developmemnt with OCESQL lib
+# avoid run-time issues when COBOL programs complied with support 
+# for SQL EXEC (and use OCESQL lib) will find required lobs.
 
 export LD_LIBRARY_PATH=/usr/local/lib
+
+# Open COBOL (GnuCobol) programs requires some paths set to
+# find it run-time libraries. Set some relative the executable
+
+# In the developers case, the lib location is a same level in the 
+# directory hierarchy make sure the right library location is called!
+
+export COB_LIBRARY_PATH=../lib
