@@ -84,7 +84,7 @@ all : $(TGTLIST)
 	$(OCESQL) $< $@
 
 
-.PHONY : all clean cleanall
+.PHONY : all clean cleanall build
 
 clean :
 	$(ERASE) *.cob
@@ -93,4 +93,6 @@ cleanall:
 	$(ERASE) *.cob
 	$(FIND) . -type f -perm /u=x -print0 | xargs -0 $(ERASE)
 
-
+build:
+	$(QUIET) $(ECHO) [makefile]: Copy any binary files to build directory ../<%= builddirectory %>/bin
+	$(QUIET) $(CP) *.cgi ../<%= builddirectory %>/bin/.
