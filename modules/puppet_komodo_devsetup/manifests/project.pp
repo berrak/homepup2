@@ -43,7 +43,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	}
 	
 	
-	## Build output directories for the final build target
+	## Build output directories for the final build (only binaries)
 	
 	
 	file { "/home/${username}/${projectname}/${builddirectory}":
@@ -66,21 +66,6 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		group => $groupname,
 		require => File[ "/home/${username}/${projectname}/${builddirectory}"],
 	}
-	
-	file { "/home/${username}/${projectname}/${builddirectory}/${sourcename}/${copybookname}":
-		ensure => "directory",
-		owner => $username,
-		group => $groupname,
-		require => File[ "/home/${username}/${projectname}/${builddirectory}/${sourcename}"],
-	}	
-	
-	file { "/home/${username}/${projectname}/${builddirectory}/${libraryname}/${copybookname}":
-		ensure => "directory",
-		owner => $username,
-		group => $groupname,
-		require => File[ "/home/${username}/${projectname}/${builddirectory}/${libraryname}"],
-	}
-	
 	
 	
 	

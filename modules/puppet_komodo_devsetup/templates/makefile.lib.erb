@@ -96,5 +96,5 @@ cleanall:
 	$(FIND) . -type f -perm /u=x -print0 | xargs -0 $(ERASE)
 
 build:
-	$(QUIET) $(ECHO) [makefile]: Copy any binary files to build directory ../<%= builddirectory %>/lib
-	$(QUIET) $(CP) *.cgi ../<%= builddirectory %>/lib/.
+	$(QUIET) $(ECHO) [makefile]: Copy any shared library files to build directory ../<%= builddirectory %>/lib
+	$(QUIET) $(CP) *.so ../<%= builddirectory %>/lib/.
