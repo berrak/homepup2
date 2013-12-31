@@ -50,7 +50,7 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		}
 		
 		file { "/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy":
-		     source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cbl",
+		     source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cpy",
 			  owner => $username,
 			  group => $groupname,
 			require => [ File["/home/${username}/${projectname}/${sourcename}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
@@ -79,7 +79,7 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		# rename 'cbl' copybook to standard 'cpy' extension (library OCESQL requires extension cbl though)
 		
 		file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy":
-		     source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cbl",
+		     source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cpy",
 			  owner => $username,
 			  group => $groupname,
 			require => [ File["/home/${username}/${projectname}/${libraryname}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
