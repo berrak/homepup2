@@ -63,6 +63,8 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		
 		file { "/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cbl":
 		  ensure => link,
+		   owner => $username,
+		   group => $groupname,
 		  target => "/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy",
 		  require => File["/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy"],
 		}
@@ -102,6 +104,8 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		
 		file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cbl":
 		  ensure => link,
+		   owner => $username,
+		   group => $groupname,		  
 		  target => "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy",
 		  require => File["/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy"],		  
 		}
