@@ -22,6 +22,6 @@ class puppet_rsync::params {
     
     # list of client hosts that backup with rsync
     
-    $clienthostlist = [ 'warp', 'shire', 'mordor' ]
+    $clienthostlist = [ 'warp', 'shire', 'mordor', dell ]
     
 }

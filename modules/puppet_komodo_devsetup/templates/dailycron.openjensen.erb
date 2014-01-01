@@ -1,14 +1,13 @@
 #!/bin/sh
 
-cd /home/<%= name %>/<%= projectname %> || exit 0
+cd /home/<%= name %> || exit 0
 
 make && make dist
 
 for FILE in *.gz ; do
     
-        test -f /home/<%= name %>/<%= projectname %>/$FILE                   || continue
-    
-        cp -p /home/<%= name %>/<%= projectname %>/$FILE /var/backups/$FILE  && chmod 644 /var/backups/$FILE
+        test -f /home/<%= name %>/$FILE  && chown <%= name %>:<%= name %> /home/<%= name %>/$FILE  || continue
+
+        cp -p /home/<%= name %>/$FILE /var/backups/$FILE  && chmod 644 /var/backups/$FILE
         
 done
-
