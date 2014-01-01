@@ -150,8 +150,8 @@ node 'dell.home.tld' inherits basenode {
 	
     puppet_komodo_devsetup::make { 'html' :
      	projectname => 'openjensen',
-		   username => 'jensen',
-          groupname => 'jensen',
+		   username => 'bekr',
+          groupname => 'bekr',
     }	
 	
     
