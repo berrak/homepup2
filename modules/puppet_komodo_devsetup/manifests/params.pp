@@ -8,6 +8,7 @@ class puppet_komodo_devsetup::params {
     $libraryname = 'lib'
 	$sourcename = 'src'
 	$copybookname = 'copy'
+    $htmlname = 'html'	
  
     # before creating 'tar' arhieve, 'make' copies all files to this location
     $builddirectory = 'build'

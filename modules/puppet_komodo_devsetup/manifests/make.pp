@@ -33,6 +33,7 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
     $sourcename = $::puppet_komodo_devsetup::params::sourcename	
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
+    $htmlname = $::puppet_komodo_devsetup::params::htmlname
 	
     $builddirectory = $::puppet_komodo_devsetup::params::builddirectory		
 
@@ -118,6 +119,18 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		}					
 		
 	}
+	
+	
+	if $name == $htmlname {
+		
+		file { "/home/${username}/${projectname}/${htmlname}/makefile":
+			content =>  template("puppet_komodo_devsetup/makefile.${name}.erb"),  
+			  owner => $username,
+			  group => $groupname,
+			require => [ File["/home/${username}/${projectname}"], Class["puppet_komodo_devsetup::project"]],
+		}
+		
+	}	
  
     
 }

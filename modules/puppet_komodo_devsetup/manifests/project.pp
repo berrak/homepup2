@@ -18,6 +18,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
     $sourcename = $::puppet_komodo_devsetup::params::sourcename	
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
+    $htmlname = $::puppet_komodo_devsetup::params::htmlname	
 
     $builddirectory = $::puppet_komodo_devsetup::params::builddirectory	
 	
@@ -104,7 +105,14 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		require => File["/home/${username}/${projectname}/${libraryname}"],
 	}		
 	
-
+	# html directory
+	
+	file { "/home/${username}/${projectname}/${htmlname}":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}"],
+	}
 	
 	
 	## install the top makefile's for the project
