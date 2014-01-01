@@ -97,6 +97,6 @@ cleanall:
 	
 build:
 	$(QUIET) $(ECHO) [makefile]: Copy any binary files to build directory ../<%= builddirectory %>/src
-	$(QUIET) $(CP) *.cgi ../<%= builddirectory %>/src/.
+	$(QUIET) - $(CP) *.cgi ../<%= builddirectory %>/src/.
 
 

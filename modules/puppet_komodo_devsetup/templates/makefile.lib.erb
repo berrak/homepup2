@@ -97,4 +97,4 @@ cleanall:
 
 build:
 	$(QUIET) $(ECHO) [makefile]: Copy any shared library files to build directory ../<%= builddirectory %>/lib
-	$(QUIET) $(CP) *.so ../<%= builddirectory %>/lib/.
+	$(QUIET) - $(CP) *.so ../<%= builddirectory %>/lib/.

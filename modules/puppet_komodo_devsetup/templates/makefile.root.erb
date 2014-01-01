@@ -16,9 +16,7 @@ MKDIR := mkdir -p
 
 TAR := /bin/tar
 GZIP := /bin/gzip
-
-# -f option prevents 'make' to halt incase no files to be removed
-ERASEREC = /bin/rm -fr
+RMDIR := /bin/rm -fr
 
 
 #############################################################################
@@ -47,30 +45,30 @@ dist: $(distdir).tar.gz
 
 
 $(distdir).tar.gz : $(distdir)
-	$(QUIET) $(TAR) $(TAROPT) $(distdir) | $(GZIP) $(GZIPOPT) > $@
-	$(QUIET) $(ERASEREC) $(distdir)
+	$(QUIET) - $(TAR) $(TAROPT) $(distdir) | $(GZIP) $(GZIPOPT) > $@
+	$(QUIET) - $(RMDIR) $(distdir)
 	$(QUIET) $(ECHO) [makefile]: Archive $(distdir).tar.gz created
 
 
 $(distdir):
 	$(QUIET) $(MKDIR) $(distdir)
-	$(QUIET) $(CP) makefile $(distdir)
+	$(QUIET) - $(CP) makefile $(distdir)
 #
 	$(QUIET) $(MKDIR) $(distdir)/src
-	$(QUIET) $(CP) src/makefile $(distdir)/src/.
-	$(QUIET) $(CP) src/*.cbl $(distdir)/src/.
+	$(QUIET) - $(CP) src/makefile $(distdir)/src/.
+	$(QUIET) - $(CP) src/*.cbl $(distdir)/src/.
 	
 	$(QUIET) $(MKDIR) $(distdir)/src/copy
-	$(QUIET) $(CP) src/copy/*.cbl $(distdir)/src/copy/.	
-	$(QUIET) $(CP) src/copy/*.cpy $(distdir)/src/copy/.		
+	$(QUIET) - $(CP) src/copy/*.cbl $(distdir)/src/copy/.	
+	$(QUIET) - $(CP) src/copy/*.cpy $(distdir)/src/copy/.		
 #
 	$(QUIET) $(MKDIR) $(distdir)/lib
-	$(QUIET) $(CP) lib/makefile $(distdir)/lib/.
-	$(QUIET) $(CP) lib/*.cbl $(distdir)/lib/.
+	$(QUIET) - $(CP) lib/makefile $(distdir)/lib/.
+	$(QUIET) - $(CP) lib/*.cbl $(distdir)/lib/.
 	
 	$(QUIET) $(MKDIR) $(distdir)/lib/copy
-	$(QUIET) $(CP) lib/copy/*.cbl $(distdir)/lib/copy/.	
-	$(QUIET) $(CP) lib/copy/*.cpy $(distdir)/lib/copy/.	
+	$(QUIET) - $(CP) lib/copy/*.cbl $(distdir)/lib/copy/.	
+	$(QUIET) - $(CP) lib/copy/*.cpy $(distdir)/lib/copy/.	
 
 
 
