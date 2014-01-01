@@ -147,6 +147,13 @@ node 'dell.home.tld' inherits basenode {
 		   username => 'bekr',
           groupname => 'bekr',
     }
+	
+    puppet_komodo_devsetup::make { 'html' :
+     	projectname => 'openjensen',
+		   username => 'jensen',
+          groupname => 'jensen',
+    }	
+	
     
     # Ensure daily cron backup
     
