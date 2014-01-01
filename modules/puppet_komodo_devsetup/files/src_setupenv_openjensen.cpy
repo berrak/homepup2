@@ -2,5 +2,5 @@
        *>  Setup run-time environment
        *>
        *>
-           DISPLAY "LD_LIBRARY_PATH" UPON ENVIRONMENT-NAME.
-           DISPLAY "/usr/local/lib"  UPON ENVIRONMENT-VALUE.
+           DISPLAY "COB_LIBRARY_PATH" UPON ENVIRONMENT-NAME.
+           DISPLAY "./lib"            UPON ENVIRONMENT-VALUE.

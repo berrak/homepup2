@@ -14,6 +14,8 @@ export PGUSER=jensen
 
 # avoid run-time issues when COBOL programs complied with support 
 # for SQL EXEC (and use OCESQL lib) will find required lobs.
+# Note this will not work in suexec-environment - use a symbolic
+# link in the file system in this case.
 
 export LD_LIBRARY_PATH=/usr/local/lib
 
@@ -24,3 +26,5 @@ export LD_LIBRARY_PATH=/usr/local/lib
 # directory hierarchy make sure the right library location is called!
 
 export COB_LIBRARY_PATH=../lib
+
+# in run-time put all *.so files in the same directory as the executable file.

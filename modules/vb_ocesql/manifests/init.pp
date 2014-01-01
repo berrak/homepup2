@@ -3,6 +3,6 @@
 #
 class vb_ocesql {
 
-    include vb_ocesql::install
+    include vb_ocesql::install, vb_ocesql::config
 
 }
