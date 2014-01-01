@@ -47,6 +47,8 @@ class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
         
         exec { "Verifying_disk_UUID_match_fstab_data" :
                 command => "/bin/grep -w '$fstab_uuid_sda1' '/etc/fstab'",
+			  subscribe => File["$serverpath"],
+			refreshonly => true,	
         }
         
 		file { "/etc/fstab":
@@ -55,6 +57,7 @@ class admin_fstab::config ( $fstabhost='', $source = 'UNSET' ) {
 			  group => 'root',
 			   mode => '644',
             require => Exec["Verifying_disk_UUID_match_fstab_data"],
+		  subscribe => File["$serverpath"],
 		}
 		
     }
