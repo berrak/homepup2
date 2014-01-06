@@ -8,6 +8,6 @@ for FILE in *.gz ; do
     
         test -f /home/<%= name %>/$FILE  && chown <%= name %>:<%= name %> /home/<%= name %>/$FILE  || continue
 
-        mv -p /home/<%= name %>/$FILE /var/backups/$FILE  && chmod 644 /var/backups/$FILE
+        mv -f /home/<%= name %>/$FILE /var/backups/$FILE  && chmod 644 /var/backups/$FILE
         
 done
