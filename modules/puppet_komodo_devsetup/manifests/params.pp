@@ -15,6 +15,9 @@ class puppet_komodo_devsetup::params {
     
 	# Remote host to scp local source files and then install to public directory
     $remotefqdn = 'mc-butter.se'
+	
+	# help script to allow remote developers make and make install on server
+    $remote_install_scriptname = 'remote_make_makeinstall'
 
 
 }
