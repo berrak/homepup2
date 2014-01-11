@@ -18,7 +18,6 @@
 #############################################################################
 
 QUIET = @
-HTML2JENSEN = $(HOME)/bin/html2jensen
 
 CP := /bin/cp
 ECHO := /bin/echo
@@ -68,20 +67,4 @@ cleanall:
 	$(QUIET) $(ECHO) [makefile]: Remove any JS files in build directory
 	$(QUIET) $(RMDIR) ../<%= builddirectory %>/*.js
 
-#############################################################################
-#
-#	MAKE INSTALL (Replace existing HTML, PNG and JS on REMOTE host, and
-#                 then install files to the web server public directory
-#                 by running the root makefile script in user bin directory)
-#
-#############################################################################    
-
-install:
-#	$(SCP) $$1 $$2 $$3 $$4 $$5 <%= remoteusername %>@<%= remotefqdn %>:/home/<%= remoteusername %>/<%= projectname %>/<%= htmlname %>/.
-#
-#	$(SSH) <%= remoteusername %>@<%= remotefqdn %> <%= remote_install_scriptname %>
-    
-	$(HTML2JENSEN) $$1 $$2 $$3 $$4 $$5
-    
-
-.PHONY: all build clean cleanall install
+.PHONY: all build clean cleanall

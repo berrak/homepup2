@@ -13,14 +13,4 @@ class puppet_komodo_devsetup::params {
     # before creating 'tar' arhieve, 'make' copies all files to this location
     $builddirectory = 'build'
     
-	# Remote host to scp local source files and then install to public directory
-    $remotefqdn = 'mc-butter.se'
-	$remoteusername = 'jensen'
-	
-	
-	# help script to allow remote developers make and make install on server
-    $remote_install_scriptname = 'remote_make_makeinstall'
-	
-
-
 }
