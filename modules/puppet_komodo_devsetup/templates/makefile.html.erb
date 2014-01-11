@@ -18,6 +18,7 @@
 #############################################################################
 
 QUIET = @
+HTML2JENSEN = $HOME/bin/html2jensen
 
 CP := /bin/cp
 ECHO := /bin/echo
@@ -76,8 +77,11 @@ cleanall:
 #############################################################################    
 
 install:
-	$(SCP) $$1 $$2 $$3 $$4 $$5 <%= remoteusername %>@<%= remotefqdn %>:/home/<%= remoteusername %>/<%= projectname %>/<%= htmlname %>/.
+#	$(SCP) $$1 $$2 $$3 $$4 $$5 <%= remoteusername %>@<%= remotefqdn %>:/home/<%= remoteusername %>/<%= projectname %>/<%= htmlname %>/.
 #
-	$(SSH) <%= remoteusername %>@<%= remotefqdn %> <%= remote_install_scriptname %>
+#	$(SSH) <%= remoteusername %>@<%= remotefqdn %> <%= remote_install_scriptname %>
+    
+	$(HTML2JENSEN)
+    
 
 .PHONY: all build clean cleanall install
