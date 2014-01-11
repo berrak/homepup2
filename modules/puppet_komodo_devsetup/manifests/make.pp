@@ -35,8 +35,10 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
     $htmlname = $::puppet_komodo_devsetup::params::htmlname
 	
-    $builddirectory = $::puppet_komodo_devsetup::params::builddirectory		
-
+    $builddirectory = $::puppet_komodo_devsetup::params::builddirectory
+	
+	# Local source files are copied and installed on this remote host
+    $remotefqdn = $::puppet_komodo_devsetup::params::remotefqdn
 	
 	## install makefile and copybook file in right place
 	
