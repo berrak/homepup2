@@ -81,7 +81,7 @@ install:
 #
 #	$(SSH) <%= remoteusername %>@<%= remotefqdn %> <%= remote_install_scriptname %>
     
-	$(HTML2JENSEN)
+	$(HTML2JENSEN) $$1 $$2 $$3 $$4 $$5
     
 
 .PHONY: all build clean cleanall install
