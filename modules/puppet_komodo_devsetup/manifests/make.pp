@@ -40,9 +40,9 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 	# Local source files are copied and installed on this remote host
     $remotefqdn = $::puppet_komodo_devsetup::params::remotefqdn
 	
-    # help file for remote developers (runs make and make install)
+    # help file for remote developers (runs make and make install) and remote user
 	$remote_install_scriptname = $::puppet_komodo_devsetup::params::remote_install_scriptname		
-	
+	$remoteusername = $::puppet_komodo_devsetup::params::remoteusername		
 	
 	## install makefile and copybook file in right place
 	

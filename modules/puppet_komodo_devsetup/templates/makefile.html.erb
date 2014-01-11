@@ -75,7 +75,7 @@ cleanall:
 #
 #############################################################################    
 
-$(SCP) $$1 $$2 $$3 $$4 $$5 <%= username %>@<%= remotefqdn %>:/home/<%= username %>/<%= projectname %>/<%= htmlname %>/.
-$(SSH) <%= username %>@<%= remotefqdn %> <%= remote_install_scriptname %>
+$(SCP) $$1 $$2 $$3 $$4 $$5 <%= remoteusername %>@<%= remotefqdn %>:/home/<%= remoteusername %>/<%= projectname %>/<%= htmlname %>/.
+$(SSH) <%= remoteusername %>@<%= remotefqdn %> <%= remote_install_scriptname %>
 
 .PHONY: all build clean cleanall install
