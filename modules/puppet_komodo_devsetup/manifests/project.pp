@@ -80,15 +80,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		group => $groupname,
 		require => File["/home/${username}/${projectname}"],
 	}			
-			
-	file { "/home/${username}/${projectname}/${sourcename}/${copybookname}":
-		ensure => "directory",
-		owner => $username,
-		group => $groupname,
-		require => File["/home/${username}/${projectname}/${sourcename}"],
-	}				
-			
-			
+						
 	# Cobol dynamic library source files		
 	
 	file { "/home/${username}/${projectname}/${libraryname}":
@@ -96,14 +88,46 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		owner => $username,
 		group => $groupname,
 		require => File["/home/${username}/${projectname}"],
-	}			
+	}				
 	
-	file { "/home/${username}/${projectname}/${libraryname}/${copybookname}":
+	# Copybook directory (common use for src and lib)
+	
+	file { "/home/${username}/${projectname}/${copybookname}":
 		ensure => "directory",
 		owner => $username,
 		group => $groupname,
-		require => File["/home/${username}/${projectname}/${libraryname}"],
-	}		
+		require => File["/home/${username}/${projectname}"],
+	}
+	
+	# Files in copybook sub directory
+	
+	# rename 'cbl' copybook to standard 'cpy' extension (library OCESQL requires extension cbl though)
+	
+	file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy":
+		 source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cpy",
+		  owner => $username,
+		  group => $groupname,
+		require => File["/home/${username}/${projectname}/${copybookname}"],
+	}				
+	
+	# symlink sqlca.cbl --> sqlca.cpy (library OCESQL requires the extension 'cbl')
+	
+	file { "/home/${username}/${projectname}/${copybookname}/sqlca.cbl":
+	  ensure => link,
+	   owner => $username,
+	   group => $groupname,		  
+	  target => "/home/${username}/${projectname}/${copybookname}/sqlca.cpy",
+		require => File["/home/${username}/${projectname}/${copybookname}"],	  
+	}
+	
+	file { "/home/${username}/${projectname}/${copybookname}/setupenv_${projectname}.cpy":
+		 source => "puppet:///modules/puppet_komodo_devsetup/setupenv_${projectname}.cpy",
+		  owner => $username,
+		  group => $groupname,
+		require => File["/home/${username}/${projectname}/${copybookname}"],
+	}			
+	
+	
 	
 	# html directory
 	

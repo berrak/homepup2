@@ -28,7 +28,6 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 	
 	
 	## project file structure
-	
 
     $sourcename = $::puppet_komodo_devsetup::params::sourcename	
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
@@ -41,42 +40,12 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 	
 	if $name == $sourcename {
 	
-		
 		file { "/home/${username}/${projectname}/${sourcename}/makefile":
 			content =>  template("puppet_komodo_devsetup/makefile.${name}.erb"),  
 			  owner => $username,
 			  group => $groupname,
 			require => [ File["/home/${username}/${projectname}"], Class["puppet_komodo_devsetup::project"]],
 		}
-		
-		
-		# Files in copybook sub directory
-		
-		file { "/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy":
-		     source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cpy",
-			  owner => $username,
-			  group => $groupname,
-			require => [ File["/home/${username}/${projectname}/${sourcename}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
-		}		
-		
-		# symlink sqlca.cbl --> sqlca.cpy (library OCESQL requires the extension 'cbl')
-		
-		file { "/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cbl":
-		  ensure => link,
-		   owner => $username,
-		   group => $groupname,
-		  target => "/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy",
-		  require => File["/home/${username}/${projectname}/${sourcename}/${copybookname}/sqlca.cpy"],
-		}
-		
-		file { "/home/${username}/${projectname}/${sourcename}/${copybookname}/${sourcename}_setupenv_${projectname}.cpy":
-		     source => "puppet:///modules/puppet_komodo_devsetup/${sourcename}_setupenv_${projectname}.cpy",
-			  owner => $username,
-			  group => $groupname,
-			require => [ File["/home/${username}/${projectname}/${sourcename}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
-		}			
-		
-		
 	}
 		
 	if $name == $libraryname {
@@ -87,36 +56,6 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 			  group => $groupname,
 			require => [ File["/home/${username}/${projectname}"], Class["puppet_komodo_devsetup::project"]],
 		}
-		
-		
-		# Files in copybook sub directory
-		
-		# rename 'cbl' copybook to standard 'cpy' extension (library OCESQL requires extension cbl though)
-		
-		file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy":
-		     source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cpy",
-			  owner => $username,
-			  group => $groupname,
-			require => [ File["/home/${username}/${projectname}/${libraryname}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
-		}				
-		
-		# symlink sqlca.cbl --> sqlca.cpy (library OCESQL requires the extension 'cbl')
-		
-		file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cbl":
-		  ensure => link,
-		   owner => $username,
-		   group => $groupname,		  
-		  target => "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy",
-		  require => File["/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy"],		  
-		}
-		
-		file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/${libraryname}_setupenv_${projectname}.cpy":
-		     source => "puppet:///modules/puppet_komodo_devsetup/${libraryname}_setupenv_${projectname}.cpy",
-			  owner => $username,
-			  group => $groupname,
-			require => [ File["/home/${username}/${projectname}/${libraryname}/${copybookname}"], Class["puppet_komodo_devsetup::project"]],
-		}					
-		
 	}
 	
 	

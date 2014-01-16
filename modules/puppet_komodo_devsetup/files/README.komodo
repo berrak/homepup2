@@ -27,9 +27,9 @@ In Edit->Preferences (EP)
     In the Preferences search box: type scrolling
         unmark [ ] Use the minimap feature
         
-# Editing and making files
+# Edititor tools and make files
 
-Editing is done with in the traditional indentation format.
+Editing is done in the traditional Cobol indentation A-B-format.
 
 To compile a file, go to Tools menu.
 
@@ -39,6 +39,16 @@ To compile a file, go to Tools menu.
         and add
         
         [x] Add to Toolbox
+        
+Make a specific file (use the base name without extension:
+
+    Tools-> Run Command...
+    
+        In the Run box: 'make %b'
+        and add
+        
+        [x] Add to Toolbox
+        
         
 To run file 'hello.cgi' after make.
 
@@ -55,15 +65,31 @@ All this can naturally also be done at command line, in the current directory.
     $ make hello
     ./hello.cgi
     
+# Developer environment
+
+# Set OpenCOBOL's copybook file in this relative directory for development  
+
+export COBCPY=../copy
+
+In the bashrc file.
     
     
 # Run time environment
 
-For OpenCobol(GnuCobol) Copybook location - in our developer setup:
+OpenCobol will attempt to load any application dynamically-loaded libraries (*.so) during
+run time, by this order:
+
+    1) looks at the $PATH env. variable
+    2) looks in current executed directory
+    3) looks what the $COB_LIBRARY_PATH env. variable.
+
+For OpenCobol(GnuCobol) our shared libraries location - in our developer setup:
 
     COB_LIBRARY_PATH=../lib
     
-For Ocesql library:
+In the production all *.so files is in same directory as the executable *.cgi files.
+    
+For Ocesql library (both developer setup and in production):
 
     LD_LIBRARY_PATH=/usr/local/lib  (default source install prefix)
     
