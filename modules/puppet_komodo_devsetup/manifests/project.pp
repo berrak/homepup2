@@ -103,7 +103,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	
 	# rename 'cbl' copybook to standard 'cpy' extension (library OCESQL requires extension cbl though)
 	
-	file { "/home/${username}/${projectname}/${libraryname}/${copybookname}/sqlca.cpy":
+	file { "/home/${username}/${projectname}/${copybookname}/sqlca.cpy":
 		 source => "puppet:///modules/puppet_komodo_devsetup/sqlca.cpy",
 		  owner => $username,
 		  group => $groupname,
