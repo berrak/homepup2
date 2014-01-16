@@ -117,7 +117,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	   owner => $username,
 	   group => $groupname,		  
 	  target => "/home/${username}/${projectname}/${copybookname}/sqlca.cpy",
-		require => File["/home/${username}/${projectname}/${copybookname}"],	  
+		require => File["/home/${username}/${projectname}/${copybookname}/sqlca.cpy"],	  
 	}
 	
 	file { "/home/${username}/${projectname}/${copybookname}/setupenv_${projectname}.cpy":
