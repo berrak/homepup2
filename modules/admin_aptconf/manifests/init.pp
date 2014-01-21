@@ -48,7 +48,7 @@ class admin_aptconf {
 	
 	}
 	
-	if $::hostname == $::admin_aptconf::params::wifi-bcm80211 {
+	if $::hostname == $::admin_aptconf::params::wifibcm80211 {
 	
 		file { "/etc/apt/sources.list.d/backport.list":
 			source => "puppet:///modules/admin_aptconf/backport.list",

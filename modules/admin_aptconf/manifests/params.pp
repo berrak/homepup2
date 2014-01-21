@@ -9,7 +9,7 @@ class admin_aptconf::params {
     
     # required for firmware for Broadcom wifi BCM80211
 
-    $wifi-bcm80211 = 'dell'
+    $wifibcm80211 = 'dell'
     
     
     # hosts that have /tmp on separate partition and mounted 'noexec'
