@@ -10,9 +10,10 @@ define admin_backport::install {
         bcm80211 : {
         
             # Install Broadcom Wifi support
-            
-            package  { [ "firmware-brcm80211"] :
-                ensure => installed }
+			
+			exec { "/usr/bin/apt-get install firmware-brcm80211/wheezy-backport" :
+				refreshonly => true,
+			}	   			
         
         }
         
