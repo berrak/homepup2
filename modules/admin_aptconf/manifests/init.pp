@@ -47,6 +47,19 @@ class admin_aptconf {
 		}
 	
 	}
+	
+	if $::hostname == $::admin_aptconf::params::wifi-bcm80211 {
+	
+		file { "/etc/apt/sources.list.d/backport.list":
+			source => "puppet:///modules/admin_aptconf/backport.list",
+			 owner => "root",
+			 group => "root",
+			  mode => '0644',
+		}
+		
+		
+	
+	}	
 
     ### end repo file snippets
 
