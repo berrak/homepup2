@@ -28,8 +28,8 @@ define admin_bndl::install {
             package  { [ "firmware-realtek" ] :
                 ensure => installed }
         
-        }		
-
+        }
+		
         officeapps : {
         
             # Applications in addition to the default
