@@ -103,7 +103,7 @@ node 'dell.home.tld' inherits basenode {
 	puppet_gitclient::config { 'bekr': codehost => 'dell' }
 	
 	## Add Broadcom wifi firmware BCM802111 (Debian repo: backport)
-	admin_backport:install { 'bcm80211': }
+	admin_backport::install { 'bcm80211': }
 	
 	
 	## application bundles
