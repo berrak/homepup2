@@ -1,5 +1,5 @@
 #
-# /etc/apt/sources.list.d/wheezybackports.list
+# /etc/apt/sources.list.d/backport.list
 #
 #############################################################
 # MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
@@ -7,5 +7,5 @@
 
 ## Wheezy backports (useful for e.g. Broadcom wifi firmware)
 
-deb http://ftp.debian.org/debian/ wheezy-backports main contib
+deb http://ftp.debian.org/debian/ wheezy-backports main contrib
 deb-src http://ftp.debian.org/debian/ wheezy-backports main contrib
