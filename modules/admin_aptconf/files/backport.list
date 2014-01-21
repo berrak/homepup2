@@ -5,7 +5,7 @@
 # MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
 #############################################################
 
-## Wheezy backports (useful for e.g. Broadcom wifi firmware)
+## All Wheezy backports (useful for e.g. latest Broadcom wifi firmware)
 
-deb http://ftp.debian.org/debian/ wheezy-backports main contrib
+deb http://ftp.debian.org/debian/ wheezy-backports main contrib non-free
 deb-src http://ftp.debian.org/debian/ wheezy-backports main contrib non-free

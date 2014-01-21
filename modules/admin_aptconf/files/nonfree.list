@@ -5,12 +5,12 @@
 # MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
 #############################################################
 
-## main
+## non-free
 
 deb http://ftp.us.debian.org/debian/ wheezy non-free
 deb-src http://ftp.us.debian.org/debian/ wheezy non-free
 
-## updates (once wheezy is released)
+## updates
 
-# deb http://ftp.debian.org/debian/ wheezy-updates non-free
-# deb-src http://ftp.debian.org/debian/ wheezy-updates non-free
+deb http://ftp.debian.org/debian/ wheezy-updates non-free
+deb-src http://ftp.debian.org/debian/ wheezy-updates non-free
