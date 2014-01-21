@@ -11,7 +11,7 @@ define admin_backport::install {
         
             # Install Broadcom Wifi support
 			
-			exec { "/usr/bin/apt-get install firmware-brcm80211/wheezy-backport" :
+			exec { "/usr/bin/apt-get install firmware-brcm80211/wheezy-backports" :
 				refreshonly => true,
 			}	   			
         
