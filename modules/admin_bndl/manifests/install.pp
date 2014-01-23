@@ -128,9 +128,10 @@ define admin_bndl::install {
 			# libmodule-starter-perl: simple starter kit for perl
 			# libmodule-starter-pbp-perl: 'Perl-Best-Practices' for Perl modules
 			# libtemplate-perl: the Template Toolkit processor
-			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit 
+			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit
+			# libwww-mechanize-perl: automate intercation with websites
 			
-			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl" ]:
+			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl", "libwww-mechanize-perl" ]:
                  ensure => installed }
 			
 			## Add CPAN test related modules (and required dependency modules):
@@ -138,7 +139,7 @@ define admin_bndl::install {
                 ensure => installed }
 		
 		    ## Add more CPAN test modules
-			package  { [ "libtest-expect-perl", "libtest-carp-perl", "libtest-spelling-perl" ]:
+			package  { [ "libtest-expect-perl", "libtest-carp-perl", "libtest-spelling-perl", "libtest-www-mechanize-perl" ]:
                 ensure => installed }
 				
 			## Add some logging and other modules
