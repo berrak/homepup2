@@ -1,9 +1,10 @@
        *>
-       *>  Setup run-time environment - in the development environment
-       *>  This is where the executing '*.cgi' script finds any 
-       *>  dynamically loaded '*.so' files. Thus at run-time the executable
-       *>  will set this environment. This is the last chance to locate
-       *>  the *.so-file, if not in $PATH or the current executed directory.
+       *>  Setup Open Jensen environment variables
+       *<
+       *> To use in code: "COPY setupenv_openjensen."
        *>
-           DISPLAY "COB_LIBRARY_PATH" UPON ENVIRONMENT-NAME.
-           DISPLAY "../lib"           UPON ENVIRONMENT-VALUE.
+           DISPLAY "OJ_DBG" UPON ENVIRONMENT-NAME.
+           DISPLAY "1"      UPON ENVIRONMENT-VALUE.
+           
+           DISPLAY "OJ_LOG" UPON ENVIRONMENT-NAME.
+           DISPLAY "0"      UPON ENVIRONMENT-VALUE.
