@@ -93,7 +93,7 @@ cleanall:
 	$(FIND) . -type f -perm /u=x -print0 | xargs -0 $(ERASE)
 	
 build:
-	$(QUIET) $(ECHO) [makefile]: Copy any binary files to build directory ../<%= builddirectory %>/src
-	$(QUIET) - $(CP) *.cgi ../<%= builddirectory %>/<%= cblbinaryname >/.
+	$(QUIET) $(ECHO) [makefile]: Copy any binary files to build directory ../<%= builddirectory %>/<%= cblbinaryname %>
+	$(QUIET) - $(CP) *.cgi ../<%= builddirectory %>/<%= cblbinaryname %>/.
 
 
