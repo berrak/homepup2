@@ -34,6 +34,9 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
     $htmlname = $::puppet_komodo_devsetup::params::htmlname
 	
+    # finished cobol binaries is put below /build/$cblbinaryname
+	$cblbinaryname = $::puppet_komodo_devsetup::params::cblbinaryname
+	
     $builddirectory = $::puppet_komodo_devsetup::params::builddirectory	
 	
 	## install makefile and copybook file in right place

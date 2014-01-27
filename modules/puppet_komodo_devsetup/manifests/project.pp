@@ -18,7 +18,10 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
     $sourcename = $::puppet_komodo_devsetup::params::sourcename	
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
-    $htmlname = $::puppet_komodo_devsetup::params::htmlname	
+    $htmlname = $::puppet_komodo_devsetup::params::htmlname
+	
+	# finished cobol binaries is put below /build/$cblbinaryname
+	$cblbinaryname = $::puppet_komodo_devsetup::params::cblbinaryname
 
     $builddirectory = $::puppet_komodo_devsetup::params::builddirectory	
 	
@@ -54,7 +57,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		require => File["/home/${username}/${projectname}"],
 	}
 	
-	file { "/home/${username}/${projectname}/${builddirectory}/${sourcename}":
+	file { "/home/${username}/${projectname}/${builddirectory}/${cblbinaryname}":
 		ensure => "directory",
 		owner => $username,
 		group => $groupname,

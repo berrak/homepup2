@@ -10,7 +10,8 @@ class puppet_komodo_devsetup::params {
 	$copybookname = 'copy'
     $htmlname = 'html'	
  
-    # before creating 'tar' arhieve, 'make' copies all files to this location
+    # before creating 'tar' arhieve, 'make' copies all HTML and BINARY files to this location
     $builddirectory = 'build'
+	$cblbinaryname = 'bin'
     
 }
