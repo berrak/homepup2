@@ -33,6 +33,7 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
     $htmlname = $::puppet_komodo_devsetup::params::htmlname
+    $phpname = $::puppet_komodo_devsetup::params::phpname	
 	
     # finished cobol binaries is put below /build/$cblbinaryname
 	$cblbinaryname = $::puppet_komodo_devsetup::params::cblbinaryname
@@ -71,7 +72,18 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 			require => [ File["/home/${username}/${projectname}"], Class["puppet_komodo_devsetup::project"]],
 		}
 		
-	}	
+	}
+	
+	if $name == $phpname {
+		
+		file { "/home/${username}/${projectname}/${phpname}/makefile":
+			content =>  template("puppet_komodo_devsetup/makefile.${name}.erb"),  
+			  owner => $username,
+			  group => $groupname,
+			require => [ File["/home/${username}/${projectname}"], Class["puppet_komodo_devsetup::project"]],
+		}
+		
+	}		
  
     
 }
