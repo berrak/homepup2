@@ -143,7 +143,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	}
 
 
-	# PHP directory
+	# PHP directory + subdirectories
 	
 	file { "/home/${username}/${projectname}/${phpname}":
 		ensure => "directory",
@@ -152,6 +152,50 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		require => File["/home/${username}/${projectname}"],
 	}
 	
+	# php's assets sub directory, and its subdirectories
+	
+	file { "/home/${username}/${projectname}/${phpname}/assets":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}/${phpname}"],
+	}
+	
+	# ../css
+	
+	file { "/home/${username}/${projectname}/${phpname}/assets/css":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}/${phpname}/assets"],
+	}	
+	
+	# ../fonts	
+	
+	file { "/home/${username}/${projectname}/${phpname}/assets/fonts":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}/${phpname}/assets"],
+	}		
+	
+	# ../img	
+	
+	file { "/home/${username}/${projectname}/${phpname}/assets/img":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}/${phpname}/assets"],
+	}			
+	
+	# ../js	
+	
+	file { "/home/${username}/${projectname}/${phpname}/assets/js":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}/${phpname}/assets"],
+	}			
 	
 	## install the top makefile's for the project
 	
