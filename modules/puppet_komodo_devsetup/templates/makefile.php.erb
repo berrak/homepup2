@@ -39,35 +39,35 @@ all build:
 	$(QUIET) $(ECHO) [makefile]: Change ownership of PHP files 
 	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/*.php
 #
-	$(QUIET) $(ECHO) [makefile]: Copy PHP files to build directory asset
-	$(QUIET) - $(CP) asset/*.php ../<%= builddirectory %>/asset/.
-	$(QUIET) $(ECHO) [makefile]: Change ownership of PHP files in asset
+	$(QUIET) $(ECHO) [makefile]: Copy PHP files to build directory assets
+	$(QUIET) - $(CP) assets/*.php ../<%= builddirectory %>/assets/.
+	$(QUIET) $(ECHO) [makefile]: Change ownership of PHP files in assets
 	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/asset/*.php
 #
 	$(QUIET) $(ECHO) [makefile]: Copy CSS files to build directory css
-	$(QUIET) - $(CP) css/* ../<%= builddirectory %>/css/.
+	$(QUIET) - $(CP) assets/css/*.css ../<%= builddirectory %>/assets/css/.
 	$(QUIET) $(ECHO) [makefile]: Change ownership of CSS files in css
-	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/css/*
+	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/assets/css/*.css
 #
 	$(QUIET) $(ECHO) [makefile]: Copy FONTS files to build directory fonts
-	$(QUIET) - $(CP) fonts/* ../<%= builddirectory %>/fonts/.
+	$(QUIET) - $(CP) assets/fonts/* ../<%= builddirectory %>/assets/fonts/.
 	$(QUIET) $(ECHO) [makefile]: Change ownership of FONTS files in fonts
-	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/fonts/*
+	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/assets/fonts/*
 #
 	$(QUIET) $(ECHO) [makefile]: Copy IMG files to build directory img
-	$(QUIET) - $(CP) img/* ../<%= builddirectory %>/img/.
+	$(QUIET) - $(CP) assets/img/*-png ../<%= builddirectory %>/assets/img/.
 	$(QUIET) $(ECHO) [makefile]: Change ownership of IMG files in img
-	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/img/*
+	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/assets/img/*.png
 #
 	$(QUIET) $(ECHO) [makefile]: Copy JS files to build directory js
-	$(QUIET) - $(CP) js/* ../<%= builddirectory %>/js/.
+	$(QUIET) - $(CP) assets/js/*.js ../<%= builddirectory %>/assets/js/.
 	$(QUIET) $(ECHO) [makefile]: Change ownership of JS files in js
-	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/js/*
+	$(QUIET) - $(CHOWN) <%= username %>:<%= groupname %> ../<%= builddirectory %>/assets/js/*.js
 
 
 #############################################################################
 #
-#	MAKE CLEAN, MAKE CLEANALL (PHP files in build directory)
+#	MAKE CLEAN, MAKE CLEANALL (PHP files in build directories)
 #
 #############################################################################
 
@@ -81,16 +81,16 @@ cleanall:
 	$(QUIET) $(RMDIR) ../<%= builddirectory %>/assets/*.php
 #
 	$(QUIET) $(ECHO) [makefile]: Remove any CSS files in build directory css
-	$(QUIET) $(RMDIR) ../<%= builddirectory %>/css/*
+	$(QUIET) $(RMDIR) ../<%= builddirectory %>/assets/css/*.css
 #
 	$(QUIET) $(ECHO) [makefile]: Remove any FONTS files in build directory fonts
-	$(QUIET) $(RMDIR) ../<%= builddirectory %>/fonts/*
+	$(QUIET) $(RMDIR) ../<%= builddirectory %>/assets/fonts/*
 #
 	$(QUIET) $(ECHO) [makefile]: Remove any IMG files in build directory img
-	$(QUIET) $(RMDIR) ../<%= builddirectory %>/img/*
+	$(QUIET) $(RMDIR) ../<%= builddirectory %>/assets/img/*.png
 #
 	$(QUIET) $(ECHO) [makefile]: Remove any JS files in build directory js
-	$(QUIET) $(RMDIR) ../<%= builddirectory %>/js/*
+	$(QUIET) $(RMDIR) ../<%= builddirectory %>/assets/js/*.js
 #
 
 .PHONY: all build clean cleanall
