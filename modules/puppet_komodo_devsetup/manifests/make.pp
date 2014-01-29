@@ -73,17 +73,6 @@ define puppet_komodo_devsetup::make ( $projectname='', $username='', $groupname=
 		}
 		
 	}
-	
-	if $name == $phpname {
-		
-		file { "/home/${username}/${projectname}/${phpname}/makefile":
-			content =>  template("puppet_komodo_devsetup/makefile.${name}.erb"),  
-			  owner => $username,
-			  group => $groupname,
-			require => [ File["/home/${username}/${projectname}"], Class["puppet_komodo_devsetup::project"]],
-		}
-		
-	}		
  
     
 }

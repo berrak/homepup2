@@ -48,7 +48,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	}
 	
 	
-	## Build output directories for the final build (only binaries)
+	## Build output directories for the final build
 	
 	
 	file { "/home/${username}/${projectname}/${builddirectory}":
