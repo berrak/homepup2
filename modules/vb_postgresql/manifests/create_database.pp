@@ -13,12 +13,12 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 		fail("FAIL: Missing the new database owner name for the $name PostgreSQL database!")
 	}
 			
-	# create database and owner
+	# always create the initial database and one owner
 	
 	$database_encoding = $::vb_postgresql::params::database_encoding
 	
-    file { "/var/lib/postgresql/create_database_${name}.sql":
-		content =>  template( "vb_postgresql/create_database_${name}.sql.erb" ),
+    file { "/var/lib/postgresql/pg_${name}_create_database.sql":
+		content =>  template( "vb_postgresql/pg_${name}_create_database.sql.erb" ),
           owner => 'postgres',
           group => 'postgres',
 		  mode  => '0644',
