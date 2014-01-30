@@ -89,11 +89,14 @@ $IPTABLES -A INPUT -p all -s $NET_INT -m state --state ESTABLISHED,RELATED -j AC
 # multicast mDNS packets from internal printers to this host.
 $IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 5353 -j ACCEPT
 
-# allow some pings from internal net to this host
+# allow pings from internal net to this host
 $IPTABLES -A INPUT -p icmp --icmp-type echo-reply -s $NET_INT -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type echo-request -s $NET_INT -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -j ACCEPT
+
+# allow ssh from our internal LAN
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m udp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow cups network printer packets
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT

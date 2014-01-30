@@ -155,6 +155,9 @@ $IPTABLES -A INPUT ! -i lo -j DROP
 # allow all established and related out to external net
 $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# allow ssh pass out to other internal LAN hosts
+$IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # allow ssh pass out to special external addresses (github, ...)
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB1 -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $GITHUB2 -m tcp --dport 22 -m state --state NEW -j ACCEPT
