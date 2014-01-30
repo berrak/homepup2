@@ -62,21 +62,21 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 	
 	if $name == 'openjensen' {
 	
-		file { '/var/lib/postgresql/pg_${name}_create_all_tables.sql':
+		file { "/var/lib/postgresql/pg_${name}_create_all_tables.sql":
 			 source => "puppet:///modules/vb_postgresql/pg_${name}_create_all_tables.sql",    
 			  owner => 'postgres',
 			  group => 'postgres',
 			require => Class["vb_postgresql::install"],
 		}	
 	
-		file { '/var/lib/postgresql/pg_${name}_drop_all.sql':
+		file { "/var/lib/postgresql/pg_${name}_drop_all.sql":
 			 source => "puppet:///modules/vb_postgresql/pg_${name}_drop_all.sql",    
 			  owner => 'postgres',
 			  group => 'postgres',
 			require => Class["vb_postgresql::install"],
 		}		
 	
-		file { '/var/lib/postgresql/pg_${name}_insert_all_data.sql':
+		file { "/var/lib/postgresql/pg_${name}_insert_all_data.sql":
 			 source => "puppet:///modules/vb_postgresql/pg_${name}_insert_all_data.sql",    
 			  owner => 'postgres',
 			  group => 'postgres',
