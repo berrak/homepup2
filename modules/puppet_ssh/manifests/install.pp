@@ -3,7 +3,7 @@
 ##
 class puppet_ssh::install {
     
-    if $::hostname in [ 'valhall', 'warp', 'nagios' ] {
+    if $::hostname in [ 'valhall', 'warp', 'nagios', 'carbon' ] {
     
         package { "openssh-server": ensure => installed }
         
