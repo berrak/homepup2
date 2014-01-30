@@ -96,7 +96,7 @@ $IPTABLES -A INPUT -p icmp --icmp-type destination-unreachable -s $NET_INT -j AC
 $IPTABLES -A INPUT -p icmp --icmp-type time-exceeded -s $NET_INT -j ACCEPT
 
 # allow ssh from our internal LAN
-$IPTABLES -A INPUT -p tcp -s $NET_INT -m udp --dport 22 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # allow cups network printer packets
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 631 -m state --state NEW -j ACCEPT
