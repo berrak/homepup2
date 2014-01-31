@@ -37,8 +37,8 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
 	
 	# copy over some help sql-scripts to create tables and load data 
 	
-    file { '/var/lib/postgresql/README':
-         source => "puppet:///modules/vb_postgresql/README",    
+    file { '/var/lib/postgresql/README.md':
+         source => "puppet:///modules/vb_postgresql/README.md",    
           owner => 'postgres',
           group => 'postgres',
         require => Class["vb_postgresql::install"],
