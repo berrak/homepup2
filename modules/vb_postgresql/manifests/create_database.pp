@@ -26,11 +26,11 @@ define vb_postgresql::create_database ( $databaseowner='', $databaseuser='' ) {
     }	
 	
 	exec { "create_postgres_database_${name}":
-		command => "/usr/bin/psql -f /var/lib/postgresql/create_database_${name}.sql",
+		command => "/usr/bin/psql -f /var/lib/postgresql/pg_${name}_create_database.sql",
 		user => 'postgres',
-		subscribe => File["/var/lib/postgresql/create_database_${name}.sql"],
+		subscribe => File["/var/lib/postgresql/pg_${name}_create_database.sql"],
 		refreshonly => true,
-		require => File["/var/lib/postgresql/create_database_${name}.sql"],
+		require => File["/var/lib/postgresql/pg_${name}_create_database.sql"],
 	}
 	
 	
