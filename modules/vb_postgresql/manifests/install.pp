@@ -16,5 +16,8 @@ class vb_postgresql::install {
     package { "postgresql-doc"            : ensure => installed }
     package { "postgresql-autodoc"        : ensure => installed }    
     
+    # postgresql support for php5
+    package { "php5-pgsql"                : ensure => installed }    
+
 
 }
