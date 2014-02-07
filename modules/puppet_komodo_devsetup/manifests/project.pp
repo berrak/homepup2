@@ -17,6 +17,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	
     $sourcename = $::puppet_komodo_devsetup::params::sourcename	
     $libraryname = $::puppet_komodo_devsetup::params::libraryname
+    $toolsname = $::puppet_komodo_devsetup::params::toolsname	
     $copybookname = $::puppet_komodo_devsetup::params::copybookname
     $htmlname = $::puppet_komodo_devsetup::params::htmlname
     $phpname = $::puppet_komodo_devsetup::params::phpname
@@ -74,7 +75,7 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 	
 	
 	
-	## create the individual sub directories for Cobol source and Cobol library source	
+	## create the individual sub directories for Cobol source, library source and tools	
 			
 	# Cobol source files
 	
@@ -92,7 +93,16 @@ class puppet_komodo_devsetup::project ( $projectname='', $username='', $groupnam
 		owner => $username,
 		group => $groupname,
 		require => File["/home/${username}/${projectname}"],
-	}				
+	}
+	
+	# Cobol source file only used for tests (usully the /tools)
+	
+	file { "/home/${username}/${projectname}/${toolsname}":
+		ensure => "directory",
+		owner => $username,
+		group => $groupname,
+		require => File["/home/${username}/${projectname}"],
+	}
 	
 	# Copybook directory (common use for src and lib)
 	

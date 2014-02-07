@@ -7,6 +7,7 @@ class puppet_komodo_devsetup::params {
     
     $libraryname = 'lib'
 	$sourcename = 'src'
+	$toolsname = 'tools'	
 	$copybookname = 'copy'
     $htmlname = 'html'
 	$phpname = 'php'
