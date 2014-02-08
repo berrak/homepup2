@@ -47,14 +47,18 @@ SMTPHOSTADDR="192.168.0.11"
 FILESERVERADDR="192.168.2.83"
 
 # External special ssh hosts which needs forwarding
-
 GITHUB1="207.97.227.239"
 GITHUB2="204.232.175.90"
 GITHUBNET="192.30.252.0/22"
 
-
+# Other host addresses
 MINECRAFTHOME="192.168.1.12"
 MINECRAFTPUBL="217.70.39.231"
+
+# free music titles db
+FREEMUSICDB="195.214.216.38"
+
+
 
 # Printers
 
@@ -174,6 +178,9 @@ $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUBNET -m tcp --dport 22 -m state
 
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
+# allow music apps to query the music query database (freedb.freedb.org)
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $FREEMUSICDB -m tcp --dport 8880 -m state --state NEW -j ACCEPT
 
 # allow whois queries pass out
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 43 -m state --state NEW -j ACCEPT
