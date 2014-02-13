@@ -201,6 +201,9 @@ $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 443 -m state --state NEW,
 # all git protocol pass 
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
 
+# allow pgadmin out to remote postgresql databases
+$IPTABLES -A FORWARD -p tcp ! -d $NET_INT -m tcp --dport 5432 -m state --state NEW -j ACCEPT
+
 # drop spoofed packages
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF INT2EXT "
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j DROP
