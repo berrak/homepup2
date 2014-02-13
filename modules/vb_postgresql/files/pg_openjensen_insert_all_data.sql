@@ -293,23 +293,10 @@ VALUES
 
 
 --
--- Alter Emilios primary keys columns INT to SERIAL type
+-- 
 --
 
-ALTER TABLE tbl_user
-    ALTER COLUMN user_id TYPE SERIAL; 
 
-ALTER TABLE tbl_program
-    ALTER COLUMN program_id TYPE SERIAL; 
-
-ALTER TABLE tbl_usertype
-    ALTER COLUMN course_id TYPE SERIAL;
-
-ALTER TABLE tbl_grade
-    ALTER COLUMN grade_id TYPE SERIAL; 
-
-ALTER TABLE tbl_course
-    ALTER COLUMN course_id TYPE SERIAL;
     
 --
 -- Add all foreign key (FK) constraints
