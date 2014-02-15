@@ -71,12 +71,13 @@ define admin_bndl::install {
 			# bash-doc: documentation and examples for bash.
             # curl: transfer data with URL syntax
             # dnsutils: various client programs related to DNS
+			# php5-cli: php5 scripting at the command line
 			
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage", "curl" ] :
                 ensure => installed }
 			
-			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc", "dnsutils" ] :
+			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc", "dnsutils", "php5-cli" ] :
                 ensure => installed }
 			
 			
