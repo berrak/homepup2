@@ -1,0 +1,14 @@
+#!/bin/bash
+##############################################################
+# Do not edit. Managed by Puppet. Changes will be wiped out. #
+##############################################################
+#
+# Reinitiate the openjensen database tables
+#
+echo "Dropping all existing tables in database openjensen and data with it."
+psql -d openjensen -U jensen -f ./pg_openjensen_drop_all.sql
+echo "Create all tables, add possible some new ones."
+psql -d openjensen -U jensen -f ./pg_openjensen_create_all_tables.sql
+echo "Populating tables with data."
+psql -d openjensen -U jensen -f ./pg_openjensen_insert_all_data.sql
+echo "All done!."
