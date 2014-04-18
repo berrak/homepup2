@@ -33,9 +33,11 @@ define admin_bndl::install {
         officeapps : {
         
             # Applications in addition to the default
-            # Debian (wheezy) LXDE desktop installation.
+            # Debian (wheezy) LXDE desktop installation
+			# Flash plugin (requires non-free repo).
             
-            package  { [ "abiword", "evince", "icedove", "guvcview", "uvcdynctrl" ] :
+            package  { [ "abiword", "evince", "icedove", "flashplugin-nonfree",
+			                                     "guvcview", "uvcdynctrl" ] :
                 ensure => installed }
         
         }
