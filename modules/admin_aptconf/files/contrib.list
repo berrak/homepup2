@@ -1,0 +1,13 @@
+#
+# /etc/apt/sources.list.d/contrib.list
+#
+#############################################################
+# MANAGED BY PUPPET - DO NOT EDIT CHANGES WILL BE WIPED OUT #
+#############################################################
+
+## contrib
+
+deb http://ftp.us.debian.org/debian/ wheezy contrib
+deb-src http://ftp.us.debian.org/debian/ wheezy contrib
+
+

@@ -35,6 +35,16 @@ class admin_aptconf {
 		  mode => '0644',
 	}
 	
+	file { "/etc/apt/sources.list.d/contrib.list":
+		source => "puppet:///modules/admin_aptconf/contrib.list",
+		 owner => "root",
+		 group => "root",
+		  mode => '0644',
+	}	
+	
+	
+	
+	
 	# A specific host which require 'non-free' for networking firmware
 	
 	if $::hostname == $::admin_aptconf::params::mynonfreehost {
