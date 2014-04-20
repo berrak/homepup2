@@ -169,6 +169,17 @@ define admin_bndl::install {
 	        package  { [ "eclipse-platform", "eclipse-cdt" ]:
                  ensure => installed }
                  
+        }
+		
+		
+        javaapps : {
+        
+            # openjdk-7-jdk: Java developer kit (OpenJava)
+			# javahelper: Create debs out of java programs and libs
+          
+	        package  { [ "openjdk-7-jdk", "javahelper" ]:
+                 ensure => installed }
+                 
         }		
         
         default: {

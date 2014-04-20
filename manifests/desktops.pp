@@ -194,6 +194,10 @@ node 'dell.home.tld' inherits basenode {
     # this is the latest sun/oracle version of VirtualBox - works out of the box :-)
     # include puppet_virtualbox
 	
+	## Java development
+
+    admin_bndl::install { 'javaapps' : } 
+	
 
 }
 #########################################

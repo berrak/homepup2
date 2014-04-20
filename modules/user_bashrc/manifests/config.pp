@@ -137,6 +137,16 @@ define user_bashrc::config {
 		   require => File["/home/${name}/bashrc.d/${name}"],
 	   	}
 		
+		# java rc file, sourced at login
+		
+		file { "/home/${name}/bashrc.d/java.rc":
+			source => "puppet:///modules/user_bashrc/java.rc",
+			 owner => "${name}",
+			 group => "${name}",
+			  mode => '0644',
+		   require => File["/home/${name}/bashrc.d/${name}"],
+	   	}		
+		
 		
 		# postgresql rc file, sourced at login - for C and COBOL 
 		

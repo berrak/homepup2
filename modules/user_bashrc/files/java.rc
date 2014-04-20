@@ -1,0 +1,16 @@
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# ~/bashrc.d/java.rc
+#
+# Sourced by user bash resource file
+#
+
+# For Java packages/modules and current project
+
+# needs update to were the packages really are -- this is the parent directory
+# export CLASSPATH=/home/bekr/org/debinix
+
+export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+
