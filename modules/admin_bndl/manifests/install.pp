@@ -34,10 +34,10 @@ define admin_bndl::install {
         
             # Applications in addition to the default
             # Debian (wheezy) LXDE desktop installation
-			# Flash plugin (requires non-free repo).
+
             
-            package  { [ "abiword", "evince", "icedove", "flashplugin-nonfree",
-			                                     "guvcview", "uvcdynctrl" ] :
+            package  { [ "abiword", "evince", "icedove",
+			                    "guvcview", "uvcdynctrl" ] :
                 ensure => installed }
         
         }
@@ -175,12 +175,30 @@ define admin_bndl::install {
         javaapps : {
         
             # openjdk-7-jdk: Java developer kit (OpenJava)
-			# javahelper: Create debs out of java programs and libs
+
           
-	        package  { [ "openjdk-7-jdk", "javahelper" ]:
+	        package  { [ "openjdk-7-jdk" ]:
+                 ensure => installed }
+                 
+        }
+		
+        debpackaging : {
+        
+            # debhelper: helper programs for debian/rules
+			# javahelper: Create debs out of java programs and libs
+			# dh-make: tool that converts source archives (tar.gz files)
+			#          into Debian package source
+			# devscripts: scripts to make the life of a Debian
+			#             Package maintainer easier
+			# fakeroot: tool for simulating superuser privileges
+
+          
+	        package  { [ "debhelper", "javahelper", "dh-make",
+			           "devscripts", "fakeroot"]:
                  ensure => installed }
                  
         }		
+		
         
         default: {
             fail("FAIL: Package bundle parameter ($name) not recognized!")

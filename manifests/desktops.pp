@@ -195,8 +195,11 @@ node 'dell.home.tld' inherits basenode {
     # include puppet_virtualbox
 	
 	## Java development
-
-    admin_bndl::install { 'javaapps' : } 
+    admin_bndl::install { 'javaapps' : }
+	
+	
+	## Package Java apps in debs
+    admin_bndl::install { 'debpackaging' : } 
 	
 
 }
