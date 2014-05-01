@@ -1,0 +1,13 @@
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# ~/bashrc.d/debian.rc
+#
+# Sourced by user bash resource file
+#
+
+# For Debian maintainer packaging
+export DEBEMAIL="bekr@debinix.org"
+export DEBFULLNAME="Bertil Kronlund"
+

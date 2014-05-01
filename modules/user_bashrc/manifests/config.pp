@@ -158,7 +158,15 @@ define user_bashrc::config {
 		   require => File["/home/${name}/bashrc.d/${name}"],
 	   	}		
 		
+		# Debian rc file, sourced at login - for deb maintainer packaging
 		
+		file { "/home/${name}/bashrc.d/debian.rc":
+			source => "puppet:///modules/user_bashrc/debian.rc",
+			 owner => "${name}",
+			 group => "${name}",
+			  mode => '0644',
+		   require => File["/home/${name}/bashrc.d/${name}"],
+	   	}				
 		
 
         # Required - for below fix, create main lxde config directory
