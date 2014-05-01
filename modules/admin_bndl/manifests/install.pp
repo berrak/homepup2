@@ -191,10 +191,11 @@ define admin_bndl::install {
 			# devscripts: scripts to make the life of a Debian
 			#             Package maintainer easier
 			# fakeroot: tool for simulating superuser privileges
+			# gnulib: GNU portability library
 
           
 	        package  { [ "debhelper", "javahelper", "dh-make",
-			           "devscripts", "fakeroot"]:
+			           "devscripts", "fakeroot", "gnulib"]:
                  ensure => installed }
                  
         }		
