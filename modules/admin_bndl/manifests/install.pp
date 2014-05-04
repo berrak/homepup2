@@ -192,9 +192,11 @@ define admin_bndl::install {
 			#             Package maintainer easier
 			# fakeroot: tool for simulating superuser privileges
 			# gnulib: GNU portability library
+			# pandoc: general markup converter - converts markdown
+			#         docs to HTML, man (groff), and more...
 
           
-	        package  { [ "debhelper", "javahelper", "dh-make",
+	        package  { [ "debhelper", "javahelper", "dh-make", "pandoc",
 			           "devscripts", "fakeroot", "gnulib"]:
                  ensure => installed }
                  
