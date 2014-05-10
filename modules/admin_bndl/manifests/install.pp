@@ -34,10 +34,9 @@ define admin_bndl::install {
         
             # Applications in addition to the default
             # Debian (wheezy) LXDE desktop installation
-
             
             package  { [ "abiword", "evince", "icedove",
-			                    "guvcview", "uvcdynctrl" ] :
+			         "audacious", "guvcview", "uvcdynctrl" ] :
                 ensure => installed }
         
         }
@@ -193,11 +192,13 @@ define admin_bndl::install {
 			# fakeroot: tool for simulating superuser privileges
 			# gnulib: GNU portability library
 			# pandoc: general markup converter - converts markdown
-			#         docs to HTML, man (groff), and more...
-
-          
-	        package  { [ "debhelper", "javahelper", "dh-make", "pandoc",
-			           "devscripts", "fakeroot", "gnulib"]:
+			#         docs to HTML (real nice for longer general md-docs)
+			# man2html-base: convert man to man format
+			# groff:  groff printing system
+			# ronn: markdown to man and html format (best man pages)
+			
+	        package  { [ "debhelper", "javahelper", "dh-make", "pandoc", "groff",
+			    "man2html-base", "ronn", "devscripts", "fakeroot", "gnulib"]:
                  ensure => installed }
                  
         }		
