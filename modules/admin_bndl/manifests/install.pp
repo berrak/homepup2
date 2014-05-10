@@ -195,10 +195,10 @@ define admin_bndl::install {
 			#         docs to HTML (real nice for longer general md-docs)
 			# man2html-base: convert man to man format
 			# groff:  groff printing system
-			# ronn: markdown to man and html format (best man pages)
+			# ruby-ronn: markdown to man and html format (best man pages)
 			
 	        package  { [ "debhelper", "javahelper", "dh-make", "pandoc", "groff",
-			    "man2html-base", "ronn", "devscripts", "fakeroot", "gnulib"]:
+			    "man2html-base", "ruby-ronn", "devscripts", "fakeroot", "gnulib"]:
                  ensure => installed }
                  
         }		
