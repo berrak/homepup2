@@ -68,7 +68,7 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
             owner => 'root',
             group => $devgroupid,
              mode => '0775',
-            require => File["/home/${devgroupid}/${name}"],			 
+            require => File["/var/www/${name}"],			 
         }
         
     } else {
