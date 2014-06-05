@@ -54,21 +54,13 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
 	
     if $execscript != 'suexec' {
     
+	    
+	    # site is writable by the developer group
         file { "/var/www/${name}":
             ensure => "directory",
             owner => 'root',
-            group => 'root',
+            group => $devgroupid,
              mode => '0775',        
-        }
-        
-        # public directory is writable by developer group to be able to update files
-        
-        file { "/var/www/${name}/public" :
-             ensure => "directory",
-             owner => 'root',
-             group => $devgroupid,
-             mode => '0775',
-            require => File["/var/www/${name}"],
         }
         
     } else {
@@ -170,6 +162,14 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
                 require => Class["vb_apache2::install"],
                 notify => Service["apache2"],
             }
+			
+			# writable by developer group
+			file { "/var/www/${name}/public":
+				ensure => "directory",
+				owner => 'root',
+				group => $devgroupid,
+				mode => '0775',        
+			}
             
             # CGI-BIN directory (i.e. the document root)
     
