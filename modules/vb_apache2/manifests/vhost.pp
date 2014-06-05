@@ -290,32 +290,9 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
                 notify => Service["apache2"],
             }
             
-            # vhost site favicon
-    
-            file { "/var/www/${name}/favicon.ico":
-                source => "puppet:///modules/vb_apache2/tux-favicon.ico",    
-                owner => 'root',
-                group => 'root',
-                require => File["/var/www/${name}"],
-            }
-			
-			# Theme directory for stylesheets
-        
-			file { "/var/www/${name}/themes" :
-				ensure => "directory",
-				owner => 'root',
-				group => $devgroupid,
-				mode => '0775',
-				require => File["/var/www/${name}"],
-			}
-			
-			file { "/var/www/${name}/themes/css" :
-				ensure => "directory",
-				owner => 'root',
-				group => $devgroupid,
-				mode => '0775',
-				require => File["/var/www/${name}/themes"],
-			}	
+            # No need to copy other vhost site files (like favicon.ico
+			# index.html) since it is maintained by the vhost project
+            
    
         }
         
