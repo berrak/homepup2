@@ -279,6 +279,44 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
             
                 
         }
+		
+		none: {
+    
+            file { "/etc/apache2/sites-available/${name}":
+                content =>  template('vb_apache2/vhost.erb'),
+                owner => 'root',
+                group => 'root',       
+                require => Class["vb_apache2::install"],
+                notify => Service["apache2"],
+            }
+            
+            # vhost site initial index file and favicon
+    
+            file { "/var/www/${name}/public/index.html":
+                source => "puppet:///modules/vb_apache2/newvhost.index.html",    
+                owner => 'root',
+                group => 'root',
+                require => File["/var/www/${name}"],
+            }
+    
+            file { "/var/www/${name}/public/favicon.ico":
+                source => "puppet:///modules/vb_apache2/tux-favicon.ico",    
+                owner => 'root',
+                group => 'root',
+                require => File["/var/www/${name}"],
+            }
+			
+			# STYLES directory (e.g. for PHP) for stylesheets
+        
+			file { "/var/www/${name}/public/styles" :
+				ensure => "directory",
+				owner => 'root',
+				group => $devgroupid,
+				mode => '0775',
+				require => File["/var/www/${name}/public"],
+			}   
+   
+        }
         
         default: {
             fail("FAIL: Script language ($execscript) not defined or known!")

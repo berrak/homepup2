@@ -1,0 +1,18 @@
+##############################################################
+# Managed by Puppet. Do not edit. Changes will be wiped out. # 
+##############################################################
+127.0.0.1	localhost
+<%= myaddress %>   <%= myhostname %>.<%= mydomain %>  <%= myhostname %>  node-<%= myhostname %>
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+<% if apache_virtual_host != '' -%>
+<%= "# Virtual hosts name resolution for apache2" %>
+<% end -%>
+
+<% if apache_virtual_host != '' -%>
+<% vhostfqdn.each do |myvhost| %><%= "192.168.0.222    #{myvhost} \n" %><% end -%>
+<% end %>
