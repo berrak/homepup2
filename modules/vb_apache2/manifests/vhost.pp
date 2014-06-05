@@ -54,13 +54,21 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
 	
     if $execscript != 'suexec' {
     
-	    
-	    # site is writable by the developer group
+
         file { "/var/www/${name}":
             ensure => "directory",
             owner => 'root',
+            group => 'root',
+             mode => '0775',
+        }	    
+		
+	    # site is writable by the developer group
+        file { "/var/www/${name}/public":
+            ensure => "directory",
+            owner => 'root',
             group => $devgroupid,
-             mode => '0775',        
+             mode => '0775',
+            require => File["/home/${devgroupid}/${name}"],			 
         }
         
     } else {
