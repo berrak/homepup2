@@ -11,6 +11,9 @@ class admin_hosts::config (
 ) {
 
 	
+    include admin_hosts::params
+	$apache_virtual_host = $::admin_hosts::params::apache_virtual_host
+	
 	# Facter node variables
     
 	$myhostname = $::hostname

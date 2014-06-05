@@ -4,3 +4,10 @@
 <%= gateway_ip %>  <%= gateway_hostname %>.<%= mygateway_domain %> <%= gateway_hostname %>
 <%= smtp_ip %>  <%= smtp_hostname %>.<%= mysmtp_domain %>  <%= smtp_hostname %>
 
+<% if apache_virtual_host != '' -%>
+<%= "# Virtual hosts name resolution for apache2" %>
+<% end -%>
+
+<% if apache_virtual_host != '' -%>
+<% vhostfqdn.each do |myvhost| %><%= "192.168.0.222    #{myvhost} \n" %><% end -%>
+<% end %>

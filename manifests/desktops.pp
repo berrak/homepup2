@@ -205,17 +205,13 @@ node 'dell.home.tld' inherits basenode {
 	## use apache2 prefork
     include vb_apache2
 	
-	 # Define a new Apache2 virtual host (docroot directory writable by group 'bekr')
+	## Define a new Apache2 virtual host (docroot directory writable by group 'bekr')
+	## Add this fqdn to the admin_hosts::params manifest
     vb_apache2::vhost { 'www.debinix.tld' :
             priority => '001',
           devgroupid => 'bekr',
           execscript => 'none',
     }
-    
-    # Define content in /etc/hosts file. List ALL Apache VIRTUAL HOSTS here, declare always default www.default.tld.
-    # vb_hosts::config { 'bekr' : apache_virtual_host => [ "www.default.tld", "www.debinix.tld" ] }    
-	
-	
 
 }
 #########################################
