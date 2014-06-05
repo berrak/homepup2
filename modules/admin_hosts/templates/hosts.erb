@@ -9,5 +9,5 @@
 <% end -%>
 
 <% if apache_virtual_host != '' -%>
-<% vhostfqdn.each do |myvhost| %><%= "192.168.0.222    #{myvhost} \n" %><% end -%>
+<% apache_virtual_host.each do |myvhost| %><%= "192.168.0.222    #{myvhost} \n" %><% end -%>
 <% end %>
