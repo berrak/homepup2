@@ -292,22 +292,30 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
             
             # vhost site favicon
     
-            file { "/var/www/${name}/public/favicon.ico":
+            file { "/var/www/${name}/favicon.ico":
                 source => "puppet:///modules/vb_apache2/tux-favicon.ico",    
                 owner => 'root',
                 group => 'root',
                 require => File["/var/www/${name}"],
             }
 			
-			# STYLES directory (e.g. for PHP) for stylesheets
+			# Theme directory for stylesheets
         
-			file { "/var/www/${name}/public/styles" :
+			file { "/var/www/${name}/themes" :
 				ensure => "directory",
 				owner => 'root',
 				group => $devgroupid,
 				mode => '0775',
-				require => File["/var/www/${name}/public"],
-			}   
+				require => File["/var/www/${name}"],
+			}
+			
+			file { "/var/www/${name}/themes/css" :
+				ensure => "directory",
+				owner => 'root',
+				group => $devgroupid,
+				mode => '0775',
+				require => File["/var/www/${name}/themes"],
+			}	
    
         }
         
