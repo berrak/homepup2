@@ -199,7 +199,12 @@ node 'dell.home.tld' inherits basenode {
 	
 	
 	## Package Java apps in debs
-    admin_bndl::install { 'debpackaging' : } 
+    admin_bndl::install { 'debpackaging' : }
+	
+	## Apache to serve statis html blog content
+	## use apache2 prefork
+    include vb_apache2 
+	
 	
 
 }
