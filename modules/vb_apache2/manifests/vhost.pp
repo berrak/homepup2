@@ -290,14 +290,7 @@ define vb_apache2::vhost ( $priority='', $devgroupid='', $urlalias='', $aliastgt
                 notify => Service["apache2"],
             }
             
-            # vhost site initial index file and favicon
-    
-            file { "/var/www/${name}/public/index.html":
-                source => "puppet:///modules/vb_apache2/newvhost.index.html",    
-                owner => 'root',
-                group => 'root',
-                require => File["/var/www/${name}"],
-            }
+            # vhost site favicon
     
             file { "/var/www/${name}/public/favicon.ico":
                 source => "puppet:///modules/vb_apache2/tux-favicon.ico",    
