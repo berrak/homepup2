@@ -119,7 +119,7 @@ node 'dell.home.tld' inherits basenode {
     
     # need some some packages from testing for open-cobol-ide
     vb_add_aptrelease::config { 'testing' : }
-    # this will install from ubuntu PPA repo and from debian testing
+	# this will install from ubuntu PPA repo and from debian testing
     include vb_opencobolide_ppa
     
     ## COBOL and SQL PostgreSQL development	
