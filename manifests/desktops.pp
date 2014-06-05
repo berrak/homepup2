@@ -213,7 +213,7 @@ node 'dell.home.tld' inherits basenode {
     }
     
     # Define content in /etc/hosts file. List ALL Apache VIRTUAL HOSTS here, declare always default www.default.tld.
-    vb_hosts::config { 'bekr' : apache_virtual_host => [ "www.default.tld", "www.debinix.tld" ] }    
+    # vb_hosts::config { 'bekr' : apache_virtual_host => [ "www.default.tld", "www.debinix.tld" ] }    
 	
 	
 
