@@ -9,5 +9,5 @@
 
 # For Debian maintainer packaging
 export DEBEMAIL="bekr@debinix.org"
-export DEBFULLNAME="Bertil Kronlund"
+export DEBFULLNAME="Debinix Team"
 
