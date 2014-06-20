@@ -240,6 +240,9 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 # allow established and related traffic to gateway host
 $IPTABLES -A INPUT -i $IF_EXT -d $GWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# allow ssh (tcp/22) for our internal SSH server (this gateway host)
+$IPTABLES -A INPUT -i $IF_EXT -p tcp -s $NET_EXT -d $GWHOSTEXTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # time service broadcasts for our internal NTP server (this gateway host)
 $IPTABLES -A INPUT -p udp -s $NTPHOSTADDR -d $GWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
 
