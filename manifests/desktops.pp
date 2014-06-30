@@ -105,6 +105,8 @@ node 'dell.home.tld' inherits basenode {
 	## Add Broadcom wifi firmware BCM802111 (Debian repo: backport)
 	admin_backport::install { 'iwlwifi': }
 	
+    ## enable nfs for user 'bekr' (really just creates the mount point in users' home)
+    class { 'puppet_nfs4client::config' : user => 'bekr' }
 	
 	## application bundles
 	
