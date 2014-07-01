@@ -93,10 +93,7 @@ node 'dell.home.tld' inherits basenode {
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
 	
-	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
-    class { 'puppet_nfs4client::config' : user => 'bekr' }
-	
-	
+		
     ## Skip now - need to find a Puppet way to install saved binaries/blobs...Dropbox?
     ## maybe do as with virtualbox install, i.e. repository at Dropbox?
 	## puppet_komodoide6::install { 'bekr' : hostarch => 'amd64' }
