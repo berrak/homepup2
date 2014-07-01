@@ -34,8 +34,10 @@ node 'mordor.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
-	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
-    class { 'puppet_nfs4client::config' : user => 'bekr' }
+	## nfs for user 'bekr' (really just creates the mount point in users' home)
+	## disable for mordor -- as written now cannot have this on more than one system
+	## needs really a rewrite of this module -- cumersome in puppet
+    # class { 'puppet_nfs4client::config' : user => 'bekr' }
 	
 	
     ## use this host for CPAN/perl projects
