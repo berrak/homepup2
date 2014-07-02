@@ -11,3 +11,6 @@ UUID=3de29279-a895-4ad3-ae9e-8c817e826256 /               ext4    errors=remount
 UUID=416329bb-e1ed-4274-95f8-87e68c903242 none            swap    sw              0       0
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
 /dev/sdb1       /media/usb0     auto    rw,user,noauto  0       0
+
+# mount our NFSv4 share from 'shire' to local user 'bekr'
+192.168.0.10:/bekr  /home/bekr/nfs  nfs  nfsvers=4,rsize=8192,wsize=8192,intr,clientaddr=192.168.0.10  0   0
