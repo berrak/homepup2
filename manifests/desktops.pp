@@ -200,12 +200,14 @@ node 'dell.home.tld' inherits basenode {
 	## Package Java apps in debs
     admin_bndl::install { 'debpackaging' : }
 	
+	## Install Oracle java JDK8
+	include puppet_java
+	
 	## Apache to serve statis html blog content
 	## use apache2 prefork
     include vb_apache2
 	
 	## Define a new Apache2 virtual host (docroot directory writable by group 'bekr')
-	## Add this fqdn to the admin_hosts::params manifest
     vb_apache2::vhost { 'www.debinix.tld' :
             priority => '001',
           devgroupid => 'bekr',

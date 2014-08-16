@@ -1,0 +1,12 @@
+#!/bin/sh
+
+oraclescript="/root/bin/check-oracle-java"
+
+[ -x $oraclescript ] || exit 0
+
+if [ -x /root/bin/check-oracle-java ] ; then
+    /root/bin/check-oracle-java 1> /dev/null 2> /var/log/oracle-java-updates.err
+fi
+
+# Exit with a normal status code even if errors (which could be ignored) were found
+exit 0

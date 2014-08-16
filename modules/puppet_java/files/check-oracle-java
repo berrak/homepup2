@@ -1,0 +1,269 @@
+#!/bin/bash
+##############################################################
+# Do not edit. managed by Puppet. Changes will be wiped out. #
+##############################################################
+#
+# Run this file via a weekly cronjob
+#
+# /root/bin/check-oracle-java > /dev/null 2>&1  (real quiet)
+# /root/bin/check-oracle-java 1> /dev/null 2>errors (STDERR to file errors)
+#
+# Purpose: Install/update latest Oracle jdk on Debian system - run script by cron
+#
+# Required debs: gawk
+#
+# 0.  Check that java is installed and version
+# 1.  Check with curl if Oracle's jdk8 download page (url) and md5sum page exists
+# 2.  Download jdk8 html page
+#
+# 3.  Search the jdk8 version with grep in downloaded html page source
+# 4.  Find version of the local installed jdk8
+#
+# 5.  Download new jdk8 tarball version, if different from installed
+#
+# 6.  Download md5sum html page
+# 7.  Check md5sum of original and downloaded tarball - abort if missmatch
+#
+# 8.  Untar the tarball in /opt/oracle/jdk
+#
+# 9.  Update system java defaults
+# 10. Verify installation
+#
+# 11. Remove tempfiles
+#
+##############################################################
+
+PROGNAME=`basename $0`
+
+JAVAJDK8URL="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html"
+MD5SUMURL="http://www.oracle.com/technetwork/java/javase/downloads/javase8-binaries-checksum-2133161.html"
+
+LYNX=/usr/bin/lynx
+CURL=/usr/bin/curl
+
+ORACLEJDKDIR=/opt/oracle/jdk
+
+#####
+# 0 #
+#####
+
+PROVIDESJAVA=`java -version 2>&1 | awk '/version/{print $NF}'`
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "No java version could be found in this sytem! Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: Current /usr/bin/java version: $PROVIDESJAVA - OK"
+fi
+
+#####
+# 1 #
+#####
+
+$CURL --fail --head $JAVAJDK8URL
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Oracles JDK8 html download page $JAVAJDK8URL does not exist! (renamed?). Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: Oracle download html page exist - OK"
+fi
+
+
+$CURL --fail --head $MD5SUMURL
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Oracle JDK8 html md5sum page $MD5SUMURL does not exist! (renamed?). Aborting..." >&2
+else
+	echo "--- $PROGNAME: Oracle md5sum html page exist - OK"	
+fi
+
+#####
+# 2 #
+#####
+
+$LYNX -source -stderr $JAVAJDK8URL > /tmp/oracle.tmp
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Could not download Oracle JDK8 html download page! Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: Downloaded Oracle download page to /tmp - OK"
+fi
+
+#####
+# 3 #
+#####
+
+ORACLEVERSION=`cat "/tmp/oracle.tmp" | grep linux-x64.tar.gz | grep -oP "(?<=\/jdk-8u)[[:digit:]]+"`
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Could not match Oracle JDK8 minor version number from tmp file! Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: Oracle version of jdk8 is 8u$ORACLEVERSION - OK"
+fi
+
+#####
+# 4 #
+#####
+
+INSTALLEDVERSION=`java -version 2>&1 | awk '/version/{print $NF}' | grep -oP '(?<=_)[[:digit:]]+'`
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Could not retrieve local installed JDK8 minor version number! Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: The locally installed version of jdk8 is 8u$INSTALLEDVERSION - OK"
+fi
+
+#####
+# 5 #
+#####
+
+if [ "$ORACLEVERSION" = "$INSTALLEDVERSION" ] ; then
+	# All is up to date - quit
+	echo "Oracle JDK8 is up to date! Skipping..." >&2
+	if [ -f /tmp/oracle.tmp ] ; then
+		rm -f /tmp/oracle.tmp
+	fi
+	exit 1
+else
+	DOWNLOADURL=`cat "/tmp/oracle.tmp" | grep linux-x64.tar.gz | grep -oP "(http).*"`
+	# Trim last unwanted three characters "};
+	DOWNLOADURL=${DOWNLOADURL%???}
+	
+	# Find tarball name
+	TARBALLNAME=`echo $DOWNLOADURL | grep -oP "(jdk-).*"`
+	
+	echo "--- $PROGNAME: Tarball name is: $TARBALLNAME"	
+
+	cd /tmp
+	if ! [ -f $TARBALLNAME ] ; then
+	
+		echo "--- $PROGNAME: Need to dowload new version from: $DOWNLOADURL"
+	
+		wget --header "Cookie: oraclelicense=accept-securebackup-cookie" $DOWNLOADURL
+		returncode=$?
+		
+		if [ "$returncode" -ne "0" ]; then
+			echo "Could not download Oracle JDK8 tarball from $DOWNLOADURL! Aborting..." >&2
+			exit 1
+		fi
+	fi
+
+fi
+
+#####
+# 6 #
+#####
+
+# Information visible - no need for source download
+$LYNX -dump -stderr $MD5SUMURL > /tmp/oracle.md5sum
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Could not download Oracle md5sum html page! Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: Downloaded Oracle md5sum page to /tmp - OK"	
+fi
+
+#####
+# 7 #
+#####
+
+MD5SUMJDK=`cat /tmp/oracle.md5sum | grep linux-x64.tar.gz | grep jdk | gawk '{print $2}'`
+echo "--- $PROGNAME: Original Oracle md5sum: $MD5SUMJDK"
+
+TARBALLMD5SUM=`md5sum "/tmp/$TARBALLNAME" | gawk '{print $1}'`
+echo "--- $PROGNAME: Locally downloaded md5sum: $TARBALLMD5SUM"
+
+if [ "$MD5SUMJDK" != "$TARBALLMD5SUM" ] ; then
+	echo "Downloaded $TARBALLNAME is corrupt! Aborting..." >&2
+	rm -f /tmp/$TARBALLNAME
+	exit 1
+else
+	echo "--- $PROGNAME: Downloaded $TARBALLNAME checksum done - OK"
+fi
+
+#####
+# 8 #
+#####
+
+# Note: Must run script as root to extract to /opt/oracle/jdk
+
+if [ "$USER" != "root" ] ; then
+	echo "To install a new version run this as root! Aborting..." >&2
+	exit 1
+fi
+
+if ! [ -d "$ORACLEJDKDIR" ] ; then
+	mkdir -p "$ORACLEJDKDIR"
+fi
+
+tar -xzf /tmp/$TARBALLNAME -C $ORACLEJDKDIR
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Could not extract tarball to $ORACLEJDKDIR! Aborting..." >&2
+	rm -f /tmp/$TARBALLNAME
+	exit 1
+else
+	echo "--- $PROGNAME: $TARBALLNAME extracted to "$ORACLEJDKDIR" - OK"
+	rm -f /tmp/$TARBALLNAME
+fi
+
+#####
+# 9 #
+#####
+
+cd $ORACLEJDKDIR
+JDKVERSIONDIR=`ls -D`
+
+DATEPRIO=`date +%y%m%d`;
+
+# Set what provides java on system
+update-alternatives --install /usr/bin/java java $ORACLEJDKDIR/$JDKVERSIONDIR/bin/java $DATEPRIO
+update-alternatives --install /usr/bin/javac javac $ORACLEJDKDIR/$JDKVERSIONDIR/bin/javac $DATEPRIO
+
+# Switch java to auto mode will also select version with highest priority (i.e. version from above)
+update-alternatives --auto java
+
+#####
+# 9 #
+#####
+
+PROVIDESJAVA=`java -version 2>&1 | awk '/version/{print $NF}'`
+returncode=$?
+
+if [ "$returncode" -ne "0" ]; then
+	echo "Could not retrieve /usr/bin/java version number! Aborting..." >&2
+	exit 1
+else
+	echo "--- $PROGNAME: Version that provides /usr/bin/java: $PROVIDESJAVA - OK"
+fi
+
+######
+# 10 #
+######
+
+if [ -f /tmp/oracle.tmp ] ; then
+	rm -f /tmp/oracle.tmp
+fi
+
+if [ -f /tmp/oracle.md5sum ] ; then
+	rm -f /tmp/oracle.md5sum
+fi
+
+#######
+# EOF #
+#######
+
+exit 0
