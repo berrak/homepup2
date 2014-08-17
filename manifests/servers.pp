@@ -59,6 +59,9 @@ node 'nodecarbon.home.tld' inherits basenode {
         
     #temporary removed apache from this host			
     # include puppet_apache
+	
+	## enable nfs for user 'bekr' (really just creates the mount point in users' home)
+    class { 'puppet_nfs4client::config' : user => 'bekr' }
 
 }
 
