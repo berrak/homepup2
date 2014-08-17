@@ -62,7 +62,8 @@ MINECRAFTPUBL="217.70.39.231"
 # free music titles db
 FREEMUSICDB="195.214.216.38"
 
-
+# Remote rsyslog server
+RSYSLOGSRV="217.70.39.231"
 
 # Printers
 
@@ -208,6 +209,9 @@ $IPTABLES -A FORWARD -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW 
 
 # allow https pass
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 443 -m state --state NEW,RELATED -j ACCEPT
+
+# allow rsyslog pass to our remote logserver
+$IPTABLES -A FORWARD -p tcp -s $NET_INT -d $RSYSLOGSRV -m tcp --dport 514 -m state --state NEW,RELATED -j ACCEPT
 
 # all git protocol pass 
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 9418 -m state --state NEW -j ACCEPT
