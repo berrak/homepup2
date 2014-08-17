@@ -46,6 +46,10 @@ PUPPETHOSTADDR="192.168.0.24"
 SMTPHOSTADDR="192.168.0.11"
 FILESERVERADDR="192.168.2.83"
 
+# Dummy HP server and real
+HPHOSTADDR="192.168.0.12"
+DL380HOSTADDR=""
+
 # External special ssh hosts which needs forwarding
 GITHUB1="207.97.227.239"
 GITHUB2="204.232.175.90"
@@ -181,6 +185,10 @@ $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $GITHUBNET -m tcp --dport 22 -m state
 
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTHOME -m tcp --dport 22 -m state --state NEW -j ACCEPT
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $MINECRAFTPUBL -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
+# allow specail hosts NTP server communicate with other external time servers (broadcast)
+$IPTABLES -A FORWARD -p udp  -s $HPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
+#$IPTABLES -A FORWARD -p udp  -s $DL380HOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
 # allow music apps to query the music query database (freedb.freedb.org)
 $IPTABLES -A FORWARD -p tcp -s $NET_INT -d $FREEMUSICDB -m tcp --dport 8880 -m state --state NEW -j ACCEPT
