@@ -17,7 +17,7 @@ RPCNFSDPRIORITY=0
 # see rpc.mountd(8) or http://wiki.debian.org/SecuringNFS
 # To disable NFSv4 on the server, specify '--no-nfs-version 4' here
 #RPCMOUNTDOPTS="--manage-gids"
-RPCMOUNTDOPTS="--port 32775"
+RPCMOUNTDOPTS="--port 4000"
 
 # Do you want to start the svcgssd daemon? It is only required for Kerberos
 # exports. Valid alternatives are "yes" and "no"; the default is "no".

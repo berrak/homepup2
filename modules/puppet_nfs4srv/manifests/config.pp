@@ -76,7 +76,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		 notify => Class["puppet_nfs4srv::service"],
     }	
 
-	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
+	# nfs-common configuration - NFSv4
 	
     file { '/etc/default/nfs-common':
         source =>  "puppet:///modules/puppet_nfs4srv/nfs-common",  
@@ -85,7 +85,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		notify => Class["puppet_nfs4srv::service"],
     }
 	
-	# nfs-kernel-server configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
+	# nfs-kernel-server configuration - NFSv4 - lock 'mountd' port to (4000)
 
     file { '/etc/default/nfs-kernel-server':
         source =>  "puppet:///modules/puppet_nfs4srv/nfs-kernel-server",  
@@ -93,5 +93,21 @@ class puppet_nfs4srv::config ( $user ='' ) {
          group => 'root',
 		notify => Class["puppet_nfs4srv::service"],
     }
-
+	
+	# Set fixed port (4001) for the 'lockd'. (rpcinfo -p shows details)
+	
+    file { '/etc/modprobe.d/options.conf':
+        source =>  "puppet:///modules/puppet_nfs4srv/options.conf",  
+         owner => 'root',
+         group => 'root',
+		notify => Class["puppet_nfs4srv::service"],
+    }	
+	
+    file { '/etc/modules':
+        source =>  "puppet:///modules/puppet_nfs4srv/modules",  
+         owner => 'root',
+         group => 'root',
+		notify => Class["puppet_nfs4srv::service"],
+    }	
+	
 }
