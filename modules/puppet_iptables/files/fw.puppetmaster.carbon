@@ -37,6 +37,8 @@ FILESERVERADDR="192.168.2.83"
 INTMINECRAFTADDR="192.168.1.12"
 EXTMINECRAFTADDR="217.70.39.231"
 
+NFSHOSTADDR="192.168.0.10"
+
 # Printers for desktops
 NETPRN_HP3015_ADDR="192.168.0.30"
 MDNSMULTICASTADDR="224.0.0.251"
@@ -107,6 +109,15 @@ $IPTABLES -A INPUT -p udp -s $NET_INT -m udp --dport 123 -m state --state NEW -j
 # puppet client requests to this master server
 $IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 8140 -m state --state NEW -j ACCEPT
 
+$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
+
+## TCP
+
+$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p tcp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 #-------------------------------------------------------------------------
 # Potential external inbound traffic (from external net --> this host)
@@ -181,6 +192,17 @@ $IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 514 -m state --stat
 
 # imaps secure clients (internal users) access their mailboxes to this mail server on this port
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 993 -m state --state NEW -j ACCEPT
+
+## NFS client (consume exported file system)
+## UDP
+$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
+
+## TCP
+$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 # puppet clients listen on this port from the puppet master server
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT

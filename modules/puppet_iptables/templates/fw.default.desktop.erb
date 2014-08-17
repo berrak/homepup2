@@ -135,29 +135,23 @@ $IPTABLES -A INPUT -s $NET_INT -p tcp --dport 4000:4001 -m state --state NEW -j 
 
 ## UDP
 
-$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.100 -s $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.100 -s $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p udp --sport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.100 -s $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 ## TCP
 
-$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.100 -s $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p tcp --dport 2049 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.100 -s $NFSHOSTADDR -p tcp --dport 2049 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p tcp --sport 2049 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A INPUT -d 192.168.0.24 -s $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.100 -s $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 $IPTABLES -A INPUT -d 192.168.0.222 -s $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
@@ -276,43 +270,37 @@ $IPTABLES -A OUTPUT -p udp -d $NETPRN_HP3015_ADDR -j ACCEPT
 
 ## NFS server (export file system)
 
-$IPTABLES -A OUTPUT -d $NET_INT -p udp --sport 111 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -d $NET_INT -p udp --sport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -d $NET_INT -p udp --sport 4000:4001 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p udp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p udp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A OUTPUT -d $NET_INT -p tcp --sport 111 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -d $NET_INT -p tcp --sport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -d $NET_INT -p tcp --sport 4000:4001 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p tcp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p tcp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 ## NFS clients (consume exported file system)
 
 ## UDP
 
-$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p udp --sport 111 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p udp --sport 111 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p udp --sport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p udp --dport 111 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p udp --sport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p udp --sport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p udp --sport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p udp --dport 2049 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p udp --sport 4000:4001 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p udp --sport 4000:4001 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p udp --sport 4000:4001 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p udp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 ## TCP
 
-$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --sport 111 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p tcp --sport 111 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p tcp --sport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p tcp --dport 111 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --sport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p tcp --sport 2049 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p tcp --sport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p tcp --dport 2049 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p tcp --dport 2049 -m state --state NEW -j ACCEPT
 
-$IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --sport 4000:4001 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p tcp --sport 4000:4001 -m state --state NEW -j ACCEPT
-$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p tcp --sport 4000:4001 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.100 -d $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -s 192.168.0.222 -d $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 #-------------------------------------
 # Prevent invalid output packages out
