@@ -31,3 +31,5 @@ UUID=b3e8ff23-12b2-48d9-a008-12ac4e45968b /var/www        ext4    nodev,nosuid  
 /dev/mapper/sda5_crypt none            swap    sw              0       0
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
 
+# mount our NFSv4 share from 'shire' to local user 'bekr'
+192.168.0.10:/bekr /home/bekr/nfs nfs nfsvers=4,rsize=8192,intr,clientaddr=192.168.0.24 0 0
