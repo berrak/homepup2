@@ -181,6 +181,9 @@ $IPTABLES -A OUTPUT -p tcp -d $FILESERVERADDR -m tcp --dport 22 -m state --state
 ## allow smtp to connect to our internal mail (smtp) server
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 25 -m state --state NEW -j ACCEPT
 
+# allow web traffic out to internal net
+$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 80 -m state --state NEW -j ACCEPT
+
 # udp is stateless but iptables keeps track of udp 'states'
 $IPTABLES -A OUTPUT -p udp -d $NTPHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
