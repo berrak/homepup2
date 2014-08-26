@@ -1,11 +1,15 @@
 #
 # Class to install package virtualbox
 #
-class puppet_virtualbox::install {
+class puppet_virtualbox::install ($version='') {
 
     
     if ! ( $::architecture == 'amd64' ) {
         fail("FAIL: The given host architecture ($::architecture) must be 'amd64' only.")
+    }
+    
+    if $version == '' {
+        fail("FAIL: Missing version number for Oracle VirtualBox!")    
     }
     
     # Add Oracle to sources.list.d and copy Oracle key
@@ -51,7 +55,7 @@ class puppet_virtualbox::install {
          ensure => installed,   
     }  
     
-    package  { "virtualbox-4.2":
+    package  { "virtualbox-$version":
          ensure => installed,
         require => Exec["aptitude-update"],   
     }

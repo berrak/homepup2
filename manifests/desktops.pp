@@ -112,7 +112,11 @@ node 'dell.home.tld' inherits basenode {
     admin_bndl::install { 'developerapps' : }
     admin_bndl::install { 'eclipseapps' : }	
 
-    puppet_devtools::tools { 'bekr' : }    
+    puppet_devtools::tools { 'bekr' : }
+	
+	# this is the latest Oracle version of VirtualBox - works out of the box :-)
+    class { 'puppet_virtualbox::install' : version => '4.3' }
+	
     
     ## Simple COBOL IDE
     
@@ -264,8 +268,8 @@ node 'shire.home.tld' inherits basenode {
     puppet_devtools::tools { 'bekr' : }
 	puppet_komodoide6::install { 'bekr' : hostarch => 'amd64' }
     
-    # this is the latest sun/oracle version of VirtualBox (4.2) - works out of the box :-)
-    include puppet_virtualbox
+    # this is the latest Oracle version of VirtualBox - works out of the box :-)
+    class { 'puppet_virtualbox::install' : version => '4.3' }
     
 	## this (desktop-) host exports some 'home' sub-directories for user 'bekr'
     class { 'puppet_nfs4srv::config' : user => 'bekr' }
