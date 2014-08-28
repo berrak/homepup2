@@ -55,7 +55,10 @@ node 'nodecarbon.home.tld' inherits basenode {
         
     #temporary removed apache from this host			
     # include puppet_apache
-
+	
+	# Manage all other local servers with cluster ssh
+	class { puppet_custer_ssh::config : user => 'bekr' }
+	
 }
 
 ########################################
