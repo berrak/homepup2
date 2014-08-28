@@ -6,6 +6,7 @@
 ##
 class puppet_cluster_ssh::config ($user='') {
     
+	include puppet_cluster_ssh::install
 
 	if ( $user == '' ) {
 		fail("FAIL: Missing user name!")
