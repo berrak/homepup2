@@ -289,6 +289,9 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 # allow established and related traffic to fwhost
 $IPTABLES -A INPUT -i $IF_EXT -d $GWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# allow ssh from our internal LAN
+$IPTABLES -A INPUT -p tcp -i $IF_EXT -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # public time service broadcasts directed to our internal NTP server (this host)
 $IPTABLES -A INPUT -p udp -i $IF_EXT -d $GWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
 
@@ -311,6 +314,9 @@ $IPTABLES -t filter -A INPUT -i $IF_EXT -j broadcast-drop
 
 # allow established and related traffic to internal net
 $IPTABLES -A OUTPUT -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+## allow ssh out to connect to local net ssh servers
+$IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 ## allow smtp to connect to our internal mail (smtp) server
 $IPTABLES -A OUTPUT -p tcp -d $SMTPHOSTADDR -m tcp --dport 25 -m state --state NEW -j ACCEPT

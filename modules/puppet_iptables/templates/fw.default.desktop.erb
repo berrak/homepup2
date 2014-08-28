@@ -103,6 +103,9 @@ $IPTABLES -A INPUT -m state --state INVALID -j DROP
 # allow all established and related in
 $IPTABLES -A INPUT -p all -s $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# allow ssh clients from our internal net to local ssh server
+$IPTABLES -A INPUT -p tcp -s $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # multicast mDNS packets from internal printers to this host.
 $IPTABLES -A INPUT -p udp -m udp --dport 5353 -j ACCEPT
 
