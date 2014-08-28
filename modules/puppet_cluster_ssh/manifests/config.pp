@@ -1,7 +1,7 @@
 ##
 ## puppet_cluster_ssh managage group of ssh servers
 ##
-## Uasage: class { puppet_custer_ssh::config : user => 'bekr' }
+## Uasage: class { puppet_cluster_ssh::config : user => 'bekr' }
 ## 
 ##
 class puppet_cluster_ssh::config ($user='') {

@@ -57,7 +57,7 @@ node 'nodecarbon.home.tld' inherits basenode {
     # include puppet_apache
 	
 	# Manage all other local servers with cluster ssh
-	class { puppet_custer_ssh::config : user => 'bekr' }
+	class { puppet_cluster_ssh::config : user => 'bekr' }
 	
 }
 
