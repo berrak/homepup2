@@ -69,7 +69,7 @@ class puppet_iptables::config ( $role,
 		      group => 'root',
 		       mode => '0700',
 		    require => File["/root/bin"],
-		     notify => Exec["/bin/sh /root/bin/fw.${role}"],
+		     notify => Exec["/bin/bash /root/bin/fw.${role}"],
 		}
 		
 		exec { "/bin/bash /root/bin/fw.${role}":
@@ -87,7 +87,7 @@ class puppet_iptables::config ( $role,
 		     notify => Exec["/bin/bash /root/bin/fw.${myhostname}"],
 		}
 		
-		exec { "/bin/sh /root/bin/fw.${myhostname}":
+		exec { "/bin/bash /root/bin/fw.${myhostname}":
 		    refreshonly => true,
 	    }
 
