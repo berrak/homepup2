@@ -7,7 +7,7 @@
 class puppet_cluster_ssh::config ($user='') {
     
 
-	if $user == '' {
+	if ( $user == '' ) {
 		fail("FAIL: Missing user name!")
 	}
 
@@ -16,7 +16,7 @@ class puppet_cluster_ssh::config ($user='') {
 		  owner => $user,
 		  group => $user,
 		   mode => '0755',
-	    require => Package['clusterssh],
+	    require => Package['clusterssh'],
 	}
 	
 	file { "/home/$user/.clusterssh/config" :
@@ -34,7 +34,7 @@ class puppet_cluster_ssh::config ($user='') {
 		  owner => 'root',
 		  group => 'root',
 		   mode => '0644',
-		require => Package['clusterssh],
+		require => Package['clusterssh'],
 	}
 	
 	
