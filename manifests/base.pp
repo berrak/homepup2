@@ -36,6 +36,9 @@ node basenode {
 	
     # Disable ipv6 in kernel/grub and use the more text lines in console mode	
     class { admin_grub::install : defaultline => 'vga=791', appendline => 'true', ipv6 => 'false' }
+	
+    # add a ssh-client and a ssh-server to every (home)system
+    include puppet_ssh
 
 }
 #########################################

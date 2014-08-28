@@ -6,10 +6,6 @@ node 'nodecarbon.home.tld' inherits basenode {
     class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
     
-    # add a ssh-client (which host is the server is defined in params)
-    
-    include puppet_ssh
-    
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
     puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
@@ -116,10 +112,7 @@ node 'valhall.home.tld' inherits basenode {
         puppetserver_ip => '192.168.0.24', puppetserver_hostname => 'carbon',
         gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
-		
-	## add ssh-server (but see manifest/install.pp if server is enabled to install)
-    include puppet_ssh
-	
+			
     ## git project depot for various git developer groups
 	
     puppet_gitserver::config { 'git1_project1': gitgrp => 'git1', projectname => 'project1'}
@@ -161,9 +154,6 @@ node 'nagios.home.tld' inherits basenode {
         gateway_ip => '192.168.0.1', gateway_hostname => 'gondor',
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
 		
-	## add ssh-server (but see manifest/install.pp if server is enabled to install)
-    include puppet_ssh
-	
 	## network and default services
 	
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
@@ -211,9 +201,6 @@ node 'warp.sec.home.tld' inherits basenode {
 	
     class { puppet_tiger::config : install_rec_tripwire => 'no' }
 	include admin_hardening
-
-	## add ssh-server (but see manifest/install.pp if server is enabled to install)
-    include puppet_ssh
 
 	## git repository depot (add project list and 'gitx' access groups)
 	## Note that group e.g. 'git1' must be created manually before access

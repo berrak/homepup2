@@ -68,10 +68,7 @@ node 'asgard.home.tld' inherits basenode {
 
     class { puppet_network::interfaces : interfaces => '2', hostnm => 'asgard',
                                                        addfirewall => 'true' }
-	
-	## add ssh-server (but see manifest/install.pp if server is enabled to install)
-    include puppet_ssh	
-		
+			
     ## firewall (iptables)
 
     class { puppet_iptables::config : role => 'gateway', hostnm => 'asgard' }

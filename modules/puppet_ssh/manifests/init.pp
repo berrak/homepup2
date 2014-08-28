@@ -3,6 +3,6 @@
 ##
 class puppet_ssh {
 
-    include puppet_ssh::install, puppet_ssh::service
+    include puppet_ssh::install, puppet_ssh::config, puppet_ssh::service
 
 }
