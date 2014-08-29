@@ -92,7 +92,7 @@ node 'rohan.home.tld' inherits basenode {
     include puppet_procmail
 		
 	# SKIP complains of missing /pem file		
-    # class { puppet_dovecot_imap::install : ipv6 => 'no' }
+    # class { puppet_dovecot_imap::install : ipv6 => 'yes' }
 	
 	## users
 	
