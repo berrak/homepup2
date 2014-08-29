@@ -19,7 +19,6 @@ node basenode {
     include admin_aptconf
 	include admin_cronapt
 	
-	
 	include puppet_logwatch
 	include puppet_chkrootkit
 				
