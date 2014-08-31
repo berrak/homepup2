@@ -237,6 +237,9 @@ $IPTABLES -A INPUT -s $NET_INT -d $GWHOSTADDR -m state --state ESTABLISHED,RELAT
 # allow established and related traffic to fwhost (from special servers in domain sec.home.tld)
 $IPTABLES -A INPUT -s $FILESERVERADDR -d $GWHOSTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
 
+# allow ssh from our internal net hosts
+$IPTABLES -A INPUT -p tcp -s $NET_INT -d $GWHOSTADDR -m tcp --dport 22 -m state --state NEW -j ACCEPT
+
 # time service communication with our internal net hosts
 $IPTABLES -A INPUT -p udp -s $NET_INT -d $GWHOSTADDR -m udp --dport 123 -m state --state NEW -j ACCEPT
 
@@ -288,9 +291,6 @@ $IPTABLES -A FORWARD -i $IF_EXT -d $NET_INT -j DROP
 
 # allow established and related traffic to fwhost
 $IPTABLES -A INPUT -i $IF_EXT -d $GWHOSTEXTADDR -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# allow ssh from our internal LAN
-$IPTABLES -A INPUT -p tcp -i $IF_EXT -m tcp --dport 22 -m state --state NEW -j ACCEPT
 
 # public time service broadcasts directed to our internal NTP server (this host)
 $IPTABLES -A INPUT -p udp -i $IF_EXT -d $GWHOSTEXTADDR -m udp --dport 123 -m state --state NEW  -j ACCEPT
