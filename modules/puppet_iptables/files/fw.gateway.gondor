@@ -109,6 +109,15 @@ $IPTABLES -A broadcast-drop -m pkttype --pkt-type broadcast -j DROP
 $IPTABLES -A broadcast-drop -j RETURN
 #--------------------------------------------------------------------------------------
 
+#--------------------------------------------------------------------------------------
+## Drop all kinds of mail going out (only log for initial test -- comment out not to fill logs)
+$IPTABLES -N mailout-drop
+# $IPTABLES mailout-drop -m tcp -s $NET_INT -m tcp --dport 25 -j $LOGOPT $RLIMIT --log-prefix "MAILS OUT DROP "
+$IPTABLES -A mailout-drop -m tcp -s $NET_INT -m tcp --dport 25 -j DROP
+# $IPTABLES mailout-drop -m tcp -s $NET_INT -m tcp --dport 587 -j $LOGOPT $RLIMIT --log-prefix "MAILS OUT DROP "
+$IPTABLES -A mailout-drop -m tcp -s $NET_INT -m tcp --dport 587 -j DROP
+$IPTABLES -A mailout-drop -j RETURN
+#--------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------
 ## Blacklist some internal servers, net printers etc that never should traffic the outside
@@ -218,6 +227,9 @@ $IPTABLES -A FORWARD -p tcp -s $NET_INT -m tcp --dport 9418 -m state --state NEW
 
 # allow pgadmin out to remote postgresql databases
 $IPTABLES -A FORWARD -p tcp ! -d $NET_INT -m tcp --dport 5432 -m state --state NEW -j ACCEPT
+
+## drop any mails from internal net
+$IPTABLES -t filter -A FORWARD -i $IF_INT -j mailout-drop
 
 # drop spoofed packages
 $IPTABLES -A FORWARD -i $IF_INT  ! -s $NET_INT -o $IF_EXT -j $LOGOPT $RLIMIT --log-prefix "DROP FORWARDSPOOF INT2EXT "
@@ -364,6 +376,9 @@ $IPTABLES -A OUTPUT -p udp ! -d $NET_INT -m udp --dport 123 -m state --state NEW
 
 # allow ping initiated from this fwhost to dmz net (all pings are blocked by FW upstream for Internet)
 $IPTABLES -A OUTPUT -p icmp --icmp-type echo-request ! -d $NET_INT -j ACCEPT
+
+## drop any mails from from this host not to internal net
+$IPTABLES -t filter -A OUTPUT ! -d $NET_INT -j mailout-drop
 
 # deny invalid packages going out
 $IPTABLES -A OUTPUT -m state --state INVALID -j $LOGOPT $RLIMIT --log-prefix "DROP OUTPUT INVALID "
