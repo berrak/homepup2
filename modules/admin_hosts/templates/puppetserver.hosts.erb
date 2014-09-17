@@ -2,4 +2,12 @@
 <%= ip_eth0 %>  <%= myhostname %>.<%= mylocaldomain %>  <%= myhostname %> nodecarbon
 <%= gateway_ip %>  <%= gateway_hostname %>.<%= mygateway_domain %> <%= gateway_hostname %>
 <%= smtp_ip %>  <%= smtp_hostname %>.<%= mysmtp_domain %>  <%= smtp_hostname %>
+
+# Other local servers that we need to login to with ssh from carbon
+192.168.0.10 shire.home.tld shire
 192.168.0.12 hphome.home.tld hphome
+192.168.0.254 asgard.home.tld asgard
+192.168.2.83 warp.home.tld warp
+
+# Other public servers that we need to login with ssh from carbon
+217.70.39.231 www.debinix.org www 
