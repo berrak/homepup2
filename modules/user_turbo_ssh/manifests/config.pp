@@ -21,32 +21,32 @@ define user_turbo_ssh::config {
 				  mode => '0700',
 			}
 			
-			file { 'asgard' :
+			file { "/${name}/bin/asgard" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}
 			
-			file { 'warp' :
+			file { "/${name}/bin/warp" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}
 			
-			file { 'gondor' :
+			file { "/${name}/bin/gondor" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}
 			
-			file { 'hphome' :
+			file { "/${name}/bin/hphome" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}			
 			
-			file { 'rohan' :
+			file { "/${name}/bin/rohan" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}
 			
-			file { 'shire' :
+			file { "/${name}/bin/shire" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}	
@@ -61,12 +61,12 @@ define user_turbo_ssh::config {
 				  mode => '0750',
 			}
 			
-			file { 'www' :
+			file { "/home/${name}/bin/www" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}
 			
-			file { 'dl380g7' :
+			file { "/home/${name}/bin/dl380g7" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
 			}				
