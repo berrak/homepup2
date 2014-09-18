@@ -19,14 +19,14 @@ class puppetize::service {
     } 
     
     # reloads puppet agent. Debian default (/etc/default/puppet) ensure
-    # its not running. If this is not wanted, configure that file.
+    # its 'stopped'. If this is not wanted, configure that file.
 	# and change the start up with 'ensure => running'
     
     service { "reload_puppet_agent":
               name => "puppet",
             enable => false,
         hasrestart => true,
-            ensure => running,
+            ensure => stopped,
 		   require => Class["puppetize::install"],
     }
     
