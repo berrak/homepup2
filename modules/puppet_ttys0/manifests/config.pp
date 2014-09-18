@@ -15,7 +15,7 @@ class puppet_ttys0::config {
     # if inittab is updated, initilize system again
 
     exec { "reload_inittab":
-        command => "/bin/bash init q",
+        command => "/sbin/init q",
       subscribe => File["/etc/inittab"],
     refreshonly => true,
     }
