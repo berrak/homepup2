@@ -95,8 +95,8 @@ node 'rohan.home.tld' inherits basenode {
 	# add alternative local delivery agent (LDA) to filter mails into folders etc			
     include puppet_procmail
 		
-	# SKIP complains of missing /pem file		
-    class { puppet_dovecot_imap::install : ipv6 => 'yes' }
+	# SKIP complains of missing /pem file-- DISABLE	DUE TO MESS WITH UPGRADE
+    # class { puppet_dovecot_imap::install : ipv6 => 'no' }
 	
 	## users
 	
