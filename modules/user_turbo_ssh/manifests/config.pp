@@ -63,12 +63,12 @@ define user_turbo_ssh::config {
 			
 			file { "/home/${name}/bin/www" :
 				ensure => 'link',
-				target => "/${name}/bin/ssh-to",
+				target => "/home/${name}/bin/ssh-to",
 			}
 			
 			file { "/home/${name}/bin/dl380g7" :
 				ensure => 'link',
-				target => "/${name}/bin/ssh-to",
+				target => "/home/${name}/bin/ssh-to",
 			}				
 			
 	   	}
