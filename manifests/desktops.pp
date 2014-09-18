@@ -50,6 +50,9 @@ node 'mordor.home.tld' inherits basenode {
     admin_bndl::install { 'developerapps' : }
 	
     include puppet_cups
+    
+    # serial port (ttyS0) access
+    include puppet_minicom
 	
 
 }

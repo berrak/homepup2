@@ -1,0 +1,10 @@
+##############################################################
+# DO NOT EDIT. MANAGED BY PUPPET. CHANGES WILL BE WIPED OUT. #
+##############################################################
+pu port /dev/ttyS0
+pu baudrate 38400
+pu bits 8
+pu parity N
+pu stopbits 1
+pu rtscts No
+pu escape-key Escape (Meta)
