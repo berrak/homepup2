@@ -10,6 +10,11 @@ case $(basename $0) in
     dl380g7 )
             echo "Connecting to $(basename $0)"
             ssh -i ~/.ssh/id_dl380g7_rsa `basename $0` $* ;;
+ 
+    hphome )
+            echo "Connecting to $(basename $0)"
+            ssh -i ~/.ssh/id_hphome_rsa `basename $0` $* ;;            
+                 
     *)
             echo "Unknown host $(basename $0) - aborting...)" ;;
 

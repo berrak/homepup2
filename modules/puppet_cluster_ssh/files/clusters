@@ -1,8 +1,12 @@
 ##############################################################
 # MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
 ##############################################################
-#
-# List of servers home
-clusters=home sec
-home root@192.168.0.10 root@192.168.0.11 root@192.168.0.12 root@192.168.0.1
-sec  root@192.168.0.254 root@192.168.2.83 
+
+# List of all home servers accessible with root ssh no-login
+home root@192.168.0.10 root@192.168.0.11 root@192.168.0.1
+
+# List of laptops (mordor, dell) accessible with root ssh no-login
+lap root@192.168.0.100 root@192.168.0.222
+
+# List of secure home servers accessible with root ssh password login
+sec root@192.168.0.254 root@192.168.2.83
