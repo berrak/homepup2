@@ -30,7 +30,7 @@ function backup() {
 
 # set PATH to include user's bin if it exists
 if [ -d "$HOME/bin" ] ; then
-    PATH="$PATH:$HOME/bin"
+    export PATH="$PATH:$HOME/bin"
 fi
 
 # source in any other resource snippets in directory

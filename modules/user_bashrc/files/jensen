@@ -23,12 +23,12 @@ alias cls='clear'
 
 # set PATH to include user's IDE if it exists
 if [ -d "$HOME/Komodo-IDE-6" ] ; then
-    PATH="$PATH:$HOME/Komodo-IDE-6/bin"
+    export PATH="$PATH:$HOME/Komodo-IDE-6/bin"
 fi
 
 # set PATH to include user's bin if it exists
 if [ -d "$HOME/bin" ] ; then
-    PATH="$PATH:$HOME/bin"
+    export PATH="$PATH:$HOME/bin"
 fi
 
 function backup() {
