@@ -39,7 +39,7 @@ node 'mordor.home.tld' inherits basenode {
 	
 	
     ## use this host for CPAN/perl projects
-	puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
+	# puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
 	puppet_gitclient::config { 'bekr': codehost => 'mordor' }
 	
 	
