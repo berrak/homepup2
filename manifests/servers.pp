@@ -108,6 +108,9 @@ node 'rohan.home.tld' inherits basenode {
     user_bashrc::config { 'dakr' : }
     puppet_mutt::install { 'dakr': mailserver_hostname => 'rohan' }
 	
+	# enable serial port access (38400 baud) to this host
+	include puppet_ttyS
+	
 
 }
 
