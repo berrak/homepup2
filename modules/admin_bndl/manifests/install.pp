@@ -15,7 +15,7 @@ define admin_bndl::install {
         
             # Non-default core system add-on applications
             
-            package  { [ "firmware-linux-free", "locales-all", "tree" ] :
+            package  { [ "firmware-linux-free", "locales-all" ] :
                 ensure => installed }
         
         }
@@ -73,9 +73,12 @@ define admin_bndl::install {
             # curl: transfer data with URL syntax
             # dnsutils: various client programs related to DNS
 			# php5-cli: php5 scripting at the command line
+			# tree: view directory structure
+			# pydf: colourized df clone
 			
         
-            package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage", "curl" ] :
+            package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage", "curl",
+			            "pydf", "tree" ] :
                 ensure => installed }
 			
 			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc", "dnsutils", "php5-cli" ] :
