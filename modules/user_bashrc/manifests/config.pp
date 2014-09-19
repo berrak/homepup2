@@ -47,7 +47,16 @@ define user_bashrc::config {
 		    ensure => "directory",
 		     owner => "${name}",
 		     group => "${name}",
-	    }	
+	    }
+		
+		# ensure a local user ssh directory exist
+		
+		file { "/home/${name}/.ssh":
+			ensure => "directory",
+			 owner => $name,
+			 group => $name,
+			  mode => '0700',
+		}		
 
         # User virtual box images (on a large data partition, /opt or /srv)
 		

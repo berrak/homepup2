@@ -71,14 +71,7 @@ define puppet_gitclient::config ( $codehost = '' ) {
             group => $name,
           require => Package["git"],
     }
-    
-    file { "/home/${name}/.ssh":
-		ensure => "directory",
-		 owner => $name,
-		 group => $name,
-		  mode => '0700',
-	}
-	
+    	
 	# user git bashrc snippet
 	
 	file { "/home/${name}/bashrc.d/git.rc" :
