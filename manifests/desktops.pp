@@ -53,6 +53,9 @@ node 'mordor.home.tld' inherits basenode {
     
     # serial port (ttyS0) access
     include puppet_minicom
+    
+    # turbo ssh access
+    user_turbo_ssh::config { 'bekr' : }
 	
 
 }
@@ -220,6 +223,9 @@ node 'dell.home.tld' inherits basenode {
           devgroupid => 'bekr',
           execscript => 'none',
     }
+
+    # turbo ssh access
+    user_turbo_ssh::config { 'bekr' : }
 
 }
 #########################################
