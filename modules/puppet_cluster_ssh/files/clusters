@@ -10,3 +10,6 @@ lap root@192.168.0.100 root@192.168.0.222
 
 # List of secure home servers accessible with root ssh password login
 sec root@192.168.0.254 root@192.168.2.83
+
+# All LAN hosts
+all home lap sec
