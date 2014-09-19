@@ -11,3 +11,8 @@
 <% if apache_virtual_host != '' -%>
 <% apache_virtual_host.each do |myvhost| %><%= "192.168.0.222    #{myvhost} \n" %><% end -%>
 <% end %>
+
+# always resolve our (semi)public hosts
+217.70.39.231 www.debinix.org www
+192.168.0.12  hphome.home.tld hphome
+192.168.0.111 dl380g7.home.tld dl380g7
