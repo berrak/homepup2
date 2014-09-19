@@ -86,4 +86,4 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM no
 
-AllowUser root@carbon.home.tld
+AllowUsers root@carbon.home.tld
