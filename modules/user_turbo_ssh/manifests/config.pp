@@ -21,6 +21,8 @@ define user_turbo_ssh::config {
 				  mode => '0700',
 			}
 			
+			# Internal LAN hosts allow ssh out as user root
+			
 			file { "/${name}/bin/asgard" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
@@ -36,11 +38,6 @@ define user_turbo_ssh::config {
 				target => "/${name}/bin/ssh-to",
 			}
 			
-			file { "/${name}/bin/hphome" :
-				ensure => 'link',
-				target => "/${name}/bin/ssh-to",
-			}			
-			
 			file { "/${name}/bin/rohan" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
@@ -49,7 +46,20 @@ define user_turbo_ssh::config {
 			file { "/${name}/bin/shire" :
 				ensure => 'link',
 				target => "/${name}/bin/ssh-to",
-			}	
+			}
+			
+			# laptops
+			
+			file { "/${name}/bin/mordor" :
+				ensure => 'link',
+				target => "/${name}/bin/ssh-to",
+			}
+			
+			file { "/${name}/bin/dell" :
+				ensure => 'link',
+				target => "/${name}/bin/ssh-to",
+			}		
+			
 			
 	   	}
 		else {
@@ -61,6 +71,8 @@ define user_turbo_ssh::config {
 				  mode => '0750',
 			}
 			
+			# (semi)public hosts only allow ssh out from regular user
+			
 			file { "/home/${name}/bin/www" :
 				ensure => 'link',
 				target => "/home/${name}/bin/ssh-to",
@@ -69,7 +81,12 @@ define user_turbo_ssh::config {
 			file { "/home/${name}/bin/dl380g7" :
 				ensure => 'link',
 				target => "/home/${name}/bin/ssh-to",
-			}				
+			}
+			
+			file { "/home/${name}/bin/hphome" :
+				ensure => 'link',
+				target => "/${name}/bin/ssh-to",
+			}			
 			
 	   	}
 		
