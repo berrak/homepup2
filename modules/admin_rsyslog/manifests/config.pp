@@ -50,7 +50,7 @@ class admin_rsyslog::config {
             ensure => directory,
         	 owner => 'root',
 	 	     group => 'adm',
-		      mode => '0750',
+		      mode => '0755',
            require => Class["admin_rsyslog::install"],              
         }				
         
@@ -61,7 +61,7 @@ class admin_rsyslog::config {
             ensure => directory,
         	 owner => 'root',
 	 	     group => 'adm',
-		      mode => '0750',
+		      mode => '0755',
            require => Class["admin_rsyslog::install"],              
         }
         
