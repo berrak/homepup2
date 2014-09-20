@@ -6,7 +6,7 @@ class admin_rsyslog::params {
 
     ## log server (i.e. the receiving log host)
 
-    $myloghost = 'warp'
+    $myloghostlist = [ 'warp', 'www' ]
     
     # all logfiles that rsyslog writes (local or remote) here will be checked
     

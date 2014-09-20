@@ -5,9 +5,9 @@ class admin_rsyslog::config {
 
     include admin_rsyslog::params
     
-    $myloghost = $::admin_rsyslog::params::myloghost
+    $myloghostlist = $::admin_rsyslog::params::myloghostlist
     
-    if $::hostname == $myloghost {
+    if $::hostname in $myloghostlist {
      
         include admin_rsyslog::params
          
@@ -44,7 +44,7 @@ class admin_rsyslog::config {
             require => File["$logcheckfilepath"],
         }
 		
-		# ensure that the directory referred by above script exist
+		# ensure that the directory referred by above script exist if loghost
 		
         file { "/var/log/REMOTELOGS" :
             ensure => directory,
@@ -74,9 +74,7 @@ class admin_rsyslog::config {
                mode => '0640',
            require => Class["admin_rsyslog::install"],    
         }  
-        
-        
-        
+ 
     
     } else {
     
