@@ -51,7 +51,7 @@ class admin_rsyslog::config {
         	 owner => 'root',
 	 	     group => 'adm',
 		      mode => '0750',
-           require => Class["hp_rsyslog::install"],              
+           require => Class["admin_rsyslog::install"],              
         }				
         
         # create a directory for all logs (local and remote) for 'logcheck' to
