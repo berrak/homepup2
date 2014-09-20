@@ -42,7 +42,17 @@ class admin_rsyslog::config {
               group => 'root',
                mode => '0700',
             require => File["$logcheckfilepath"],
-        }             
+        }
+		
+		# ensure that the directory referred by above script exist
+		
+        file { "/var/log/REMOTELOGS" :
+            ensure => directory,
+        	 owner => 'root',
+	 	     group => 'adm',
+		      mode => '0750',
+           require => Class["hp_rsyslog::install"],              
+        }				
         
         # create a directory for all logs (local and remote) for 'logcheck' to
         # scan. Note: Need group to be 'adm' (since logcheck belongs to 'adm')
