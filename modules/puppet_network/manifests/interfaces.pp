@@ -102,12 +102,22 @@ class puppet_network::interfaces ( $interfaces = '1',
             fail("FAIL: Unrecognized option loading firewall!")
         }
 
-        file { "/etc/network/interfaces" :
-            ensure => present,
-           content => template("puppet_network/interfaces.erb"),
-             owner => 'root',
-             group => 'root',
-            notify => Exec["network_restart"],
+        if $hostnm == 'dell' {
+            file { "/etc/network/interfaces" :
+                ensure => present,
+                content => template("puppet_network/interfaces.${hostnm}.erb"),
+                owner => 'root',
+                group => 'root',
+                notify => Exec["network_restart"],
+            } 
+        } else {
+            file { "/etc/network/interfaces" :
+                ensure => present,
+               content => template("puppet_network/interfaces.erb"),
+                 owner => 'root',
+                 group => 'root',
+                notify => Exec["network_restart"],
+            }
         }
 
     }
