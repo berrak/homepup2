@@ -17,7 +17,10 @@ class admin_hosts::config (
 	# Facter node variables
     
 	$myhostname = $::hostname
-	$ip_eth0 = $::ipaddress_eth0
+	
+	# don't use a specific interface - without explicit, main interaface is eth0 or an enslaved bridge
+	$ip_eth0 = $::ipaddress
+	
     $ip_eth1 = $::ipaddress_eth1
     $mylocaldomain = $::domain
 
