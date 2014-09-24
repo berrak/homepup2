@@ -80,7 +80,8 @@ node 'dell.home.tld' inherits basenode {
     # load desktop firewall script
     class { puppet_iptables::config : role => 'default.desktop' }
 	 
-    class { puppet_network::interfaces : broadcastnet => '192.168.0.0', defaultgateway => '192.168.0.1' }
+    class { puppet_network::interfaces : broadcastnet => '192.168.0.0',
+              defaultgateway => '192.168.0.1', hostnm => 'dell' }
 		
 	class { 'puppet_ntp' : role => 'lanclient', peerntpip => $ipaddress }
 	

@@ -62,7 +62,11 @@ class puppet_network::interfaces ( $interfaces = '1',
     } else {
     
         $addroute_eth0 = $::puppet_network::params::addroute_eth0
-        $removeroute_eth0 = $::puppet_network::params::removeroute_eth0  
+        $removeroute_eth0 = $::puppet_network::params::removeroute_eth0
+        
+        $addroute_kvmbr0 = $::puppet_network::params::addroute_kvmbr0
+        $removeroute_kvmbr0 = $::puppet_network::params::removeroute_kvmbr0        
+        
     }
                         
     if ( $interfaces == '1' ) {
@@ -71,7 +75,13 @@ class puppet_network::interfaces ( $interfaces = '1',
         
         $auto0_stanza = 'auto eth0'
         $allow_hotplug0 = 'allow-hotplug eth0'
-        $iface0 = 'iface eth0 inet static'        
+        
+        # dell is our experimental virtual host
+        if $hostnm == 'dell' {
+            $iface0 = 'iface kvmbr0 inet static'        
+        } else {
+            $iface0 = 'iface eth0 inet static'
+        }
         
         # facter variables
         

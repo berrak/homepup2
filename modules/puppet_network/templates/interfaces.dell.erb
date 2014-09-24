@@ -1,0 +1,24 @@
+# Managed by puppet - do not edit direct
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+<%= auto0_stanza %>
+iface eth0 inet manual
+
+<%= iface0 %>
+	<%= eth0_ip %>
+	<%= eth0_netmask %>
+	<%= eth0_network %>
+	<%= bcstnet0 %>
+	<%= gateway0 %>
+	bridge_ports eth0
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
+	auto kvmbr0
+
+<%= addroute_kvmbr0 %>
+<%= removeroute_kvmbr0 %>
