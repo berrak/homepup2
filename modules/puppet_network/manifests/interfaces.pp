@@ -61,9 +61,13 @@ class puppet_network::interfaces ( $interfaces = '1',
         
     } else {
     
-        $addroute_eth0 = $::puppet_network::params::addroute_eth0
-        $removeroute_eth0 = $::puppet_network::params::removeroute_eth0     
-        
+        if $hostnm == 'dell' {
+            $addroute_kvmbr0 = $::puppet_network::params::addroute_kvmbr0
+            $removeroute_kvmbr0 = $::puppet_network::params::removeroute_kvmbr0         
+        } else {
+            $addroute_eth0 = $::puppet_network::params::addroute_eth0
+            $removeroute_eth0 = $::puppet_network::params::removeroute_eth0   
+        }  
     }
                         
     if ( $interfaces == '1' ) {
@@ -74,12 +78,12 @@ class puppet_network::interfaces ( $interfaces = '1',
         $allow_hotplug0 = 'allow-hotplug eth0'
         
         # dell is our experimental virtual host
-        #¤ facter just deliver data empty as it seee fit!
+        # facter just deliver data empty as it seee fit!
         if $hostnm == 'dell' {
             $iface0 = 'iface kvmbr0 inet static'
             $eth0_ip = "address $::ipaddress"
-            $eth0_netmask = '255.255.255.0'
-            $eth0_network = '192.168.0.0'           
+            $eth0_netmask = 'netmask 255.255.255.0'
+            $eth0_network = 'network 192.168.0.0'           
         } else {
             $iface0 = 'iface eth0 inet static'
             $eth0_ip = "address $::ipaddress_eth0"

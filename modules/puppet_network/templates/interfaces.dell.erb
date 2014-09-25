@@ -8,6 +8,8 @@ iface lo inet loopback
 <%= auto0_stanza %>
 iface eth0 inet manual
 
+# kvm virtual bridge
+auto kvmbr0
 <%= iface0 %>
 	<%= eth0_ip %>
 	<%= eth0_netmask %>
@@ -18,7 +20,5 @@ iface eth0 inet manual
 	bridge_stp off
 	bridge_fd 0
 	bridge_maxwait 0
-	auto kvmbr0
-
-# <%= addroute_eth0 %>
-# <%= removeroute_eth0 %>
+    <%= addroute_kvmbr0 %>
+    <%= removeroute_kvmbr0 %>
