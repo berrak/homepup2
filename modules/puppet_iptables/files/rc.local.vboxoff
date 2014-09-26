@@ -1,0 +1,19 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+#
+# Load our firewall script at boot
+
+/sbin/iptables-restore < /root/bin/IPTABLES.FW
+
+# stop service vboxdrv if VirtaulBox is installed
+# this allow this host to experiment with KVM
+
+test -x /etc/init.d/vboxdrv && service vboxdrv stop
+
+exit 0

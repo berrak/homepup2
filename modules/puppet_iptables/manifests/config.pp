@@ -12,12 +12,13 @@
 ##     class { puppet_iptables::config : role => 'default.desktop' }
 ##     class { puppet_iptables::config : role => 'default.server', inet => '192.168.2.0/24' }
 ##
-##     class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan' }
+##     class { puppet_iptables::config : role => 'mailserver', hostnm => 'rohan', disable_vboxdrv='true' }
 ##
 class puppet_iptables::config ( $role,
                                 $inet= '',
                                 $iface= '',
                                 $hostnm= '',
+								$disable_vboxdrv='',
 ) {
 
     include puppet_iptables
@@ -44,6 +45,30 @@ class puppet_iptables::config ( $role,
 		    $net_int = $iface
         }		
 		
+	}
+	
+	# this loads the firewall, and optionally unload vboxdrv kernel
+	# service modules to allow KVM virtualization in the same host.
+	
+	if $disable_vboxdrv in [ '', 'off', 'false' ] {
+	
+		file { "/etc/rc.local" :
+			 source => "puppet:///modules/puppet_iptables/rc.local",
+			  owner => 'root',
+			  group => 'root',
+			   mode => '0750',
+			require => Package["iptables"],
+		}
+		
+	} else {
+	
+		file { "/etc/rc.local" :
+			 source => "puppet:///modules/puppet_iptables/rc.local.vboxoff",
+			  owner => 'root',
+			  group => 'root',
+			   mode => '0750',
+			require => Package["iptables"],
+		}	
 	}
 	
     # Special addresses are always used in default rules
@@ -97,5 +122,6 @@ class puppet_iptables::config ( $role,
 		fail("FAIL: Unknown parameter hostnm ($hostnm) given.")
 
     }
+	
 
 }

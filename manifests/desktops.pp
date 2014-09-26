@@ -77,8 +77,9 @@ node 'dell.home.tld' inherits basenode {
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
     class { admin_fstab::config : fstabhost => 'dell' }
 
-    # load desktop firewall script
-    class { puppet_iptables::config : role => 'default.desktop' }
+    # load desktop firewall script - and if vbox service running, turn it off
+    class { puppet_iptables::config :
+                    role => 'default.desktop', disable_vboxdrv => 'true' }
 	 
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0',
               defaultgateway => '192.168.0.1', hostnm => 'dell' }
