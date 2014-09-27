@@ -5,7 +5,9 @@ node 'mordor.home.tld' inherits basenode {
 	
     class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
-    include puppet_rsync
+    
+    # Temporary disable - remote backup under re-construction
+    #include puppet_rsync
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
@@ -66,7 +68,9 @@ node 'dell.home.tld' inherits basenode {
 	
     class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
-    include puppet_rsync
+    
+    # Temporary disable - remote backup under re-construction
+    #include puppet_rsync
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
@@ -242,7 +246,8 @@ node 'shire.home.tld' inherits basenode {
 	
 	# this host acts as 'NFS data server' for all desktup hosts and needs backup (rsync)
 	
-	include puppet_rsync
+    # Temporary disable - remote backup under re-construction
+	# include puppet_rsync
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
