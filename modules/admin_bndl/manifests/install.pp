@@ -107,8 +107,9 @@ define admin_bndl::install {
         
             # glogg: system logg/filter qt4 viewer analyzing log files
             # xclip: command line interface to X selections
+			# unetbootin: make bootable usb flash disk for iso installs
         
-            package  { [ "glogg", "xclip" ] :
+            package  { [ "glogg", "xclip", "unetbootin" ] :
                  ensure => installed }
         }
         
