@@ -87,6 +87,11 @@ define user_turbo_ssh::config {
 				ensure => 'link',
 				target => "/home/${name}/bin/ssh-to",
 			}			
+		
+			file { "/home/${name}/bin/ol65" :
+				ensure => 'link',
+				target => "/home/${name}/bin/ssh-to",
+			}				
 			
 	   	}
 		
