@@ -57,8 +57,8 @@ node 'nodecarbon.home.tld' inherits basenode {
     puppet_postfix::install { 'mta' : ensure => installed, install_cyrus_sasl => 'false',
                 mta_type => satellite, smtp_relayhost_ip => '192.168.0.11' }
         
-    #temporary removed apache from this host			
-    # include puppet_apache
+    		
+    include puppet_apache
 	
 	# Manage all other local servers with cluster ssh
 	class { puppet_cluster_ssh::config : user => 'bekr' }

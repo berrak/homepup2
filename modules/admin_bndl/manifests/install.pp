@@ -48,8 +48,9 @@ define admin_bndl::install {
 			# tweaking of configuration files etc to work
 			
             # gddrescue: backup image of disk despite disk/head errors
+			# fwanalog: iptables analyzer
             
-            package  { [ "gddrescue" ] :
+            package  { [ "gddrescue", "fwanalog" ] :
                 ensure => installed }
         
         }
