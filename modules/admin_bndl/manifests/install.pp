@@ -76,10 +76,11 @@ define admin_bndl::install {
 			# php5-cli: php5 scripting at the command line
 			# tree: view directory structure
 			# pydf: colourized df clone
+			# uuid-runtime: provides tools like uuidgen 
 			
         
             package  { [ "lsof", "psmisc", "lshw", "telnet", "parted", "wodim", "genisoimage", "curl",
-			            "pydf", "tree" ] :
+			            "pydf", "tree", "uuid-runtime" ] :
                 ensure => installed }
 			
 			package  { [ "ethtool", "chkconfig", "sysv-rc-conf", "debsums", "bash-doc", "dnsutils", "php5-cli" ] :
