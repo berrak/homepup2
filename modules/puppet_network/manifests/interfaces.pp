@@ -80,19 +80,21 @@ class puppet_network::interfaces ( $interfaces = '1',
         $auto0_stanza = 'auto eth0'
         $allow_hotplug0 = 'allow-hotplug eth0'
         
-        # dell is our experimental virtual host
+        # NOTE: Skip 'dell' as our experimental virtual host
         # facter just deliver data empty as it seee fit!
-        if $hostnm == 'dell' {
-            $iface0 = 'iface kvmbr0 inet static'
-            $eth0_ip = "address $::ipaddress"
-            $eth0_netmask = 'netmask 255.255.255.0'
-            $eth0_network = 'network 192.168.0.0'           
-        } else {
-            $iface0 = 'iface eth0 inet static'
-            $eth0_ip = "address $::ipaddress_eth0"
-            $eth0_netmask = "netmask $::netmask_eth0"
-            $eth0_network = "network $::network_eth0"    
-        }
+        #if $hostnm == 'dell' {
+        #    $iface0 = 'iface kvmbr0 inet static'
+        #    $eth0_ip = "address $::ipaddress"
+        #    $eth0_netmask = 'netmask 255.255.255.0'
+        #    $eth0_network = 'network 192.168.0.0'           
+        #} else {
+		
+		$iface0 = 'iface eth0 inet static'
+		$eth0_ip = "address $::ipaddress_eth0"
+		$eth0_netmask = "netmask $::netmask_eth0"
+		$eth0_network = "network $::network_eth0"
+			
+        #}
         
         $bcstnet0 = "broadcast $broadcastnet"
         $gateway0 = "gateway $defaultgateway"
