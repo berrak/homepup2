@@ -60,14 +60,17 @@ class puppet_network::interfaces ( $interfaces = '1',
         $removeroute_eth0 = ''
         
     } else {
-    
-        if $hostnm == 'dell' {
-            $addroute_kvmbr0 = $::puppet_network::params::addroute_kvmbr0
-            $removeroute_kvmbr0 = $::puppet_network::params::removeroute_kvmbr0         
-        } else {
-            $addroute_eth0 = $::puppet_network::params::addroute_eth0
-            $removeroute_eth0 = $::puppet_network::params::removeroute_eth0   
-        }  
+                                   
+		# NOTE: Skip to use bridge for host 'dell'
+        #if $hostnm == 'dell' {
+        #    $addroute_kvmbr0 = $::puppet_network::params::addroute_kvmbr0
+        #    $removeroute_kvmbr0 = $::puppet_network::params::removeroute_kvmbr0         
+        #} else {
+		
+        $addroute_eth0 = $::puppet_network::params::addroute_eth0
+        $removeroute_eth0 = $::puppet_network::params::removeroute_eth0
+		
+        #}  
     }
                         
     if ( $interfaces == '1' ) {

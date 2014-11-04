@@ -5,7 +5,6 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-<%= auto0_stanza %>
 iface eth0 inet manual
 <%= iface0 %>
 	<%= eth0_ip %>
@@ -14,3 +13,5 @@ iface eth0 inet manual
 	<%= bcstnet0 %>
 	<%= gateway0 %>
 
+<%= addroute_eth0 %> 
+<%= removeroute_eth0 %>
