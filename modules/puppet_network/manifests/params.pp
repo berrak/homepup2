@@ -22,7 +22,7 @@ class puppet_network::params {
     $addroute_eth0 = "post-up /sbin/route add -net $mysubdomain_net netmask 255.255.255.0 gw $mysecuregateway_ip dev eth0"
     $removeroute_eth0 = "pre-down /sbin/route del -net $mysubdomain_net netmask 255.255.255.0 gw $mysecuregateway_ip dev eth0"
 
-    # Virtual host (dell) enslaves eth0 to kvmbr0
+    # NOT used: Virtual host (dell) enslaves eth0 to kvmbr0
     $addroute_kvmbr0 = "post-up /sbin/route add -net $mysubdomain_net netmask 255.255.255.0 gw $mysecuregateway_ip dev kvmbr0"
     $removeroute_kvmbr0 = "pre-down /sbin/route del -net $mysubdomain_net netmask 255.255.255.0 gw $mysecuregateway_ip dev kvmbr0"
     
