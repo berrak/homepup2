@@ -31,7 +31,7 @@ node basenode {
 	# high memory usage during index rebuild - never allow install.
     admin_pkg::blacklist { 'apt-xapian-index' :}
 	
-    class { admin_resolvconf::config : dns_provider => 'ispdns' }
+    class { admin_resolvconf::config : dns_provider => 'opendns' }
 	
     # Disable ipv6 in kernel/grub and use the more text lines in console mode	
     class { admin_grub::install : defaultline => 'vga=791', appendline => 'true', ipv6 => 'false' }
