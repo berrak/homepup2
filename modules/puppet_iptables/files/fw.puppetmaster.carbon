@@ -207,7 +207,8 @@ $IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --dport 2049 -m state
 $IPTABLES -A OUTPUT -s 192.168.0.24 -d $NFSHOSTADDR -p tcp --dport 4000:4001 -m state --state NEW -j ACCEPT
 
 # allow VNC client connections out
-$IPTABLES -A OUTPUT -d $NET_INT -p tcp --dport 5901:5904 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p tcp --dport 5900:5901 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -d $NET_INT -p tcp --dport 6000:6001 -m state --state NEW -j ACCEPT
 
 # puppet clients listen on this port from the puppet master server
 $IPTABLES -A OUTPUT -p tcp -d $NET_INT -m tcp --dport 8139 -m state --state NEW -j ACCEPT
