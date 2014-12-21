@@ -22,6 +22,7 @@ class puppet_nfs4srv::config ( $user ='' ) {
 	$myexport1 = $::puppet_nfs4srv::params::export1
 	$myexport2 = $::puppet_nfs4srv::params::export2
 	$myexport3 = $::puppet_nfs4srv::params::export3
+	$myexport4 = $::puppet_nfs4srv::params::export4	
 
     file { '/etc/exports':
         content =>  template( 'puppet_nfs4srv/exports.erb' ),  
