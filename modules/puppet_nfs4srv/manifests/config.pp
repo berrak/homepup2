@@ -22,7 +22,8 @@ class puppet_nfs4srv::config ( $user ='' ) {
 	$myexport1 = $::puppet_nfs4srv::params::export1
 	$myexport2 = $::puppet_nfs4srv::params::export2
 	$myexport3 = $::puppet_nfs4srv::params::export3
-	$myexport4 = $::puppet_nfs4srv::params::export4	
+	
+	$rootexport1 = $::puppet_nfs4srv::params::rootexport1	
 
     file { '/etc/exports':
         content =>  template( 'puppet_nfs4srv/exports.erb' ),  
@@ -57,11 +58,19 @@ class puppet_nfs4srv::config ( $user ='' ) {
 	
 	
     # create the exports directory for internal nfs $user
-	
 	file { "/exports/usernfs4/$user":
 		 ensure => "directory",
 		  owner => $user,
 		  group => $user,
+           mode => '0755',
+		require => File["/exports/usernfs4"],
+	}
+
+	# always create a root directory for /mnt export
+	file { "/exports/usernfs4/root":
+		 ensure => "directory",
+		  owner => 'root',
+		  group => 'root',
            mode => '0755',
 		require => File["/exports/usernfs4"],
 	}

@@ -33,3 +33,5 @@ UUID=a3717a48-f3e9-46ea-94ad-2f5e1290d448 /var/www        ext4    nodev,nosuid,n
 #
 # bind mount the local user bekrs' nfs folder for NFS exports (see /etc/exports)
 /exports/usernfs4/bekr    /home/bekr/nfs             none    bind,nosuid,nodev,noexec 0       0
+# bind mount /mnt for root exports
+/exports/usernfs4/root    /mnt                       none         bind,default        0       0
