@@ -13,5 +13,6 @@ class puppet_nfs4srv::params {
     $export1 = '/exports/usernfs4/bekr 192.168.0.100/24(rw,no_subtree_check)'
     $export2 = '/exports/usernfs4/bekr 192.168.0.222/24(rw,no_subtree_check)'
     $export3 = '/exports/usernfs4/bekr 192.168.0.24/24(rw,no_subtree_check)'  
+    $export4 = '/exports/usernfs4/bekr 192.168.0.66/24(rw,no_subtree_check)'
     
 }
