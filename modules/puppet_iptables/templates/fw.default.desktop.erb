@@ -190,7 +190,7 @@ $IPTABLES -A INPUT ! -i lo -j DROP
 $IPTABLES -A OUTPUT -p all ! -d $NET_INT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # Allow ftp out from internal net
-$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 21 -m state --state NEW -j ACCEPT
+$IPTABLES -A OUTPUT -p tcp ! -d $NET_INT -m tcp --dport 20:21 -m state --state NEW -j ACCEPT
 
 # allow ssh pass out to other internal LAN hosts
 $IPTABLES -A OUTPUT -p tcp -s $NET_INT -d $NET_INT -m tcp --dport 22 -m state --state NEW -j ACCEPT
