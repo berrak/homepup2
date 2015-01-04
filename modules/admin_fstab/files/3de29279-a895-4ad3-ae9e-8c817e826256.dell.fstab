@@ -14,3 +14,6 @@ UUID=416329bb-e1ed-4274-95f8-87e68c903242 none            swap    sw            
 
 # mount our NFSv4 share from 'shire' to local user 'bekr'
 192.168.0.10:/bekr  /home/bekr/nfs  nfs  nfsvers=4,rsize=8192,wsize=8192,intr,clientaddr=192.168.0.10  0   0
+
+# mount our NFSv4 share from 'shire' to local user 'bkron'
+192.168.0.10:/bkron  /home/bkron/nfs  nfs  nfsvers=4,rsize=8192,wsize=8192,intr,clientaddr=192.168.0.10  0   0
