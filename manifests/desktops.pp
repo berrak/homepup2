@@ -36,8 +36,9 @@ node 'mordor.home.tld' inherits basenode {
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
     puppet_devtools::tools { 'bekr' : }
 	
-	## nfs for user 'bekr' (really just creates the mount point in users' home)
-    class { 'puppet_nfs4client::config' : user => 'bekr' }
+	## nfs client
+    include puppet_nfs4client
+	puppet_nfs4client::add_user { 'bekr' : }
 	
 	
     ## use this host for CPAN/perl projects
@@ -96,12 +97,14 @@ node 'dell.home.tld' inherits basenode {
     ## users customization
     
     user_bashrc::config { 'bekr' : }
-    user_bashrc::config { 'jensen' : }    
+    user_bashrc::config { 'jensen' : }
+    user_bashrc::config { 'bkron' : }  
     
 	## users (mail)
 	
     puppet_mutt::install { 'root': mailserver_hostname => 'rohan' }
     puppet_mutt::install { 'bekr': mailserver_hostname => 'rohan' }
+    puppet_mutt::install { 'bkron': mailserver_hostname => 'rohan' }
 	
 		
     ## Skip now - need to find a Puppet way to install saved binaries/blobs...Dropbox?
@@ -114,8 +117,10 @@ node 'dell.home.tld' inherits basenode {
 	## Add Broadcom wifi firmware BCM802111 (Debian repo: backport)
 	admin_backport::install { 'iwlwifi': }
 	
-    ## enable nfs for user 'bekr' (really just creates the mount point in users' home)
-    class { 'puppet_nfs4client::config' : user => 'bekr' }
+    ## enable nfs
+    include puppet_nfs4client
+	puppet_nfs4client::add_user { 'bekr' : }
+	puppet_nfs4client::add_user { 'bkron' : }
 	
 	## application bundles
 	

@@ -1,28 +1,12 @@
 ##
 ## Manage NFSv4 client
 ##
-## Usage:
-##     class { puppet_nfs4client: user => 'bekr' }
 ##
-class puppet_nfs4client::config ( $user ='' ) {
+class puppet_nfs4client::config {
 
     include puppet_nfs4client::params
 	include puppet_nfs4client::install
 	include puppet_nfs4client::service
-
-    if $user == '' {
-    
-        fail("FAIL: Missing the user ($user) parameter")
-    }
-
-    # create local nfs mount directory for $user
-    
-	file { "/home/$user/nfs":
-		ensure => "directory",
-		 owner => $user,
-		 group => $user,
-          mode => '0755',
-	}
 	
 	# nfs-common configuration - note: pure NFSv4 doesn't need legacy NFSv3 daemons
 	
