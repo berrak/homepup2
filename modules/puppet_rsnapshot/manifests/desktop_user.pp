@@ -27,15 +27,6 @@ define puppet_rsnapshot::desktop_user {
         require => File["/home/${name}/.rsnapshot"],
     }
     
-    ## Ensure the backup-directory for rsnapshot exists
-    
-	file { "/home/${name}/nfs/${nfs_backup_directory}":
-		ensure => "directory",
-		owner => "${name}",
-		group => "${name}",
-		mode => '0700',
-	}    
-    
     ## Add cron jobs
     
     # TODO
