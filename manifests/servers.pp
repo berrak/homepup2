@@ -34,12 +34,8 @@ node 'nodecarbon.home.tld' inherits basenode {
     
     # must came after the user bashrc id defined (do not use until converted this ruby script  to perl)
     ## puppet_git_md::config { 'bekr': }
-    
-    ## enable nfs for user 'bekr' (really just creates the mount point in users' home)
-    class { 'puppet_nfs4client::config' : user => 'bekr' }	
-    
+        
     ## use this host for puppet projects
-    
     puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
     
 	## nfs client
