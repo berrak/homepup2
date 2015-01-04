@@ -1,0 +1,42 @@
+#################################################
+# rsnapshot.conf - rsnapshot configuration file #
+#################################################
+#                                               #
+# PLEASE BE AWARE OF THE FOLLOWING RULES:       #
+#                                               #
+# This file requires tabs between elements      #
+#                                               #
+# Directories require a trailing slash:         #
+#   right: /home/                               #
+#   wrong: /home                                #
+#                                               #
+#################################################
+
+# Default config version
+config_version	1.2
+ 
+# So the hard disk is not polluted in case the backup filesystem is not available
+no_create_root	1
+
+# Improve recovery incase of interupted backup
+#sync_first	1
+ 
+# Standard settings
+cmd_cp			/bin/cp
+cmd_rm			/bin/rm
+cmd_rsync		/usr/bin/rsync
+
+snapshot_root	/home/<%= name %>/nfs/<%= nfs_backup_directory %>/
+ 
+# increments, which are kept
+retain	hourly	6
+retain	daily	7
+retain	weekly	4
+retain monthly	6
+
+# Backup folder(s)/files
+backup	/home/<%= name %>/perlwork/	localhost/
+
+# Exclude pattern(s)
+exclude	".*/"
+

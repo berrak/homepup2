@@ -7,6 +7,7 @@ node 'mordor.home.tld' inherits basenode {
     include admin_hardening
     
     # Temporary disable - remote backup under re-construction
+	# local backup, use: rsnapshot module, which also installs/conflicts 'rync')
     #include puppet_rsync
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
@@ -70,8 +71,11 @@ node 'dell.home.tld' inherits basenode {
     class { puppet_tiger::config : install_rec_tripwire => 'no' }
     include admin_hardening
     
-    # Temporary disable - remote backup under re-construction
-    #include puppet_rsync
+    # Backup user directory to each NFS (user)
+    include puppet_rsnapshot
+	#puppet_rsnapshot::desktop_user { 'bekr' : }
+	puppet_rsnapshot::desktop_user { 'bkron' : }	
+	
 
     # assumes that all host lives in the same domain, otherwise specify it as a parameter
     class { admin_hosts::config :
