@@ -27,7 +27,7 @@ define puppet_rsnapshot::desktop_user {
     
     ## Ensure the backup-directory for rsnapshot exists
     
-    $nfs_backup_directory = 'backup'
+    $nfs_backup_directory = "backup"
     
 	file { "/home/${name}/nfs/${nfs_backup_directory}":
 		ensure => "directory",
