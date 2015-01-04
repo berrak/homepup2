@@ -77,14 +77,14 @@ SRC_DIRECTORIES="$HOME/"
 ## Note: use 'show module cmd' since it also works if daemon
 ## is configured to 'write only = true' for a backup system.
 #export RSYNC_PASSWORD="$USER_PASSWORD"
-#$RSYNC $USER@<%= rsyncsrvaddress %>::  > /dev/null
+#$RSYNC $USER@< rsyncsrvaddress >::  > /dev/null
 #exitcode=$?
 #if [ $exitcode -ne 0 ]; then
 #    $LOGGER -p local0.debug "$0: ERROR: rsync returned ($exitcode) at login! User ($USER) in ($HOME)."
 #else
 #    $LOGGER -p local0.debug "$0: Remote rsync initiated at ($USER) login! Found directory list ($SRC_DIRECTORIES)."
 #
-#    $RSYNC $OPTIONS $DEFAULT_EXCLUDES $USER_EXCLUDES $SRC_DIRECTORIES $USER@<%= rsyncsrvaddress %>::<%= myhost %>-home-$USER
+#    $RSYNC $OPTIONS $DEFAULT_EXCLUDES $USER_EXCLUDES $SRC_DIRECTORIES $USER@< rsyncsrvaddress >::< myhost >-home-$USER
 #    exitcode=$?
 #    if [ $exitcode -eq 0 ]; then
 #        $LOGGER -p local0.debug "$0: Completed backup of directories ($SRC_DIRECTORIES) for ($USER)."
