@@ -7,22 +7,20 @@
 define puppet_nfs4client::add_user {
 
     include puppet_nfs4client
+        
+    if $name == '' {
     
-    $nfs_user = $name
-    
-    if $nfs_user == '' {
-    
-        fail("FAIL: Missing the user ($nfs_user) parameter")
+        fail("FAIL: Missing the user ($name) parameter")
     }
 
-    # create local nfs mount directory for $nfs_user
+    # create local nfs mount directory for $name
     
-	file { "/home/${nfs_user}/nfs":
+	file { "/home/$name/nfs":
 		 ensure => "directory",
-		  owner => $nfs_user,
-		  group => $nfs_user,
+		  owner => $name,
+		  group => $name,
            mode => '0755',
-        require => Package['nfs-common']
+        require => Package["nfs-common"],
 	}
 
 
