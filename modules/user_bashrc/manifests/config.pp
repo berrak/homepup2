@@ -178,6 +178,7 @@ define user_bashrc::config {
 	   	}				
 		
 
+		# only if 'lxde' exists (i.e. skip on servers)
         # Required - for below fix, create main lxde config directory
 
 		file { "/home/${name}/.config":
@@ -197,11 +198,10 @@ define user_bashrc::config {
 			require => File["/home/${name}/.config"],
 		}
 		
-		# Fix bug only if 'lxde' exists (i.e. skip on servers)
-		
 		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
-				 command => "/bin/chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
-				  onlyif => "/usr/bin/test -x /home/${name}/.config/lxterminal/lxterminal.conf",
+				path => '/bin:/sbin:/usr/bin:/usr/sbin',
+				 command => "chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
+				  onlyif => "ls /home/${name}/.config/lxterminal | grep -w lxterminal.conf",
 				 require => File["/home/${name}/.config/lxterminal"],
 		}
 		
