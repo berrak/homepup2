@@ -1,0 +1,40 @@
+#
+# /home/bekr/bin/bkron.backup
+#
+##############################################################
+# MANAGED BY PUPPET. DO NOT EDIT. CHANGES WILL BE WIPED OUT. #
+##############################################################
+#
+# Requirements: Debian package rsync (aptitude install rsync)
+#
+# Script is sourced by '/usr/local/bin/rsync.backup' if installed
+# and executed when a user login with lightdm (GUI login).
+# See: /etc/lightdm/lightdm.conf were above script is referred.
+#
+# Usage:
+# Options to automatically backup user $HOME/ to server at login.
+# Content is backed up to warp:/srv/backup/<hostname>/<user>/home
+#
+# Notes:
+#     Subdirectory ~/nfs is excluded by default (if it exists)
+#     since its backed up by the cron 'rsync.backup' script.
+#
+#     Directories are backed up recursively by default.
+#
+#------------------------------------------------------------
+
+#------------------------------------------------------------
+# Password for this user repository. Make this file mode 600!
+# Must match what is in the remote server password file.
+#------------------------------------------------------------
+
+USER_PASSWORD="bkron"
+
+#------------------------------------------------------------
+# Consider following subdirectories/filters for your needs.
+# Excluded private keys (.ssh) to be copied.
+# Exclude all kinds of 'cache' files/directories.
+#------------------------------------------------------------
+#
+
+USER_EXCLUDES="--exclude=Cache --exclude=cache --exclude=*Cache/ --exclude=.cache/ --exclude=.ssh/"

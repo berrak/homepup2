@@ -33,19 +33,20 @@ define puppet_gitclient::config ( $codehost = '' ) {
         }
         
         'mordor',
-        'shire' : {
+        'shire',
+		'dell': {
 
             $mygitname = $::puppet_gitclient::params::gitname_cpan
             $mygitemail = $::puppet_gitclient::params::gitemail_cpan
         
         }
 
-        'dell' : {
-
-            $mygitname = $::puppet_gitclient::params::gitname_debinix
-            $mygitemail = $::puppet_gitclient::params::gitemail_debinix
-        
-        }
+        #'dell' : {
+        #
+        #    $mygitname = $::puppet_gitclient::params::gitname_debinix
+        #    $mygitemail = $::puppet_gitclient::params::gitemail_debinix
+        #
+        #}
 
         default: {
         
