@@ -4,8 +4,11 @@
 ## Usage:
 ##     class { puppet_nfs4srv: user => 'bekr' }
 ##
+##
 ## Limitations: Only works single user (i.e. call this only once).
 ## Todo: Create define to process list of users.
+## !!!NOTE DONE YET!!!
+## User 'bkron' hardcoded in template and below! UGLY!
 ##
 class puppet_nfs4srv::config ( $user ='' ) {
 
@@ -46,7 +49,16 @@ class puppet_nfs4srv::config ( $user ='' ) {
 		 owner => $user,
 		 group => $user,
           mode => '0755',
-	}	
+	}
+	
+	### Ugly hack for new user...bkron ###	
+	file { "/home/bkron/nfs":
+		ensure => "directory",
+		 owner => 'bkron',
+		 group => 'bkron',
+          mode => '0755',
+	}
+	
 	
     # create the 'root' directory of all exports
 	
@@ -65,6 +77,16 @@ class puppet_nfs4srv::config ( $user ='' ) {
            mode => '0755',
 		require => File["/exports/usernfs4"],
 	}
+
+	### Ugly hack for new user...bkron ###	
+	file { "/exports/usernfs4/bkron":
+		 ensure => "directory",
+		  owner => 'bkron',
+		  group => 'bkron',
+           mode => '0755',
+		require => File["/exports/usernfs4"],
+	}	
+
 
 	# always create a root directory for /mnt export
 	file { "/exports/usernfs4/root":
