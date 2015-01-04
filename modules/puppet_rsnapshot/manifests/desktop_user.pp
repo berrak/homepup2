@@ -17,6 +17,8 @@ define puppet_rsnapshot::desktop_user {
 		mode => '0750',
 	}    
     
+    $nfs_backup_directory = 'backup'
+    
     file { "/home/${name}/.rsnapshot/rsnapshot.conf":
         content =>  template("puppet_rsnapshot/${name}.rsnapshot.conf.erb"),
           owner => "${name}",
@@ -26,8 +28,6 @@ define puppet_rsnapshot::desktop_user {
     }
     
     ## Ensure the backup-directory for rsnapshot exists
-    
-    $nfs_backup_directory = "backup"
     
 	file { "/home/${name}/nfs/${nfs_backup_directory}":
 		ensure => "directory",
