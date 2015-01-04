@@ -18,7 +18,7 @@ define puppet_rsnapshot::desktop_user {
 	}    
     
     file { "/home/${name}/.rsnapshot/rsnapshot.conf":
-        content =>  template('puppet_rsnapshot/${name}.rsnapshot.conf.erb'),
+        content =>  template("puppet_rsnapshot/${name}.rsnapshot.conf.erb"),
           owner => "${name}",
           group => "${name}",
            mode => '0700',
