@@ -20,7 +20,7 @@ define puppet_devtools::tools {
 		content =>  template( 'puppet_devtools/puppet.newmodule.erb' ),
 		  owner => 'root',
 		  group => 'staff',
-		   mode => '0755',
+		   mode => '0555',
 	}
 	
 	# Validate manifest and erb templates syntax wrapper
@@ -29,7 +29,7 @@ define puppet_devtools::tools {
 		source => "puppet:///modules/puppet_devtools/puppet.syntax",
 		 owner => 'root',
 		 group => 'staff',
-		  mode => '0755',
+		  mode => '0555',
     }
 		
 		
