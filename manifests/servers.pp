@@ -31,12 +31,12 @@ node 'nodecarbon.home.tld' inherits basenode {
 	## super fast ssh login to hosts
 	user_turbo_ssh::config { 'root': }
 	user_turbo_ssh::config { 'bekr': }	
-    
-    # must came after the user bashrc id defined (do not use until converted this ruby script  to perl)
-    ## puppet_git_md::config { 'bekr': }
         
     ## use this host for puppet projects
     puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
+	
+	## use for puppet development (only)
+	puppet_gitclient::config { 'bekr': }
     
 	## nfs client
     include puppet_nfs4client
