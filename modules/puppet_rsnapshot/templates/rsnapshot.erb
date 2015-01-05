@@ -8,7 +8,7 @@
 # /etc/cron.d/rsnapshot-<user2>
 #
 
-30 */4	* * *		<%= name %>	/usr/bin/rsnapshot sync && /usr/bin/rsnapshot hourly
-15  21  * * *		<%= name %>	/usr/bin/rsnapshot daily
-15  22  * * 1		<%= name %>	/usr/bin/rsnapshot weekly
-15  23  1 * *		<%= name %>	/usr/bin/rsnapshot monthly
+30 */4	* * *		<%= name %>	/usr/bin/rsnapshot -c /home/<%= name %>/.rsnapshot/rsnapshot.conf sync && /usr/bin/rsnapshot -c /home/<%= name %>/.rsnapshot/rsnapshot.conf hourly
+15  21  * * *		<%= name %>	/usr/bin/rsnapshot -c /home/<%= name %>/.rsnapshot/rsnapshot.conf daily
+15  22  * * 1		<%= name %>	/usr/bin/rsnapshot -c /home/<%= name %>/.rsnapshot/rsnapshot.conf weekly
+15  23  1 * *		<%= name %>	/usr/bin/rsnapshot -c /home/<%= name %>/.rsnapshot/rsnapshot.conf monthly
