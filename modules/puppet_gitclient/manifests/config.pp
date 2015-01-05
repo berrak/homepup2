@@ -17,30 +17,30 @@ define puppet_gitclient::config {
     
     if ( $name == 'bkron' ) {
 	
-	    $gitname_cpan = 'bkron'
-		$gitemail_cpan = 'bkron@cpan.org'
+	    $mygitname = 'bkron'
+		$mygitemail = 'bkron@cpan.org'
 		
 	} elsif (( $name == 'bekr' ) and ( $::hostname == 'carbon' )) {
 
 		# host carbon is for 'puppet code'
 	
-		$gitname_puppet = 'berrak'
-		$gitemail_puppet = 'bkronmailbox-git@yahoo.se'	
+		$mygitname = 'berrak'
+		$mygitemail = 'bkronmailbox-git@yahoo.se'	
 	
 	} elsif ( $name == 'bekr' ) {
 	
 		# all other hosts are normal development
 		
-		$gitname_debinix = 'debinix'
-		$gitemail_debinix = 'bertil.kronlund@gmail.com'  
+		$mygitname = 'debinix'
+		$mygitemail = 'bertil.kronlund@gmail.com'  
 		
 	} else {
 	
 		fail("FAIL: Unknow user ($name). Please add user!")
 	}
 
-    $giteditor_nano = '/bin/nano'
-    $logformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    $mygiteditor = '/bin/nano'
+    $mylogformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'
 	
 	# create a subdirectory for CLONED/FORKED repositories
 	file { "/home/${name}/GIT":
