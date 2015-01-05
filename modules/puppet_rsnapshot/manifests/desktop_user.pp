@@ -7,7 +7,7 @@
 define puppet_rsnapshot::desktop_user {
 
     include puppet_utils
-
+	
     ## Create per user defined configuration
     
 	file { "/home/${name}/.rsnapshot":
@@ -18,7 +18,8 @@ define puppet_rsnapshot::desktop_user {
 	}    
     
     $nfs_backup_directory = 'backup'
-    
+    $myhostname = $::hostname
+	
     file { "/home/${name}/.rsnapshot/rsnapshot.conf":
         content =>  template("puppet_rsnapshot/${name}.rsnapshot.conf.erb"),
           owner => "${name}",
