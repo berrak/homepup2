@@ -43,7 +43,13 @@ define puppet_gitclient::config {
     $mylogformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'
 	
 	# create a subdirectory for CLONED/FORKED repositories
-	file { "/home/${name}/GIT":
+	file { "/home/${name}/GITCLONED":
+		ensure => "directory",
+		 owner => $name,
+		 group => $name,
+	}
+	
+	file { "/home/${name}/GITFORKED":
 		ensure => "directory",
 		 owner => $name,
 		 group => $name,
