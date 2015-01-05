@@ -1,65 +1,48 @@
 ##
 ## Configure global client git user name/email/editor etc.
-## Different host machines are used for diffrent coding
-## projects (carbon: puppet, mordor: perl) with github.
 ##
 ## Note:
-##     On server depot must the git user/group 'git1', 'git2' exist
+##     On server depot must the git user/group 'project1', 'project2' exist
 ##     exist and client users have their keys in that user 
 ##      '~/.ssh/authorized_keys' file. Keys does not require passwords.
-##     The git1 user (unix) password is used for authorization.
 ##     Keys is only used for authentication and encryption.
 ##
 ## Sample use:
 ##
-##     puppet_git::config { 'bekr' : codehost => 'mordor' }
+##     puppet_git::config { 'bekr' : }
 ##
-define puppet_gitclient::config ( $codehost = '' ) {
+define puppet_gitclient::config {
 
     include puppet_gitclient::install
-    include puppet_gitclient::params
     
-    # facter - check that we target correct host
-    
-    $myhost = $::hostname 
-
-    case $codehost {
-
-        'carbon': {
-
-            $mygitname = $::puppet_gitclient::params::gitname_puppet
-            $mygitemail = $::puppet_gitclient::params::gitemail_puppet
-        
-        }
-        
-        'mordor',
-        'shire',
-		'dell': {
-
-            $mygitname = $::puppet_gitclient::params::gitname_cpan
-            $mygitemail = $::puppet_gitclient::params::gitemail_cpan
-        
-        }
-
-        #'dell' : {
-        #
-        #    $mygitname = $::puppet_gitclient::params::gitname_debinix
-        #    $mygitemail = $::puppet_gitclient::params::gitemail_debinix
-        #
-        #}
-
-        default: {
-        
-            fail("FAIL: No coding host name ($codehost) given as parameter.")
-        
-        }
-    
-    }
-    
-    $mygiteditor = $::puppet_gitclient::params::giteditor_nano
-	$mylogformat = $::puppet_gitclient::params::logformat
+    if ( $name == 'bkron' ) {
 	
-	# create a subdirectory for local repositories
+	    $gitname_cpan = 'bkron'
+		$gitemail_cpan = 'bkron@cpan.org'
+		
+	} elsif (( $name == 'bekr' ) and ( $::hostname == 'carbon' )) {
+
+		# host carbon is for 'puppet code'
+	
+		$gitname_puppet = 'berrak'
+		$gitemail_puppet = 'bkronmailbox-git@yahoo.se'	
+	
+	} elsif ( $name == 'bekr' ) {
+	
+		# all other hosts are normal development
+		
+		$gitname_debinix = 'debinix'
+		$gitemail_debinix = 'bertil.kronlund@gmail.com'  
+		
+	} else {
+	
+		fail("FAIL: Unknow user ($name). Please add user!")
+	}
+
+    $giteditor_nano = '/bin/nano'
+    $logformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	
+	# create a subdirectory for CLONED/FORKED repositories
 	file { "/home/${name}/GIT":
 		ensure => "directory",
 		 owner => $name,

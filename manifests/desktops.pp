@@ -44,7 +44,7 @@ node 'mordor.home.tld' inherits basenode {
 	
     ## use this host for CPAN/perl projects
 	# puppet_komodoide6::install { 'bekr' : hostarch => 'i386' }
-	puppet_gitclient::config { 'bekr': codehost => 'mordor' }
+	puppet_gitclient::config { 'bekr': }
 	
 	
 	## application bundles
@@ -115,8 +115,10 @@ node 'dell.home.tld' inherits basenode {
     ## maybe do as with virtualbox install, i.e. repository at Dropbox?
 	## puppet_komodoide6::install { 'bekr' : hostarch => 'amd64' }
     
-    ## use this host for COBOL (or Python) projects
-	puppet_gitclient::config { 'bekr': codehost => 'dell' }
+    ## user 'bkron' is for perl projects, user 'bekr' is for anything else
+	## bkron use bron-github repo, bekr use debinix-repo at github
+	puppet_gitclient::config { 'bekr': }
+	puppet_gitclient::config { 'bkron': }	
 	
 	## Add Broadcom wifi firmware BCM802111 (Debian repo: backport)
 	admin_backport::install { 'iwlwifi': }
@@ -298,9 +300,8 @@ node 'shire.home.tld' inherits basenode {
 	## this (desktop-) host exports some 'home' sub-directories for user 'bekr'
     class { 'puppet_nfs4srv::config' : user => 'bekr' }
 	
-	## use this host for CPAN/perl projects
-	
-	puppet_gitclient::config { 'bekr': codehost => 'shire' }
+	## general developmet (except perl)
+	puppet_gitclient::config { 'bekr': }
 
 	## application bundles
 	

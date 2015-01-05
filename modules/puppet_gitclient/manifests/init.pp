@@ -3,6 +3,6 @@
 ##
 class puppet_gitclient {
 
-    include puppet_gitclient::install, puppet_gitclient::params
+    include puppet_gitclient::install
 
 }
