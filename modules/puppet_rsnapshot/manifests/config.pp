@@ -18,7 +18,7 @@ class puppet_rsnapshot::config {
          source =>  "puppet:///modules/puppet_rsnapshot/backup_to_user_nfs.sh",        
           owner => 'root',
           group => 'staff',
-           mode => '0700',
+           mode => '0666',
         require => Package["rsnapshot"], 
     }
     

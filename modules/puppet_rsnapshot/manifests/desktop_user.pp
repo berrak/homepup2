@@ -31,7 +31,7 @@ define puppet_rsnapshot::desktop_user {
     ## Add indidual user cron jobs
     
     file { "/etc/cron.d/rsnapshot-${name}":
-        content =>  template("puppet_rsnapshot/rsnapshot.erb"),
+        content =>  template("puppet_rsnapshot/rsnapshot.erb"),	
         require => Package["rsnapshot"], 
     }
 
