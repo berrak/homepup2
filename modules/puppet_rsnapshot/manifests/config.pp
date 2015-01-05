@@ -22,4 +22,9 @@ class puppet_rsnapshot::config {
         require => Package["rsnapshot"], 
     }
     
+    # ensure original global cron-job is not used
+    file { "/etc/cron.d/rsnapshot":
+        ensure => absent,
+    }
+    
 }
