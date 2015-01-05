@@ -196,13 +196,15 @@ define user_bashrc::config {
 			  group => "${name}",
 			   mode => '0755',
 			require => File["/home/${name}/.config"],
+			 notify => Exec["/home/${name}/.config/lxterminal/lxterminal.conf"],
 		}
 		
 		exec { "/home/${name}/.config/lxterminal/lxterminal.conf":
-				path => '/bin:/sbin:/usr/bin:/usr/sbin',
-				 command => "chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
-				  onlyif => "ls /home/${name}/.config/lxterminal | grep -w lxterminal.conf",
-				 require => File["/home/${name}/.config/lxterminal"],
+			       path => '/bin:/sbin:/usr/bin:/usr/sbin',
+				command => "chown ${name}:${name} /home/${name}/.config/lxterminal/lxterminal.conf",
+				 onlyif => "ls /home/${name}/.config/lxterminal | grep -w lxterminal.conf",
+				require => File["/home/${name}/.config/lxterminal"],
+			refreshonly => true,
 		}
 		
 	
