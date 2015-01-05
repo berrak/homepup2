@@ -1,4 +1,4 @@
-#!/bin/bash -w
+#!/bin/bash
 #
 # /user/local/bin/backup_to_user_nfs.sh
 #
