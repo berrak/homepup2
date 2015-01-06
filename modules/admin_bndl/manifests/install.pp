@@ -138,6 +138,7 @@ define admin_bndl::install {
 			# libtemplate-perl: the Template Toolkit processor
 			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit
 			# libwww-mechanize-perl: automate intercation with websites
+			# liblocal-lib-perl: create and use a local lib/ for perl modules with PERL5LIB
 			
 			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl", "libwww-mechanize-perl" ]:
                  ensure => installed }
@@ -151,7 +152,7 @@ define admin_bndl::install {
                 ensure => installed }
 				
 			## Add some logging and other modules
-			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl" ]:
+			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl", "liblocal-lib-perl" ]:
                 ensure => installed }
 		}
         

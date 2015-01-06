@@ -7,19 +7,22 @@
 # Sourced by user bash resource file
 #
 
-# For Perl lib and current project
+## For Perl lib and current project (if installed)
+## Use local::lib (see local::lib why the first test expression)
 
-export PERL5LIB=/home/bekr/perlwork/Filter-Heredoc/lib
+if /usr/bin/dpkg -l liblocal-lib-perl  > /dev/null 2>&1  ; then
 
+    [ $SHLVL -eq 1 ] && eval `perl -I$HOME/perl5/lib/perl5 -Mlocal::lib`
+    export MANPATH=$HOME/perl5/man:$MANPATH
+    export PERL5LIB=/home/bekr/perlwork/Filter-Heredoc/lib:$PERL5LIB
+    
+fi
+
+#export PERL5LIB=/home/bekr/perlwork/Filter-Heredoc/lib
 #export PERL5LIB=/home/bekr/MYCPANPROJ/App-AptInstall/lib
 #export PERL5LIB=/home/bekr/HP_DL380Install/diskusage/lib
 #export PERL5LIB=/home/bekr/HP_DL380Install/Debinix-Utils/lib
 #export PERL5LIB=/home/bekr/perlwork/Module-Starterkit/lib
-
-
-# For Perl scripts and man pages (not working)
-# export PATH=/home/bekr/PERL/bin:$PATH
-# export MANPATH=:/home/bekr/PERL/man
 
 # For perl author testing (Enable 2nd and Comment out first export stanza)
 # export RELEASE_TESTING=
