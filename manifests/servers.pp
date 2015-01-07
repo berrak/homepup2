@@ -45,7 +45,6 @@ node 'nodecarbon.home.tld' inherits basenode {
     
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
-    admin_bndl::install { 'developerapps' : }
     
     
     include puppet_cups
