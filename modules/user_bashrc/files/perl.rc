@@ -7,8 +7,9 @@
 # Sourced by user bash resource file
 #
 
-## For Perl lib and current project (if installed)
-## Use local::lib (see local::lib why the first test expression)
+## Non-root install av CPAN modules and local 'lib' project usage
+## (see local::lib about the first test expression)
+## Set environment for PERL_MB_OPT and PERL_MM_OPT (for cpanm) to be local
 
 if /usr/bin/dpkg -l liblocal-lib-perl  > /dev/null 2>&1  ; then
 
@@ -49,8 +50,5 @@ alias cpan.module="perl -e\"eval qq{use \\\$ARGV[0];\\\\\\\$v=\\\\\\\$\\\${ARGV[
 # print out perls library path
 alias perl.inc='perl -e "print join(\"\n\", @INC);"'
 
-## If perlbrew is installed set up path
-if [ -f ~/perl5/perlbrew/etc/bashrc ] ; then
-    source ~/perl5/perlbrew/etc/bashrc
-fi
+
 

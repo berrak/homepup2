@@ -73,7 +73,7 @@ node 'dell.home.tld' inherits basenode {
     
     # Backup user directory to each NFS (user)
     include puppet_rsnapshot
-	#puppet_rsnapshot::desktop_user { 'bekr' : }
+	puppet_rsnapshot::desktop_user { 'bekr' : }
 	puppet_rsnapshot::desktop_user { 'bkron' : }	
 	
 
