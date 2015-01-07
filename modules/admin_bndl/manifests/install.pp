@@ -116,21 +116,16 @@ define admin_bndl::install {
         }
         
         
-        developerapps : {
-        
-            # build-essential: various debian tools for the sw developer
-			# diffuse: GUI tool for merging and comparing text files
-          
-	        package  { [ "build-essential", "diffuse"]:
-                 ensure => installed }
-        
-		    ## Add some perl tools:
-			# perltidy: perl script indenter and formatter
-			# perl-doc: use 'perldoc' to read extended module information 
+        perlapps : {
+                
+			## Essential tools: such as keep CPAN local
+			# liblocal-lib-perl: create and use a local lib/ for perl modules with PERL5LIB
 			# cpanminus: get, unpack, build and install modules from CPAN
+			# perl-doc: use 'perldoc' to read extended module information 
+			
+	        package  { [ "liblocal-lib-perl", "perl-doc", "cpanminus" ]:
+                 ensure => installed }			
 
-	        package  { [ "perl-doc", "cpanminus", "perltidy" ]:
-                 ensure => installed }
 				 
 			## Add CPAN lib/modules:
 			# libmodule-starter-perl: simple starter kit for perl
@@ -138,7 +133,8 @@ define admin_bndl::install {
 			# libtemplate-perl: the Template Toolkit processor
 			# libtemplate-tiny-perl: Lightweigth implementation of Template Toolkit
 			# libwww-mechanize-perl: automate intercation with websites
-			# liblocal-lib-perl: create and use a local lib/ for perl modules with PERL5LIB
+			# perltidy: perl script indenter and formatter
+
 			
 			package  { [ "libmodule-starter-perl", "libmodule-starter-pbp-perl", "libtemplate-perl", "libtemplate-tiny-perl", "libwww-mechanize-perl" ]:
                  ensure => installed }
@@ -152,7 +148,7 @@ define admin_bndl::install {
                 ensure => installed }
 				
 			## Add some logging and other modules
-			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl", "liblocal-lib-perl" ]:
+			package  { [ "liblog-log4perl-perl", "libconfig-gitlike-perl", "libxml-simple-perl", "perltidy" ]:
                 ensure => installed }
 		}
         
@@ -205,6 +201,11 @@ define admin_bndl::install {
 			# man2html-base: convert man to man format
 			# groff:  groff printing system
 			# ruby-ronn: markdown to man and html format (best man pages)
+			# build-essential: various debian tools for the sw developer
+			# diffuse: GUI tool for merging and comparing text files
+			
+		package  { [ "build-essential", "diffuse"]:
+                 ensure => installed }
 			
 	        package  { [ "debhelper", "javahelper", "dh-make", "pandoc", "groff",
 			    "man2html-base", "ruby-ronn", "devscripts", "fakeroot", "gnulib"]:

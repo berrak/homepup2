@@ -51,7 +51,6 @@ node 'mordor.home.tld' inherits basenode {
 	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
-    admin_bndl::install { 'developerapps' : }
 	
     include puppet_cups
     
@@ -132,7 +131,7 @@ node 'dell.home.tld' inherits basenode {
 	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
-    admin_bndl::install { 'developerapps' : }
+    admin_bndl::install { 'perlapps' : }
     admin_bndl::install { 'eclipseapps' : }	
 
     puppet_devtools::tools { 'bekr' : }
@@ -307,7 +306,7 @@ node 'shire.home.tld' inherits basenode {
 	
     admin_bndl::install { 'guiadminapps' : }
     admin_bndl::install { 'officeapps' : }
-    admin_bndl::install { 'developerapps' : }
+    admin_bndl::install { 'perlapps' : }
 	
     include puppet_cups
 
