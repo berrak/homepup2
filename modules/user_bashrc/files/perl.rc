@@ -17,6 +17,7 @@ if /usr/bin/dpkg -l liblocal-lib-perl  > /dev/null 2>&1  ; then
 
     export PERL5LIB=/home/bekr/perlwork/Filter-Heredoc/lib:$PERL5LIB
     export PERL5LIB=/home/bekr/perlwork/Module-Location/lib:$PERL5LIB
+    export PERL5LIB=/home/bekr/perlwork/Module-Mint/lib:$PERL5LIB
     
     export MANPATH=$HOME/perl5/man:$MANPATH
     
