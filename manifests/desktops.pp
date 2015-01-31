@@ -87,7 +87,7 @@ node 'dell.home.tld' inherits basenode {
 
     # load desktop firewall script - and if vbox service running, turn it off
     class { puppet_iptables::config :
-                    role => 'default.desktop', disable_vboxdrv => 'true' }
+                    role => 'default.desktop', disable_vboxdrv => 'false' }
 	 
     class { puppet_network::interfaces : broadcastnet => '192.168.0.0',
               defaultgateway => '192.168.0.1', hostnm => 'dell' }
