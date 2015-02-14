@@ -83,7 +83,7 @@ node 'dell.home.tld' inherits basenode {
         smtp_ip => '192.168.0.11', smtp_hostname => 'rohan' }
 
     # Note: requires a copy of hosts 'fstab' file at puppetmaster.
-    class { admin_fstab::config : fstabhost => 'dell' }
+    # class { admin_fstab::config : fstabhost => 'dell' }
 
     # load desktop firewall script - and if vbox service running, turn it off
     class { puppet_iptables::config :
