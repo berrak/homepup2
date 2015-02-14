@@ -21,8 +21,6 @@ node basenode {
 	
 	include puppet_logwatch
 	include puppet_chkrootkit
-				
-    include admin_pinpuppet2_7
 
     admin_bndl::install { 'securityapps' : }
     admin_bndl::install { 'coresysapps' : }
