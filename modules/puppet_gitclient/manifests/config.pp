@@ -41,20 +41,7 @@ define puppet_gitclient::config {
 
     $mygiteditor = '/bin/nano'
     $mylogformat = '%Cred%h%Creset -%C(Yellow)%d%Creset%s%Cgreen(%cr) %C(bold blue)<%an>%Creset'
-	
-	# create a subdirectory for CLONED/FORKED repositories
-	file { "/home/${name}/GITCLONED":
-		ensure => "directory",
-		 owner => $name,
-		 group => $name,
-	}
-	
-	file { "/home/${name}/GITFORKED":
-		ensure => "directory",
-		 owner => $name,
-		 group => $name,
-	}
-    
+	    
     file { "/home/${name}/.gitconfig" :
           content =>  template( 'puppet_gitclient/gitconfig.erb' ),
             owner => $name,
