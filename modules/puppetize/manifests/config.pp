@@ -66,6 +66,31 @@ class puppetize::config {
             notify => Class["puppetize::service"],
         }
         
+    # hiera configuration
+    
+        file { "/etc/puppet/hiera.yaml" :
+             ensure => present,
+             source => "puppet:///modules/puppetize/hiera.yml",
+             owner => 'root',
+             group => 'root',
+            require => Class["puppetize::install"],
+        }
+        
+        file {'/etc/hiera.yaml':
+            ensure => link,
+            target => '/etc/puppet/hiera.yaml',
+            require => File['/etc/puppet/hiera.yaml'],
+        }
+        
+        file { '/etc/puppet/hieradata':
+            ensure => directory,
+        }
+            
+        file { '/etc/puppet/hieradata/node':
+             ensure => directory,
+            require => File['/etc/puppet/hieradata'],
+        }
+        
     } else {
     
         file { "/etc/puppet/puppet.conf" :
