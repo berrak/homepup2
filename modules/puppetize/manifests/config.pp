@@ -70,7 +70,7 @@ class puppetize::config {
     
         file { "/etc/puppet/hiera.yaml" :
              ensure => present,
-             source => "puppet:///modules/puppetize/hiera.yml",
+             source => "puppet:///modules/puppetize/hiera.yaml",
              owner => 'root',
              group => 'root',
             require => Class["puppetize::install"],
