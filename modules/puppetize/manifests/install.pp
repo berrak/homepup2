@@ -42,7 +42,7 @@ class puppetize::install {
 	
 	if $::hostname == $::puppetize::params::mypuppetserver_hostname {
 	
-        package { "puppetmaster" :
+        package { [ "puppetmaster", "ruby-hiera"] :
             ensure => present,
 		}
   		
