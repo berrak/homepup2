@@ -25,10 +25,7 @@ node basenode {
     admin_bndl::install { 'securityapps' : }
     admin_bndl::install { 'coresysapps' : }
     admin_bndl::install { 'cliadminapps' : }
-	
-	# high memory usage during index rebuild - never allow install.
-    admin_pkg::blacklist { 'apt-xapian-index' :}
-	
+		
     class { admin_resolvconf::config : dns_provider => 'opendns' }
 	
     # Disable ipv6 in kernel/grub and use the more text lines in console mode	
