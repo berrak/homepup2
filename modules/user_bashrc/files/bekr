@@ -45,7 +45,8 @@ function sy() {
 		then
 			puppet.syntax $file
 		fi
-	done ;	
+	done ;
+	exit;
 }
 
 # source in any other resource snippets in directory
