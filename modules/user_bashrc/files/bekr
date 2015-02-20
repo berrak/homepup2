@@ -38,16 +38,7 @@ function backup() {
 	cp -p $newname $1;
 }
 
-function sy() {
-	for file in *.pp
-	do
-		if [ -f "$file" ]
-		then
-			puppet.syntax $file
-		fi
-	done ;
-	exit;
-}
+alias sy='puppet.syntax'
 
 # source in any other resource snippets in directory
 cd $HOME/bashrc.d
